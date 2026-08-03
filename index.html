@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1b2a">
+  <title>이송 기구 통합 설계 검증 포털</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--navy:#0d1b2a;--navy-2:#11283d;--ink:#102b43;--muted:#607487;--line:#dce5e9;--paper:#f5f8f8;--teal:#0ea5a5;--cyan:#0891b2;--white:#fff}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans KR',Pretendard,Arial,sans-serif} a{color:inherit;text-decoration:none}
+    .top,.hero,.footer{background:var(--navy);color:#f5fbfc}.top{padding:25px clamp(22px,5vw,76px) 21px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.11)}
+    .brand{display:flex;align-items:center;gap:14px}.mark{width:43px;height:43px;border:1px solid rgba(110,229,226,.75);display:grid;place-items:center;font-size:14px;font-weight:900;letter-spacing:-1px;color:#7ee8e2;position:relative}.mark:after{content:'';position:absolute;inset:5px;border:1px solid rgba(126,232,226,.25)}
+    .eyebrow{font-size:11px;letter-spacing:.17em;font-weight:800;color:#6bd8d5;text-transform:uppercase}.brand h1{font-size:18px;margin:4px 0 0;font-weight:800;letter-spacing:-.04em}.version{font-size:10px;letter-spacing:.12em;color:#b8c9d2;border:1px solid rgba(255,255,255,.2);padding:9px 12px;font-weight:700}
+    .hero{padding:clamp(66px,10vw,124px) clamp(22px,10vw,150px) 95px;position:relative;overflow:hidden}.hero:before{content:'';position:absolute;inset:0;opacity:.23;background-image:linear-gradient(rgba(87,174,197,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(87,174,197,.2) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(90deg,#000,transparent 80%)}.hero:after{content:'';position:absolute;width:480px;height:480px;border:1px solid rgba(90,208,209,.18);right:-140px;top:-210px;transform:rotate(45deg);box-shadow:0 0 0 35px rgba(90,208,209,.04),0 0 0 70px rgba(90,208,209,.025)}.hero-content{position:relative;z-index:1;max-width:880px}.hero h2{font-size:clamp(30px,5vw,58px);line-height:1.2;letter-spacing:-.065em;margin:18px 0 25px;font-weight:900}.hero p{font-size:15px;color:#b8cbd2;margin:0;letter-spacing:.01em}.hero p span{color:#67d5d3;margin:0 9px}
+    main{max-width:1280px;margin:0 auto;padding:82px clamp(22px,5vw,76px) 105px}.section-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:30px}.section-head h3{margin:9px 0 0;font-size:31px;letter-spacing:-.06em}.section-head p{margin:0;color:#7b8b94;font-size:12px}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.card{background:#fff;border:1px solid var(--line);min-height:378px;padding:29px 29px 25px;position:relative;overflow:hidden;display:flex;flex-direction:column;transition:.28s ease}.card:before{content:attr(data-no);position:absolute;right:18px;top:0;font-size:126px;line-height:1;font-weight:900;color:#eef3f3;letter-spacing:-.1em;transition:.28s}.card:hover{transform:translateY(-7px);border-color:var(--teal);box-shadow:0 18px 38px rgba(16,43,67,.1)}.card:hover:before{color:#dff4f3;transform:translateX(-8px)}.card > *{position:relative}.card-kicker{color:var(--teal);font-size:11px;font-weight:900;letter-spacing:.12em}.card h4{font-size:26px;margin:19px 0 3px;letter-spacing:-.06em}.sub{font-size:11px;color:#81909a;letter-spacing:.04em}.desc{font-size:14px;line-height:1.8;color:#506575;margin:28px 0 20px;max-width:290px}.tags{display:flex;gap:7px;flex-wrap:wrap}.tag{font-size:10px;color:#526d76;background:#edf6f5;padding:6px 8px;font-weight:700}.cta{margin-top:auto;padding-top:28px;color:var(--ink);font-size:12px;font-weight:900;letter-spacing:.04em}.arrow{display:inline-block;margin-left:5px;color:var(--teal);transition:.25s}.card:hover .arrow{transform:translateX(8px)}
+    .footer{padding:25px clamp(22px,5vw,76px);display:flex;justify-content:space-between;gap:20px;align-items:center;font-size:11px;color:#a8bdc7}.footer strong{color:#e2f3f3}.copyright{color:#6f8995}
+    @media(max-width:800px){.cards{grid-template-columns:1fr}.card{min-height:330px}.hero{padding-top:70px;padding-bottom:75px}.section-head{display:block}.section-head p{margin-top:14px}.footer{display:block}.copyright{margin-top:10px}}
+    @media(max-width:480px){.top{align-items:flex-start}.version{font-size:9px;padding:7px;max-width:110px;text-align:center}.brand h1{font-size:15px}.hero h2{font-size:32px}.hero p{line-height:2}.hero p span{margin:0 4px}.card h4{font-size:24px}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="brand"><div class="mark">AX</div><div><div class="eyebrow">Axis &amp; Conveyor Engineering</div><h1>이송 기구 통합 설계 검증 포털</h1></div></div><div class="version">v1.0.0 · SELECT &amp; VERIFY</div></header>
+  <section class="hero"><div class="hero-content"><div class="eyebrow">Horizontal Axis Engineering</div><h2>설계 조건을 입력하고,<br>선정한 부품이 안전한지 바로 확인합니다.</h2><p>벨트 컨베이어 <span>·</span> 수평 볼스크류 <span>·</span> 수직 볼스크류</p></div></section>
+  <main><div class="section-head"><div><div class="eyebrow">Select a Tool</div><h3>설계 검증 도구 선택</h3></div><p>조건 입력부터 판정 근거까지 한 화면에서 확인</p></div><div class="cards">
+    <!-- 실제 파일명에 맞게 href만 수정하세요 -->
+    <a class="card" data-no="01" href="conveyor.html"><div class="card-kicker">01 / DRIVE SYSTEM</div><h4>벨트 컨베이어</h4><div class="sub">Belt Conveyor Verification</div><p class="desc">모터·감속비·풀리를 선정해 입력하면 구동 가능 여부와 안전 여유율을 판정합니다.</p><div class="tags"><span class="tag">슬라이더/롤러</span><span class="tag">안전율 2.0</span></div><div class="cta">선정 시작 <span class="arrow">→</span></div></a>
+    <a class="card" data-no="02" href="ballscrew-h.html"><div class="card-kicker">02 / LINEAR AXIS</div><h4>수평 볼스크류</h4><div class="sub">Horizontal Ball Screw Selector</div><p class="desc">서보모터·감속기·볼스크류·LM 가이드 조합을 수평축 조건에서 통합 검증합니다.</p><div class="tags"><span class="tag">수평 전용</span><span class="tag">비브레이크 모터</span></div><div class="cta">선정 시작 <span class="arrow">→</span></div></a>
+    <a class="card" data-no="03" href="ballscrew-v.html"><div class="card-kicker">03 / VERTICAL AXIS</div><h4>수직 볼스크류</h4><div class="sub">Vertical Ball Screw Selector</div><p class="desc">자중 낙하·브레이크 조건을 포함한 수직축 이송 조합을 검증합니다.</p><div class="tags"><span class="tag">수직 전용</span><span class="tag">브레이크 검토</span></div><div class="cta">선정 시작 <span class="arrow">→</span></div></a>
+  </div></main>
+  <footer class="footer"><strong>보수적 안전 설계 기준 적용 · 판정 근거를 함께 표시합니다</strong><span class="copyright">© 2024 AXIS ENGINEERING PORTAL</span></footer>
+</body></html>
