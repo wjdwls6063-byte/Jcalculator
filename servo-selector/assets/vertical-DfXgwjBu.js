@@ -1,0 +1,1 @@
+import{a as e,i as t,o as n,r,t as i}from"./globals-MDK3x1Qt.js";var a=n(),o=e(),s=r(),c=document.getElementById(`root`);if(!c)throw Error(`페이지를 표시할 #root 요소를 찾지 못했습니다.`);(0,o.createRoot)(c).render((0,s.jsx)(a.StrictMode,{children:(0,s.jsx)(i,{initialInputs:t})}));
