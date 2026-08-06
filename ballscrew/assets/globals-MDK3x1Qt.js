@@ -397,16 +397,16 @@ var $rcSummaryTone={good:{fg:`#047857`,bar:`#10b981`,chip:`#d1fae5`,chipFg:`#065
 /* 상단 지표는 판정을 가르는 핵심값이므로, 마우스를 올리면
    ‘왜 상단에 있는지 + 어떻게 나온 값인지’를 계산식과 함께 펼쳐 보여준다. */
 var $rcKpiCss=`.rc-kpi{position:relative;cursor:help}
-.rc-kpi-pop{position:absolute;left:0;top:calc(100% + 8px);width:min(430px,86vw);background:#0f172a;color:#e2e8f0;border-radius:10px;padding:12px 14px 13px;box-shadow:0 18px 40px rgba(2,6,23,.42);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .14s ease,transform .14s ease;z-index:60;text-align:left;pointer-events:none;white-space:normal}
-.rc-kpi:hover .rc-kpi-pop,.rc-kpi:focus-within .rc-kpi-pop{opacity:1;visibility:visible;transform:translateY(0)}
-.rc-kpi:nth-last-child(-n+2) .rc-kpi-pop{left:auto;right:0}
+.rc-kpi-pop{position:absolute;top:calc(100% + 8px);width:min(430px,86vw);max-height:min(64vh,440px);overflow:auto;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:12px 14px 13px;box-shadow:0 18px 40px rgba(2,6,23,.42);opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .14s ease,transform .14s ease;z-index:60;text-align:left;pointer-events:none;white-space:normal}
+.rc-kpi:hover .rc-kpi-pop,.rc-kpi:focus-within .rc-kpi-pop{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
 .rc-kpi-pop .t{display:block;font-size:12.5px;font-weight:800;color:#7dd3fc;margin:0 0 7px}
 .rc-kpi-pop .h{display:block;font-size:11px;font-weight:800;color:#fcd34d;margin:9px 0 3px;letter-spacing:.02em}
 .rc-kpi-pop .d{display:block;font-size:11.5px;line-height:1.7;color:#e2e8f0}
 .rc-kpi-pop pre{margin:4px 0 0;padding:8px 10px;background:#020617;border-radius:6px;font-size:11px;line-height:1.75;white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,Menlo,Consolas,monospace;color:#cbd5e1}`;
 function $rcKpiStyle(){return(0,P.jsx)(`style`,{href:`rc-kpi-pop`,precedence:`default`,dangerouslySetInnerHTML:{__html:$rcKpiCss}})}
-function $rcKpiPop(e){let t=$rcSummaryTone[e.tone]||$rcSummaryTone.good;
-  return(0,P.jsxs)(`div`,{className:`rc-kpi-pop`,role:`tooltip`,children:[
+function $rcKpiPop(e){let t=$rcSummaryTone[e.tone]||$rcSummaryTone.good,
+    n=e.$align===`right`?{right:0,left:`auto`}:{left:0,right:`auto`};
+  return(0,P.jsxs)(`div`,{className:`rc-kpi-pop`,role:`tooltip`,style:n,children:[
     (0,P.jsxs)(`span`,{className:`t`,children:[e.label,` — `,e.value,e.unit?` ${e.unit}`:``,`  (`,t.label,`)`]}),
     (0,P.jsx)(`span`,{className:`h`,children:`왜 상단에 있나`}),
     (0,P.jsx)(`span`,{className:`d`,children:e.why||e.detail||``}),
@@ -415,6 +415,8 @@ function $rcKpiPop(e){let t=$rcSummaryTone[e.tone]||$rcSummaryTone.good;
     (0,P.jsx)(`span`,{className:`h`,children:`판정 기준`}),
     (0,P.jsx)(`span`,{className:`d`,children:e.limit})]})}
 function $rcSummaryTile(e){let t=$rcSummaryTone[e.tone]||$rcSummaryTone.good;
+  /* 팝업은 오른쪽으로 펼치되, 마지막 두 칸만 왼쪽으로 뒤집는다.
+     (CSS nth-child 는 타일이 래퍼 div 안에 있어 전부 매치되므로 직접 계산한다) */
   return(0,P.jsxs)(`div`,{className:`rc-kpi`,tabIndex:0,style:{position:`relative`,background:`#fff`,border:`1px solid #e2e8f0`,borderRadius:10,padding:`9px 11px 10px 14px`,minWidth:0},children:[
     $rcKpiPop(e),
     (0,P.jsx)(`span`,{style:{position:`absolute`,left:0,top:0,bottom:0,width:5,background:t.bar,borderRadius:`3px 0 0 3px`}}),
@@ -431,7 +433,7 @@ function $rcSummaryStrip(e){let t=e&&e.length?e:[];if(!t.length)return null;
       (0,P.jsx)(`span`,{style:{fontSize:11.5,fontWeight:800,letterSpacing:`.04em`,color:`#1e3a8a`},children:`KEY MARGINS`}),
       (0,P.jsx)(`span`,{style:{fontSize:11.5,color:`#64748b`},children:`핵심 지표 · 각 카드에 마우스를 올리면 중요한 이유와 계산 과정을 보여줍니다`}),
       (0,P.jsx)(`span`,{style:{marginLeft:`auto`,fontSize:11,fontWeight:700,borderRadius:999,padding:`2px 10px`,background:i.chip,color:i.chipFg},children:a})]}),
-    (0,P.jsx)(`div`,{style:{display:`grid`,gridTemplateColumns:`repeat(auto-fit,minmax(150px,1fr))`,gap:8},children:t.map(e=>(0,P.jsx)(`div`,{style:{minWidth:0},children:$rcSummaryTile(e)},e.id))})]})}
+    (0,P.jsx)(`div`,{style:{display:`grid`,gridTemplateColumns:`repeat(auto-fit,minmax(150px,1fr))`,gap:8},children:t.map((e,n)=>(0,P.jsx)(`div`,{style:{minWidth:0},children:$rcSummaryTile({...e,$align:n>=t.length-2?`right`:`left`})},e.id))})]})}
 
 /* ── Global 기준 위치 : 축 개념도(SVG) + 결과열 카드 ─────────────────────────
    외부 이미지 없이 인라인 SVG로 그린다. 기하는 아이소메트릭 투영이며
