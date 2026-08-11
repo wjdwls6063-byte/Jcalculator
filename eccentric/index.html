@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="편심 회전축(무게중심이 회전중심에서 벗어난 회전부)의 서보모터·감속기·벨트풀리 통합 선정 검증 툴">
+<title>편심 회전축 통합 선정기</title>
+<style>
+:root{
+  --bg:#eef2f7; --card:#fff; --ink:#1f2937; --sub:#64748b; --line:#e2e8f0;
+  --blue:#2563eb; --navy:#1e3a8a; --green:#16a34a; --amber:#d97706; --red:#dc2626;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;padding:16px;background:var(--bg);color:var(--ink);line-height:1.6;
+  font-family:"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1320px;margin:0 auto}
+
+/* header */
+header{background:linear-gradient(120deg,#0f2557,#1e3a8a 55%,#2563eb);color:#fff;padding:18px 22px;border-radius:12px 12px 0 0;position:relative}
+header h1{font-size:19px;margin:0 0 5px;letter-spacing:-.3px}
+header h1 .badge{font-size:11px;background:#10b981;color:#04361f;padding:3px 8px;border-radius:5px;font-weight:800;vertical-align:2px;margin-left:6px}
+header .sub{font-size:12px;color:#cbd5e1}
+header .tags{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap}
+header .tags span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.26);border-radius:999px;padding:2px 9px;font-size:11px}
+.home{position:absolute;top:16px;right:18px;color:#dbeafe;text-decoration:none;font-size:12px;border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:5px 10px}
+.home:hover{background:rgba(255,255,255,.14)}
+
+/* layout */
+.main{display:grid;grid-template-columns:368px 1fr;background:#fff;border-radius:0 0 12px 12px;
+  overflow:hidden;box-shadow:0 3px 18px rgba(15,23,42,.09)}
+.left{padding:18px;background:#f8fafc;border-right:1px solid var(--line)}
+.right{padding:18px;min-width:0}
+h2{font-size:15px;border-bottom:2px solid #1f2937;padding-bottom:7px;margin:0 0 13px;color:#111827}
+.sec{margin-top:22px}
+.sec>h2{border-bottom-color:var(--blue);color:var(--navy)}
+
+/* inputs */
+.grp{margin:0 0 15px;border:1px solid var(--line);border-radius:9px;background:#fff;padding:11px 12px}
+.gt{font-weight:800;color:#334155;font-size:12.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.gt b{background:var(--navy);color:#fff;border-radius:5px;width:19px;height:19px;display:grid;place-items:center;font-size:11px}
+.f{display:grid;grid-template-columns:1fr 132px;gap:7px;align-items:center;margin:6px 0}
+.f.w{grid-template-columns:1fr}
+.f label{font-size:12.5px;color:#475569}
+.ig{display:flex;align-items:center;gap:4px}
+.ig input,.f select,.f2 input{width:100%;padding:6px 7px;border:1px solid #cbd5e1;border-radius:6px;font-size:12.5px;background:#fff;color:var(--ink)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.unit{font-size:10.5px;color:var(--sub);white-space:nowrap;min-width:30px}
+.hint{margin:2px 0 0;font-size:11px;color:var(--sub);grid-column:1/-1}
+.chk{display:flex;gap:7px;align-items:center;font-size:12.5px;color:#475569;margin:7px 0}
+.hidden{display:none!important}
+
+/* tooltip */
+.tt{border-bottom:1px dashed #94a3b8;cursor:help}
+.tt i{font-style:normal;display:inline-grid;place-items:center;width:14px;height:14px;border-radius:50%;
+  background:var(--blue);color:#fff;font-size:10px;font-weight:700;margin-left:3px;vertical-align:1px;cursor:pointer}
+#ttbox{position:fixed;z-index:99;max-width:330px;background:#0f172a;color:#e2e8f0;font-size:12px;line-height:1.65;
+  padding:10px 12px;border-radius:8px;box-shadow:0 8px 26px rgba(2,6,23,.34);display:none}
+#ttbox b{color:#7dd3fc;display:block;margin-bottom:3px;font-size:12.5px}
+#ttbox em{color:#fcd34d;font-style:normal}
+
+/* source badge */
+.src{display:inline-block;font-size:11px;color:#0369a1;background:#e0f2fe;border:1px solid #bae6fd;
+  border-radius:6px;padding:2px 7px;margin-top:5px}
+.src.warn{color:#92400e;background:#fef3c7;border-color:#fde68a}
+.src.ref{cursor:zoom-in;text-decoration:none;transition:background .15s}
+.src.ref:hover{background:#bae6fd;border-color:#7dd3fc}
+.src.ref i{font-style:normal;font-weight:800;color:#0c4a6e;margin-left:5px;white-space:nowrap}
+.subtle{color:var(--sub);font-size:11.5px}
+
+/* PDF 발촜 모달 */
+.modal{position:fixed;inset:0;background:rgba(8,15,30,.74);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px}
+.mbox{background:#fff;border-radius:12px;max-width:1200px;width:100%;max-height:94vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 22px 64px rgba(0,0,0,.45)}
+.mhead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:12px 16px;background:linear-gradient(120deg,#0f2557,#1e3a8a);color:#fff}
+.mhead b{font-size:14.5px;display:block;letter-spacing:-.2px}
+.mhead span{font-size:12px;color:#bfdbfe}
+.mbtns{display:flex;gap:6px;flex:none}
+.mbtns button{padding:7px 11px;font-size:12px;font-weight:600;border-radius:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32)}
+.mdesc{margin:0;padding:9px 16px;font-size:12px;color:#475569;background:#f1f5f9;border-bottom:1px solid var(--line)}
+.mdesc b{color:#b91c1c}
+.mbody{overflow:auto;background:#dfe6ee;padding:12px;text-align:center;-webkit-overflow-scrolling:touch}
+.mbody img{max-width:100%;height:auto;background:#fff;box-shadow:0 2px 12px rgba(15,23,42,.18);border-radius:4px}
+.mbody.zoom img{max-width:none;width:185%}
+.mcap{font-size:11.5px;color:#52667c;margin:6px 0 14px}
+
+/* diagram */
+.svgbox{border:1px solid var(--line);border-radius:10px;padding:8px 10px 4px;background:#fbfdff}
+.svgbox svg{width:100%;height:auto;max-height:238px;display:block}
+.vcap{text-align:center;color:var(--sub);font-size:11.5px;margin:0 0 6px}
+
+/* verdict */
+.verdict{border-radius:10px;padding:14px 16px;margin:14px 0 12px;font-weight:800;font-size:17px;border:1px solid}
+.verdict small{display:block;font-weight:500;font-size:12px;margin-top:4px;opacity:.9}
+.ok{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
+.cond{background:#fffbeb;border-color:#fde68a;color:#92400e}
+.ng{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+
+.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:6px}
+.metric{background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:8px 9px}
+.metric span{font-size:11px;color:var(--sub);display:block}
+.metric b{font-size:15px;color:var(--navy);display:block;letter-spacing:-.3px}
+.metric b em{font-style:normal;font-size:10.5px;color:var(--sub);font-weight:600}
+
+/* tables */
+.tblwrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{background:#1e293b;color:#fff;text-align:left;font-weight:600;white-space:nowrap}
+td,th{padding:7px 8px;border:1px solid var(--line)}
+tbody tr:nth-child(even of .r){background:#f8fafc}
+tr.r{cursor:pointer}
+tr.r:hover{background:#eff6ff!important}
+tr.r td:first-child:before{content:"▸ ";color:var(--blue);font-weight:800}
+tr.r.open td:first-child:before{content:"▾ "}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.lb{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700}
+.lb.ok{background:#d1fae5;color:#065f46}
+.lb.cond{background:#fef3c7;color:#92400e}
+.lb.ng{background:#fee2e2;color:#991b1b}
+.det td{background:#f1f5f9;padding:0;border-top:0}
+.dbody{padding:11px 14px;font-size:12px;color:#334155}
+.dbody h4{margin:0 0 6px;font-size:12.5px;color:var(--navy)}
+.dbody pre{margin:5px 0 8px;padding:9px 11px;background:#0f172a;color:#e2e8f0;border-radius:7px;
+  font-size:11.5px;line-height:1.75;white-space:pre-wrap;word-break:break-all;font-family:ui-monospace,Menlo,Consolas,monospace}
+.dbody .used{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px}
+.dbody .used span{background:#fff;border:1px solid var(--line);border-radius:5px;padding:2px 7px;font-size:11px}
+.dbody .concl{margin-top:5px;padding:7px 10px;border-radius:6px;font-weight:700;font-size:12px}
+
+/* remedy */
+.fix{border:1px solid #fecaca;background:#fff7f7;border-radius:10px;padding:12px 14px;margin:10px 0}
+.fix.c{border-color:#fde68a;background:#fffdf5}
+.fix h3{margin:0 0 3px;font-size:13.5px;color:#991b1b}
+.fix.c h3{color:#92400e}
+.fix .why{font-size:11.5px;color:#64748b;margin:0 0 9px}
+.fix ol{margin:0;padding-left:19px}
+.fix li{margin:6px 0;font-size:12.5px}
+.fix li b{color:var(--navy)}
+.fix li .res{display:inline-block;margin-left:5px;font-size:11px;font-weight:700;border-radius:5px;padding:1px 7px}
+.fix li .res.g{background:#d1fae5;color:#065f46}
+.fix li .res.y{background:#fef3c7;color:#92400e}
+.fix li .res.r{background:#fee2e2;color:#991b1b}
+.fix li p{margin:2px 0 0;font-size:11.5px;color:#64748b}
+.best{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:9px 12px;margin:9px 0 0;font-size:12.5px}
+
+.note{border-left:4px solid var(--blue);background:#f1f5f9;padding:10px 13px;border-radius:0 8px 8px 0;font-size:12px;color:#475569;margin:12px 0}
+.note.w{border-left-color:var(--amber);background:#fffbeb;color:#78350f}
+.note.g{border-left-color:var(--green);background:#f0fdf4;color:#14532d}
+.srcs{font-size:12px;color:#475569}
+.srcs li{margin:3px 0}
+.btns{display:flex;gap:8px;margin:14px 0 0}
+button{border:0;border-radius:8px;padding:11px 16px;font-size:13px;font-weight:700;cursor:pointer;color:#fff;background:var(--blue)}
+button.sec2{background:#0f766e}
+button:hover{filter:brightness(1.07)}
+footer{color:#64748b;font-size:11px;padding:14px 4px 0;text-align:center}
+
+@media(max-width:980px){
+  .main{grid-template-columns:1fr}
+  .left{border-right:0;border-bottom:1px solid var(--line)}
+  .metrics{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:560px){
+  body{padding:9px}.metrics{grid-template-columns:repeat(2,1fr)}
+  .f{grid-template-columns:1fr 118px}table{font-size:11.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <a class="home" href="../">← 도구 목록</a>
+  <h1>⚙️ 편심 회전축 통합 선정기<span class="badge">v1</span></h1>
+  <div class="sub">무게중심이 회전중심에서 어긋난 회전부 — 서보모터·감속기·벨트풀리 조합의 구동 가능 여부를 판정합니다</div>
+  <div class="tags"><span>중력토크 상시 작용</span><span>카탈로그 실측 데이터</span><span>판정 근거 공개</span><span>사용불가 대책 제시</span><span>카탈로그 원본 발촜 팝업</span></div>
+</header>
+
+<div class="main">
+<!-- ============ 좌측 입력 ============ -->
+<aside class="left">
+  <h2>설계 조건 입력</h2>
+
+  <div class="grp">
+    <div class="gt"><b>1</b>부하 조건</div>
+    <div class="f"><label><span class="tt" data-k="m">회전부 질량 m</span></label>
+      <div class="ig"><input id="m" type="number" value="25" step="any"><span class="unit">kg</span></div></div>
+    <div class="f"><label><span class="tt" data-k="e">편심량 e</span></label>
+      <div class="ig"><input id="e" type="number" value="30" step="any"><span class="unit">mm</span></div></div>
+    <div class="f"><label><span class="tt" data-k="shape">관성 산출 방식</span></label>
+      <select id="shape"><option value="disk">원판·원통 ½mr²</option><option value="rect">직사각판 m(a²+b²)/12</option><option value="direct">Jcm 직접입력</option></select></div>
+    <div id="fDisk"><div class="f"><label>원판 반경 r</label>
+      <div class="ig"><input id="r" type="number" value="200" step="any"><span class="unit">mm</span></div></div></div>
+    <div id="fRect" class="hidden">
+      <div class="f"><label>변 a</label><div class="ig"><input id="ra" type="number" value="400" step="any"><span class="unit">mm</span></div></div>
+      <div class="f"><label>변 b</label><div class="ig"><input id="rb" type="number" value="200" step="any"><span class="unit">mm</span></div></div></div>
+    <div id="fDir" class="hidden"><div class="f"><label><span class="tt" data-k="jcm">Jcm</span></label>
+      <div class="ig"><input id="jdirect" type="number" value="10" step="any"><span class="unit">×10⁻⁴</span></div></div></div>
+    <div class="f"><label><span class="tt" data-k="orient">회전면 방향</span></label>
+      <select id="orient"><option value="v">수직면 (중력토크 발생)</option><option value="h">수평 턴테이블 (중력 0)</option></select></div>
+    <div class="f"><label><span class="tt" data-k="tf">마찰토크 Tf</span></label>
+      <div class="ig"><input id="tf" type="number" value="0.5" step="any"><span class="unit">Nm</span></div></div>
+  </div>
+
+  <div class="grp">
+    <div class="gt"><b>2</b>운전 프로파일</div>
+    <div class="f"><label><span class="tt" data-k="theta">1회 회전각 θ</span></label>
+      <div class="ig"><input id="theta" type="number" value="180" step="any"><span class="unit">°</span></div></div>
+    <div class="f"><label><span class="tt" data-k="ta">가속 ta</span></label>
+      <div class="ig"><input id="ta" type="number" value="1.5" step="any"><span class="unit">s</span></div></div>
+    <div class="f"><label>정속 tc</label>
+      <div class="ig"><input id="tc" type="number" value="3" step="any"><span class="unit">s</span></div></div>
+    <div class="f"><label>감속 td</label>
+      <div class="ig"><input id="td" type="number" value="1.5" step="any"><span class="unit">s</span></div></div>
+    <div class="f"><label><span class="tt" data-k="tw">휴지 tw</span></label>
+      <div class="ig"><input id="tw" type="number" value="5" step="any"><span class="unit">s</span></div></div>
+    <label class="chk"><input id="hold" type="checkbox" checked><span class="tt" data-k="hold">휴지 중 서보 위치유지</span></label>
+    <label class="chk"><input id="estop" type="checkbox"><span class="tt" data-k="estop">비상정지 토크 검토</span></label>
+    <div class="f hidden" id="fTe"><label>비상정지 감속시간</label>
+      <div class="ig"><input id="te" type="number" value="0.1" step="any"><span class="unit">s</span></div></div>
+  </div>
+
+  <div class="grp">
+    <div class="gt"><b>3</b>전동 방식</div>
+    <div class="f"><label><span class="tt" data-k="drive">동력 전달</span></label>
+      <select id="drive"><option value="belt">벨트·풀리 (감속/증속)</option><option value="belt11">벨트·풀리 1:1</option><option value="direct">직결 (벨트 없음)</option></select></div>
+    <div id="fBelt">
+      <div class="f"><label>구동풀리 D1</label><div class="ig"><input id="d1" type="number" value="100" step="any"><span class="unit">mm</span></div></div>
+      <div class="f" id="fD2"><label>종동풀리 D2</label><div class="ig"><input id="d2" type="number" value="200" step="any"><span class="unit">mm</span></div></div>
+      <div class="f"><label><span class="tt" data-k="eb">벨트 효율 ηb</span></label><div class="ig"><input id="eb" type="number" value="0.9" step="any"><span class="unit"></span></div></div>
+      <div class="f"><label>구동풀리 질량</label><div class="ig"><input id="mp1" type="number" value="0.5" step="any"><span class="unit">kg</span></div></div>
+      <div class="f"><label>종동풀리 질량</label><div class="ig"><input id="mp2" type="number" value="1" step="any"><span class="unit">kg</span></div></div>
+    </div>
+    <p class="hint" id="ibNote">벨트비 i_b = D2 / D1</p>
+  </div>
+
+  <div class="grp">
+    <div class="gt"><b>4</b>감속기</div>
+    <div class="f"><label><span class="tt" data-k="maker">제품 계열</span></label>
+      <select id="gmaker">
+        <option value="ATG1">ATG KSB 1단 (비 3~10)</option>
+        <option value="ATG2">ATG KSB 2단 (비 15~100)</option>
+        <option value="CSF-2UH">하모닉 CSF-2UH</option>
+        <option value="CSG-2UH">하모닉 CSG-2UH (고토크)</option>
+        <option value="manual">직접입력</option>
+      </select></div>
+    <div class="f" id="fGsz"><label>형번 / 사이즈</label><select id="gsize"></select></div>
+    <div class="f" id="fGrt"><label><span class="tt" data-k="ig">감속비 i_g</span></label><select id="gratio"></select></div>
+    <div class="f hidden" id="fEtaR"><label><span class="tt" data-k="etar">정격토크시 효율 ηR</span></label>
+      <div class="ig"><input id="etar" type="number" value="0.78" step="any"><span class="unit"></span></div></div>
+    <div id="fGman" class="hidden">
+      <div class="f"><label>감속비 i_g</label><div class="ig"><input id="igm" type="number" value="10" step="any"><span class="unit"></span></div></div>
+      <div class="f"><label>효율 ηg</label><div class="ig"><input id="egm" type="number" value="0.9" step="any"><span class="unit"></span></div></div>
+      <div class="f"><label>허용 피크 / 평균 출력토크</label><div class="f2"><input id="gmax" type="number" value="18" step="any"><input id="gavg" type="number" value="18" step="any"></div><p class="hint">Nm · 왼쪽 피크 / 오른쪽 평균</p></div>
+      <div class="f"><label>허용 최고 / 평균 입력회전수</label><div class="f2"><input id="ginmax" type="number" value="6000" step="any"><input id="ginavg" type="number" value="3000" step="any"></div><p class="hint">rpm</p></div>
+      <div class="f"><label>감속기 관성</label><div class="ig"><input id="jgm" type="number" value="0.08" step="any"><span class="unit">×10⁻⁴</span></div></div>
+    </div>
+    <div id="gInfo"></div>
+  </div>
+
+  <div class="grp">
+    <div class="gt"><b>5</b>서보모터</div>
+    <div class="f"><label>기종 (미쓰비시 HG-KR)</label><select id="motor"></select></div>
+    <label class="chk"><input id="brake" type="checkbox"><span class="tt" data-k="brake">전자 브레이크 부착형</span></label>
+    <div id="fMman" class="hidden">
+      <div class="f"><label>정격 / 최대토크</label><div class="f2"><input id="mrated" type="number" value="0.32" step="any"><input id="mmax" type="number" value="1.1" step="any"></div><p class="hint">Nm</p></div>
+      <div class="f"><label>모터 관성</label><div class="ig"><input id="jm" type="number" value="0.0777" step="any"><span class="unit">×10⁻⁴</span></div></div>
+      <div class="f"><label>정격 / 최대회전수</label><div class="f2"><input id="mrpm" type="number" value="3000" step="any"><input id="mmaxrpm" type="number" value="6000" step="any"></div><p class="hint">rpm</p></div>
+      <div class="f"><label>허용 이너샤비</label><div class="ig"><input id="jratio" type="number" value="15" step="any"><span class="unit">배</span></div></div>
+    </div>
+    <div id="mInfo"></div>
+  </div>
+
+  <div class="grp">
+    <div class="gt"><b>6</b>안전 기준</div>
+    <div class="f"><label><span class="tt" data-k="sf">안전계수 Sf</span></label>
+      <div class="ig"><input id="sf" type="number" value="1.5" step="any"><span class="unit"></span></div></div>
+    <p class="hint"><span class="tt" data-k="margin">여유율</span> = 허용치 ÷ (필요치 × Sf) − 1 &nbsp;·&nbsp;
+      <span class="lb ok">≥30% 안전</span> <span class="lb cond">0~30% 조건부</span> <span class="lb ng">&lt;0 사용불가</span></p>
+  </div>
+
+  <div class="btns">
+    <button id="run">▶ 판정 실행</button>
+    <button id="search" class="sec2">🔍 최적 조합 탐색</button>
+  </div>
+</aside>
+
+<!-- ============ 우측 결과 ============ -->
+<section class="right">
+  <h2>구동계 구성</h2>
+  <!-- ===== ① 수직면 회전 ===== -->
+  <div id="diagV">
+  <div class="svgbox">
+    <svg viewBox="0 0 1120 215" role="img" aria-label="수직면 회전 구동계 구성도">
+      <defs>
+        <marker id="ab" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0L6,3L0,6Z" fill="#2563eb"/></marker>
+        <marker id="ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0L6,3L0,6Z" fill="#dc2626"/></marker>
+        <marker id="ag" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0L6,3L0,6Z" fill="#64748b"/></marker>
+        <marker id="agS" markerWidth="8" markerHeight="8" refX="1" refY="3" orient="auto"><path d="M6,0L0,3L6,6Z" fill="#64748b"/></marker>
+      </defs>
+      <g font-family="inherit" font-size="13" text-anchor="middle" fill="#1f2937">
+        <rect x="16" y="64" width="132" height="50" rx="9" fill="#dbeafe" stroke="#2563eb" stroke-width="1.6"/>
+        <text x="82" y="86">서보모터</text><text x="82" y="103" font-size="11" fill="#475569" class="jsMotor">HG-KR13</text>
+        <path d="M148 89h48" stroke="#2563eb" stroke-width="2.5" marker-end="url(#ab)"/>
+        <rect x="200" y="64" width="140" height="50" rx="9" fill="#dbeafe" stroke="#2563eb" stroke-width="1.6"/>
+        <text x="270" y="86">감속기</text><text x="270" y="103" font-size="11" fill="#475569" class="jsGear">ATG KSB62 i=50</text>
+        <path d="M340 89h44" stroke="#2563eb" stroke-width="2.5" marker-end="url(#ab)"/>
+        <path class="jsBelt" d="M424 62 L668 34 M424 116 L668 144" stroke="#0f766e" stroke-width="7" stroke-linecap="round" opacity=".3"/>
+        <g class="jsPulley"><circle cx="424" cy="89" r="28" fill="#ccfbf1" stroke="#0f766e" stroke-width="2.2"/><text x="424" y="94" font-size="12">D1</text></g>
+        <circle cx="668" cy="89" r="55" fill="#ccfbf1" stroke="#0f766e" stroke-width="2.4"/>
+        <g stroke="#0f766e" opacity=".38"><path d="M668 34v110M613 89h110M629 50l78 78M707 50l-78 78"/></g>
+        <circle cx="668" cy="89" r="5" fill="#0f172a"/>
+        <text x="668" y="163" font-size="11.5" fill="#0f766e">회전체 (정면에서 본 모습)</text>
+        <path d="M668 89v98" stroke="#94a3b8" stroke-dasharray="5 4"/>
+        <circle cx="716" cy="55" r="8" fill="#fecaca" stroke="#dc2626" stroke-width="1.8"/>
+        <path d="M668 89L716 55" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <text x="716" y="38" font-size="11.5" fill="#dc2626">무게중심 CG</text>
+        <path d="M716 63v112" stroke="#dc2626" stroke-width="2" stroke-dasharray="4 4" opacity=".5"/>
+        <path d="M716 63v52" stroke="#dc2626" stroke-width="2.4" marker-end="url(#ar)"/>
+        <text x="740" y="105" font-size="12" fill="#dc2626" text-anchor="start">m·g</text>
+        <path d="M668 180h48" stroke="#64748b" stroke-width="1.4" marker-start="url(#agS)" marker-end="url(#ag)"/>
+        <text x="692" y="199" font-size="11.5" fill="#475569">e</text>
+        <text x="600" y="199" font-size="11" fill="#94a3b8" text-anchor="end">모멘트 암</text>
+        <path d="M745 128 A 78 78 0 0 1 690 152" fill="none" stroke="#dc2626" stroke-width="2.2" marker-end="url(#ar)" opacity=".85"/>
+        <g text-anchor="start">
+          <rect x="800" y="34" width="300" height="120" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+          <text x="818" y="58" font-size="12.5" fill="#991b1b" font-weight="bold">회전면이 수직 → 중력토크 발생</text>
+          <text x="818" y="80" font-size="12" fill="#475569">중력이 회전면 <tspan font-weight="bold">안에서</tspan> 작용하므로</text>
+          <text x="818" y="99" font-size="12" fill="#475569">축을 돌리려는 모멘트가 상시 걸립니다</text>
+          <text x="818" y="126" font-size="13" fill="#dc2626" font-weight="bold" class="jsTg">Tg = m·g·e = 0 Nm</text>
+          <text x="818" y="145" font-size="11.5" fill="#94a3b8">정지 중에도 서보가 계속 버털야 함</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <p class="vcap">회전중심과 무게중심이 <b>e</b>만큼 어긋나 <b>정지 중에도 중력토크가 상시 작용</b>합니다</p>
+  </div>
+
+  <!-- ===== ② 수평 턴테이블 ===== -->
+  <div id="diagH" class="hidden">
+  <div class="svgbox">
+    <svg viewBox="0 0 1120 215" role="img" aria-label="수평 턴테이블 구동계 구성도">
+      <defs>
+        <marker id="ab2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0L6,3L0,6Z" fill="#2563eb"/></marker>
+        <marker id="ar2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0L6,3L0,6Z" fill="#dc2626"/></marker>
+        <marker id="ag2" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0,0L6,3L0,6Z" fill="#64748b"/></marker>
+        <marker id="agS2" markerWidth="8" markerHeight="8" refX="1" refY="3" orient="auto"><path d="M6,0L0,3L6,6Z" fill="#64748b"/></marker>
+        <marker id="at" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0L6,3L0,6Z" fill="#0f766e"/></marker>
+      </defs>
+      <g font-family="inherit" font-size="13" text-anchor="middle" fill="#1f2937">
+        <rect x="16" y="52" width="132" height="50" rx="9" fill="#dbeafe" stroke="#2563eb" stroke-width="1.6"/>
+        <text x="82" y="74">서보모터</text><text x="82" y="91" font-size="11" fill="#475569" class="jsMotor">HG-KR13</text>
+        <path d="M148 77h44" stroke="#2563eb" stroke-width="2.5" marker-end="url(#ab2)"/>
+        <rect x="196" y="52" width="140" height="50" rx="9" fill="#dbeafe" stroke="#2563eb" stroke-width="1.6"/>
+        <text x="266" y="74">감속기</text><text x="266" y="91" font-size="11" fill="#475569" class="jsGear">ATG KSB62 i=50</text>
+        <path d="M266 102v34" stroke="#2563eb" stroke-width="2.5" marker-end="url(#ab2)"/>
+        <g class="jsPulley"><ellipse cx="266" cy="150" rx="32" ry="12" fill="#ccfbf1" stroke="#0f766e" stroke-width="2.2"/>
+        <text x="266" y="181" font-size="11.5" fill="#0f766e">D1</text></g>
+        <path class="jsBelt" d="M266 138 L640 128 M266 162 L640 152" stroke="#0f766e" stroke-width="6" stroke-linecap="round" opacity=".3"/>
+        <path d="M640 140v52" stroke="#475569" stroke-width="7" stroke-linecap="round"/>
+        <ellipse cx="640" cy="140" rx="30" ry="11" fill="#ccfbf1" stroke="#0f766e" stroke-width="2"/>
+        <rect x="596" y="188" width="88" height="12" rx="4" fill="#cbd5e1" stroke="#94a3b8"/>
+        <path d="M520 100a120 44 0 0 0 240 0v9a120 44 0 0 1-240 0z" fill="#99f6e4" stroke="#0f766e" stroke-width="1.6"/>
+        <ellipse cx="640" cy="100" rx="120" ry="44" fill="#ccfbf1" stroke="#0f766e" stroke-width="2.4"/>
+        <ellipse cx="640" cy="100" rx="22" ry="8" fill="#fff" stroke="#0f766e" stroke-width="1.4"/>
+        <circle cx="640" cy="100" r="4" fill="#0f172a"/>
+        <path d="M540 78 A 118 42 0 0 1 700 66" fill="none" stroke="#0f766e" stroke-width="2.2" marker-end="url(#at)" opacity=".8"/>
+        <path d="M690 68h54v20l-54 8z" fill="#fca5a5" stroke="#dc2626" stroke-width="1.4" opacity=".65"/>
+        <circle cx="717" cy="82" r="7" fill="#fecaca" stroke="#dc2626" stroke-width="1.8"/>
+        <text x="726" y="52" font-size="11.5" fill="#dc2626">무게중심 CG</text>
+        <path d="M640 100 L717 82" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <path d="M640 118h77" stroke="#64748b" stroke-width="1.3" marker-start="url(#agS2)" marker-end="url(#ag2)" opacity=".9"/>
+        <text x="678" y="135" font-size="11.5" fill="#475569">e</text>
+        <path d="M640 30v70" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="7 3 2 3"/>
+        <text x="640" y="22" font-size="11" fill="#94a3b8">회전축(연직)</text>
+        <path d="M717 89v56" stroke="#dc2626" stroke-width="2.4" marker-end="url(#ar2)"/>
+        <text x="742" y="130" font-size="12" fill="#dc2626" text-anchor="start">m·g</text>
+        <g text-anchor="start">
+          <rect x="800" y="34" width="300" height="132" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+          <text x="818" y="58" font-size="12.5" fill="#065f46" font-weight="bold">회전축 ∥ 중력 → 중력토크 없음</text>
+          <text x="818" y="80" font-size="12" fill="#475569">중력이 회전면에 <tspan font-weight="bold">수직</tspan>으로 작용해</text>
+          <text x="818" y="99" font-size="12" fill="#475569">축을 돌리는 모멘트를 만들지 못합니다</text>
+          <text x="818" y="126" font-size="13" fill="#065f46" font-weight="bold">Tg = 0 Nm</text>
+          <text x="818" y="147" font-size="11.5" fill="#475569">단, 편심 e는 관성에는 그대로 기여</text>
+          <text x="818" y="162" font-size="11.5" fill="#0f766e" font-weight="bold" class="jsJ">J = Jcm + m·e²</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <p class="vcap">회전축이 연직이라 <b>중력토크는 0</b>이지만, 편심 e는 <b>관성 J = Jcm + m·e²</b> 에는 그대로 반영됩니다</p>
+  </div>
+
+  <div id="out"></div>
+  <div id="searchOut"></div>
+
+  <div class="note w"><b>⚠ 사용상 주의</b><br>
+    이론 계산값이며 중력토크는 최악조건(sinθ=1)으로 상시 작용한다고 가정합니다. 실제 적용 전 카탈로그 원본을 재확인하고
+    벨트 축하중·브레이크 유지토크·비상정지·구조 강성·수명(L10)은 별도 검토하십시오.</div>
+</section>
+</div>
+<footer>GitHub → Render Static Site · 설계 검증용 참고 도구이며 최종 설계 책임은 설계자에게 있습니다.</footer>
+</div>
+<div id="ttbox"></div>
+
+<!-- 카탈로그 원본 발촜 모달 -->
+<div id="pdfModal" class="modal hidden">
+  <div class="mbox">
+    <div class="mhead">
+      <div><b id="mTitle"></b><span id="mPage"></span></div>
+      <div class="mbtns"><button id="mZoom" type="button">🔍 확대</button><button id="mClose" type="button">✕ 닫기</button></div>
+    </div>
+    <p class="mdesc" id="mDesc"></p>
+    <div class="mbody" id="mBody"></div>
+  </div>
+</div>
+<script>
+/* ===== 카탈로그 데이터 (자동 생성) ===== */
+const HD={"CSF-2UH":{14:{n:[8500,3500],J:.033,r:{30:[4,9,6.8,17],50:[5.4,18,6.9,35],80:[7.8,23,11,47],100:[7.8,28,11,54]}},17:{n:[7300,3500],J:.079,r:{30:[8.8,16,12,30],50:[16,34,26,70],80:[22,43,27,87],100:[24,54,39,108],120:[24,54,39,86]}},20:{n:[6500,3500],J:.193,r:{30:[15,27,20,50],50:[25,56,34,98],80:[34,74,47,127],100:[40,82,49,147],120:[40,87,49,147],160:[40,92,49,147]}},25:{n:[5600,3500],J:.413,r:{30:[27,50,38,95],50:[39,98,55,186],80:[63,137,87,255],100:[67,157,108,284],120:[67,167,108,304],160:[67,176,108,314]}},32:{n:[4800,3500],J:1.69,r:{30:[54,100,75,200],50:[76,216,108,382],80:[118,304,167,568],100:[137,333,216,647],120:[137,353,216,686],160:[137,372,216,686]}},40:{n:[4000,3000],J:4.5,r:{50:[137,402,196,686],80:[206,519,284,980],100:[265,568,372,1080],120:[294,617,451,1180],160:[294,647,451,1180]}},45:{n:[3800,3000],J:8.68,r:{50:[176,500,265,950],80:[313,706,390,1270],100:[353,755,500,1570],120:[402,823,620,1760],160:[402,882,630,1910]}},50:{n:[3500,2500],J:12.5,r:{50:[122,715,175,1430],80:[372,941,519,1860],100:[470,980,666,2060],120:[529,1080,813,2060],160:[529,1180,843,2450]}},58:{n:[3000,2200],J:27.3,r:{50:[176,1020,260,1960],80:[549,1480,770,2450],100:[696,1590,1060,3180],120:[745,1720,1190,3330],160:[745,1840,1210,3430]}},65:{n:[2800,1900],J:46.8,r:{50:[245,1420,360,2830],80:[745,2110,1040,3720],100:[951,2300,1520,4750],120:[951,2510,1570,4750],160:[951,2630,1570,4750]}}},"CSG-2UH":{14:{n:[8500,3500],J:.033,r:{50:[7,23,9,46],80:[10,30,14,58],100:[10,36,14,58]}},17:{n:[7300,3500],J:.079,r:{50:[21,44,34,91],80:[29,56,35,109],100:[31,70,51,109],120:[31,70,51,109]}},20:{n:[6500,3500],J:.193,r:{50:[33,73,44,127],80:[44,96,61,165],100:[52,107,64,191],120:[52,113,64,191],160:[52,120,64,191]}},25:{n:[5600,3500],J:.413,r:{50:[51,127,72,242],80:[82,178,113,332],100:[87,204,140,369],120:[87,217,140,395],160:[87,229,140,408]}},32:{n:[4800,3500],J:1.69,r:{50:[99,281,140,497],80:[153,395,217,738],100:[178,433,281,841],120:[178,459,281,842],160:[178,484,281,842]}},40:{n:[4000,3000],J:4.5,r:{50:[178,523,255,892],80:[268,675,369,1270],100:[345,738,484,1400],120:[382,802,586,1510],160:[382,841,586,1510]}},45:{n:[3800,3000],J:8.68,r:{50:[229,650,345,1235],80:[407,918,507,1651],100:[459,982,650,2041],120:[523,1070,806,2288],160:[523,1147,819,2483]}},50:{n:[3500,2500],J:12.5,r:{80:[484,1223,675,2418],100:[611,1274,866,2678],120:[688,1404,1057,2678],160:[688,1534,1096,3185]}},58:{n:[3000,2200],J:27.3,r:{80:[714,1924,1001,3185],100:[905,2067,1378,4134],120:[969,2236,1547,4329],160:[969,2392,1573,4459]}},65:{n:[2800,1900],J:46.8,r:{80:[969,2743,1352,4836],100:[1236,2990,1976,6175],120:[1236,3263,2041,6175],160:[1236,3419,2041,6175]}}}};
+const ATG={sz:[44,62,90,120,142,180,220],rpm:{44:[10000,5000],62:[10000,5000],90:[8000,4000],120:[8000,4000],142:[6000,3000],180:[6000,3000],220:[4000,2000]},t1:{3:[19,59,165,335,625,1206,2030],4:[16,51,146,300,555,1069,1804],5:[16,48,160,333,618,1189,2010],6:[15,45,151,311,583,1118,1911],7:[15,45,149,309,573,1108,1870],8:[14,43,143,298,553,1070,1824],9:[13,44,145,278,516,993,1694],10:[14,43,141,294,549,1059,1779]},j1:{3:[.03,.16,.61,3.25,9.21,28.98,59.61],4:[.03,.14,.48,2.74,7.54,23.67,54.37],5:[.03,.13,.47,2.71,7.42,23.29,53.27],6:[.03,.13,.45,2.65,7.25,22.75,51.72],7:[.03,.13,.45,2.62,7.14,22.48,50.97],8:[.03,.13,.44,2.58,7.07,22.59,50.84],9:[.03,.13,.44,2.57,7.04,22.53,50.63],10:[.03,.13,.44,2.57,7.03,22.51,50.56]},t2:{15:[19,59,165,335,625,1206,2030],20:[16,51,146,300,555,1069,1804],25:[16,48,160,333,618,1189,2010],30:[15,45,151,311,583,1118,1911],35:[15,45,149,309,573,1108,1870],40:[14,43,143,298,553,1070,1824],50:[16,48,160,333,618,1189,2010],60:[15,45,151,311,583,1118,1911],70:[15,45,149,309,573,1108,1870],80:[14,43,143,298,553,1070,1824],90:[13,44,145,278,516,993,1694],100:[14,43,141,294,549,1059,1779]},j2:{15:[.03,.03,.14,.46,2.63,7.3,22.79],20:[.03,.03,.14,.46,2.63,7.3,22.79],25:[.03,.03,.14,.46,2.63,7.1,22.79],30:[.03,.03,.14,.46,2.43,7.1,22.59],35:[.03,.03,.14,.44,2.43,7.1,22.59],40:[.03,.03,.14,.44,2.43,6.92,22.59],50:[.03,.03,.14,.44,2.43,6.92,22.59],60:[.03,.03,.14,.43,2.39,6.72,21.83],70:[.03,.03,.14,.43,2.39,6.72,21.83],80:[.03,.03,.14,.43,2.39,6.72,21.83],90:[.03,.03,.14,.4,2.39,6.72,21.6],100:[.03,.03,.14,.43,2.39,6.72,21.83]}};
+const MOTORS=[{n:'HG-KR053',W:50,rt:.16,mx:.56,J:.045,Jb:.0472,rpm:3000,rmx:6000,jr:15},{n:'HG-KR13',W:100,rt:.32,mx:1.1,J:.0777,Jb:.0837,rpm:3000,rmx:6000,jr:15},{n:'HG-KR23',W:200,rt:.64,mx:2.2,J:.221,Jb:.243,rpm:3000,rmx:6000,jr:24},{n:'HG-KR43',W:400,rt:1.3,mx:4.5,J:.371,Jb:.393,rpm:3000,rmx:6000,jr:22},{n:'HG-KR73',W:750,rt:2.4,mx:8.4,J:1.26,Jb:1.37,rpm:3000,rmx:6000,jr:15}];
+const KE=[[.1,.43],[.2,.64],[.3,.77],[.4,.85],[.5,.9],[.6,.94],[.7,.96],[.8,.98],[.9,.99],[1,1]];
+/* ===================== 공통 유틸 ===================== */
+const $=id=>document.getElementById(id), n=id=>+$(id).value||0, GRAV=9.80665;
+function fm(x,d){
+  if(x===null||x===undefined||!isFinite(x))return '–';
+  const v=Math.abs(x); if(d===undefined) d = v>=1000?0 : v>=100?1 : v>=10?2 : v>=1?3 : 4;
+  return x.toLocaleString('ko-KR',{maximumFractionDigits:d});
+}
+const pc=x=>!isFinite(x)?'∞':(x*100).toFixed(Math.abs(x*100)>=10?0:1)+'%';
+const grade=m=>m>=.3?'ok':m>=0?'cond':'ng';
+const gtxt=m=>m>=.3?'안전':m>=0?'조건부':'사용불가';
+
+/* ===================== 출처(근거자료) ===================== */
+const SRC={
+  ATG1:{t:'ATG KSB 유성감속기 카탈로그 (KSB_1305)', p:'p.028~029 · PDF 2쪽', d:'KSB 1단(Single Reduction) 정격표'},
+  ATG2:{t:'ATG KSB 유성감속기 카탈로그 (KSB_1305)', p:'p.030~033 · PDF 3~4쪽', d:'KSB 2단(Double Reduction) 정격표'},
+  'CSF-2UH':{t:'하모닉드라이브 종합 카탈로그 2025 (한글)', p:'p.127 · PDF 127쪽', d:'표127-1 CSF 시리즈 정격표'},
+  'CSG-2UH':{t:'하모닉드라이브 종합 카탈로그 2025 (한글)', p:'p.126 · PDF 126쪽', d:'표126-1 CSG 시리즈 정격표'},
+  KE:{t:'하모닉드라이브 종합 카탈로그 2025 (한글)', p:'p.134 · 그래프134-1', d:'효율보정계수 Ke (η = Ke·ηR)'},
+  MOTOR:{t:'미쓰비시 MELSERVO-J4 카탈로그 (한글)', p:'p.2-5 · PDF 41쪽', d:'HG-KR 시리즈 서보모터 사양'}
+};
+/* 카탈로그 원본 발촜 이미지 (ref/ 폴더) */
+const REF={
+  ATG1:{img:['ref/atg-1stage.jpg'],cap:['ATG KSB 카탈로그 p.029 — KSB 1단 정격표 · 관성모멘트표'],
+    d:'상단 = 관성모멘트(kg·cm² = ×10⁻⁴ kg·m²), 하단 = 감속비별 Rated Output Torque / 입력회전수 / 백래시 / 효율(≥97%) / 허용하중.'},
+  ATG2:{img:['ref/atg-2stage.jpg','ref/atg-2stage-a.jpg'],
+    cap:['ATG KSB 카탈로그 p.031 — KSB 2단 표준형(62~220)','ATG KSB 카탈로그 p.033 — KSB 2단 A타입(44A~220A)'],
+    d:'감속비 15~100. 본 툴은 두 페이지의 정격 출력토크·관성·입력회전수를 모두 반영합니다. 효율은 2단 ≥94%.'},
+  'CSF-2UH':{img:['ref/hd-csf.jpg'],cap:['하모닉드라이브 2025 카탈로그 p.127 — 표127-1 CSF 시리즈 정격표'],
+    d:'좌측부터 형번 / 감속비 / 입력 2000r/min시의 정격토크 / 기동·정지시 허용피크토크 / 평균부하토크 허용최대치 / 순간허용최대토크 / 허용 최고·평균 입력회전속도 / 관성모멘트 I.'},
+  'CSG-2UH':{img:['ref/hd-csg.jpg'],cap:['하모닉드라이브 2025 카탈로그 p.126 — 표126-1 CSG 시리즈 정격표'],
+    d:'CSG는 CSF 대비 토크용량을 약 30% 높인 고부하용량형입니다. 열 구성은 CSF와 동일.'},
+  KE:{img:['ref/hd-ke.jpg'],cap:['하모닉드라이브 2025 카탈로그 p.134 — 그래프134-1 효율보정계수'],
+    d:'부하토크가 정격토크보다 작으면 효율이 떨어집니다. 본 툴은 이 그래프를 디지타이즈해 구간별 η = Ke·ηR 로 자동 보정합니다.'},
+  MOTOR:{img:['ref/motor-hgkr.jpg'],cap:['MELSERVO-J4 카탈로그(한글) p.2-5 — HG-KR 시리즈 사양'],
+    d:'정격출력 / 정격·최대토크 / 정격·최대 회전속도 / 관성모멘트 J(표준·브레이크 부착) / 권장 부하관성모멘트비. 하단에 전자브레이크 사양표도 있습니다.'}
+};
+const srcBtn=(k,hint)=>`<a class="src ref" href="javascript:void(0)" data-ref="${k}"${hint?` data-hint="${hint}"`:''}
+  title="클릭하면 카탈로그 원본 발촜을 봅니다">📖 ${SRC[k].t} <b>${SRC[k].p}</b><i>🔍 원본 보기</i></a>`;
+
+/* ===================== 용어 사전 (? 호버) ===================== */
+const TERMS={
+ m:['회전부 질량 m','회전축과 함께 도는 모든 부품(치구·워크·플랜지 포함)의 합계 질량.','중력토크 Tg와 관성 J 양쪽에 직접 비례하므로 가장 민감한 입력값입니다.'],
+ e:['편심량 e','회전중심에서 무게중심(CG)까지의 거리. 이 값이 0이면 일반 회전축입니다.','중력토크 Tg = m·g·e 로, 정지 상태에서도 서보가 계속 버텨야 하는 토크를 만듭니다.'],
+ shape:['관성 산출 방식','무게중심을 지나는 축 기준 관성모멘트 Jcm 계산 방법.','실제 축 기준 관성은 평행축 정리로 J = Jcm + m·e² 가 됩니다.'],
+ jcm:['Jcm','무게중심축 기준 관성모멘트. CAD 물성치를 그대로 넣으면 됩니다.','단위 ×10⁻⁴ kg·m² (= kg·cm²). 카탈로그 관성 표기와 같은 단위입니다.'],
+ orient:['회전면 방향','회전면이 수직이면 중력토크가 상시 작용하고, 수평 턴테이블이면 0입니다.','수직면에서는 회전각에 따라 Tg가 sin으로 변하지만 본 툴은 최악조건(sin=1) 고정으로 계산합니다.'],
+ tf:['마찰토크 Tf','베어링·씰·배선 저항 등 상시 발생하는 손실 토크(부하축 기준).','실측이 없으면 정격의 3~10% 수준을 넣고 여유를 두는 것이 일반적입니다.'],
+ theta:['1회 회전각 θ','1사이클에서 회전축이 실제로 도는 각도.','각도가 크면 같은 시간에 더 빨리 돌아야 하므로 각가속도와 회전수가 함께 올라갑니다.'],
+ ta:['가속 시간 ta','정지→정속까지 걸리는 시간. 사다리꼴 속도 프로파일 기준입니다.','가감속 시간을 늘리면 α가 줄어 피크토크가 거의 반비례로 내려갑니다. 가장 값싼 대책입니다.'],
+ tw:['휴지 시간 tw','1사이클 중 정지해 있는 시간.','휴지가 길수록 RMS(실효) 토크가 내려가 모터 연속정격 판정에 유리합니다.'],
+ hold:['휴지 중 서보 위치유지','정지 중에도 서보가 중력토크를 전기적으로 버티는 상태.','체크하면 휴지구간에도 Tg가 RMS에 포함됩니다. 무여자 브레이크로 기계적으로 잡으면 해제할 수 있습니다.'],
+ estop:['비상정지 토크 검토','비상정지(E-STOP) 시 짧은 시간에 멈출 때 발생하는 순간 토크를 감속기 순간허용최대토크와 비교합니다.','하모닉은 카탈로그에 순간허용최대토크가 별도 규정되어 있습니다.'],
+ drive:['동력 전달 방식','벨트·풀리 감속 / 벨트 1:1 / 감속기 직결 중 선택.','직결은 벨트 손실(ηb)과 풀리 관성이 0이 되지만 감속비를 벨트로 보정할 수 없습니다.'],
+ eb:['벨트 효율 ηb','타이밍벨트 전동 효율. 일반적으로 0.9~0.98.','장력·정렬 상태가 나쁘면 더 떨어집니다. 보수적으로 0.9를 권장합니다.'],
+ maker:['감속기 제품 계열','ATG KSB(유성) 또는 하모닉드라이브 CSF/CSG(파동치차) 중 선택.','계열에 따라 카탈로그가 규정하는 판정 항목이 달라집니다(하모닉은 4종 토크 규정).'],
+ ig:['감속비 i_g','감속기 입력(모터측) : 출력(부하측) 회전비.','비를 올리면 모터토크는 1/i, 환산관성은 1/i²로 줄지만 모터 회전수는 i배로 올라갑니다.'],
+ etar:['정격토크시 효율 ηR','하모닉의 효율은 부하·회전수·온도에 따라 변합니다. 정격토크 상태의 기준 효율값입니다.','카탈로그 p.134 예시는 CSF-20-80 · 1000r/min · 20℃에서 78%입니다. 실제 조건은 효율 그래프를 확인하십시오.'],
+ ke:['효율보정계수 Ke','부하토크가 정격토크보다 작을 때 효율이 떨어지는 것을 보정하는 계수. η = Ke·ηR.','토크비 α = 부하토크/정격토크 로 카탈로그 그래프134-1에서 구합니다. 경부하일수록 효율이 급격히 나빠집니다.'],
+ brake:['전자 브레이크 부착형','브레이크 내장 모터는 로터 관성이 조금 커집니다.','수직 회전축에서 정지 유지·낙하 방지용으로 사실상 필수입니다.'],
+ sf:['안전계수 Sf','계산된 필요 토크에 곱해 설계 여유를 확보하는 계수.','토크 항목에만 적용합니다. 회전수·이너샤비는 카탈로그 절대 상한이므로 Sf를 곱하지 않습니다.'],
+ margin:['여유율','허용치 ÷ (필요치 × Sf) − 1. 0%면 안전계수를 정확히 만족한 상태입니다.','30% 이상을 권장합니다. 음수면 그 항목이 한계를 넘은 것으로 사용 불가입니다.'],
+ Jload:['부하축 관성 J','회전축 기준 전체 관성모멘트. J = Jcm + m·e² (평행축 정리).','편심량이 커지면 m·e² 항이 급격히 커져 가속토크를 지배하게 됩니다.'],
+ Tg:['중력토크 Tg','편심 때문에 생기는 상시 토크. Tg = m·g·e.','가속·정속·감속·정지 전 구간에 계속 작용하므로 RMS 토크를 끌어올리는 주범입니다.'],
+ ib:['벨트비 i_b','종동풀리 ÷ 구동풀리 = D2 / D1.','전체 감속비 = i_b × i_g. 벨트비를 올리면 감속기 출력토크 요구가 줄어듭니다.'],
+ Mpk:['모터 피크토크','가속 또는 감속 구간에서 모터가 내야 하는 최대 토크.','모터 최대토크와 비교합니다. 보통 가속 구간이 지배적입니다.'],
+ Mrms:['모터 RMS 토크','1사이클 실효(제곱평균) 토크. 발열·연속정격의 기준입니다.','모터 정격토크와 비교합니다. 휴지 중 위치유지를 하면 이 값이 크게 올라갑니다.'],
+ jratio:['이너샤비','모터축 환산 부하관성 ÷ 모터 로터관성.','너무 크면 응답·정정시간이 나빠지고 진동합니다. 카탈로그 권장값 이하로 맞춥니다.'],
+ Nmot:['모터 회전수','정속 구간에서의 모터 회전수 = 부하 회전수 × i_b × i_g.','모터 최대회전수 및 감속기 허용최고 입력회전수 두 곳에서 동시에 제한됩니다.'],
+ Navg:['평균 입력회전수','1사이클 총 회전량을 사이클 시간으로 나눈 평균 회전수.','감속기 수명(윤활·발열) 기준인 허용평균 입력회전수와 비교합니다.'],
+ Gnmax:['감속기 허용 최고 입력회전수','감속기 입력축(모터 직결부)에 순간이라도 넘길 수 없는 회전수 상한.','형번이 클수록 낮아집니다. 입력회전수는 모터 회전수와 같으며, 카탈로그 절대상한이므로 Sf를 곱하지 않습니다.'],
+ Gnavg:['감속기 허용 평균 입력회전수','사이클 평균으로 허용되는 입력회전수. 윤활·발열·수명을 결정합니다.','순간 회전수는 높아도 평균이 이 값을 넘으면 그리스 열화·온도상승으로 수명이 급격히 짧아집니다.'],
+ Gpk:['감속기 출력 피크토크','감속기 출력축(부하측)에 걸리는 최대 토크.','ATG는 순간최대(정격×3), 하모닉은 기동·정지시 허용피크토크와 비교합니다.'],
+ Grms:['감속기 평균 출력토크','감속기 출력축 기준 RMS 토크.','ATG는 정격 출력토크, 하모닉은 평균부하토크 허용최대치와 비교합니다.'],
+ Grated:['감속기 연속 정격토크','정속 운전 구간에서 연속으로 걸리는 토크.','하모닉 카탈로그의 「입력 2000r/min시의 정격토크」와 비교하는 연속운전 판정입니다.'],
+ Ginst:['순간허용최대토크','비상정지·충돌 등 순간적으로만 허용되는 최대 토크.','반복 인가하면 수명이 급격히 짧아집니다. 비상정지 조건에서만 사용하십시오.']
+};
+
+/* ===================== 툴팁 ===================== */
+const tb=$('ttbox');
+function initTips(root){
+  (root||document).querySelectorAll('.tt:not([data-i])').forEach(el=>{
+    el.dataset.i='1'; el.insertAdjacentHTML('beforeend','<i>?</i>');
+  });
+}
+function showTip(el){
+  const T=TERMS[el.dataset.k]; if(!T)return;
+  tb.innerHTML=`<b>${T[0]}</b>${T[1]}${T[2]?`<br><em>▸ ${T[2]}</em>`:''}`;
+  tb.style.display='block';
+  const r=el.getBoundingClientRect(), h=tb.offsetHeight, w=tb.offsetWidth;
+  let top=r.top-h-9; if(top<8) top=r.bottom+9;
+  let left=r.left; if(left+w>innerWidth-10) left=innerWidth-w-10; if(left<8)left=8;
+  tb.style.top=top+'px'; tb.style.left=left+'px';
+}
+const hideTip=()=>tb.style.display='none';
+document.addEventListener('mouseover',e=>{const t=e.target.closest('.tt'); if(t)showTip(t);});
+document.addEventListener('mouseout',e=>{if(e.target.closest('.tt'))hideTip();});
+document.addEventListener('click',e=>{const t=e.target.closest('.tt'); if(t){showTip(t);e.stopPropagation();} else hideTip();});
+addEventListener('scroll',hideTip,true);
+
+/* ===================== 카탈로그 원본 발촜 모달 ===================== */
+function openRef(k,hint){
+  const R=REF[k], S=SRC[k]; if(!R)return;
+  $('mTitle').textContent=S.t;
+  $('mPage').textContent=`${S.p} · ${S.d}`;
+  $('mDesc').innerHTML=R.d+(hint?`  <b>→ ${hint}</b>`:'');
+  const body=$('mBody'); body.classList.remove('zoom'); $('mZoom').textContent='🔍 확대';
+  body.innerHTML=R.img.map((s,i)=>`<img src="${s}" alt="${R.cap[i]||S.t}" loading="lazy"><p class="mcap">${R.cap[i]||''}</p>`).join('');
+  body.scrollTop=0;
+  $('pdfModal').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+function closeRef(){ $('pdfModal').classList.add('hidden'); document.body.style.overflow=''; }
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.src.ref');
+  if(b){ e.preventDefault(); e.stopPropagation(); openRef(b.dataset.ref,b.dataset.hint||''); return; }
+  if(e.target.id==='mClose'||e.target.id==='pdfModal'){ closeRef(); return; }
+  if(e.target.id==='mZoom'){
+    const body=$('mBody'); body.classList.toggle('zoom');
+    $('mZoom').textContent=body.classList.contains('zoom')?'🔎 축소':'🔍 확대';
+  }
+});
+addEventListener('keydown',e=>{ if(e.key==='Escape') closeRef(); });
+
+/* ===================== 효율보정계수 Ke ===================== */
+function keOf(a){
+  if(!isFinite(a)||a<=0) return KE[0][1];
+  if(a>=1) return 1;
+  if(a<=KE[0][0]) return KE[0][1];
+  for(let i=1;i<KE.length;i++) if(a<=KE[i][0]){
+    const [x0,y0]=KE[i-1],[x1,y1]=KE[i];
+    return y0+(y1-y0)*(a-x0)/(x1-x0);
+  }
+  return 1;
+}
+
+/* ===================== 감속기 / 모터 해석 ===================== */
+function gearSizes(mk){ return (mk==='ATG1'||mk==='ATG2') ? ATG.sz.slice() : (HD[mk]?Object.keys(HD[mk]).map(Number):[]); }
+function gearRatios(mk,sz){
+  if(mk==='ATG1') return Object.keys(ATG.t1).map(Number);
+  if(mk==='ATG2') return Object.keys(ATG.t2).map(Number);
+  return HD[mk] ? Object.keys(HD[mk][sz].r).map(Number) : [];
+}
+function resolveGear(mk,sz,rt,etaR,man){
+  if(mk==='manual') return {kind:'man',label:'직접입력 감속기',ig:man.ig,J:man.J*1e-4,eff:man.eff,
+    lim:{peak:man.peak,avg:man.avg,nmax:man.nmax,navg:man.navg},src:null};
+  if(mk==='ATG1'||mk==='ATG2'){
+    const one=mk==='ATG1', TT=one?ATG.t1:ATG.t2;
+    if(!TT[rt]) rt=+Object.keys(TT)[0];
+    let i=ATG.sz.indexOf(+sz); if(i<0){ i=0; sz=ATG.sz[0]; }
+    const T=TT[rt][i], J=(one?ATG.j1:ATG.j2)[rt][i], R=ATG.rpm[sz];
+    return {kind:'atg',label:`ATG KSB${sz} ${one?'1단':'2단'} · i=${rt}`,ig:+rt,J:J*1e-4,eff:one?.97:.94,
+      rated:T,lim:{peak:T*3,avg:T,inst:T*3,nmax:R[0],navg:R[1]},src:mk,
+      spec:`정격 출력토크 ${T} Nm · 순간최대 ${T*3} Nm(정격×3) · 관성 ${J}×10⁻⁴ · 효율 ${one?'≥97':'≥94'}%`};
+  }
+  const S=HD[mk]; if(!S[sz]) sz=+Object.keys(S)[0];
+  const g=S[sz]; if(!g.r[rt]) rt=+Object.keys(g.r)[0];
+  const v=g.r[rt];
+  return {kind:'hd',label:`하모닉 ${mk} 형번${sz} · i=${rt}`,ig:+rt,J:g.J*1e-4,etaR:etaR,
+    rated:v[0],lim:{peak:v[1],avg:v[2],rated:v[0],inst:v[3],nmax:g.n[0],navg:g.n[1]},src:mk,
+    spec:`정격 ${v[0]} / 기동정지피크 ${v[1]} / 평균부하최대 ${v[2]} / 순간최대 ${v[3]} Nm · 관성 ${g.J}×10⁻⁴`};
+}
+function gearEff(g,T){ return g.kind==='hd' ? Math.max(.05,keOf(Math.abs(T)/g.rated)*g.etaR) : g.eff; }
+
+/* ===================== 입력 읽기 ===================== */
+function readP(){
+  const mk=$('gmaker').value, sz=+$('gsize').value, rt=+$('gratio').value;
+  const mi=$('motor').value;
+  const mo = mi==='manual'
+    ? {n:'직접입력 모터',rt:n('mrated'),mx:n('mmax'),J:n('jm'),Jb:n('jm'),rpm:n('mrpm'),rmx:n('mmaxrpm'),jr:n('jratio'),man:true}
+    : MOTORS[+mi];
+  return {
+    m:n('m'), e:n('e'), shape:$('shape').value, r:n('r'), ra:n('ra'), rb:n('rb'), jd:n('jdirect'),
+    orient:$('orient').value, tf:n('tf'),
+    theta:n('theta'), ta:n('ta'), tc:n('tc'), td:n('td'), tw:n('tw'),
+    hold:$('hold').checked, estop:$('estop').checked, te:n('te'),
+    drive:$('drive').value, d1:n('d1'), d2:n('d2'), eb:n('eb'), mp1:n('mp1'), mp2:n('mp2'),
+    gmk:mk, gsz:sz, grt:rt, etaR:n('etar'),
+    gman:{ig:n('igm'),eff:n('egm'),peak:n('gmax'),avg:n('gavg'),nmax:n('ginmax'),navg:n('ginavg'),J:n('jgm')},
+    mo:mo, brake:$('brake').checked, sf:n('sf')
+  };
+}
+
+/* ===================== 계산 엔진 ===================== */
+function calc(P){
+  const th=P.theta*Math.PI/180, cyc=P.ta+P.tc+P.td+P.tw;
+  const dn=P.tc+(P.ta+P.td)/2, w=dn>0?th/dn:0;
+  const aa=P.ta>0?w/P.ta:0, ad=P.td>0?w/P.td:0;
+
+  const Jcm = P.shape==='disk' ? .5*P.m*Math.pow(P.r/1000,2)
+            : P.shape==='rect' ? P.m*(Math.pow(P.ra/1000,2)+Math.pow(P.rb/1000,2))/12
+            : P.jd*1e-4;
+  const e=P.e/1000, J=Jcm+P.m*e*e;
+  const Tg = P.orient==='v' ? P.m*GRAV*e : 0, Tf=P.tf;
+
+  const T1=J*aa+Tg+Tf, T2=Tg+Tf, T3=J*ad+Tg+Tf, Th=P.hold?Tg:0;
+
+  /* 전동부 */
+  const direct=P.drive==='direct';
+  const ib = direct?1 : P.drive==='belt11' ? 1 : (P.d1>0?P.d2/P.d1:1);
+  const eb = direct?1:P.eb;
+  const d2eff = P.drive==='belt11'?P.d1:P.d2;
+  const jp1 = direct?0:.5*P.mp1*Math.pow(P.d1/2000,2);
+  const jp2 = direct?0:.5*P.mp2*Math.pow(d2eff/2000,2);
+  const toG=(T,a)=> (T+jp2*a)/(ib*eb)+jp1*a*ib;
+  const G1=toG(T1,aa), G2=toG(T2,0), G3=toG(T3,ad), Gh=toG(Th,0);
+  const Gpk=Math.max(G1,G3), Grms=Math.sqrt((G1*G1*P.ta+G2*G2*P.tc+G3*G3*P.td+Gh*Gh*P.tw)/(cyc||1));
+
+  /* 감속기 */
+  const g=resolveGear(P.gmk,P.gsz,P.grt,P.etaR,P.gman), ig=g.ig, Jg=g.J;
+  const Jm=(P.brake&&!P.mo.man?P.mo.Jb:P.mo.J)*1e-4;
+  const e1=gearEff(g,G1), e2=gearEff(g,G2), e3=gearEff(g,G3), eh=gearEff(g,Gh);
+  const toM=(Gx,a,ef)=> (ig>0?Gx/(ig*ef):0) + (Jm+Jg)*a*ib*ig;
+  const M1=toM(G1,aa,e1), M2=toM(G2,0,e2), M3=toM(G3,ad,e3), Mh=toM(Gh,0,eh);
+  const Mpk=Math.max(M1,M3), Mrms=Math.sqrt((M1*M1*P.ta+M2*M2*P.tc+M3*M3*P.td+Mh*Mh*P.tw)/(cyc||1));
+
+  const Jref=((J+jp2)/(ib*ib)+jp1)/(ig*ig)+Jg, ratio=Jm>0?Jref/Jm:Infinity;
+  const N=w*60/(2*Math.PI)*ib*ig, Na=th*ib*ig/(cyc||1)*60/(2*Math.PI);
+
+  /* 비상정지 */
+  let est=null;
+  if(P.estop&&P.te>0){ const ae=w/P.te, Te=J*ae+Tg+Tf; est={ae,Te,G:toG(Te,ae)}; }
+
+  const mo=P.mo, sf=P.sf, D={J,Jcm,Tg,w,aa,ad,ib,jp1,jp2,eb,cyc,e1,e2,e3,eh,Jm,Jg,ig,Jref};
+  const items=[];
+  const add=(k,name,need,allow,unit,useSf,det)=>{
+    const req=useSf?need*sf:need;
+    items.push({k,name,need,req,allow,unit,useSf,margin:allow/req-1,det});
+  };
+
+  add('Mpk','모터 최대토크',Mpk,mo.mx,'Nm',true,P.light?0:{
+    used:[`J = ${fm(J)} kg·m²`,`αa = ${fm(aa)} rad/s²`,`Tg = ${fm(Tg)} Nm`,`i_b = ${fm(ib)}`,`i_g = ${ig}`,`ηg(가속) = ${fm(e1,3)}`,`Jm+Jg = ${fm((Jm+Jg)*1e4)}×10⁻⁴`],
+    f:'M₁ = G₁ /(i_g·ηg) + (Jm+Jg)·αa·i_b·i_g    ,   M_pk = max(M₁, M₃)',
+    s:`G₁ = ${fm(G1)} Nm\nM₁ = ${fm(G1)}/(${ig}×${fm(e1,3)}) + ${fm((Jm+Jg)*1e4)}×10⁻⁴×${fm(aa)}×${fm(ib)}×${ig}\n   = ${fm(G1/(ig*e1))} + ${fm((Jm+Jg)*aa*ib*ig)} = ${fm(M1)} Nm\nM₃ = ${fm(M3)} Nm  →  M_pk = ${fm(Mpk)} Nm`});
+  add('Mrms','모터 RMS토크',Mrms,mo.rt,'Nm',true,P.light?0:{
+    used:[`M₁ = ${fm(M1)}`,`M₂ = ${fm(M2)}`,`M₃ = ${fm(M3)}`,`M_hold = ${fm(Mh)} Nm`,`ta/tc/td/tw = ${P.ta}/${P.tc}/${P.td}/${P.tw} s`],
+    f:'M_rms = √[ (M₁²·ta + M₂²·tc + M₃²·td + M_hold²·tw) / t_cycle ]',
+    s:`= √[ (${fm(M1)}²×${P.ta} + ${fm(M2)}²×${P.tc} + ${fm(M3)}²×${P.td} + ${fm(Mh)}²×${P.tw}) / ${fm(cyc,2)} ]\n= ${fm(Mrms)} Nm`+(P.hold?'\n※ 휴지 중 서보 위치유지 ON → 중력토크가 휴지구간에도 포함됨':'\n※ 휴지 중 서보 위치유지 OFF(기계 브레이크 가정)')});
+  add('jratio','이너샤비',ratio,mo.jr,'배',false,P.light?0:{
+    used:[`J = ${fm(J)}`,`Jp2 = ${fm(jp2)}`,`Jp1 = ${fm(jp1)} kg·m²`,`i_b = ${fm(ib)}`,`i_g = ${ig}`,`Jg = ${fm(Jg*1e4)}×10⁻⁴`,`Jm = ${fm(Jm*1e4)}×10⁻⁴ kg·m²`],
+    f:'J_ref = [ (J + Jp2)/i_b² + Jp1 ] / i_g² + Jg    ,   이너샤비 = J_ref / Jm',
+    s:`J_ref = [ (${fm(J)} + ${fm(jp2)})/${fm(ib)}² + ${fm(jp1)} ] / ${ig}² + ${fm(Jg)}\n      = ${fm(Jref)} kg·m²\n이너샤비 = ${fm(Jref)} / ${fm(Jm)} = ${fm(ratio,2)} 배`});
+  add('Nmot','모터 최대회전수',N,mo.rmx,'rpm',false,P.light?0:{
+    used:[`ω = ${fm(w)} rad/s`,`i_b = ${fm(ib)}`,`i_g = ${ig}`],
+    f:'N = ω × 60/2π × i_b × i_g',
+    s:`ω = θ/(tc+(ta+td)/2) = ${fm(th)}/(${P.tc}+(${P.ta}+${P.td})/2) = ${fm(w)} rad/s\nN = ${fm(w)}×9.5493×${fm(ib)}×${ig} = ${fm(N,0)} rpm`});
+
+  if(g.kind==='hd'){
+    add('Gpk','감속기 기동정지 피크토크',Gpk,g.lim.peak,'Nm',true,P.light?0:{
+      used:[`T₁ = ${fm(T1)} Nm(부하축)`,`Jp2·αa = ${fm(jp2*aa)}`,`i_b = ${fm(ib)}`,`ηb = ${fm(eb,3)}`],
+      f:'G₁ = (T₁ + Jp2·αa)/(i_b·ηb) + Jp1·αa·i_b   ,   G_pk = max(G₁, G₃)',
+      s:`G₁ = (${fm(T1)} + ${fm(jp2*aa)})/(${fm(ib)}×${fm(eb,3)}) + ${fm(jp1*aa*ib)} = ${fm(G1)} Nm\nG₃ = ${fm(G3)} Nm  →  G_pk = ${fm(Gpk)} Nm\n허용 = 기동·정지시의 허용피크토크 ${g.lim.peak} Nm (카탈로그)`});
+    add('Grms','감속기 평균부하토크',Grms,g.lim.avg,'Nm',true,P.light?0:{
+      used:[`G₁ = ${fm(G1)}`,`G₂ = ${fm(G2)}`,`G₃ = ${fm(G3)}`,`G_hold = ${fm(Gh)} Nm`],
+      f:'G_rms = √[ (G₁²·ta + G₂²·tc + G₃²·td + G_hold²·tw) / t_cycle ]',
+      s:`= ${fm(Grms)} Nm\n허용 = 평균부하토크의 허용최대치 ${g.lim.avg} Nm (카탈로그)`});
+    add('Grated','감속기 연속 정격토크',G2,g.lim.rated,'Nm',true,P.light?0:{
+      used:[`정속구간 부하축 토크 T₂ = Tg + Tf = ${fm(T2)} Nm`,`i_b = ${fm(ib)}`,`ηb = ${fm(eb,3)}`],
+      f:'G₂ = T₂ /(i_b·ηb)',
+      s:`G₂ = ${fm(T2)}/(${fm(ib)}×${fm(eb,3)}) = ${fm(G2)} Nm\n허용 = 입력 2000r/min시의 정격토크 ${g.lim.rated} Nm (카탈로그)`});
+  }else{
+    add('Gpk','감속기 최대 출력토크',Gpk,g.lim.peak,'Nm',true,P.light?0:{
+      used:[`T₁ = ${fm(T1)} Nm(부하축)`,`Jp2·αa = ${fm(jp2*aa)}`,`i_b = ${fm(ib)}`,`ηb = ${fm(eb,3)}`],
+      f:'G₁ = (T₁ + Jp2·αa)/(i_b·ηb) + Jp1·αa·i_b   ,   G_pk = max(G₁, G₃)',
+      s:`G₁ = (${fm(T1)} + ${fm(jp2*aa)})/(${fm(ib)}×${fm(eb,3)}) + ${fm(jp1*aa*ib)} = ${fm(G1)} Nm\nG₃ = ${fm(G3)} Nm  →  G_pk = ${fm(Gpk)} Nm`
+        +(g.kind==='atg'?`\n허용 = 정격 출력토크 ${g.rated} Nm × 3 = ${g.lim.peak} Nm (카탈로그)`:'')});
+    add('Grms','감속기 평균 출력토크',Grms,g.lim.avg,'Nm',true,P.light?0:{
+      used:[`G₁ = ${fm(G1)}`,`G₂ = ${fm(G2)}`,`G₃ = ${fm(G3)}`,`G_hold = ${fm(Gh)} Nm`],
+      f:'G_rms = √[ (G₁²·ta + G₂²·tc + G₃²·td + G_hold²·tw) / t_cycle ]',
+      s:`= ${fm(Grms)} Nm`+(g.kind==='atg'?`\n허용 = 정격 출력토크 ${g.rated} Nm (카탈로그)`:'')});
+  }
+  add('Gnmax','감속기 최고 입력회전수',N,g.lim.nmax,'rpm',false,P.light?0:{
+    used:[`N = ${fm(N,0)} rpm`],f:'감속기 입력회전수 = 모터 회전수',
+    s:`${fm(N,0)} rpm  vs  허용최고 입력회전속도 ${g.lim.nmax} rpm (카탈로그)`});
+  add('Gnavg','감속기 평균 입력회전수',Na,g.lim.navg,'rpm',false,P.light?0:{
+    used:[`θ = ${P.theta}°`,`t_cycle = ${fm(cyc,2)} s`,`i_b×i_g = ${fm(ib*ig,2)}`],
+    f:'N_avg = θrad × i_b × i_g / t_cycle × 60/2π',
+    s:`= ${fm(th)}×${fm(ib)}×${ig}/${fm(cyc,2)}×9.5493 = ${fm(Na,0)} rpm\nvs 허용평균 입력회전속도 ${g.lim.navg} rpm (카탈로그)`});
+  if(est&&g.lim.inst){
+    add('Ginst','비상정지 순간토크',est.G,g.lim.inst,'Nm',false,P.light?0:{
+      used:[`비상정지 시간 te = ${P.te} s`,`αe = ω/te = ${fm(est.ae)} rad/s²`,`J = ${fm(J)} kg·m²`],
+      f:'T_e = J·αe + Tg + Tf   →   G_e = (T_e + Jp2·αe)/(i_b·ηb) + Jp1·αe·i_b',
+      s:`T_e = ${fm(J)}×${fm(est.ae)} + ${fm(Tg)} + ${fm(Tf)} = ${fm(est.Te)} Nm\nG_e = ${fm(est.G)} Nm\nvs 순간허용최대토크 ${g.lim.inst} Nm (카탈로그)`});
+  }
+
+  const margins=items.map(i=>i.margin), min=Math.min(...margins);
+  const lim=items[margins.indexOf(min)];
+  return {P,g,mo,D,T:[T1,T2,T3,Th],Gv:[G1,G2,G3,Gh],Mv:[M1,M2,M3,Mh],
+    Gpk,Grms,Mpk,Mrms,J,Jcm,Tg,ib,ig,ratio,N,Na,cyc,w,aa,ad,items,min,lim,est};
+}
+
+/* ===================== 해결책 탐색 ===================== */
+function evalP(P,k){
+  try{ const c=calc({...P,light:1}), it=c.items.find(i=>i.k===k);
+       return {v: it?it.margin:-99, min:c.min}; }
+  catch(err){ return {v:-99,min:-99}; }
+}
+function res(E){
+  if(!E||!isFinite(E.v)) return '';
+  let h=`<span class="res ${E.v>=.3?'g':E.v>=0?'y':'r'}">이 항목 ${pc(E.v)}</span>`;
+  if(isFinite(E.min)) h+=`<span class="res ${E.min>=.3?'g':E.min>=0?'y':'r'}">${E.min>=0?'전체 통과 '+pc(E.min):'전체 최소 '+pc(E.min)}</span>`;
+  return h;
+}
+
+function remedyList(P,item){
+  const k=item.k, L=[], SER=['ATG1','ATG2','CSF-2UH','CSG-2UH'];
+  const push=(t,E,d)=>L.push({t,E,d});
+  const torqueM=['Mpk','Mrms'].includes(k), gearT=['Gpk','Grms','Grated','Ginst'].includes(k);
+  const spdM=k==='Nmot', spdG=['Gnmax','Gnavg'].includes(k), inr=k==='jratio';
+  const nm=(mk,s)=>mk.startsWith('ATG')?`ATG KSB${s} ${mk==='ATG1'?'1단':'2단'}`:`하모닉 ${mk} 형번${s}`;
+
+  /* 1) 같은 제품에서 감속비만 변경 */
+  if(P.gmk!=='manual'){
+    let best=null;
+    for(const r of gearRatios(P.gmk,P.gsz)){ if(r===P.grt)continue;
+      const E=evalP({...P,grt:r},k); if(E.v>=0&&(!best||E.v>best.E.v)) best={r,E}; }
+    if(best) push(`감속비를 <b>${P.grt} → ${best.r}</b> 로 변경 (동일 제품)`,best.E,
+      best.r>P.grt?`감속비를 ${(best.r/P.grt).toFixed(2)}배로 올리면 모터토크는 약 1/${(best.r/P.grt).toFixed(2)}, 모터축 환산관성은 1/${Math.pow(best.r/P.grt,2).toFixed(1)}로 줄어듭니다. 대신 모터 회전수가 ${(best.r/P.grt).toFixed(2)}배가 됩니다.`
+        :`감속비를 낮추면 모터·감속기 입력회전수가 ${(P.grt/best.r).toFixed(2)}배 낮아집니다. 대신 모터 토크 부담이 커집니다.`);
+  }
+  /* 2) 같은 계열에서 형번(사이즈) 변경 */
+  if(P.gmk!=='manual'){
+    let found=null;
+    for(const s of gearSizes(P.gmk)){ if(s===P.gsz)continue;
+      const rr=gearRatios(P.gmk,s), rt=rr.includes(P.grt)?P.grt:rr[0];
+      const E=evalP({...P,gsz:s,grt:rt},k);
+      if(E.v>=0&&(!found||Math.abs(s-P.gsz)<Math.abs(found.s-P.gsz))) found={s,rt,E};
+    }
+    if(found) push(`감속기 형번을 <b>${P.gmk.startsWith('ATG')?'KSB'+P.gsz+' → KSB'+found.s:'형번 '+P.gsz+' → '+found.s}</b>${found.rt!==P.grt?` (감속비 ${found.rt})`:''} 로 변경`,found.E,
+      spdG?'형번이 작을수록 허용 입력회전수가 높습니다.':found.s>P.gsz?'형번을 올리면 허용토크가 크게 증가합니다. 관성·중량·설치공간도 함께 늘어납니다.':'형번을 낮추면 관성이 줄어 이너샤비·회전수 조건에 유리합니다.');
+  }
+  /* 3) 감속기 전 계열 전수 탐색 */
+  {
+    let alt=null;
+    for(const mk of SER) for(const s of gearSizes(mk)) for(const r of gearRatios(mk,s)){
+      if(mk===P.gmk&&s===P.gsz&&r===P.grt) continue;
+      const E=evalP({...P,gmk:mk,gsz:s,grt:r},k);
+      if(E.min>=0&&(!alt||E.min>alt.E.min)) alt={mk,s,r,E};
+    }
+    if(alt) push(`감속기를 <b>${nm(alt.mk,alt.s)} · 감속비 ${alt.r}</b> 로 교체 <em>(전 계열 236조합 중 최적)</em>`,alt.E,
+      alt.mk.startsWith('CS')?'하모닉(파동치차)은 같은 외형 대비 허용토크가 크고 백래시가 작아 편심 부하에 유리합니다.':'ATG 유성감속기는 효율(≥94~97%)과 허용 입력회전수가 높습니다.');
+  }
+  /* 4) 모터 변경 */
+  if(torqueM||inr||spdM){
+    let found=null;
+    for(const mo of MOTORS){
+      if(P.mo.man!==true&&mo.n===P.mo.n) continue;
+      const E=evalP({...P,mo},k); if(E.v>=0&&(!found||mo.rt<found.mo.rt)) found={mo,E};
+    }
+    if(found) push(`서보모터를 <b>${P.mo.n} → ${found.mo.n}</b> (${found.mo.W}W · 정격 ${found.mo.rt} / 최대 ${found.mo.mx} Nm)`,found.E,
+      inr?`로터 관성이 ${P.mo.J}→${found.mo.J}×10⁻⁴ kg·m² 로 커지고 허용 이너샤비도 ${found.mo.jr}배가 됩니다.`
+        :`토크 여유가 커집니다. 관성 ${found.mo.J}×10⁻⁴ kg·m², 허용 이너샤비 ${found.mo.jr}배.`);
+    else push('HG-KR 5기종 내에서는 모터 변경만으로 해결 불가',{v:-1,min:-1},
+      '감속비·벨트비를 함께 올리거나 상위 시리즈(HG-SR 중관성 등) 검토가 필요합니다.');
+  }
+  /* 5) 가·감속 시간 연장 */
+  if(torqueM||gearT||spdM||spdG){
+    let hit=null;
+    for(let kk=1.1;kk<=4.01;kk+=.1){ const E=evalP({...P,ta:P.ta*kk,td:P.td*kk},k);
+      if(E.v>=0){hit={k:kk,E,ta:P.ta*kk,td:P.td*kk};break;} }
+    if(hit) push(`가·감속 시간을 <b>${fm(P.ta,2)}→${fm(hit.ta,2)}s / ${fm(P.td,2)}→${fm(hit.td,2)}s</b> 로 연장 (${hit.k.toFixed(1)}배)`,hit.E,
+      `각가속도 α가 1/${hit.k.toFixed(1)} 로 줄어 피크토크가 내려갑니다. 1사이클이 ${fm(P.ta+P.tc+P.td+P.tw,2)}s → ${fm(hit.ta+P.tc+hit.td+P.tw,2)}s 로 늘어납니다.`);
+  }
+  /* 6) 정속시간 연장(속도 저감) */
+  if(spdM||spdG||torqueM){
+    let hit=null;
+    for(let kk=1.2;kk<=5.01;kk+=.2){ const E=evalP({...P,tc:P.tc*kk},k); if(E.v>=0){hit={E,tc:P.tc*kk};break;} }
+    if(hit) push(`정속 시간을 <b>${fm(P.tc,2)}→${fm(hit.tc,2)}s</b> 로 연장 (회전 속도 저감)`,hit.E,
+      '같은 각도를 더 천천히 돌면 ω가 낮아져 회전수·가속토크가 함께 내려갑니다.');
+  }
+  /* 7) 휴지시간 연장 */
+  if(k==='Mrms'||k==='Grms'){
+    let hit=null;
+    for(let kk=1.2;kk<=6.01;kk+=.2){ const E=evalP({...P,tw:P.tw*kk},k); if(E.v>=0){hit={E,tw:P.tw*kk};break;} }
+    if(hit) push(`휴지 시간을 <b>${fm(P.tw,2)}→${fm(hit.tw,2)}s</b> 로 연장`,hit.E,
+      'RMS(실효)토크는 1사이클 제곱평균이므로 휴지가 길수록 내려갑니다. 택트타임이 허용되는지 확인하십시오.');
+  }
+  /* 8) 브레이크로 홀딩 대체 */
+  if((k==='Mrms'||k==='Grms')&&P.hold){
+    push('휴지 중 <b>무여자 전자브레이크로 유지</b> (서보 위치유지 해제)',evalP({...P,hold:false},k),
+      `정지 중 중력토크 ${fm(P.m*GRAV*P.e/1000)} Nm 을 기계적으로 잡아 RMS 계산에서 제외됩니다. 브레이크 부착형(HG-KR□3B) 선정이 필요합니다.`);
+  }
+  /* 9) 편심량 저감 */
+  if(P.orient==='v'&&P.e>0&&(torqueM||gearT)){
+    let lo=0,hi=P.e,ok=null;
+    for(let i=0;i<20;i++){ const mid=(lo+hi)/2; if(evalP({...P,e:mid},k).v>=0){lo=mid;ok=mid;} else hi=mid; }
+    if(ok!==null&&ok<P.e*0.995) push(`편심량을 <b>${fm(P.e,1)} → ${fm(ok,1)} mm 이하</b>로 저감 (카운터웨이트)`,evalP({...P,e:ok},k),
+      `중력토크 Tg = m·g·e 가 ${fm(P.m*GRAV*P.e/1000)} → ${fm(P.m*GRAV*ok/1000)} Nm 으로 줄어듭니다. 반대편 밸런스 웨이트로 무게중심을 회전중심에 맞추는 것이 가장 근본적인 대책입니다.`);
+  }
+  /* 10) 벨트비 변경 */
+  if(P.drive==='belt'){
+    let best=null;
+    for(const b of [1,1.25,1.5,2,2.5,3,4,5]){ const E=evalP({...P,d2:P.d1*b},k); if(E.v>=0&&(!best||E.v>best.E.v)) best={b,E}; }
+    if(best&&Math.abs(best.b-P.d2/P.d1)>.01) push(`벨트비를 <b>${fm(P.d2/P.d1,2)} → ${best.b}</b> 로 변경 (D2 = ${fm(P.d1*best.b,0)} mm)`,best.E,
+      '벨트비도 감속비처럼 작동합니다. 감속기·모터를 바꾸지 않고 조정할 수 있는 가장 저렴한 수단입니다. 축간거리·벨트 길이를 함께 확인하십시오.');
+  }
+  /* 11) 안전계수 재검토 */
+  if(item.useSf&&item.allow/item.need>1){
+    const maxSf=item.allow/item.need;
+    push(`안전계수를 <b>Sf ${fm(P.sf,2)} → ${fm(maxSf,2)} 미만</b>으로 재검토`,{v:0,min:NaN},
+      `이 항목만 보면 Sf ${fm(maxSf,2)} 미만에서 통과합니다. 다만 안전계수 하향은 최후의 수단이며, 부하 변동·마찰 증가·경년 열화를 감안해 1.2 이상은 유지하는 것을 권장합니다.`);
+  }
+  /* 12) 관성 저감 안내 */
+  if(inr||torqueM){
+    push('부하 관성 자체를 저감 (치구 경량화 · 외경 축소)',null,
+      `J = Jcm + m·e² 이며 원판은 Jcm = ½mr² 이므로 <b>외경이 제곱으로</b> 기여합니다. 반경을 10% 줄이면 관성이 약 19% 감소하고, 알루미늄·중공 구조로 질량을 줄이면 중력토크까지 함께 내려갑니다.`);
+  }
+  return L;
+}
+
+/* ===================== 구성도 (회전면 방향별 전환) ===================== */
+function drawDiagram(r){
+  const P=r.P, vert=P.orient==='v', all=c=>document.querySelectorAll('.'+c);
+  $('diagV').classList.toggle('hidden',!vert);
+  $('diagH').classList.toggle('hidden',vert);
+  all('jsMotor').forEach(el=>el.textContent=r.mo.n);
+  all('jsGear').forEach(el=>el.textContent=r.g.label.replace('하모닉 ','').replace(' · ',' '));
+  all('jsTg').forEach(el=>el.textContent=`Tg = m·g·e = ${fm(r.Tg)} Nm`);
+  all('jsJ').forEach(el=>el.textContent=`J = ${fm(r.Jcm)} + ${fm(r.J-r.Jcm)} = ${fm(r.J)} kg·m²`);
+  const direct=P.drive==='direct';
+  all('jsBelt').forEach(el=>el.style.opacity=direct?0:.3);
+  all('jsPulley').forEach(el=>el.style.opacity=direct?.25:1);
+}
+
+/* ===================== 렌더 ===================== */
+function detailHTML(it,P){
+  const d=it.det, cls=grade(it.margin);
+  return `<div class="dbody">
+    <h4>① 이 판정에 사용된 값</h4><div class="used">${d.used.map(u=>`<span>${u}</span>`).join('')}</div>
+    <h4>② 적용 수식</h4><pre>${d.f}</pre>
+    <h4>③ 수치 대입</h4><pre>${d.s}</pre>
+    <h4>④ 판정</h4>
+    <pre>필요치 ${fm(it.need)} ${it.unit}${it.useSf?`  ×  안전계수 ${fm(P.sf,2)}  =  ${fm(it.req)} ${it.unit}`:'   (회전수·이너샤비는 카탈로그 절대상한이므로 Sf 미적용)'}
+허용치 ${fm(it.allow)} ${it.unit}
+여유율 = ${fm(it.allow)} ÷ ${fm(it.req)} − 1 = ${pc(it.margin)}</pre>
+    <div class="concl ${cls==='ok'?'':cls}" style="background:${cls==='ok'?'#d1fae5':cls==='cond'?'#fef3c7':'#fee2e2'};color:${cls==='ok'?'#065f46':cls==='cond'?'#92400e':'#991b1b'}">
+      ${cls==='ok'?'✔':cls==='cond'?'△':'✕'} ${gtxt(it.margin)} — ${it.name} 여유율 ${pc(it.margin)}</div>
+  </div>`;
+}
+
+function render(r){
+  const P=r.P, g=r.g, cls=grade(r.min);
+  drawDiagram(r);
+
+  const srcs=[];
+  if(g.src) srcs.push(`<li><b>감속기</b> — ${srcBtn(g.src,`${P.gmk.startsWith('ATG')?'사이즈 '+P.gsz:'형번 '+P.gsz} · 감속비 ${P.grt} 행을 확인하세요`)}<br><span class="subtle">${SRC[g.src].d}</span><br><span class="src">${g.spec||''}</span></li>`);
+  else srcs.push('<li><b>감속기</b> — <span class="src warn">직접입력 값 (카탈로그 근거 없음 · 사용자 확인 필요)</span></li>');
+  if(!r.mo.man) srcs.push(`<li><b>서보모터</b> — ${srcBtn('MOTOR',`${r.mo.n} 열을 확인하세요`)}<br><span class="subtle">${SRC.MOTOR.d}</span><br><span class="src">${r.mo.n} : 정격 ${r.mo.rt} / 최대 ${r.mo.mx} Nm · 관성 ${P.brake?r.mo.Jb+' (브레이크 부착)':r.mo.J}×10⁻⁴ kg·m² · ${r.mo.rpm}/${r.mo.rmx} rpm · 허용 이너샤비 ${r.mo.jr}배</span></li>`);
+  else srcs.push('<li><b>서보모터</b> — <span class="src warn">직접입력 값 (카탈로그 근거 없음)</span></li>');
+  if(g.kind==='hd') srcs.push(`<li><b>효율 보정</b> — ${srcBtn('KE',`토크비 α = ${fm(r.Gv[0]/g.rated,3)} 지점을 확인하세요`)}<br><span class="subtle">${SRC.KE.d}</span><br><span class="src">η = Ke·ηR / ηR = ${fm(P.etaR,3)} · 구간별 η = 가속 ${fm(r.D.e1,3)} / 정속 ${fm(r.D.e2,3)} / 감속 ${fm(r.D.e3,3)}</span></li>`);
+
+  const rows=r.items.map((it,i)=>`
+    <tr class="r" data-i="${i}"><td>${TERMS[it.k]?`<span class="tt" data-k="${it.k}">${it.name}</span>`:it.name}</td>
+      <td class="num">${fm(it.need)}</td><td class="num">${it.useSf?fm(it.req):'–'}</td>
+      <td class="num">${fm(it.allow)}</td><td class="num">${it.unit}</td>
+      <td class="num">${pc(it.margin)}</td><td><span class="lb ${grade(it.margin)}">${gtxt(it.margin)}</span></td></tr>
+    <tr class="det hidden" data-d="${i}"><td colspan="7">${detailHTML(it,P)}</td></tr>`).join('');
+
+  const bad=r.items.filter(i=>i.margin<0), warn=r.items.filter(i=>i.margin>=0&&i.margin<.3);
+  let fixes='';
+  [...bad,...warn].forEach(it=>{
+    const L=remedyList(P,it), ng=it.margin<0;
+    fixes+=`<div class="fix ${ng?'':'c'}"><h3>${ng?'✕ 사용불가':'△ 조건부'} : ${it.name} — 여유율 ${pc(it.margin)}</h3>
+      <p class="why">필요 ${fm(it.need)} ${it.unit}${it.useSf?` × Sf ${fm(P.sf,2)} = ${fm(it.req)} ${it.unit}`:''} 에 대해 허용치는 ${fm(it.allow)} ${it.unit} 입니다.
+      ${ng?`<b>${fm(it.req/it.allow,2)}배 초과</b> — 아래 중 하나를 적용하면 통과합니다.`:'여유가 30% 미만이라 조건부입니다.'}</p>
+      <ol>${L.length?L.map(x=>`<li><b>${x.t}</b> ${res(x.E)}<p>${x.d}</p></li>`).join('')
+        :'<li>자동 탐색으로 찾은 단일 대책이 없습니다. 부하 조건(질량·편심량·회전각) 자체를 재검토하십시오.</li>'}</ol></div>`;
+  });
+
+  $('out').innerHTML=`
+  <div class="verdict ${cls}">${cls==='ok'?'✔ 종합판정 : 사용 가능 (안전)':cls==='cond'?'△ 종합판정 : 조건부 사용 가능':'✕ 종합판정 : 사용 불가'}
+    <small>최소 여유율 ${pc(r.min)} · 제한 항목 : ${r.lim.name} · 구성 ${r.mo.n} + ${g.label} + ${P.drive==='direct'?'직결':'벨트비 '+fm(r.ib,2)}</small></div>
+
+  <div class="metrics">
+    <div class="metric"><span class="tt" data-k="Jload">부하축 관성 J</span><b>${fm(r.J)}<em> kg·m²</em></b></div>
+    <div class="metric"><span class="tt" data-k="Tg">중력토크 Tg</span><b>${fm(r.Tg)}<em> Nm</em></b></div>
+    <div class="metric"><span class="tt" data-k="ib">전체 감속비</span><b>${fm(r.ib*r.ig,2)}<em> (i_b ${fm(r.ib,2)}×i_g ${r.ig})</em></b></div>
+    <div class="metric"><span class="tt" data-k="Mpk">모터 피크토크</span><b>${fm(r.Mpk)}<em> Nm</em></b></div>
+    <div class="metric"><span class="tt" data-k="Mrms">모터 RMS토크</span><b>${fm(r.Mrms)}<em> Nm</em></b></div>
+    <div class="metric"><span class="tt" data-k="jratio">이너샤비</span><b>${fm(r.ratio,2)}<em> 배</em></b></div>
+  </div>
+
+  <div class="sec"><h2>구간별 토크 전개</h2><div class="tblwrap"><table>
+    <tr><th>구분</th><th>가속 (${P.ta}s)</th><th>정속 (${P.tc}s)</th><th>감속 (${P.td}s)</th><th>휴지 (${P.tw}s)</th></tr>
+    <tr><td>부하축 토크 T</td>${r.T.map(x=>`<td class="num">${fm(x)}</td>`).join('')}</tr>
+    <tr><td>감속기 출력측 G</td>${r.Gv.map(x=>`<td class="num">${fm(x)}</td>`).join('')}</tr>
+    <tr><td>모터축 M</td>${r.Mv.map(x=>`<td class="num">${fm(x)}</td>`).join('')}</tr>
+    ${g.kind==='hd'?`<tr><td>감속기 효율 η (Ke 보정)</td><td class="num">${fm(r.D.e1,3)}</td><td class="num">${fm(r.D.e2,3)}</td><td class="num">${fm(r.D.e3,3)}</td><td class="num">${fm(r.D.eh,3)}</td></tr>`:''}
+    </table></div>
+    <p class="hint">단위 Nm · 최악조건으로 감속 구간에서도 중력토크가 저항하는 방향으로 작용한다고 가정합니다.</p></div>
+
+  <div class="sec"><h2>판정표 <span style="font-size:11.5px;font-weight:400;color:#64748b">— 항목을 클릭하면 계산 근거가 펼쳐집니다</span></h2>
+    <div class="tblwrap"><table><thead><tr><th>검토 항목</th><th>필요치</th><th>Sf 적용</th><th>허용치</th><th>단위</th><th><span class="tt" data-k="margin">여유율</span></th><th>판정</th></tr></thead><tbody>${rows}</tbody></table></div></div>
+
+  ${fixes?`<div class="sec"><h2>개선 방안 <span style="font-size:11.5px;font-weight:400;color:#64748b">— 각 대책은 실제로 다시 계산한 결과입니다</span></h2>${fixes}</div>`:
+    '<div class="note g"><b>✔ 모든 검토 항목이 30% 이상 여유</b><br>현재 조합으로 구동 가능합니다. 벨트 축하중·브레이크 유지토크·구조 강성은 별도 확인하십시오.</div>'}
+
+  <div class="sec"><h2>근거 자료 (카탈로그 출처)</h2><ul class="srcs">${srcs.join('')}</ul></div>`;
+
+  initTips($('out'));
+  $('out').querySelectorAll('tr.r').forEach(tr=>tr.onclick=ev=>{
+    if(ev&&ev.target&&ev.target.closest('.tt')) return;   /* ? 아이콘 클릭은 툴팁만 */
+    const d=$('out').querySelector(`tr.det[data-d="${tr.dataset.i}"]`);
+    d.classList.toggle('hidden'); tr.classList.toggle('open');
+  });
+}
+
+/* ===================== 최적 조합 자동 탐색 ===================== */
+function runSearch(){
+  const P=readP(), rows=[];
+  const series=['ATG1','ATG2','CSF-2UH','CSG-2UH'];
+  for(const mk of series) for(const sz of gearSizes(mk)) for(const rt of gearRatios(mk,sz)) for(let mi=0;mi<MOTORS.length;mi++){
+    const q={...P,gmk:mk,gsz:sz,grt:rt,mo:MOTORS[mi]};
+    let c; try{ c=calc({...q,light:1}); }catch(err){ continue; }
+    rows.push({mk,sz,rt,mo:MOTORS[mi],min:c.min,lim:c.lim.name,Mpk:c.Mpk,Mrms:c.Mrms,ratio:c.ratio,N:c.N});
+  }
+  rows.sort((a,b)=>b.min-a.min);
+  const safe=rows.filter(x=>x.min>=.3).sort((a,b)=>a.mo.rt-b.mo.rt||a.sz-b.sz||a.min-b.min);
+  const best=safe[0];
+  const nm=x=>x.mk.startsWith('ATG')?`ATG KSB${x.sz} ${x.mk==='ATG1'?'1단':'2단'}`:`하모닉 ${x.mk} 형번${x.sz}`;
+  $('searchOut').innerHTML=`<div class="sec"><h2>최적 조합 자동 탐색</h2>
+    ${best?`<div class="verdict ok">🏆 추천 : ${best.mo.n} + ${nm(best)} · 감속비 ${best.rt}
+      <small>최소 여유율 ${pc(best.min)} · 제한 항목 ${best.lim} · 안전(≥30%) 조합 ${safe.length}건 / 전체 ${rows.length}건 검토</small></div>`
+      :`<div class="verdict ng">✕ 현재 부하·프로파일 조건에서 여유율 30% 이상인 조합이 없습니다<small>가감속 시간·편심량·사이클 조건을 완화하거나 상위 모터 시리즈를 검토하십시오.</small></div>`}
+    <p class="hint">현재 입력된 부하·운전 프로파일·전동방식을 그대로 두고, 감속기 ${rows.length/MOTORS.length}조합 × 모터 ${MOTORS.length}기종을 전수 계산했습니다. (여유율 높은 순 상위 30건)</p>
+    <div class="tblwrap"><table><thead><tr><th>모터</th><th>감속기</th><th>비</th><th>모터 피크</th><th>모터 RMS</th><th>이너샤비</th><th>모터 rpm</th><th>최소 여유율</th><th>제한 항목</th><th>판정</th></tr></thead><tbody>
+    ${rows.slice(0,30).map(x=>`<tr><td>${x.mo.n}</td><td>${nm(x)}</td><td class="num">${x.rt}</td>
+      <td class="num">${fm(x.Mpk)}</td><td class="num">${fm(x.Mrms)}</td><td class="num">${fm(x.ratio,1)}</td>
+      <td class="num">${fm(x.N,0)}</td><td class="num">${pc(x.min)}</td><td>${x.lim}</td>
+      <td><span class="lb ${grade(x.min)}">${gtxt(x.min)}</span></td></tr>`).join('')}
+    </tbody></table></div></div>`;
+}
+
+/* ===================== UI 초기화 ===================== */
+function fillMotors(){
+  $('motor').innerHTML=MOTORS.map((m,i)=>`<option value="${i}">${m.n} · ${m.W}W · 정격 ${m.rt}Nm</option>`).join('')
+    +'<option value="manual">직접입력</option>';
+  $('motor').value='1';
+}
+function syncGear(){
+  const mk=$('gmaker').value, man=mk==='manual';
+  $('fGman').classList.toggle('hidden',!man);
+  ['fGsz','fGrt'].forEach(id=>$(id).classList.toggle('hidden',man));
+  $('fEtaR').classList.toggle('hidden',!(mk==='CSF-2UH'||mk==='CSG-2UH'));
+  if(man){ $('gInfo').innerHTML='<span class="src warn">⚠ 직접입력 — 카탈로그 근거 없음</span>'; return; }
+  const szs=gearSizes(mk), keep=+$('gsize').value;
+  $('gsize').innerHTML=szs.map(s=>`<option value="${s}">${mk.startsWith('ATG')?'KSB'+s:'형번 '+s}</option>`).join('');
+  $('gsize').value = szs.includes(keep) ? keep : szs[0];
+  syncRatio();
+}
+function syncRatio(){
+  const mk=$('gmaker').value;
+  if(mk==='manual'||(!HD[mk]&&mk!=='ATG1'&&mk!=='ATG2')) return;
+  const sz=+$('gsize').value, rs=gearRatios(mk,sz), keep=+$('gratio').value;
+  $('gratio').innerHTML=rs.map(r=>`<option value="${r}">1 : ${r}</option>`).join('');
+  $('gratio').value = rs.includes(keep) ? keep : rs[0];
+  const rt=+$('gratio').value, g=resolveGear(mk,sz,rt,n('etar'),{});
+  $('gInfo').innerHTML=srcBtn(mk,`${mk.startsWith('ATG')?'사이즈 '+sz:'형번 '+sz} · 감속비 ${rt} 행을 확인하세요`)
+    +`<p class="hint">${g.spec}<br>허용 입력회전수 최고 ${g.lim.nmax} / 평균 ${g.lim.navg} rpm</p>`;
+}
+function syncUI(){
+  const sh=$('shape').value;
+  $('fDisk').classList.toggle('hidden',sh!=='disk');
+  $('fRect').classList.toggle('hidden',sh!=='rect');
+  $('fDir').classList.toggle('hidden',sh!=='direct');
+  const dv=$('drive').value;
+  $('fBelt').classList.toggle('hidden',dv==='direct');
+  $('fD2').classList.toggle('hidden',dv!=='belt');
+  $('ibNote').textContent = dv==='belt'?'벨트비 i_b = D2 / D1'
+    : dv==='belt11'?'동일 풀리 1:1 — i_b = 1 (벨트 효율·풀리 관성은 반영)'
+    : '감속기 출력축 직결 — i_b = 1, 벨트 손실·풀리 관성 없음';
+  $('fTe').classList.toggle('hidden',!$('estop').checked);
+  $('fMman').classList.toggle('hidden',$('motor').value!=='manual');
+  const mi=$('motor').value;
+  $('mInfo').innerHTML = mi==='manual' ? '<span class="src warn">⚠ 직접입력 — 카탈로그 근거 없음</span>'
+    : (()=>{ const m=MOTORS[+mi]; return srcBtn('MOTOR',`${m.n} 열을 확인하세요`)
+      +`<p class="hint">정격 ${m.rt} / 최대 ${m.mx} Nm · ${m.rpm} / ${m.rmx} rpm · 관성 ${$('brake').checked?m.Jb+' (브레이크 부착)':m.J}×10⁻⁴ kg·m² · 허용 이너샤비 ${m.jr}배</p>`; })();
+}
+function run(){ try{ render(calc(readP())); }catch(err){ $('out').innerHTML=`<div class="verdict ng">✕ 계산 오류<small>${err.message}</small></div>`; } }
+
+fillMotors();
+syncGear();
+syncUI();
+initTips(document);
+$('gmaker').addEventListener('change',()=>{syncGear();run();});
+$('gsize').addEventListener('change',()=>{syncRatio();run();});
+$('gratio').addEventListener('change',()=>{syncRatio();run();});
+['shape','drive','estop','motor','brake'].forEach(id=>$(id).addEventListener('change',()=>{syncUI();run();}));
+document.querySelectorAll('.left input,.left select').forEach(el=>el.addEventListener('input',run));
+$('run').onclick=run;
+$('search').onclick=runSearch;
+/* 기본 추천 세팅: ATG KSB 2단 KSB62 · 감속비 50 + HG-KR13 */
+$('gmaker').value='ATG2'; syncGear();
+$('gsize').value=62; syncRatio();
+$('gratio').value=50; syncRatio();
+run();
+
+</script>
+</body>
+</html>
