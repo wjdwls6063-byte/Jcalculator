@@ -231,7 +231,8 @@ details.vs[open]>summary:before{content:"▾ "}
 .v-txt{flex:1 1 auto;min-width:0}
 .vline{display:flex;align-items:center;gap:8px}
 .imgcap{font-size:10.5px;color:#0284c7;margin-top:5px}
-.tc-thumb{width:100%;height:112px;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:#fff;margin-bottom:9px}
+.tc-thumb{width:100%;height:94px;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:#fff;margin-bottom:9px;display:grid;place-items:center}
+.tc-thumb .pimg{width:auto;height:auto;max-width:230px;max-height:88px}
 .mt td.ci{width:104px;min-width:104px;padding:6px;vertical-align:middle}
 .mt td.c{width:110px}
 .mt th:nth-child(3),.mt td:nth-child(3){width:132px}
@@ -247,6 +248,84 @@ details.vs[open]>summary:before{content:"▾ "}
   opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .16s,transform .16s}
 .tt:hover>.ttbox,.tt:focus>.ttbox{opacity:1;visibility:visible;transform:translateY(0)}
 .ttbox b{color:#8fd0ff}
+
+
+/* ===== 검색 (A안 목록 필터 + B안 전역 자동완성) ===== */
+.gsearch{background:#0f2557;padding:11px 14px 13px;border-top:1px solid rgba(125,211,252,.18)}
+.sbar{position:relative}
+.sinput{display:flex;align-items:center;gap:9px;border:2px solid #111827;border-radius:9px;padding:9px 12px;background:#fff}
+.gsearch .sinput{border:2px solid #38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.16)}
+.gsearch .sinput.idle{border:1px solid rgba(255,255,255,.35);box-shadow:none;background:rgba(255,255,255,.97)}
+.sinput.idle{border:1px solid #cbd5e1}
+.sinput input{flex:1 1 auto;min-width:0;border:0;outline:0;font:inherit;font-size:14px;color:#111827;background:transparent}
+.sinput input::placeholder{color:#9aa5b4}
+.sinput input::-webkit-search-cancel-button{display:none}
+.sicon{font-size:14px;color:#64748b;flex:0 0 auto}
+.sclear{margin-left:auto;font-size:11px;color:#64748b;border:1px solid #cbd5e1;border-radius:5px;padding:2px 7px;background:#f8fafc;flex:0 0 auto}
+.skbd{margin-left:auto;font-size:10px;color:#94a3b8;border:1px solid #e2e8f0;border-radius:4px;padding:2px 6px;background:#f8fafc;flex:0 0 auto}
+.chipsrow{display:flex;gap:5px;flex-wrap:wrap;margin:10px 0 2px;align-items:center}
+.chipsrow .lb{font-size:11px;color:var(--sub);margin-right:2px}
+.qchip{font-size:11.5px;border:1px solid #cbd5e1;border-radius:999px;padding:3px 10px;color:#475569;background:#f8fafc;cursor:pointer}
+.qchip:hover{border-color:var(--blue);color:var(--navy);background:#f5f9ff}
+.qchip.on{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:700}
+.rescount{font-size:12px;color:var(--sub);margin:14px 0 4px;display:flex;gap:9px;flex-wrap:wrap;align-items:baseline}
+.rescount b{color:var(--navy)}
+.rc-note{font-size:11px;color:#94a3b8}
+.rc-sub{font-size:11px;color:#0e7490;background:#e0f7ff;border-radius:4px;padding:1px 7px}
+.rc-sub2{font-size:11px;color:#475569;background:#eef2f7;border:1px solid #dbe3ee;border-radius:4px;padding:1px 7px}
+.snip{margin-top:5px;font-size:11px;color:#475569;background:#f8fafc;border-left:2px solid #cbd5e1;padding:4px 8px;border-radius:0 5px 5px 0}
+.snip b{color:#0e7490;margin-right:6px;font-size:10px}
+.ctxb{font-size:10px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:4px;padding:1px 7px;margin-left:6px}
+.gsec.ctxsec{opacity:.92}
+.gsec.ctxsec h3{border-bottom-color:#cbd5e1;color:#475569}
+.srolelab{font-size:10.5px;font-weight:800;color:#475569;letter-spacing:.02em;margin:14px 0 5px}
+.rclegend{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:11px;color:var(--sub);margin:0 0 6px}
+mark{background:#fef08a;color:#111827;padding:0 1px;border-radius:2px}
+.mfb{display:inline-block;font-size:10px;color:#0e7490;background:#e0f7ff;border:1px solid #bae6fd;
+  border-radius:4px;padding:1px 6px;margin-left:6px;white-space:nowrap;vertical-align:1px}
+.empty{border:1px dashed #cbd5e1;border-radius:10px;padding:24px;text-align:center;color:var(--sub);font-size:12.5px;background:#fbfcfe;margin-top:14px}
+.empty b{color:#334155;font-size:13.5px;display:block;margin-bottom:6px}
+.empty .ehint{display:inline-block;margin-top:6px;font-size:11.5px;color:#94a3b8}
+.serchip{font-size:10.5px;background:#eaf2ff;color:#1e40af;border:1px solid #d4e2ff;border-radius:4px;
+  padding:2px 6px;font-weight:700;cursor:pointer}
+.serchip:hover{background:#dbeafe;border-color:#93c5fd}
+.serchip.hit{background:#fef9c3;border-color:#fde047;color:#854d0e}
+.mt tr.hitrow td{background:#fffdf0}
+.flash{animation:fl 1.4s ease}
+@keyframes fl{0%{box-shadow:0 0 0 3px rgba(56,189,248,.5)}100%{box-shadow:0 0 0 0 rgba(56,189,248,0)}}
+/* autocomplete */
+.ac{display:none;position:absolute;left:0;right:0;top:calc(100% + 6px);max-height:58vh;background:#fff;border:1px solid #c7d2fe;
+  border-radius:10px;box-shadow:0 16px 38px rgba(2,8,23,.28);overflow:hidden;z-index:60;max-height:62vh;overflow-y:auto}
+.ac.on{display:block}
+.ac-h{font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#64748b;background:#f8fafc;padding:6px 13px;border-bottom:1px solid var(--line)}
+.ac-i{display:flex;align-items:center;gap:10px;padding:8px 13px;border-bottom:1px solid #f1f5f9;cursor:pointer}
+.ac-i:last-child{border-bottom:0}
+.ac-i.on,.ac-i:hover{background:#f5f9ff}
+.ac-th{width:46px;height:34px;border:1px solid var(--line);border-radius:5px;background:#fff;flex:0 0 auto;overflow:hidden}
+.ac-th.sq{display:grid;place-items:center;font-size:11px;font-weight:800;color:var(--navy);background:#f1f5f9}
+.ac-c{font-size:13px;font-weight:800;color:var(--navy);flex:0 0 132px;line-height:1.35;word-break:keep-all}
+.ac-d{font-size:11.5px;color:#475569;flex:1 1 auto;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ac-d em{font-style:normal;color:#94a3b8}
+.ac-b{font-size:10px;color:#0e7490;background:#e0f7ff;border-radius:4px;padding:2px 7px;flex:0 0 auto}
+.ac-f,.ac-more{font-size:11px;color:var(--sub);padding:7px 13px;background:#f8fafc}
+.ac-f{position:sticky;bottom:0;border-top:1px solid var(--line)}
+.ac-f b{color:#334155}
+.ac-h b{color:var(--navy)}
+.ac-more{border-bottom:1px solid var(--line);color:#0369a1}
+.ac-none{padding:18px 14px;text-align:center;font-size:12px;color:var(--sub)}
+.ac-none b{display:block;color:#334155;font-size:13px;margin-bottom:4px}
+/* series detail */
+.crumb{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--sub);margin:10px 0 12px;flex-wrap:wrap}
+.crumb button{font-size:11.5px;padding:3px 9px;border-radius:6px}
+.crumb i{font-style:normal;color:#94a3b8}
+.crumb span{font-weight:800;color:var(--navy)}
+.sdet{display:grid;grid-template-columns:250px 1fr;gap:16px;align-items:start}
+.sdet-img{border:1px solid #bae6fd;border-radius:10px;padding:10px;background:#fff}
+.sdet-img .pimg{width:auto;height:auto;max-width:210px;max-height:170px;margin:0 auto}
+.sd-badges{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+.kv tr.w th{background:#fffbeb;color:#92400e}
+@media(max-width:820px){.sdet{grid-template-columns:1fr}.sdet-img .pimg{height:150px}}
+@media print{.gsearch,.chipsrow,.sbar{display:none}}
 
 /* official links */
 .lkbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
@@ -297,9 +376,20 @@ footer a{color:var(--blue);text-decoration:underline}
     <div class="eyebrow">05 / SMC PNEUMATIC CYLINDER</div>
     <h1>SMC 공압 실린더 시리즈 선정<span class="badge">v1</span></h1>
     <div class="sub">기구 조건을 선택하면 적합한 실린더 TYPE과 SMC SERIES 후보를 좁혀주는 설계 보조 도구입니다 (품번이 아닌 SERIES까지)</div>
-    <div class="tags"><span>SMC Korea 공식 분류 기준</span><span>15 TYPE</span><span>14 비교 그룹</span><span>95 SERIES</span><span>공식 제품 이미지 101종</span><span>A vs B 선택 기준</span><span>단일 HTML · 오프라인</span></div>
+    <div class="tags"><span>SMC Korea 공식 분류 기준</span><span>15 TYPE</span><span>15 비교 그룹</span><span>102 SERIES</span><span>공식 제품 이미지 101종</span><span>A vs B 선택 기준</span><span>단일 HTML · 오프라인</span></div>
   </header>
   <div class="tabs" id="tabs"></div>
+  <div class="gsearch">
+    <div class="sbar">
+      <div class="sinput idle" id="gsbox">
+        <span class="sicon">🔍</span>
+        <input id="gq" type="search" autocomplete="off" placeholder="전체 검색 — 시리즈 · TYPE · 비교 그룹으로 바로 이동 (예: MGP, 가이드, 횡하중, 긴 거리)"
+               oninput="onGlobalQ(this.value)" onkeydown="acKey(event)">
+        <span class="skbd">전체 검색 · ↑↓ Enter</span>
+      </div>
+      <div class="ac" id="ac"></div>
+    </div>
+  </div>
   <div class="main">
     <div class="left" id="side"></div>
     <div class="right" id="main"></div>
@@ -1635,6 +1725,435 @@ var IMGBASE = "";
 var SMCBASE = "https://www.smckorea.co.kr";
 var LINKS = {"CM2":{"no":"907","pdf":"CM2-Z.pdf","mb":9.9},"CG1":{"no":"2033","pdf":"CG1-Z1.pdf","mb":4.9},"CM3":{"no":"1693","pdf":"CM3.pdf","mb":1.6},"CG3":{"no":"909","pdf":"CG3.pdf","mb":1.3},"CJ1":{"no":"904","pdf":"CJ1.pdf","mb":0.8},"CJ2":{"no":"906","pdf":"CJ2-Z.pdf","mb":8.9},"CJP2":{"no":"905","pdf":"CJP2-CJP.pdf","mb":3.0},"CUJ":{"no":"918","pdf":"CUJ.pdf","mb":1.7},"MGJ":{"no":"953","pdf":"MGJ.pdf","mb":1.2},"MXJ":{"no":"949","pdf":"MXJ.pdf","mb":1.7},"MB2":{"no":"2279","pdf":"MB2.pdf","mb":8.5},"MB1":{"no":"1689","pdf":"MB1-Z.pdf","mb":4.3},"MB":{"no":"911","pdf":"MB-Z.pdf","mb":5.3},"CA2":{"no":"913","pdf":"CA2-Z.pdf","mb":6.8},"CS1":{"no":"914","pdf":"CS1.pdf","mb":3.0},"CS2":{"no":"915","pdf":"CS2.pdf","mb":12.1},"ISO":{"no":"1020","pdf":"C96.pdf","mb":8.5},"CQ2":{"no":"921","pdf":"CQ2-Z.pdf","mb":16.1},"CQS":{"no":"920","pdf":"CQS.pdf","mb":4.6},"CU":{"no":"919","pdf":"CU.pdf","mb":5.9},"CQE":{"no":"2252","pdf":"CQE.pdf","mb":2.0},"RQ":{"no":"922","pdf":"RQ.pdf","mb":3.8},"MU":{"no":"925","pdf":"MU-Z.pdf","mb":2.7},"CQU":{"no":"924","pdf":"CQU.pdf","mb":2.5},"CQM":{"no":"923","pdf":"CQM.pdf","mb":1.3},"CXS2":{"no":"2182","pdf":"CXS2.pdf","mb":9.4},"CXS":{"no":"967","pdf":"CXSJ_CXS.pdf","mb":3.5},"CXSJ":{"no":"966","pdf":"CXSJ_CXS.pdf","mb":3.5},"JMGP":{"no":"1786","pdf":"JMGP.pdf","mb":5.1},"CX2":{"no":"963","pdf":"CX2.pdf","mb":2.0},"MGP":{"no":"954","pdf":"MGP-Z.pdf","mb":10.1},"MGQ":{"no":"956","pdf":"MGQ.pdf","mb":1.3},"MGG":{"no":"957","pdf":"MGG.pdf","mb":4.1},"MGC":{"no":"958","pdf":"MGC.pdf","mb":2.0},"MGPW":{"no":"955","pdf":"MGPW.pdf","mb":4.6},"MGPK":{"no":"2066","pdf":"MGPK.pdf","mb":5.8},"MGZ":{"no":"960","pdf":"MGZ_MGZR.pdf","mb":3.3},"CXT":{"no":"965","pdf":"CXT.pdf","mb":1.4},"MXQ":{"no":"945","pdf":"MXQ_old.pdf","mb":2.2},"MXS":{"no":"943","pdf":"MXS.pdf","mb":2.1},"MXH":{"no":"942","pdf":"MXH-Z.pdf","mb":1.9},"MXF":{"no":"947","pdf":"MXF.pdf","mb":1.3},"MXW":{"no":"948","pdf":"MXW.pdf","mb":1.8},"MXY":{"no":"951","pdf":"MXY.pdf","mb":3.0},"MXZ":{"no":"1781","pdf":"MXZ.pdf","mb":8.0},"MXP":{"no":"950","pdf":"MXP.pdf","mb":3.6},"MY1":{"no":"1868","pdf":"MY1.pdf","mb":13.1},"MY2":{"no":"936","pdf":"MY2.pdf","mb":6.0},"MY3":{"no":"937","pdf":"MY3A_MY3B_MY3M.pdf","mb":5.7},"CY3B":{"no":"2343","pdf":"CY3R.pdf","mb":7.2},"CY3S":{"no":"2362","pdf":"CY3S-Z.pdf","mb":8.1},"CY1":{"no":"939","pdf":"CY1.pdf","mb":4.5},"CYP":{"no":"941","pdf":"CYP.pdf","mb":2.2},"CLQ":{"no":"976","pdf":"CLQ.pdf","mb":3.5},"MLGP":{"no":"1848","pdf":"MLGP-Z.pdf","mb":5.3},"CNA2":{"no":"973","pdf":"CNA2.pdf","mb":3.9},"CLS":{"no":"975","pdf":"CLS.pdf","mb":2.5},"CNG":{"no":"971","pdf":"CNG.pdf","mb":2.2},"RLQ":{"no":"977","pdf":"RLQ.pdf","mb":2.4},"CLA2":{"no":"970","pdf":"MLGC.pdf","mb":1.7},"CK1":{"no":"2150","pdf":"CK1-Z1,CKG1-Z1.pdf","mb":3.9},"MK":{"no":"989","pdf":"MK-Z.pdf","mb":2.4},"CKQG":{"no":"991","pdf":"CKQ-Z_CLKQ-Z.pdf","mb":3.3},"CKZT":{"no":"999","pdf":"CKZT.pdf","mb":9.5},"CLK2":{"no":"995","pdf":"CLK2.pdf","mb":3.1},"CKZP":{"no":"2001","pdf":"CKZP.pdf","mb":1.0},"RSQ":{"no":"1003","pdf":"RSQ_RSG.pdf","mb":3.4},"RSH":{"no":"1005","pdf":"RSH.pdf","mb":2.1},"RS2H":{"no":"1004","pdf":"RS2H.pdf","mb":2.6},"MIW":{"no":"1006","pdf":"MIW_MIS.pdf","mb":1.8},"CRB2":{"no":"1037","pdf":"CRB2-Z.pdf","mb":11.4},"CRBU2":{"no":"1038","pdf":"CRB2-Z.pdf","mb":11.4},"CRA1":{"no":"1042","pdf":"CRA1.pdf","mb":7.9},"CRQ2":{"no":"1043","pdf":"CRQ2.pdf","mb":2.3},"CRJ":{"no":"1041","pdf":"CRJ.pdf","mb":1.4},"MSQ":{"no":"1044","pdf":"MSQ.pdf","mb":4.4},"LER":{"no":"1452","pdf":"LER.pdf","mb":10.1},"RHC":{"no":"1828","pdf":"RHC.pdf","mb":1.8},"RZQ":{"no":"988","pdf":"RZQ.pdf","mb":1.1},"REA":{"no":"981","pdf":"REA.pdf","mb":4.3},"CJ2X":{"no":"2181","pdf":"CJ2-XB24.pdf","mb":1.7},"CE1":{"no":"1008","pdf":"CE1_CEP1_CEU5.pdf","mb":2.9},"CVQ":{"no":"1013","pdf":"CVQ.pdf","mb":1.7},"CC":{"no":"933","pdf":"CC_CCT_CCV.pdf","mb":1.7},"MHZ2":{"no":"1048","pdf":"MHZ.pdf","mb":5.5},"MHQ2":{"no":"1049","pdf":"MHQG2_MHQJ2.pdf","mb":0.3},"MHF2":{"no":"1050","pdf":"MHF2.pdf","mb":5.6},"MHL2":{"no":"1051","pdf":"MHL2.pdf","mb":1.9},"MHS":{"no":"1055","pdf":"MHS2_MHS3_MHS4.pdf","mb":5.2},"MHK2":{"no":"1054","pdf":"MHK2.pdf","mb":1.7},"MHC2":{"no":"1059","pdf":"MHC2.pdf","mb":1.2},"MHT2":{"no":"1060","pdf":"MHT2.pdf","mb":1.3},"MHY2":{"no":"1061","pdf":"MHY2.pdf","mb":1.4},"MHM":{"no":"1908","pdf":"MHM.pdf","mb":3.8},"LEHZ":{"no":"1453","pdf":"LEH.pdf","mb":9.5},"LEFS":{"no":"1465","pdf":"motorless.pdf","mb":33.5},"LEJS":{"no":"1902","pdf":"LEJ.pdf","mb":9.3},"LEY":{"no":"1444","pdf":"LEY.pdf","mb":21.6},"LES":{"no":"1448","pdf":"LES_LESH.pdf","mb":12.8},"LEPS":{"no":"1451","pdf":"LEPY_LEPS.pdf","mb":7.5},"LZB":{"no":"1470","pdf":"LZB_LZC_LC3F2_(KBP-58).pdf","mb":2.0}};
 /* ============================================================
+   검색 기능 — A안(목록 실시간 필터) + B안(전역 자동완성)
+   ============================================================ */
+
+/* 설계자가 쓰는 말 → 데이터 용어 확장 (시리즈명을 몰라도 찾게 함) */
+var SYN = {
+  "긴 거리":["로드리스","롱스트로크","스트로크가 길"],
+  "긴 스트로크":["로드리스","롱스트로크","스트로크가 길"],
+  "로드 돌출":["로드리스","설치 길이"],
+  "돌출":["로드리스","설치 길이"],
+  "옆으로":["횡하중","모멘트"],
+  "편하중":["횡하중","모멘트"],
+  "쓰러짐":["모멘트","가이드"],
+  "얇":["박형","콤팩트","두께"],
+  "두께":["박형","콤팩트","자유설치"],
+  "좁":["콤팩트","박형","자유설치","초소형"],
+  "돌면":["비회전","회전 방지","듀얼"],
+  "회전 방지":["비회전","듀얼","가이드"],
+  "낙하":["록","Lock","유지"],
+  "정전":["록","Lock","유지"],
+  "브레이크":["록","Lock","파인록"],
+  "잡":["파지","척","그리퍼","클램프"],
+  "집":["파지","척","그리퍼"],
+  "누르":["클램프","클램핑"],
+  "고정":["클램프","위치결정","핀"],
+  "멈":["스토퍼","정지"],
+  "낱개":["에스케이프먼트","분리"],
+  "한 개씩":["에스케이프먼트","분리"],
+  "돌리":["로터리","회전","요동"],
+  "반전":["로터리","회전","180"],
+  "인덱싱":["로터리 테이블","회전"],
+  "정밀":["고정도","정도","전동","반복"],
+  "다점":["전동","위치 제어","다점"],
+  "속도 제어":["전동","저속","에어하이드로"],
+  "압입":["전동","추력","LEY"],
+  "먼지":["분진","XC4","내분진"],
+  "물":["내수","스테인리스","세척"],
+  "세척":["하이제닉","스테인리스","내수"],
+  "식품":["하이제닉","HY"],
+  "고온":["내열","XB6"],
+  "클린":["클린","11-","25A-","CYP"],
+  "테이블":["슬라이드","테이블","MX"],
+  "충격":["에어쿠션","쿠션","쇼크"],
+  "소음":["에어쿠션","쿠션"],
+  "힘":["추력","고출력","하이파워"],
+  "추력":["고출력","하이파워","구경"]
+};
+
+function plain(s){ return String(s==null?"":s).replace(/\{\{(.+?)\}\}/g,"$1"); }
+function low(s){ return plain(s).toLowerCase(); }
+
+/* 질의 확장: 원문 + 동의어 */
+function expand(q){
+  var t=q.trim().toLowerCase();
+  if(!t) return [];
+  var out=[t];
+  for(var k in SYN){
+    if(t.indexOf(k.toLowerCase())>=0) out=out.concat(SYN[k].map(function(x){return x.toLowerCase();}));
+  }
+  return out;
+}
+function hitAny(text,terms){
+  var s=low(text);
+  for(var i=0;i<terms.length;i++){ if(s.indexOf(terms[i])>=0) return true; }
+  return false;
+}
+/* 하이라이트 (원문 질의만 강조) */
+function hl(text,q){
+  var t=esc(plain(text));
+  var k=(q||"").trim();
+  if(!k) return t;
+  try{
+    var re=new RegExp("("+k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi");
+    return t.replace(re,"<mark>$1</mark>");
+  }catch(e){ return t; }
+}
+/* 질의가 있으면 하이라이트, 없으면 용어 툴팁 */
+function ht(text,q){ return (q&&q.trim())?hl(text,q):term(text); }
+
+/* ---------- 매칭 ---------- */
+function matchSeries(s,q){
+  var T=expand(q); if(!T.length) return [];
+  var f=[], t=typeOf(s.type), g=GROUPS[s.group];
+  if(hitAny(s.code,T)||hitAny(s.label,T)) f.push("시리즈명");
+  if(hitAny(s.bore,T)) f.push("보어");
+  if(hitAny(s.pos,T)) f.push("포지션");
+  if(hitAny(s.feat,T)) f.push("구조 특징");
+  if(hitAny(s.pick,T)) f.push("선택 조건");
+  if(hitAny(s.limit,T)) f.push("한계·주의");
+  if(t&&(hitAny(t.name,T)||hitAny(t.def,T)||hitAny(t.enter,T))) f.push("TYPE 용도");
+  if(g&&(hitAny(g.name,T)||hitAny(g.axes.join(" "),T))) f.push("비교 그룹");
+  if((s.opts||[]).length&&hitAny(s.opts.join(" "),T)) f.push("파생 사양");
+  return f;
+}
+function matchType(t,q){
+  var T=expand(q); if(!T.length) return [];
+  var f=[];
+  if(hitAny(t.id,T)||hitAny(t.name,T)) f.push("TYPE명");
+  if(hitAny(t.def,T)) f.push("정의");
+  if(hitAny(t.enter,T)) f.push("진입 조건");
+  if(hitAny(t.cat,T)) f.push("대분류");
+  return f;
+}
+function matchGroup(gid,q){
+  var T=expand(q), g=GROUPS[gid]; if(!T.length) return [];
+  var f=[];
+  if(hitAny(gid,T)||hitAny(g.name,T)) f.push("그룹명");
+  if(hitAny(g.axes.join(" "),T)) f.push("구분 축");
+  if(g.members.some(function(c){return hitAny(c,T);})) f.push("소속 SERIES");
+  (g.vs||[]).forEach(function(v){
+    if(f.indexOf("선택 기준")<0 && hitAny([v.a,v.b,v.axis,v.aw,v.bw,v.both,v.no].join(" "),T)) f.push("선택 기준");
+  });
+  return f;
+}
+function fbadge(fields){
+  if(!fields||!fields.length) return '';
+  return '<span class="mfb">'+esc(fields.slice(0,2).join(" · "))+(fields.length>2?" +"+(fields.length-2):"")+' 일치</span>';
+}
+
+
+/* 매칭된 원문 한 줄 스니펫 (화면에 안 보이는 필드에서 걸린 경우 근거 노출) */
+function snippet(s,q,fields){
+  if(!q||!fields||!fields.length) return '';
+  var T=expand(q), cand=[];
+  if(fields.indexOf("한계·주의")>=0) cand.push(["한계·주의",s.limit]);
+  if(fields.indexOf("구조 특징")>=0) cand.push(["구조 특징",s.feat]);
+  if(fields.indexOf("TYPE 용도")>=0){ var t=typeOf(s.type); if(t) cand.push(["TYPE 용도",t.name+" — "+t.def]); }
+  if(fields.indexOf("비교 그룹")>=0){ var g=GROUPS[s.group]; if(g) cand.push(["비교 그룹",s.group+" "+g.name+" — "+g.axes.join(" / ")]); }
+  if(fields.indexOf("파생 사양")>=0) cand.push(["파생 사양",(s.opts||[]).join(" / ")]);
+  for(var i=0;i<cand.length;i++){
+    var txt=plain(cand[i][1]), l=txt.toLowerCase(), at=-1;
+    for(var j=0;j<T.length;j++){ at=l.indexOf(T[j]); if(at>=0) break; }
+    if(at<0) continue;
+    var from=Math.max(0,at-34), to=Math.min(txt.length,at+70);
+    return '<div class="snip"><b>'+esc(cand[i][0])+'</b>'+(from>0?'… ':'')+hl(txt.slice(from,to),q)+(to<txt.length?' …':'')+'</div>';
+  }
+  return '';
+}
+
+/* ---------- A안: 목록 검색바 ---------- */
+var CHIPS=["MGP","로드리스","클램프","파지","횡하중","박형","긴 스트로크","비회전","전동","클린룸","스토퍼","회전"];
+
+function searchBarHTML(){
+  var q=ST.q||"";
+  var h='<div class="srolelab">이 목록에서 걸러내기</div>'+
+        '<div class="sbar"><div class="sinput'+(q?"":" idle")+'">'+
+        '<span class="sicon">🔍</span>'+
+        '<input id="lq" type="search" autocomplete="off" value="'+esc(q)+'" oninput="onListQ(this.value)" '+
+        'placeholder="이 목록에서 걸러내기 — 타입명 · 시리즈명 · 용도 키워드">'+
+        (q?'<button class="sclear" onclick="onListQ(\'\')">✕ 지우기</button>':'')+
+        '</div></div>';
+  h+='<div class="chipsrow" id="lchips">'+chipsHTML()+'</div>';
+  return h;
+}
+function chipsHTML(){
+  var q=(ST.q||"").trim();
+  return '<span class="lb">빠른 검색</span>'+CHIPS.map(function(c){
+    return '<button class="qchip'+(q===c?" on":"")+'" onclick="onListQ(\''+c+'\')">'+esc(c)+'</button>';
+  }).join('');
+}
+function onListQ(v){
+  ST.q=v;
+  var res=document.getElementById("listres");
+  if(res) res.innerHTML=(ST.tab==="type")?typeBody():groupBody();
+  var ch=document.getElementById("lchips");
+  if(ch) ch.innerHTML=chipsHTML();
+  var inp=document.getElementById("lq");
+  if(inp){
+    if(inp.value!==v) inp.value=v;
+    var box=inp.parentNode;
+    box.className="sinput"+(v?"":" idle");
+    var btn=box.querySelector(".sclear");
+    if(v && !btn){
+      btn=document.createElement("button"); btn.className="sclear"; btn.textContent="✕ 지우기";
+      btn.onclick=function(){ onListQ(""); }; box.appendChild(btn);
+    }else if(!v && btn){ box.removeChild(btn); }
+    inp.focus();
+  }
+}
+function emptyHTML(){
+  return '<div class="empty"><b>‘'+esc(ST.q)+'’ 에 해당하는 항목이 없습니다</b>'+
+   '시리즈명(MGP, CQ2…) · 타입명(가이드, 로드리스…) · 용도(횡하중, 파지, 긴 거리…) 로 검색해 보세요.<br>'+
+   '<span class="ehint">설명 문장에도 걸립니다 — 예: “긴 거리”, “로드 돌출”, “낙하”, “먼지”</span></div>';
+}
+
+/* ---------- A안: TYPE 카탈로그 본문 ---------- */
+function typeBody(){
+  var q=(ST.q||"").trim(), h='';
+  var cats=[]; TYPES.forEach(function(t){ if(cats.indexOf(t.cat)<0) cats.push(t.cat); });
+  var nT=0,nS=0,nX=0, blocks='';
+  cats.forEach(function(c){
+    var cards='';
+    TYPES.filter(function(t){return t.cat===c;}).forEach(function(t){
+      var tf=matchType(t,q);
+      var mem=[], memf={};
+      for(var k in SERIES){
+        if(SERIES[k].type!==t.id) continue;
+        var sf=q?matchSeries(SERIES[k],q):[];
+        if(!q||tf.length||sf.length){ mem.push(k); memf[k]=sf; }
+      }
+      if(q && !tf.length && !mem.length) return;
+      nT++;
+      mem.forEach(function(m){ if(memf[m]&&memf[m].length) nS++; else nX++; });
+      var rep=mem.length?mem[0]:null;
+      cards+='<div class="tcard" id="t-'+esc(t.id)+'">'+(rep?'<div class="tc-thumb">'+imgTag(rep)+'</div>':'')+
+        '<div class="tc-h"><span class="tid">'+esc(t.id)+'</span><b>'+ht(t.name,q)+'</b>'+fbadge(tf)+'</div>'+
+        '<p class="tc-def">'+ht(t.def,q)+'</p>'+
+        '<div class="tc-row"><b>진입</b><span>'+ht(t.enter,q)+'</span></div>'+
+        '<div class="tc-row out"><b>이탈</b><span>'+ht(t.out,q)+'</span></div>'+
+        '<div class="tc-ser">'+mem.map(function(m){
+            return '<button class="serchip'+(memf[m]&&memf[m].length?" hit":"")+'" onclick="openSeries(\''+m+'\')" title="'+esc(SERIES[m].label)+' 상세 보기">'+esc(m)+'</button>';
+          }).join('')+'</div>'+
+        '<div class="tc-g">비교 그룹: '+esc(t.groups.join(", "))+'</div></div>';
+    });
+    if(cards) blocks+='<div class="sec"><h3>'+esc(c)+'</h3><div class="tcards">'+cards+'</div></div>';
+  });
+  if(q) h+='<div class="rescount">‘'+esc(q)+'’ 검색 — <b>TYPE '+nT+'개</b> · <b>직접 일치 SERIES '+nS+'종</b>'+
+           (nX?'<span class="rc-sub">+ 같은 TYPE의 다른 시리즈 '+nX+'종 함께 표시</span>':'')+
+           '</div><div class="rclegend"><span class="serchip hit">노란 칩</span> = 검색어가 이 시리즈 정보에 직접 일치'+
+           '<span class="rc-note">시리즈명 · 보어 · 용도 · 구조 특징 · 선택 조건에서 찾습니다</span></div>';
+  h+=(blocks||emptyHTML());
+  return h;
+}
+
+/* ---------- A안: 그룹 비교 본문 ---------- */
+function groupBody(){
+  var q=(ST.q||"").trim(), h='', nDirect=0, nCtx=0, blocks=[], total=Object.keys(GROUPS).length;
+  Object.keys(GROUPS).forEach(function(gid){
+    var g=GROUPS[gid], gf=matchGroup(gid,q);
+    var rows='', direct=0, ctx=0;
+    g.members.forEach(function(c){
+      var s=ser(c); if(!s) return;
+      var sf=q?matchSeries(s,q):[];
+      if(q && !gf.length && !sf.length) return;
+      if(sf.length) direct++; else if(q) ctx++;
+      rows+='<tr'+(sf.length?' class="hitrow"':'')+'><td class="ci">'+imgTag(s.code,'mini')+'</td>'+
+        '<td class="c">'+hl(s.code,q)+linkBar(s.code,'mini')+'</td>'+
+        '<td>'+ht(s.bore,q)+'</td><td>'+ht(s.pos,q)+'</td>'+
+        '<td>'+ht(s.pick,q)+fbadge(sf)+snippet(s,q,sf)+'</td></tr>';
+    });
+    if(q && !direct && !ctx) return;
+    nDirect+=direct; nCtx+=ctx;
+    var kind = direct?'direct':'ctx';
+    var head='<div class="sec gsec'+(q&&!direct?' ctxsec':'')+'" id="g-'+esc(gid)+'">'+
+      '<h3><span class="gid">'+esc(gid)+'</span>'+ht(g.name,q)+
+      ' <em>'+esc(g.type)+' · '+g.members.length+'종'+(q&&direct?' · 직접 일치 '+direct+'종':'')+'</em>'+
+      (q&&!direct?'<span class="ctxb">참고 — 기준·주의 문장에서 언급</span>':'')+fbadge(gf)+'</h3>'+
+      '<p class="axes">이 그룹에서 갈리는 축(참고) — '+g.axes.map(function(a){return '<span class="ax">'+hl(a,q)+'</span>';}).join('')+'</p>'+
+      '<table class="mt"><thead><tr><th style="width:104px">제품</th><th>SERIES</th><th>보어 / 사이즈</th><th>포지션</th>'+
+      '<th>이 시리즈를 고르는 조건</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+      vsBlock(gid, q && gf.indexOf("선택 기준")>=0, q)+'</div>';
+    blocks.push({kind:kind,direct:direct,html:head});
+  });
+  /* 직접 일치 그룹을 위로 */
+  blocks.sort(function(a,b){ return b.direct-a.direct; });
+  if(q){
+    h+='<div class="rescount">‘'+esc(q)+'’ 검색 — <b>직접 일치 SERIES '+nDirect+'종</b>'+
+       (nCtx?'<span class="rc-sub">같은 그룹의 다른 시리즈 '+nCtx+'종 함께 표시</span>':'')+
+       '<span class="rc-sub2">일치 그룹 '+blocks.length+' / 전체 '+total+'</span>'+
+       '</div><div class="rclegend"><span class="serchip hit">노란 행</span> = 검색어가 이 시리즈 정보(이름·보어·용도·구조·조건)에 일치'+
+       '<span class="rc-note">직접 일치가 있는 그룹이 위로 정렬됩니다</span></div>';
+  }
+  h+=(blocks.length?blocks.map(function(b){return b.html;}).join(''):emptyHTML());
+  return h;
+}
+
+/* ---------- B안: 전역 자동완성 ---------- */
+var AC={items:[],idx:-1,open:false};
+
+function gsearch(q){
+  var out={ser:[],typ:[],grp:[]};
+  if(!q.trim()) return out;
+  Object.keys(SERIES).forEach(function(c){
+    var f=matchSeries(SERIES[c],q);
+    if(f.length){
+      /* 코드 일치를 최우선 정렬 */
+      var lq=q.trim().toLowerCase(), lc=low(SERIES[c].code);
+      var rank=(lc.indexOf(lq)===0)?0:(lc.indexOf(lq)>=0?1:(f.indexOf("시리즈명")>=0?2:3));
+      out.ser.push({code:c,f:f,rank:rank});
+    }
+  });
+  out.ser.sort(function(a,b){ return a.rank-b.rank || a.code.localeCompare(b.code); });
+  TYPES.forEach(function(t){ var f=matchType(t,q); if(f.length) out.typ.push({id:t.id,f:f}); });
+  Object.keys(GROUPS).forEach(function(g){ var f=matchGroup(g,q); if(f.length) out.grp.push({id:g,f:f}); });
+  return out;
+}
+
+function onGlobalQ(v){
+  var box=document.getElementById("ac");
+  var wrap=document.getElementById("gsbox");
+  if(wrap) wrap.className="sinput"+(v?"":" idle");
+  if(!v.trim()){ acClose(); return; }
+  var r=gsearch(v), items=[], h='';
+  if(r.ser.length){
+    h+='<div class="ac-h">SERIES <b>'+r.ser.length+'건</b>'+(r.ser.length>7?' 중 상위 7건 표시':'')+'</div>';
+    r.ser.slice(0,7).forEach(function(x){
+      var s=SERIES[x.code], t=typeOf(s.type);
+      items.push({kind:"ser",id:x.code});
+      h+='<div class="ac-i" data-i="'+(items.length-1)+'" onclick="acPick('+(items.length-1)+')">'+
+         '<div class="ac-th">'+imgTag(s.code)+'</div>'+
+         '<div class="ac-c">'+hl(s.code,v)+'</div>'+
+         '<div class="ac-d">'+hl(s.label,v)+' · '+hl(s.bore,v)+' · '+hl(s.pick,v)+
+         ((x.f.indexOf("비교 그룹")>=0&&GROUPS[s.group])?' · 그룹 '+hl(s.group+" "+GROUPS[s.group].name,v):'')+
+         ((x.f.indexOf("TYPE 용도")>=0&&typeOf(s.type))?' · '+hl(typeOf(s.type).name,v):'')+
+         fbadge(x.f)+'</div>'+
+         '<div class="ac-b">'+esc(s.type+' · '+s.group)+'</div></div>';
+    });
+  }
+  if(r.typ.length){
+    h+='<div class="ac-h">TYPE <b>'+r.typ.length+'건</b>'+(r.typ.length>4?' 중 상위 4건 표시':'')+'</div>';
+    var typShow=r.typ.slice(0,4);
+    typShow.forEach(function(x){
+      var t=typeOf(x.id); items.push({kind:"typ",id:x.id});
+      h+='<div class="ac-i" data-i="'+(items.length-1)+'" onclick="acPick('+(items.length-1)+')">'+
+         '<div class="ac-th sq">'+esc(x.id)+'</div>'+
+         '<div class="ac-c">'+hl(t.name,v)+'</div>'+
+         '<div class="ac-d">'+hl(t.def,v)+fbadge(x.f)+'</div>'+
+         '<div class="ac-b">TYPE 카탈로그</div></div>';
+    });
+  }
+  if(r.grp.length){
+    h+='<div class="ac-h">비교 그룹 <b>'+r.grp.length+'건</b>'+(r.grp.length>4?' 중 상위 4건 표시':'')+'</div>';
+    var grpShow=r.grp.slice(0,4);
+    grpShow.forEach(function(x){
+      var g=GROUPS[x.id]; items.push({kind:"grp",id:x.id});
+      h+='<div class="ac-i" data-i="'+(items.length-1)+'" onclick="acPick('+(items.length-1)+')">'+
+         '<div class="ac-th sq">'+esc(x.id)+'</div>'+
+         '<div class="ac-c">'+hl(g.name,v)+'</div>'+
+         '<div class="ac-d">'+esc(g.members.slice(0,5).join(" ↔ "))+(g.members.length>5?" …":"")+
+         ' <em>('+g.members.length+'종 · 선택 기준 '+g.vs.length+'조)</em>'+fbadge(x.f)+'</div>'+
+         '<div class="ac-b">그룹 비교</div></div>';
+    });
+  }
+  if(!items.length){
+    h='<div class="ac-none"><b>결과 없음</b>시리즈명 · 타입명 · 용도로 검색해 보세요 (예: MGP, 가이드, 횡하중, 긴 거리)</div>';
+  }else{
+    h+='<div class="ac-f">↑↓ 이동 · <b>Enter</b> 선택 · <b>ESC</b> 닫기 &nbsp;|&nbsp; 아래로 스크롤하면 더 있습니다</div>';
+  }
+  AC.items=items; AC.idx=items.length?0:-1; AC.open=true;
+  box.innerHTML=h; box.className="ac on";
+  acPaint();
+}
+function acPaint(){
+  var box=document.getElementById("ac"); if(!box) return;
+  [].forEach.call(box.querySelectorAll(".ac-i"),function(el){
+    el.className="ac-i"+(Number(el.getAttribute("data-i"))===AC.idx?" on":"");
+  });
+}
+function acClose(){
+  AC.open=false; AC.idx=-1;
+  var box=document.getElementById("ac"); if(box){ box.className="ac"; box.innerHTML=""; }
+}
+function acKey(e){
+  if(e.key==="Escape"){ acClose(); e.target.blur(); return; }
+  if(!AC.open||!AC.items.length){
+    if(e.key==="Enter"){ acToList(e.target.value); }
+    return;
+  }
+  if(e.key==="ArrowDown"){ AC.idx=(AC.idx+1)%AC.items.length; acPaint(); e.preventDefault(); }
+  else if(e.key==="ArrowUp"){ AC.idx=(AC.idx-1+AC.items.length)%AC.items.length; acPaint(); e.preventDefault(); }
+  else if(e.key==="Enter"){ acPick(AC.idx); e.preventDefault(); }
+}
+/* 자동완성을 목록 검색으로 넘김 */
+function acToList(v){
+  acClose();
+  ST.q=v; ST.tab="type"; render();
+  setTimeout(function(){ var i=document.getElementById("lq"); if(i){ i.focus(); } },30);
+}
+function acPick(i){
+  var it=AC.items[i]; if(!it) return;
+  acClose();
+  var gi=document.getElementById("gq"); if(gi){ gi.blur(); }
+  if(it.kind==="ser") openSeries(it.id);
+  else if(it.kind==="typ") gotoType(it.id);
+  else gotoGroup(it.id);
+}
+function gotoType(id){
+  ST.tab="type"; ST.q=""; render();
+  setTimeout(function(){ scrollToEl("t-"+id); },40);
+}
+function gotoGroup(id){
+  ST.tab="grp"; ST.q=""; render();
+  setTimeout(function(){ scrollToEl("g-"+id); },40);
+}
+function scrollToEl(id){
+  var el=document.getElementById(id); if(!el) return;
+  el.scrollIntoView({behavior:"smooth",block:"start"});
+  el.className+=" flash";
+  setTimeout(function(){ el.className=el.className.replace(" flash",""); },1600);
+}
+
+/* ---------- SERIES 상세 (검색 결과 진입점) ---------- */
+function openSeries(code){ ST.tab="ser"; ST.ser=code; render(); }
+
+function renderSeriesTab(){
+  var s=ser(ST.ser);
+  if(!s) return '<p>시리즈를 찾을 수 없습니다.</p>';
+  var t=typeOf(s.type), g=GROUPS[s.group];
+  var sub=(s.label && s.label!==s.code) ? ' <em>'+esc(s.label)+'</em>' : '';
+  var h='<div class="qhead"><span class="qno lite">SERIES</span><h2>'+esc(s.code==="ISO"?"ISO 실린더":s.code)+
+        sub+'</h2></div>';
+  h+='<div class="crumb"><button onclick="setTab(\'type\')">TYPE 카탈로그</button><i>›</i>'+
+     '<button onclick="gotoType(\''+s.type+'\')">'+esc(t?t.id+" "+t.name:"")+'</button><i>›</i>'+
+     '<span>'+esc(s.code)+'</span></div>';
+
+  h+='<div class="sdet"><div class="sdet-img">'+imgTag(s.code,'big')+
+     '<div class="imgcap">이미지 · SMC Korea 공식 카탈로그</div></div>';
+  h+='<div class="sdet-txt"><div class="sd-badges"><span class="bd">'+esc(s.bore)+'</span>'+
+     '<span class="bd alt">'+esc(s.pos)+'</span><span class="bd alt">'+esc(s.type+' '+(t?t.name:''))+'</span>'+
+     '<span class="bd alt">'+esc(s.group+' '+(g?g.name:''))+'</span></div>';
+  h+='<table class="kv"><tr><th>구조 특징</th><td>'+term(s.feat)+'</td></tr>'+
+     '<tr><th>이 시리즈를 고르는 조건</th><td>'+term(s.pick)+'</td></tr>'+
+     '<tr class="w"><th>한계 · 주의</th><td>'+term(s.limit)+'</td></tr>'+
+     ((s.opts&&s.opts.length)?'<tr><th>파생 사양</th><td>'+esc(s.opts.join(" / "))+'</td></tr>':'')+'</table>';
+  h+=linkBar(s.code,"full")+'</div></div>';
+
+  if(g){
+    h+='<div class="sec"><h3>같은 그룹의 비교 후보 <em>'+esc(s.group+' '+g.name)+'</em></h3>';
+    h+='<p class="axes">이 그룹에서 갈리는 축(참고) — '+g.axes.map(function(a){return '<span class="ax">'+esc(a)+'</span>';}).join('')+'</p>';
+    h+='<div class="scards">';
+    g.members.forEach(function(c){ if(c!==s.code){ var x=ser(c); if(x) h+=serCard(x,''); } });
+    h+='</div>'+vsBlock(s.group)+'</div>';
+  }
+  h+='<div class="note">이 화면은 <b>참고용 상세</b>입니다. 기구 조건에서 시작해 추천을 받으려면 선정 도구를 사용하세요.</div>';
+  h+='<div class="rbtn"><button class="pri" onclick="setTab(\'sel\')">선정 도구로 이동</button>'+
+     '<button onclick="gotoGroup(\''+s.group+'\')">그룹 비교표 보기</button>'+
+     '<button onclick="setTab(\'type\')">TYPE 카탈로그</button></div>';
+  return h;
+}
+/* ============================================================
    05 / SMC PNEUMATIC CYLINDER — 로직 & 렌더
    ============================================================ */
 
@@ -1654,10 +2173,10 @@ function imgTag(code,cls){
   var src=null;
   if(typeof IMGDATA!=="undefined" && IMGDATA[code]) src=IMGDATA[code];          /* 인라인(단일 파일) */
   else if(typeof IMG!=="undefined" && IMG[code]) src=IMGBASE+IMG[code];          /* img/ 폴더 */
-  if(!src) return '<div class="noimg '+(cls||'')+'">이미지 없음</div>';
+  if(!src) return '<div class="noimg '+(cls||'')+'">공식 이미지 미제공</div>';
   return '<img class="pimg '+(cls||'')+'" src="'+src+'" alt="'+esc(code)+' 제품 이미지" loading="lazy" '+
          'title="'+esc(code)+' — 클릭하면 크게 보기" onclick="openLbx(event,\''+esc(code)+'\')" '+
-         'onerror="this.outerHTML=&quot;<div class=\'noimg\'>이미지 없음</div>&quot;">';
+         'onerror="this.outerHTML=&quot;<div class=\'noimg\'>공식 이미지 미제공</div>&quot;">';
 }
 function typeOf(id){for(var i=0;i<TYPES.length;i++){if(TYPES[i].id===id)return TYPES[i];}return null;}
 
@@ -1744,9 +2263,9 @@ function closeLbx(){ document.getElementById("lbx").className="lbx"; }
 if(typeof document!=="undefined") document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeLbx(); });
 
 /* ---------- 상태 ---------- */
-var ST={node:"root",path:[],flags:{},result:null,tab:"sel"};
+var ST={node:"root",path:[],flags:{},result:null,tab:"sel",q:"",ser:null};
 
-function reset(){ ST={node:"root",path:[],flags:{},result:null,tab:"sel"}; render(); }
+function reset(){ ST={node:"root",path:[],flags:{},result:null,tab:"sel",q:"",ser:ST.ser}; render(); }
 function back(){
   if(!ST.path.length){return;}
   var last=ST.path.pop();
@@ -1837,17 +2356,19 @@ function serCard(s,kind){
 }
 
 /* ---------- 렌더: A vs B ---------- */
-function vsBlock(gid){
+function vsBlock(gid,openIt,q){
   var g=GROUPS[gid];
   if(!g.vs||!g.vs.length) return '';
-  var h='<details class="vs"><summary>유사 SERIES 선택 기준 — “A를 쓰는 상황 / B를 쓰는 상황” ('+g.vs.length+'조)</summary>';
+  var h='<details class="vs"'+(openIt?' open':'')+'><summary>유사 SERIES 선택 기준 — “A를 쓰는 상황 / B를 쓰는 상황” ('+g.vs.length+'조)</summary>';
   g.vs.forEach(function(v){
-    h+='<div class="vsx"><div class="vsx-h"><span class="a">'+esc(v.a)+'</span><i>vs</i><span class="b">'+esc(v.b)+'</span>'+
-       '<em>기준: '+term(v.axis)+'</em></div>';
-    h+='<table class="vst"><tr><th>'+esc(v.a)+'를 먼저 보는 경우</th><td>'+term(v.aw)+'</td></tr>'+
-       '<tr><th>'+esc(v.b)+'를 먼저 보는 경우</th><td>'+term(v.bw)+'</td></tr>'+
-       '<tr class="both"><th>둘 다 가능한 구간</th><td>'+term(v.both)+'</td></tr>'+
-       '<tr class="no"><th>둘 다 부적합한 경우</th><td>'+term(v.no)+'</td></tr></table></div>';
+    h+='<div class="vsx"><div class="vsx-h"><span class="a">'+((q&&typeof hl==="function")?hl(v.a,q):esc(v.a))+'</span><i>vs</i>'+
+       '<span class="b">'+((q&&typeof hl==="function")?hl(v.b,q):esc(v.b))+'</span>'+
+       '<em>기준: '+((q&&typeof ht==="function")?ht(v.axis,q):term(v.axis))+'</em></div>';
+    var f=function(t){ return (typeof ht==="function"&&q)?ht(t,q):term(t); };
+    h+='<table class="vst"><tr><th>'+esc(v.a)+'를 먼저 보는 경우</th><td>'+f(v.aw)+'</td></tr>'+
+       '<tr><th>'+esc(v.b)+'를 먼저 보는 경우</th><td>'+f(v.bw)+'</td></tr>'+
+       '<tr class="both"><th>둘 다 가능한 구간</th><td>'+f(v.both)+'</td></tr>'+
+       '<tr class="no"><th>둘 다 부적합한 경우</th><td>'+f(v.no)+'</td></tr></table></div>';
   });
   h+='</details>';
   return h;
@@ -1960,47 +2481,21 @@ function copyResult(){
   setTimeout(function(){ b.className="toast"; },1800);
 }
 
-/* ---------- 탭: TYPE 카탈로그 ---------- */
+/* ---------- 탭: TYPE 카탈로그 (검색 대응) ---------- */
 function renderTypes(){
-  var h='<div class="qhead"><span class="qno lite">CATALOG</span><h2>TYPE 카탈로그 <em>15 TYPE</em></h2></div>';
-  h+='<p class="qhint">SMC Korea 공식 제품 분류를 <b>설계자의 판단 순서</b>로 재구성한 15개 TYPE입니다. 각 TYPE의 "버리고 넘어가는 조건"이 선정 트리의 분기점입니다.</p>';
-  var cats=[];
-  TYPES.forEach(function(t){ if(cats.indexOf(t.cat)<0) cats.push(t.cat); });
-  cats.forEach(function(c){
-    h+='<div class="sec"><h3>'+esc(c)+'</h3><div class="tcards">';
-    TYPES.filter(function(t){return t.cat===c;}).forEach(function(t){
-      var mem=[];
-      for(var k in SERIES){ if(SERIES[k].type===t.id) mem.push(SERIES[k].code); }
-      var rep=mem.length?mem[0]:null;
-      h+='<div class="tcard">'+(rep?'<div class="tc-thumb">'+imgTag(rep)+'</div>':'')+
-         '<div class="tc-h"><span class="tid">'+esc(t.id)+'</span><b>'+esc(t.name)+'</b></div>'+
-         '<p class="tc-def">'+term(t.def)+'</p>'+
-         '<div class="tc-row"><b>진입</b><span>'+term(t.enter)+'</span></div>'+
-         '<div class="tc-row out"><b>이탈</b><span>'+term(t.out)+'</span></div>'+
-         '<div class="tc-ser">'+mem.map(function(m){return '<span>'+esc(m)+'</span>';}).join('')+'</div>'+
-         '<div class="tc-g">비교 그룹: '+esc(t.groups.join(", "))+'</div></div>';
-    });
-    h+='</div></div>';
-  });
+  var h='<div class="qhead"><span class="qno lite">CATALOG</span><h2>TYPE 카탈로그 <em>15 TYPE · 102 SERIES</em></h2></div>';
+  h+='<p class="qhint">SMC Korea 공식 제품 분류를 <b>설계자의 판단 순서</b>로 재구성한 15개 TYPE입니다. 시리즈 코드를 누르면 상세로 이동합니다.</p>';
+  h+=searchBarHTML();
+  h+='<div id="listres">'+typeBody()+'</div>';
   return h;
 }
 
-/* ---------- 탭: 그룹 비교 ---------- */
+/* ---------- 탭: 그룹 비교 (검색 대응) ---------- */
 function renderGroups(){
-  var h='<div class="qhead"><span class="qno lite">COMPARE</span><h2>유사 SERIES 비교 그룹 <em>14 그룹</em></h2></div>';
+  var h='<div class="qhead"><span class="qno lite">COMPARE</span><h2>유사 SERIES 비교 그룹 <em>15 그룹</em></h2></div>';
   h+='<p class="qhint">선택이 헷갈리는 SERIES끼리만 묶었습니다. 보어(튜브내경)가 겹치는 조합은 <b>크기로 고를 수 없으므로</b> 정도·강성·옵션·단가로 판단해야 합니다.</p>';
-  Object.keys(GROUPS).forEach(function(gid){
-    var g=GROUPS[gid];
-    h+='<div class="sec gsec"><h3><span class="gid">'+esc(gid)+'</span>'+esc(g.name)+
-       ' <em>'+esc(g.type)+' · '+g.members.length+'종</em></h3>';
-    h+='<p class="axes">구분 축 — '+g.axes.map(function(a){return '<span class="ax">'+esc(a)+'</span>';}).join('')+'</p>';
-    h+='<table class="mt"><thead><tr><th style="width:104px">제품</th><th>SERIES</th><th>보어 / 사이즈</th><th>포지션</th><th>이 시리즈를 고르는 조건</th></tr></thead><tbody>';
-    g.members.forEach(function(c){
-      var s=ser(c); if(!s) return;
-      h+='<tr><td class="ci">'+imgTag(s.code,'mini')+'</td><td class="c">'+esc(s.code)+linkBar(s.code,'mini')+'</td><td>'+esc(s.bore)+'</td><td>'+esc(s.pos)+'</td><td>'+term(s.pick)+'</td></tr>';
-    });
-    h+='</tbody></table>'+vsBlock(gid)+'</div>';
-  });
+  h+=searchBarHTML();
+  h+='<div id="listres">'+groupBody()+'</div>';
   return h;
 }
 
@@ -2034,9 +2529,10 @@ function renderRef(){
 }
 
 /* ---------- 렌더 ---------- */
-function setTab(t){ ST.tab=t; render(); }
+function setTab(t){ ST.tab=t; if(t!=="type"&&t!=="grp") ST.q=""; render(); }
 function render(){
   var tabs=[["sel","선정 도구"],["type","TYPE 카탈로그"],["grp","그룹 비교"],["ref","참고"]];
+  if(ST.tab==="ser") tabs.push(["ser","SERIES 상세"]);
   document.getElementById("tabs").innerHTML=tabs.map(function(t){
     return '<button class="tb'+(ST.tab===t[0]?' on':'')+'" onclick="setTab(\''+t[0]+'\')">'+t[1]+'</button>';
   }).join('');
@@ -2049,7 +2545,8 @@ function render(){
     main.innerHTML=ST.result?renderResult():renderQ();
   }else{
     side.style.display="none";
-    main.innerHTML=(ST.tab==="type")?renderTypes():(ST.tab==="grp")?renderGroups():renderRef();
+    main.innerHTML=(ST.tab==="type")?renderTypes():(ST.tab==="grp")?renderGroups():
+                   (ST.tab==="ser")?renderSeriesTab():renderRef();
   }
   window.scrollTo({top:0,behavior:"instant"});
 }
