@@ -139,6 +139,140 @@ def test_smc_selection_and_catalog_are_protected() -> None:
     result = response.json()
     assert result["group"] == "G1"
     assert result["primary"]["code"] == "CM2"
+    assert result["theoreticalOutput"]["series"] == "CM2"
+
+
+def test_smc_cj2_theoretical_output_contains_newton_and_kgf() -> None:
+    response = client.post(
+        "/api/smc-cylinder",
+        headers=AUTH,
+        json={
+            "motion": "linear",
+            "space": "normal",
+            "size": "small",
+            "env": "normal",
+            "norot": "n",
+        },
+    )
+    assert response.status_code == 200
+    result = response.json()
+    assert result["primary"]["code"] == "CJ2"
+    output = result["theoreticalOutput"]
+    assert output["defaultBoreMm"] == 10
+    guidance = output["selectionGuidance"]
+    assert guidance["dynamicLoadRatio"] == 0.5
+    assert guidance["stationaryLoadRatio"] == 0.7
+    assert guidance["sourceUrl"].endswith("AirCylinder-Select-Tech_en.pdf")
+    assert [row["boreMm"] for row in output["bores"]] == [6, 10, 16]
+    bore_10 = next(row for row in output["bores"] if row["boreMm"] == 10)
+    assert round(bore_10["push"][2]["newton"], 1) == 39.3
+    assert round(bore_10["push"][2]["kgf"], 2) == 4.00
+    assert round(bore_10["pull"][2]["newton"], 1) == 33.0
+    assert round(bore_10["pull"][2]["kgf"], 2) == 3.36
+
+
+def test_smc_rotary_result_does_not_claim_linear_force_table() -> None:
+    response = client.post(
+        "/api/smc-cylinder",
+        headers=AUTH,
+        json={"motion": "rotary", "angle": "fixed", "env": "normal"},
+    )
+    assert response.status_code == 200
+    assert response.json()["theoreticalOutput"] is None
+
+
+def test_smc_cxsj_uses_official_dual_piston_areas() -> None:
+    response = client.post(
+        "/api/smc-cylinder",
+        headers=AUTH,
+        json={"motion": "linear", "space": "tight", "size": "small", "norot": "y", "env": "normal"},
+    )
+    assert response.status_code == 200
+    result = response.json()
+    assert result["primary"]["code"] == "CXSJ"
+    output = result["theoreticalOutput"]
+    assert output["forceStructure"] == "dual-piston"
+    assert output["catalogSourceUrl"].endswith("7-4-2-p0807-0867-CXSJ_en.pdf")
+    bore_15 = next(row for row in output["bores"] if row["boreMm"] == 15)
+    assert bore_15["rodMm"] == 8
+    assert bore_15["pushAreaMm2"] == 353
+    assert bore_15["pullAreaMm2"] == 252
+    assert round(bore_15["push"][2]["newton"], 1) == 176.5
+    assert round(bore_15["pull"][2]["newton"], 1) == 126.0
+
+
+def test_smc_table_cylinders_use_series_specific_force_profiles() -> None:
+    cases = [
+        ({"motion": "table", "env": "normal"}, "MXQ", "dual-piston", 16, 402, 346),
+        ({"motion": "table", "space": "tight", "env": "normal"}, "MXH", "single-piston", 16, 201, 172),
+        ({"motion": "table", "size": "small", "env": "normal"}, "MXJ", "single-piston", 4.5, 16, 13),
+    ]
+    for payload, code, structure, bore_mm, push_area, pull_area in cases:
+        response = client.post("/api/smc-cylinder", headers=AUTH, json=payload)
+        assert response.status_code == 200
+        result = response.json()
+        assert result["primary"]["code"] == code
+        output = result["theoreticalOutput"]
+        assert output["forceStructure"] == structure
+        bore = next(row for row in output["bores"] if row["boreMm"] == bore_mm)
+        assert bore["pushAreaMm2"] == push_area
+        assert bore["pullAreaMm2"] == pull_area
+    mxh = client.post(
+        "/api/smc-cylinder", headers=AUTH,
+        json={"motion": "table", "space": "tight", "env": "normal"},
+    ).json()["theoreticalOutput"]
+    bore_25 = next(row for row in mxh["bores"] if row["boreMm"] == 25)
+    assert (bore_25["pushAreaMm2"], bore_25["pullAreaMm2"]) == (491, 412)
+
+
+def test_smc_range_labels_expand_only_to_real_catalog_bores() -> None:
+    response = client.post(
+        "/api/smc-cylinder", headers=AUTH,
+        json={"motion": "guided", "env": "normal"},
+    )
+    assert response.status_code == 200
+    result = response.json()
+    assert result["primary"]["code"] == "MGP"
+    assert [row["boreMm"] for row in result["theoreticalOutput"]["bores"]] == [
+        12, 16, 20, 25, 32, 40, 50, 63, 80, 100,
+    ]
+
+
+def test_smc_rodless_cylinders_show_equal_directional_force() -> None:
+    cases = [
+        ({"motion": "table", "stroke": "long", "env": "normal"}, "MXY", 8, 50),
+        ({"motion": "long", "env": "normal"}, "MY1", 32, 804),
+        ({"motion": "long", "seal": "y", "env": "normal"}, "CY3B", 25, 490),
+    ]
+    for payload, code, bore_mm, area_mm2 in cases:
+        response = client.post("/api/smc-cylinder", headers=AUTH, json=payload)
+        assert response.status_code == 200
+        result = response.json()
+        assert result["primary"]["code"] == code
+        output = result["theoreticalOutput"]
+        assert output["forceStructure"] == "rodless"
+        bore = next(row for row in output["bores"] if row["boreMm"] == bore_mm)
+        assert bore["rodMm"] == 0
+        assert bore["pushAreaMm2"] == area_mm2
+        assert bore["pullAreaMm2"] == area_mm2
+        assert bore["push"] == bore["pull"]
+
+
+def test_smc_clean_rodless_respects_its_lower_pressure_limit() -> None:
+    response = client.post(
+        "/api/smc-cylinder", headers=AUTH,
+        json={"motion": "long", "seal": "y", "env": "clean"},
+    )
+    assert response.status_code == 200
+    result = response.json()
+    assert result["primary"]["code"] == "CYP"
+    output = result["theoreticalOutput"]
+    assert output["pressuresMpa"] == [0.1, 0.2, 0.3]
+    assert output["referencePressureMpa"] == 0.3
+    assert [row["boreMm"] for row in output["bores"]] == [15, 32]
+    bore_15 = output["bores"][0]
+    assert bore_15["pushAreaMm2"] == 176
+    assert round(bore_15["push"][2]["newton"], 1) == 52.8
 
 
 def test_all_new_endpoints_reject_a_revoked_key() -> None:

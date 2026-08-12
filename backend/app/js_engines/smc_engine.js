@@ -155,7 +155,7 @@ S("CUJ", "CUJ / CDUJ", "T02", "G2", "ø4,6,8,10,12,16,20", "초박형", "미니 
 
 S("MGJ", "MGJ", "T05", "G2", "ø6,10", "소형+가이드", "미니 가이드 로드 실린더. 가이드 일체", "소형 워크인데 안내(비회전·{{횡하중}})가 필요할 때", "하중·모멘트 여유가 작다", ["XB24"]);
 
-S("MXJ", "MXJ", "T06", "G2", "ø4,6,8", "소형+테이블", "초소형 에어 슬라이드 테이블", "소형 워크를 테이블에 얹어 정밀하게 옮길 때", "가반질량이 매우 작다", []);
+S("MXJ", "MXJ", "T06", "G2", "ø4.5,6,8", "소형+테이블", "초소형 에어 슬라이드 테이블", "소형 워크를 테이블에 얹어 정밀하게 옮길 때", "가반질량이 매우 작다", []);
 
 S("MB2", "MB2 / MDB2", "T01", "G3", "ø32~125", "기준(현행 신형)", "각형 {{타이로드}}. 2024.11 발매. 표준/양로드(W)/비회전(K), 에어쿠션+러버쿠션", "각형 표준을 새로 설계할 때 1순위", "기존 설비 치수 호환은 MB/MB1 확인 필요", []);
 
@@ -225,7 +225,7 @@ S("MXF", "MXF", "T06", "G7", "ø8,12,16,20", "저배(낮은 높이)", "테이블
 
 S("MXW", "MXW", "T06", "G7", "ø8,12,16,20,25", "광폭·고강성", "광폭 테이블로 모멘트 강성 확보", "워크가 넓거나 모멘트가 큰 경우", "설치 폭이 커진다", []);
 
-S("MXY", "MXY", "T06", "G7", "ø6,10,12", "롱스트로크 저배", "롱스트로크 슬라이드 테이블", "낮은 높이로 길게 이송해야 할 때", "가반질량이 작다", []);
+S("MXY", "MXY", "T06", "G7", "ø6,8,12", "롱스트로크 저배", "롱스트로크 슬라이드 테이블", "낮은 높이로 길게 이송해야 할 때", "가반질량이 작다", []);
 
 S("MXZ", "MXZ", "T06", "G7", "ø12,16,20,25", "박형+리니어가이드", "박형 실린더에 리니어 가이드를 조합", "박형 기반으로 테이블 구성할 때", "스트로크 제한", []);
 
@@ -2362,9 +2362,150 @@ function applyRules(gid, f) {
 const FORCE_PRESSURES_MPA = [0.3, 0.4, 0.5, 0.6, 0.7];
 const STANDARD_BORES_MM = [4, 5, 6, 8, 10, 12, 15, 16, 20, 25, 30, 32, 40, 50, 63, 80, 100, 125, 140, 160, 180, 200, 250, 300, 320];
 const FORCE_TABLE_TYPES = { T01: true, T02: true, T03: true, T05: true, T08: true };
+const SERIES_FORCE_PROFILES = {
+  CJ1: {
+    structure: "single-piston",
+    bores: [4],
+    rodMm: { 4: 2 },
+    areasMm2: { 4: [12.6, 9.4] },
+    sourceUrl: "https://ca01.smcworld.com/catalog/BEST-Guide-en/pdf/2-m27-49_en.pdf"
+  },
+  CXS: {
+    structure: "dual-piston",
+    rodMm: { 6: 4, 10: 6, 15: 8, 20: 10, 25: 12, 32: 16 },
+    areasMm2: { 6: [56, 31], 10: [157, 100], 15: [353, 252], 20: [628, 471], 25: [982, 756], 32: [1608, 1206] },
+    sourceUrl: "https://ca01.smcworld.com/catalog/en/actuator/CXSJ-E/7-4-2-p0807-0867-CXSJ_en/data/7-4-2-p0807-0867-CXSJ_en.pdf"
+  },
+  CXSJ: {
+    structure: "dual-piston",
+    rodMm: { 6: 4, 10: 6, 15: 8, 20: 10, 25: 12, 32: 16 },
+    areasMm2: { 6: [56, 31], 10: [157, 100], 15: [353, 252], 20: [628, 471], 25: [982, 756], 32: [1608, 1206] },
+    sourceUrl: "https://ca01.smcworld.com/catalog/en/actuator/CXSJ-E/7-4-2-p0807-0867-CXSJ_en/data/7-4-2-p0807-0867-CXSJ_en.pdf"
+  },
+  CXS2: {
+    structure: "dual-piston",
+    rodMm: { 6: 4, 10: 6, 16: 8, 20: 10, 25: 12, 32: 16 },
+    areasMm2: { 6: [56, 31], 10: [157, 100], 16: [402, 301], 20: [628, 471], 25: [982, 756], 32: [1608, 1206] },
+    sourceUrl: "https://ca01.smcworld.com/catalog/New-products-en/mpv/ES20-275-CXS2/data/ES20-275-CXS2.pdf"
+  },
+  JMGP: {
+    structure: "dual-piston",
+    bores: [12, 16, 20, 25, 32, 40, 50, 63, 80, 100],
+    rodMm: { 12: 6, 16: 6, 20: 8, 25: 10, 32: 12, 40: 16, 50: 18, 63: 20, 80: 25, 100: 30 },
+    areasMm2: { 12: [157, 101], 16: [226, 170], 20: [402, 302], 25: [628, 471], 32: [982, 756], 40: [1608, 1206], 50: [2513, 2004], 63: [3181, 2553], 80: [4926, 3944], 100: [7918, 6505] },
+    sourceUrl: "https://www.smcworld.com/catalog/New-products-en/mpv/es20-238-jmgp/data/es20-238-jmgp.pdf"
+  },
+  CX2: {
+    structure: "dual-piston",
+    bores: [10, 16, 20, 25, 32],
+    rodMm: { 10: 6, 16: 10, 20: 12, 25: 14, 32: 20 },
+    areasMm2: { 10: [101, 101], 16: [245, 245], 20: [402, 402], 25: [597, 597], 32: [980, 980] },
+    sourceUrl: "https://ca01.smcworld.com/catalog/en/actuator/CX2-CDBX2-CDPX2-E/7-4-2-p0869-0930-CX2_en/data/7-4-2-p0869-0930-CX2_en.pdf"
+  },
+  MXQ: {
+    structure: "dual-piston",
+    rodMm: { 6: 3, 8: 4, 12: 6, 16: 6, 20: 8, 25: 10 },
+    areasMm2: { 6: [57, 42], 8: [101, 75], 12: [226, 170], 16: [402, 346], 20: [628, 528], 25: [982, 825] },
+    sourceUrl: "https://ca01.smcworld.com/catalog/New-products-en/pdf/es20-211-mxq.pdf"
+  },
+  MXS: {
+    structure: "dual-piston",
+    rodMm: { 6: 3, 8: 4, 12: 6, 16: 8, 20: 10, 25: 12 },
+    areasMm2: { 6: [57, 42], 8: [101, 75], 12: [226, 170], 16: [402, 302], 20: [628, 471], 25: [982, 756] },
+    sourceUrl: "https://ca01.smcworld.com/catalog/BEST-old-en/mpv/mxs_en/data/mxs_en.pdf"
+  },
+  MXW: {
+    structure: "dual-piston",
+    rodMm: { 8: 4, 12: 6, 16: 8, 20: 10, 25: 12 },
+    areasMm2: { 8: [101, 75], 12: [226, 170], 16: [402, 302], 20: [628, 471], 25: [982, 756] },
+    sourceUrl: "https://www.smcworld.com/webcatalog/en-jp/air-cylinders/table-cylinders/MXW-E"
+  },
+  MXH: {
+    structure: "single-piston",
+    rodMm: { 6: 3, 10: 4, 16: 6, 20: 8, 25: 10 },
+    areasMm2: { 6: [28, 21], 10: [78, 66], 16: [201, 172], 20: [314, 264], 25: [491, 412] },
+    sourceUrl: "https://www.smcworld.com/catalog/New-products-en/mpv/ES20-276-MXH2/data/ES20-276-MXH2.pdf"
+  },
+  MXF: {
+    structure: "single-piston",
+    rodMm: { 8: 4, 12: 6, 16: 8, 20: 10 },
+    areasMm2: { 8: [50, 38], 12: [113, 85], 16: [201, 151], 20: [314, 236] },
+    sourceUrl: "https://www.smcworld.com/catalog/BEST-5-3-en/pdf/3-p0165-0180-mxf_en.pdf"
+  },
+  MXZ: {
+    structure: "single-piston",
+    rodMm: { 12: 6, 16: 8, 20: 10, 25: 12 },
+    areasMm2: { 12: [113, 85], 16: [201, 151], 20: [314, 236], 25: [491, 378] },
+    sourceUrl: "https://static.smc.eu/binaries/content/assets/smc_global/products/featured-products/pneum-guide-cyl_leaflet_en.pdf"
+  },
+  MXJ: {
+    structure: "single-piston",
+    rodMm: { 4.5: 2, 6: 3, 8: 4 },
+    areasMm2: { 4.5: [16, 13], 6: [28, 21], 8: [50, 38] },
+    sourceUrl: "https://content2.smcetech.com/pdf/mxj.pdf"
+  },
+  MXY: {
+    structure: "rodless",
+    bores: [6, 8, 12],
+    rodMm: { 6: 0, 8: 0, 12: 0 },
+    areasMm2: { 6: [28, 28], 8: [50, 50], 12: [113, 113] },
+    sourceUrl: "https://www.smcworld.com/webcatalog/en-jp/air-cylinders/table-cylinders/MXY-E"
+  },
+  MY1: { structure: "rodless", bores: [10, 16, 20, 25, 32, 40, 50, 63, 80, 100], sourceUrl: "https://www.smcworld.com/catalog/BEST-5-2-en/pdf/2-p1211-1325-my1b_en.pdf" },
+  MY2: { structure: "rodless", bores: [16, 25, 40] },
+  MY3: { structure: "rodless", bores: [16, 20, 25, 32, 40, 50, 63], sourceUrl: "https://www.smcworld.com/catalog/BEST-5-2-en/mpv/2-p1389-1437-my3a_en/data/2-p1389-1437-my3a_en.pdf" },
+  CY3B: { structure: "rodless", bores: [6, 10, 15, 20, 25, 32, 40, 50, 63] },
+  CY3S: { structure: "rodless", bores: [6, 10, 15, 20, 25, 32, 40], sourceUrl: "https://www.smcworld.com/webcatalog/en-jp/air-cylinders/magnetically-coupled-rodless-cylinders/CY3S-E" },
+  CY1: { structure: "rodless", bores: [6, 10, 15, 20, 25, 32, 40] },
+  CYP: {
+    structure: "rodless",
+    bores: [15, 32],
+    areasMm2: { 15: [176, 176], 32: [804, 804] },
+    pressuresMpa: [0.1, 0.2, 0.3],
+    referencePressureMpa: 0.3,
+    sourceUrl: "https://www.smcworld.com/catalog/en/actuator/CYP-E/7-4-3-p1275-1288-CYP_en/data/7-4-3-p1275-1288-CYP_en.pdf"
+  }
+};
+const SERIES_BORE_OVERRIDES = {
+  CG1: [20, 25, 32, 40, 50, 63, 80, 100],
+  CG3: [20, 25, 32, 40, 50, 63, 80, 100],
+  MB2: [32, 40, 50, 63, 80, 100, 125],
+  MB1: [32, 40, 50, 63, 80, 100, 125],
+  MB: [32, 40, 50, 63, 80, 100, 125],
+  CA2: [40, 50, 63, 80, 100],
+  CS1: [125, 140, 160, 180, 200, 250, 300],
+  CS2: [125, 140, 160, 180, 200, 250, 300, 320],
+  CQ2: [12, 16, 20, 25, 32, 40, 50, 63, 80, 100],
+  CQM: [12, 16, 20, 25, 32, 40, 50, 63, 80, 100],
+  RQ: [20, 25, 32, 40, 50, 63, 80, 100],
+  MU: [25, 32, 40, 50, 63],
+  MGP: [12, 16, 20, 25, 32, 40, 50, 63, 80, 100],
+  MGQ: [12, 16, 20, 25, 32, 40, 50, 63, 80, 100],
+  MGG: [20, 25, 32, 40, 50, 63, 80, 100],
+  MGPW: [20, 25, 32, 40, 50, 63],
+  MGPK: [6, 8, 10, 12, 16, 20, 25, 32, 40, 50],
+  CLQ: [20, 25, 32, 40, 50, 63, 80, 100],
+  MLGP: [20, 25, 32, 40, 50, 63, 80, 100],
+  CNA2: [40, 50, 63, 80, 100],
+  CLS: [125, 140, 160, 180, 200, 250]
+};
+const RODLESS_PISTON_AREAS_MM2 = {
+  6: 28.3, 10: 78.5, 15: 176.7, 16: 201, 20: 314, 25: 490,
+  32: 804, 40: 1256, 50: 1962, 63: 3115, 80: 5027, 100: 7854
+};
+
+function forceProfile(series) {
+  if (!series) return null;
+  if (SERIES_FORCE_PROFILES[series.code]) return SERIES_FORCE_PROFILES[series.code];
+  return FORCE_TABLE_TYPES[series.type]
+    ? { structure: "single-piston", bores: SERIES_BORE_OVERRIDES[series.code] || null }
+    : null;
+}
 
 function seriesBores(series) {
-  if (!series || !FORCE_TABLE_TYPES[series.type]) return [];
+  var profile = forceProfile(series);
+  if (!profile) return [];
+  if (profile.bores) return profile.bores.slice();
   var text = String(series.bore || "").replace(/Ø/g, "ø");
   if (text.indexOf("ø") < 0) return [];
   var matches = text.match(/\d+(?:\.\d+)?/g) || [];
@@ -2414,25 +2555,33 @@ function forceAt(areaMm2, pressureMpa) {
 }
 
 function theoreticalOutputFor(series) {
+  var profile = forceProfile(series);
   var bores = seriesBores(series);
   if (!bores.length) return null;
+  var structure = profile.structure || "single-piston";
+  var pressuresMpa = profile.pressuresMpa || FORCE_PRESSURES_MPA;
   var rows = bores.map(function (boreMm) {
-    var rodMm = standardRodDiameterMm(boreMm);
-    var pushAreaMm2 = Math.PI * boreMm * boreMm / 4;
-    var pullAreaMm2 = Math.PI * (boreMm * boreMm - rodMm * rodMm) / 4;
+    var hasCatalogRod = profile.rodMm && profile.rodMm[boreMm] != null;
+    var rodMm = structure === "rodless" ? 0 : (hasCatalogRod ? profile.rodMm[boreMm] : standardRodDiameterMm(boreMm));
+    var catalogAreas = profile.areasMm2 && profile.areasMm2[boreMm];
+    var exactPistonAreaMm2 = Math.PI * boreMm * boreMm / 4;
+    var nominalPistonAreaMm2 = structure === "rodless" ? (RODLESS_PISTON_AREAS_MM2[boreMm] || exactPistonAreaMm2) : exactPistonAreaMm2;
+    var pushAreaMm2 = catalogAreas ? catalogAreas[0] : nominalPistonAreaMm2;
+    var pullAreaMm2 = catalogAreas ? catalogAreas[1] : (structure === "rodless" ? pushAreaMm2 : Math.PI * (boreMm * boreMm - rodMm * rodMm) / 4);
     return {
       boreMm: boreMm,
       rodMm: rodMm,
       pushAreaMm2: pushAreaMm2,
       pullAreaMm2: pullAreaMm2,
-      push: FORCE_PRESSURES_MPA.map(function (pressure) { return forceAt(pushAreaMm2, pressure); }),
-      pull: FORCE_PRESSURES_MPA.map(function (pressure) { return forceAt(pullAreaMm2, pressure); })
+      push: pressuresMpa.map(function (pressure) { return forceAt(pushAreaMm2, pressure); }),
+      pull: pressuresMpa.map(function (pressure) { return forceAt(pullAreaMm2, pressure); })
     };
   });
   var defaultIndex = rows.length <= 3 ? Math.min(1, rows.length - 1) : Math.floor((rows.length - 1) / 2);
   return {
     series: series.code,
-    pressuresMpa: FORCE_PRESSURES_MPA.slice(),
+    pressuresMpa: pressuresMpa.slice(),
+    referencePressureMpa: profile.referencePressureMpa || 0.5,
     defaultBoreMm: rows[defaultIndex].boreMm,
     bores: rows,
     selectionGuidance: {
@@ -2443,7 +2592,15 @@ function theoreticalOutputFor(series) {
       sourceLabel: "SMC 공압 실린더 선정 기술자료",
       sourceUrl: "https://www.smcworld.com/catalog/BEST-technical-data-en/pdf/AirCylinder-Select-Tech_en.pdf"
     },
-    standard: "복동 편로드 대표 치수 기준",
+    forceStructure: structure,
+    catalogSourceUrl: profile.sourceUrl || null,
+    standard: structure === "dual-piston"
+      ? "SMC 듀얼 피스톤 공식 수압 면적 기준"
+      : structure === "rodless"
+        ? "SMC 로드리스 실린더 피스톤 수압 면적 기준"
+        : profile.areasMm2
+          ? "SMC 시리즈 공식 수압 면적 기준"
+          : "복동 편로드 대표 치수 기준",
     formula: "F = A × P",
     note: "이론값입니다. 실제 선정은 부하율·마찰·배관 압력강하를 반영하고, 최종 로드경은 선택 형번의 공식 카탈로그를 확인하세요."
   };
