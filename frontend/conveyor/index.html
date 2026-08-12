@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>경량 소형 벨트컨베이어 설계 검증 툴</title>
+<style>
+:root{
+  --bg:#eef2f7; --card:#fff; --ink:#1f2937; --sub:#64748b; --line:#e2e8f0;
+  --blue:#2563eb; --navy:#1e3a8a; --green:#16a34a; --amber:#d97706; --red:#dc2626;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;padding:16px;background:var(--bg);color:var(--ink);line-height:1.6;
+  font-family:"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1320px;margin:0 auto}
+
+/* header */
+header{background:linear-gradient(120deg,#0f2557,#1e3a8a 55%,#2563eb);color:#fff;padding:18px 22px;border-radius:12px 12px 0 0}
+header h1{font-size:19px;margin:0 0 5px;letter-spacing:-.3px}
+header h1 .badge{font-size:11px;background:#10b981;color:#04361f;padding:3px 8px;border-radius:5px;font-weight:800;vertical-align:2px;margin-left:6px}
+header .sub{font-size:12px;color:#cbd5e1}
+header .tags{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap}
+header .tags span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.26);border-radius:999px;padding:2px 9px;font-size:11px}
+
+/* layout */
+.main{display:grid;grid-template-columns:340px 1fr;background:#fff;border-radius:0 0 12px 12px;
+  overflow:hidden;box-shadow:0 3px 18px rgba(15,23,42,.09)}
+.left{padding:18px;background:#f8fafc;border-right:1px solid var(--line)}
+.right{padding:18px;min-width:0}
+h2{font-size:15px;border-bottom:2px solid #1f2937;padding-bottom:7px;margin:0 0 13px;color:#111827}
+.sec{margin-top:20px}
+.sec>h2{border-bottom-color:var(--blue);color:var(--navy)}
+
+/* inputs */
+.grp{margin:0 0 15px}
+.gt{font-weight:800;color:#475569;font-size:12px;margin-bottom:7px;padding-bottom:4px;border-bottom:1px dashed #d7dee8}
+.f{margin:7px 0}
+.f>label{font-size:12px;display:block;margin-bottom:3px;font-weight:600}
+.ig{display:flex;gap:6px;align-items:center}
+input,select{width:100%;padding:7px 8px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;color:var(--ink);font:inherit;font-size:13px}
+input:focus,select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.13)}
+input:disabled{background:#eef1f5;color:#9aa5b4;cursor:not-allowed}
+.unit{font-size:11px;color:var(--sub);min-width:44px;text-align:right}
+.hint{font-size:11px;color:var(--sub);margin:2px 0 0}
+.btnrow{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+button{font:inherit;font-size:12.5px;padding:8px 10px;border-radius:7px;border:1px solid #cbd5e1;background:#fff;color:#334155;cursor:pointer}
+button:hover{background:#eef4ff;border-color:#bfd0ff;color:var(--navy)}
+
+/* viewer + overlay */
+.viewer{position:relative;border:1px solid #cbd5e1;border-radius:9px;overflow:hidden;background:#f1f5f9}
+.viewer img{width:100%;display:block}
+.viewer svg.lead{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.lb{position:absolute;transform:translate(-50%,-50%);background:rgba(17,24,39,.87);color:#fff;
+  padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;white-space:nowrap;
+  border:1px solid rgba(255,255,255,.25);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.lb.blue{background:rgba(37,99,235,.9)} .lb.green{background:rgba(5,150,105,.9)}
+.lb.amber{background:rgba(217,119,6,.92)}
+.vcap{font-size:11.5px;color:var(--sub);padding:7px 10px;border-top:1px solid var(--line);background:#fff}
+@media(max-width:640px){.lb{font-size:9.5px;padding:2px 5px}}
+
+/* kpi */
+.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:14px 0}
+.card{border:1px solid var(--line);background:#f8fafc;border-radius:7px;padding:9px 8px;text-align:center}
+.card .k{font-size:11px;color:var(--sub)}
+.card .v{font-size:15px;font-weight:800;margin-top:2px;color:var(--navy);word-break:break-all}
+.card .s{font-size:10.5px;color:var(--sub);margin-top:1px}
+@media(max-width:1100px){.cards{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.cards{grid-template-columns:repeat(2,1fr)}}
+
+/* verdict */
+.verdict{padding:13px 15px;border-radius:9px;margin:12px 0 0;border:1.5px solid}
+.verdict .big{font-size:18px;font-weight:800}
+.verdict .sub2{font-size:12.5px;margin-top:3px;color:#374151}
+.ok{background:#ecfdf5;border-color:#6ee7b7} .ok .big{color:#065f46}
+.wn{background:#fffbeb;border-color:#fcd34d} .wn .big{color:#92400e}
+.ng{background:#fef2f2;border-color:#fca5a5} .ng .big{color:#991b1b}
+.bar{height:8px;border-radius:99px;background:#e5e7eb;overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;width:0;border-radius:99px;transition:width .25s}
+.barlab{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:4px}
+.note{font-size:11.5px;background:#f1f5f9;border-left:3px solid var(--blue);padding:8px 10px;margin-top:8px;border-radius:0 6px 6px 0}
+.note.w{background:#fffbeb;border-left-color:#f59e0b;color:#92400e;font-weight:600}
+.note.g{background:#ecfdf5;border-left-color:#10b981;color:#065f46;font-weight:600}
+
+/* accordion */
+details{border:1px solid var(--line);border-radius:8px;margin:8px 0;background:#fbfcfe;overflow:visible}
+details[open]{background:#fff;border-color:#c7d2fe}
+summary{cursor:pointer;padding:10px 12px;font-weight:700;font-size:13px;list-style:none;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸";color:var(--blue);font-size:11px;transition:transform .15s}
+details[open] summary::before{transform:rotate(90deg)}
+.stepno{background:#eef2ff;color:var(--navy);border-radius:5px;font-size:11px;padding:2px 6px;font-weight:800}
+.res{margin-left:auto;font-weight:800;color:var(--blue);font-size:13px}
+.dbody{padding:0 13px 13px;font-size:12.5px}
+.fx{background:#f1f5ff;border-left:3px solid var(--blue);border-radius:0 6px 6px 0;padding:8px 10px;margin:7px 0;
+  font-family:"D2Coding",Consolas,Menlo,monospace;font-size:12px;overflow-x:auto}
+.fx.gen{background:#f8fafc;border-left-color:#94a3b8;color:#475569}
+
+/* tooltip (v3 style) */
+.tt{position:relative;border-bottom:1px dashed #7aa7ff;cursor:help}
+.tt:hover>.ttbox,.tt:focus>.ttbox{opacity:1;visibility:visible;transform:translateY(0)}
+.ttbox{position:absolute;left:0;top:100%;margin-top:8px;z-index:9999;width:360px;max-width:78vw;
+  background:#0f172a;color:#e8eefc;border:1px solid #33507f;border-radius:10px;padding:11px 13px;
+  box-shadow:0 12px 34px rgba(0,0,0,.45);font-size:12.5px;line-height:1.65;font-weight:400;text-align:left;
+  white-space:normal;opacity:0;visibility:hidden;transform:translateY(-5px);
+  transition:opacity .13s ease,transform .13s ease;pointer-events:none}
+.ttbox b{color:#8fd0ff}
+.ttbox .tfx{display:block;background:#111d33;border:1px solid #2b436e;border-radius:6px;padding:7px 9px;margin:6px 0;
+  font-family:Consolas,Menlo,monospace;font-size:12px;color:#ffd98a;white-space:pre-wrap;word-break:break-all}
+.ttbox .tres{display:block;background:#10331f;border:1px solid #2f6b45;border-radius:6px;padding:7px 9px;margin:6px 0 2px;
+  font-family:Consolas,Menlo,monospace;font-size:12.5px;color:#7ff0a8;font-weight:700}
+.ttbox .nt{color:#a9bdd9;font-size:11.5px;display:block;margin-top:6px}
+.sttip{border-bottom:none}
+.sttip>.ttbox{width:460px}
+.sttip:hover{background:#eef4ff;border-radius:4px}
+.right .tt>.ttbox{left:auto;right:0}
+.left .tt>.ttbox{left:0;right:auto}
+
+/* support cards */
+.svgbox{border:1px solid #d1d5db;border-radius:8px;padding:6px;background:#fff}
+.svgbox svg{width:100%;height:auto;display:block}
+.supgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:11px;margin-top:11px}
+.sup{border:1.5px solid var(--line);border-radius:10px;padding:11px;background:#fbfcfe}
+.sup.on{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.sup .hd{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.sup .nm{font-weight:800;font-size:13px}
+.sup .mu{background:#eef2ff;color:var(--navy);font-size:11px;font-weight:800;border-radius:5px;padding:1px 6px}
+.sup .cur{background:var(--blue);color:#fff;font-size:10.5px;border-radius:99px;padding:1px 8px;font-weight:700}
+.sup svg{border:1px solid var(--line);border-radius:6px;background:#fff}
+.sup dl{margin:8px 0 0;font-size:11.5px}
+.sup dt{font-weight:800;color:var(--navy);margin-top:6px}
+.sup dd{margin:0;color:#374151}
+.pick{margin-top:9px;width:100%;font-size:12px}
+
+/* tables */
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:11.5px;margin-top:8px}
+th,td{border:1px solid #e2e8f0;padding:7px 6px;text-align:center}
+th{background:#f1f5f9;color:#0f172a}
+tr.sel td{background:#eff6ff;font-weight:700}
+footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px;line-height:1.7}
+@media(max-width:900px){
+  .main{grid-template-columns:1fr}
+  .left{border-right:0;border-bottom:1px solid var(--line)}
+  .sttip>.ttbox,.ttbox{width:300px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>⚙️ 경량 소형 벨트컨베이어 설계 검증 툴<span class="badge">v5</span></h1>
+  <div class="sub">모터·감속비·풀리·지지방식을 직접 선정해 입력하면 보수적 안전 기준으로 구동 가능 여부를 판정합니다</div>
+  <div class="tags"><span>보수적 설계</span><span>실시간 재계산</span><span>단일 HTML · 오프라인</span><span>6단계 근거 공개</span><span>롤러 처짐 검증</span><span>안전율 기본 3.0</span><span>토크 3단 검토</span></div>
+</header>
+
+<div class="main">
+
+  <!-- ============ 좌측 입력 ============ -->
+  <aside class="left">
+    <h2>설계 조건 입력</h2>
+
+    <div class="grp">
+      <div class="gt">① 하중 조건</div>
+      <div class="f"><label><span class="tt" data-term="총하중">총하중</span></label>
+        <div class="ig"><input id="load" type="number" value="20" min="0" step="0.5"><span class="unit">kg</span></div>
+        <p class="hint">벨트 위 반송물 총 질량</p></div>
+      <div class="f"><label><span class="tt" data-term="경사각">경사각 θ</span></label>
+        <div class="ig"><input id="angle" type="number" value="0" min="0" max="45" step="0.5"><span class="unit">°</span></div>
+        <p class="hint">수평 0° / 상향 반송 기준</p></div>
+    </div>
+
+    <div class="grp">
+      <div class="gt">② 구동부 <span style="font-weight:400">(기어드모터 직결 기준)</span></div>
+      <div class="f"><label><span class="tt" data-term="모터 정격출력">모터 정격출력</span></label>
+        <div class="ig"><input id="pmotor" type="number" value="90" min="1" step="1"><span class="unit">W</span></div></div>
+      <div class="f"><label><span class="tt" data-term="모터 회전수">모터 회전수</span></label>
+        <div class="ig"><input id="rpm" type="number" value="1500" min="1" step="10"><span class="unit">rpm</span></div></div>
+      <div class="f"><label><span class="tt" data-term="감속비">감속비 i</span></label>
+        <div class="ig"><input id="ratio" type="number" value="30" min="1" step="1"><span class="unit">: 1</span></div></div>
+      <div class="f"><label><span class="tt" data-term="구동풀리 지름">구동풀리 지름 D</span></label>
+        <div class="ig"><input id="pulley" type="number" value="50" min="10" step="1"><span class="unit">mm</span></div></div>
+    </div>
+
+    <div class="grp">
+      <div class="gt">③ 형상 · 지지</div>
+      <div class="f"><label><span class="tt" data-term="축간거리">축간거리 C</span></label>
+        <div class="ig"><input id="center" type="number" value="1000" min="100" step="10"><span class="unit">mm</span></div></div>
+      <div class="f"><label><span class="tt" data-term="벨트폭">벨트폭 B</span></label>
+        <div class="ig"><input id="width" type="number" value="300" min="30" step="10"><span class="unit">mm</span></div></div>
+      <div class="f"><label><span class="tt" data-term="지지방식">지지방식</span> <span class="tt" data-term="마찰계수">(μ)</span></label>
+        <select id="support">
+          <option value="slider">슬라이더 베드 — 강판 면지지 (μ=0.40)</option>
+          <option value="uhmw">UHMW 저마찰 베드 — 수지 면지지 (μ=0.25)</option>
+          <option value="hybrid">혼합형 — 면지지 + 무동력 롤러 (μ=0.30)</option>
+          <option value="roller">롤러 베드 — 무동력 캐리어 롤러 (μ=0.15)</option>
+          <option value="bearing">정밀 베어링 롤러 — 무동력 정밀 아이들러 (μ=0.10)</option>
+          <option value="custom">μ 직접 입력</option>
+        </select>
+        <p class="hint">5종 모두 <b>무동력 지지 부품</b>입니다. 파워몰러(MDR)처럼 모터 내장 구동 롤러는 지지방식이 아니라 ②구동부에 해당합니다.</p></div>
+      <div class="f" id="cmuwrap" style="display:none"><label>직접 입력 μ</label>
+        <div class="ig"><input id="cmu" type="number" value="0.20" min="0.01" max="1" step="0.01"><span class="unit">-</span></div>
+        <p class="hint">사용자 지정 마찰계수 (0.01~1.00)</p></div>
+      <div class="f"><label><span class="tt" data-term="롤러피치">롤러피치 p</span></label>
+        <div class="ig"><input id="pitch" type="number" value="200" min="50" step="10"><span class="unit">mm</span></div>
+        <p class="hint" id="pitchnote">롤러형 지지방식에서만 활성화</p></div>
+    </div>
+
+    <div class="grp">
+      <div class="gt">④ 안전 계수</div>
+      <div class="f"><label><span class="tt" data-term="안전율">안전율 Sf</span></label>
+        <div class="ig"><input id="sf" type="number" value="3.0" min="1" max="5" step="0.1"><span class="unit">-</span></div>
+        <p class="hint">기본 <b>3.0</b> (강화된 보수 설계) · STEP 4 설계토크와 STEP 5 필요동력에 각각 적용</p></div>
+      <div class="f"><label><span class="tt" data-term="기계효율">기계효율 η</span></label>
+        <div class="ig"><input id="eff" type="number" value="0.8" min="0.1" max="1" step="0.05"><span class="unit">-</span></div></div>
+    </div>
+
+    <div class="btnrow">
+      <button type="button" id="reset">↺ 기본값 복원</button>
+      <button type="button" id="fit">⚡ 여유율 30% 만족 모터출력 채우기</button>
+    </div>
+    <p class="hint" style="margin-top:10px">벨트 단위중량 3.0 kg/m²(보수적 가정), g = 9.81 m/s² 고정. 용어에 마우스를 올리면 설명이 나옵니다.</p>
+  </aside>
+
+  <!-- ============ 우측 결과 ============ -->
+  <main class="right">
+    <h2>컨베이어 형상 · 입력값 실시간 오버레이</h2>
+    <div id="viewwrap">
+      <div class="viewer" id="viewer">
+        <img src="conveyor.jpg" alt="경량 소형 벨트컨베이어 형상"
+             onerror="document.getElementById('viewwrap').style.display='none'">
+        <svg class="lead" viewBox="0 0 100 100" preserveAspectRatio="none" id="lead"></svg>
+        <span class="lb blue" id="ovv"></span>
+        <span class="lb green" id="ovld"></span>
+        <span class="lb blue" id="ovd"></span>
+        <span class="lb" id="ovmw"></span>
+        <span class="lb" id="ovbw"></span>
+        <span class="lb" id="ovlen"></span>
+        <span class="lb amber" id="ovang"></span>
+      </div>
+      <div class="vcap">알루미늄 프로파일 프레임 · 기어드모터 직결 구동 · 지시선은 입력값이 적용되는 부위를 나타냅니다</div>
+    </div>
+
+    <div class="cards">
+      <div class="card"><div class="k">출력 회전수</div><div class="v" id="kn">—</div><div class="s">rpm</div></div>
+      <div class="card"><div class="k"><span class="tt" data-term="벨트속도">벨트속도</span></div><div class="v" id="kv">—</div><div class="s" id="kv2">—</div></div>
+      <div class="card"><div class="k">총 이동질량</div><div class="v" id="km">—</div><div class="s" id="km2">—</div></div>
+      <div class="card"><div class="k"><span class="tt" data-term="유효장력">유효장력</span></div><div class="v" id="kf">—</div><div class="s">N</div></div>
+      <div class="card"><div class="k"><span class="tt" data-term="필요동력">필요동력</span></div><div class="v" id="kp">—</div><div class="s" id="kp2">—</div></div>
+      <div class="card"><div class="k"><span class="tt" data-term="여유율">동력 여유율</span></div><div class="v" id="kmg">—</div><div class="s" id="kmg2">30% 이상 권장</div></div>
+    </div>
+
+    <div class="verdict ok" id="verdict">
+      <div class="big" id="vbig">—</div>
+      <div class="sub2" id="vsub">—</div>
+      <div class="bar"><i id="barfill"></i></div>
+      <div class="barlab"><span>0% (한계)</span><span>30% (권장 하한)</span><span>100%+</span></div>
+    </div>
+    <div id="alerts"></div>
+
+    <div class="sec">
+      <h2>판정 근거 — 6단계 계산 (제목에 hover 하면 요약, 펼치면 상세)</h2>
+      <details open>
+        <summary><span class="stepno">STEP 1</span><span class="tt sttip" tabindex="0" id="s1">벨트속도 v<span class="ttbox" id="b1"></span></span><span class="res" id="r1">—</span></summary>
+        <div class="dbody">
+          <div class="fx gen">v = π × D × (모터rpm ÷ 감속비 i)　[mm/min]</div>
+          <div class="fx" id="f1">—</div><p class="hint" id="n1"></p>
+        </div>
+      </details>
+      <details>
+        <summary><span class="stepno">STEP 2</span><span class="tt sttip" tabindex="0" id="s2">벨트 자중 및 총 이동질량<span class="ttbox" id="b2"></span></span><span class="res" id="r2">—</span></summary>
+        <div class="dbody">
+          <div class="fx gen">m<sub>belt</sub> = (2 × C) × B × 3.0 kg/m²　　m<sub>total</sub> = 총하중 + m<sub>belt</sub>　　(마찰 관여 직선 2구간 기준 / 벨트 전장은 2C + πD)</div>
+          <div class="fx" id="f2">—</div><p class="hint" id="n2"></p>
+          <div id="n2roll"></div><div id="n2warn"></div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="stepno">STEP 3</span><span class="tt sttip" tabindex="0" id="s3">유효장력 Fe<span class="ttbox" id="b3"></span></span><span class="res" id="r3">—</span></summary>
+        <div class="dbody">
+          <div class="fx gen">Fe = m · g · (μ · cosθ + sinθ)　　g = 9.81 m/s²</div>
+          <div class="fx" id="f3">—</div><p class="hint" id="n3"></p>
+        </div>
+      </details>
+      <details>
+        <summary><span class="stepno">STEP 4</span><span class="tt sttip" tabindex="0" id="s4">구동풀리 토크 (운전 / 설계 / 모터샤트)<span class="ttbox" id="b4"></span></span><span class="res" id="r4">—</span></summary>
+        <div class="dbody">
+          <div class="fx gen">① 정상운전 T<sub>run</sub> = Fe × (D ÷ 2)　　② 설계 필요토크 T<sub>req</sub> = T<sub>run</sub> × Sf　　③ 모터샤트 환산 T<sub>motor</sub> = T<sub>req</sub> ÷ (i × η)</div>
+          <div class="fx" id="f4">—</div>
+          <div id="n4box"></div><p class="hint" id="n4"></p>
+        </div>
+      </details>
+      <details>
+        <summary><span class="stepno">STEP 5</span><span class="tt sttip" tabindex="0" id="s5">필요동력 P<sub>req</sub><span class="ttbox" id="b5"></span></span><span class="res" id="r5">—</span></summary>
+        <div class="dbody">
+          <div class="fx gen">P<sub>req</sub> = Fe × v × Sf ÷ η　　(v는 m/s 환산값)</div>
+          <div class="fx" id="f5">—</div><p class="hint" id="n5"></p>
+        </div>
+      </details>
+      <details>
+        <summary><span class="stepno">STEP 6</span><span class="tt sttip" tabindex="0" id="s6">여유율 판정<span class="ttbox" id="b6"></span></span><span class="res" id="r6">—</span></summary>
+        <div class="dbody">
+          <div class="fx gen">동력 용량비 = 모터출력 ÷ 필요동력 × 100 [%]　　여유율 = (모터출력 − 필요동력) ÷ 필요동력 × 100 [%]</div>
+          <div class="fx" id="f6">—</div><div id="n6extra"></div><div id="n6"></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="sec">
+      <h2>선택된 지지방식 단면도</h2>
+      <div class="svgbox"><svg id="cross" viewBox="0 0 760 240"></svg></div>
+    </div>
+
+    <div class="sec">
+      <h2>지지방식(무동력 지지 구조) 5종 상세 — 카드를 눌러 선택</h2>
+      <div class="note">⚠ 여기서 말하는 «롤러»는 모두 <b>동력이 없는 지지(캐리어/아이들러) 롤러</b>입니다.
+        <b>파워몰러(Power Moller, MDR)</b>처럼 롤러 안에 모터·감속기가 들어간 제품은 <b>구동부(구동풀리·기어드모터 대체)</b>이므로
+        이 5종에 포함되지 않으며, 툴에서는 ②구동부 입력(모터 정격출력·회전수·감속비·풀리지름)으로 다룹니다.</div>
+      <div class="supgrid" id="supgrid"></div>
+    </div>
+
+    <div class="sec">
+      <h2>지지방식 비교표 — 현재 조건에서 방식만 바꿔 계산</h2>
+      <div class="tblwrap"><table>
+        <thead><tr>
+          <th>지지방식</th><th><span class="tt" data-term="마찰계수">μ</span></th>
+          <th><span class="tt" data-term="필요동력">필요동력</span></th>
+          <th><span class="tt" data-term="여유율">여유율</span></th><th>판정</th>
+          <th>초기비용</th><th>소음</th><th>유지보수</th><th>주요 적용처</th>
+        </tr></thead>
+        <tbody id="cmpbody"></tbody>
+      </table></div>
+    </div>
+
+    <div class="sec">
+      <h2>롤러 처짐 검증 (피치 스윕)</h2>
+      <div class="tblwrap"><table>
+        <thead><tr><th><span class="tt" data-term="롤러피치">피치 p</span></th><th>처짐량 s</th>
+          <th><span class="tt" data-term="처짐률">처짐률</span></th><th>롤러 개수</th><th>롤러당 하중</th><th>판정</th></tr></thead>
+        <tbody id="sagbody"></tbody>
+      </table></div>
+      <div class="note">처짐률 기준: 1.0% 이하 안전 / 1.0~2.0% 주의 / 2.0% 초과 불가.
+        s = w·p² ÷ (8·T), <span class="tt" data-term="초기장력">초기장력</span> T = 벨트폭 × 1.0 N/mm 로 가정합니다.</div>
+      <div id="sagnote"></div>
+    </div>
+
+    <footer>
+      본 툴은 <b>개략 검증(1차 스크리닝)</b>용입니다. 실제 설계는 벨트·감속기 제조사 사양서, 기동 토크(관성 가속),
+      벨트 장력 안전율, 축·베어링 강도 검토와 실부하 시험으로 최종 확인하십시오.<br>
+      계산 가정 — 벨트 단위중량 3.0 kg/m² · 벨트 길이 ≈ 2 × 축간거리 · g = 9.81 m/s² · 정상운전(등속) 기준 · 구동은 기어드모터 직결 전제<br>
+      지지방식 5종은 모듐 무동력 지지 구조이며, 모터 내장 구동 롤러(파워몰러·MDR)는 구동부 부품로 별도 산정이 필요합니다.
+    </footer>
+  </main>
+</div>
+</div>
+
+<script src="../api-config.js"></script>
+<script type="module" src="../api-client.js"></script>
+<script>
+(function(){
+  "use strict";
+  var G=9.81, BELT_KG_M2=3.0;
+
+  /* ---------- 용어 사전 ---------- */
+  var GLOSSARY={
+    "총하중":["벨트 위에 동시에 올라가는 반송물 전체 질량(kg).","벨트 자중은 별도로 STEP 2 에서 더해집니다."],
+    "경사각":["수평면 기준 컨베이어 기울기 θ(°).","질량의 sinθ 성분이 그대로 추가 부하가 됩니다. 0°는 수평 반송."],
+    "모터 정격출력":["모터의 연속 정격 출력(W).","카탈로그 정격출력을 입력합니다. 기동 시 순간 출력은 이보다 큽니다."],
+    "모터 회전수":["모터가 정격 부하에서 도는 회전수(rpm).","감속기 입력측 회전수입니다."],
+    "감속비":["감속기 입력 회전수 ÷ 출력 회전수.","값이 클수록 속도는 낮아지고 토크는 커집니다.","출력 rpm = 모터 rpm ÷ i"],
+    "구동풀리 지름":["벨트를 구동하는 헤드풀리 외경 D(mm).","벨트속도와 소요토크에 직접 영향을 줍니다.","v = π·D·N"],
+    "축간거리":["구동풀리와 종동풀리 중심 사이 거리 C(mm).","벨트 길이(≈2C)와 벨트 자중 계산에 사용됩니다."],
+    "벨트폭":["벨트의 폭 B(mm).","벨트 자중과 초기장력(T = B × 1.0 N/mm) 산정에 사용됩니다."],
+    "지지방식":["벨트 하면을 받쳐주는 무동력 지지 구조의 종류.","구조에 따라 등가 마찰계수 μ가 달라져 필요동력이 크게 변합니다. 파워몰러(MDR)처럼 모터 내장 구동 롤러는 지지방식이 아니라 구동부 부품입니다."],
+    "마찰계수":["벨트와 지지면(또는 롤러) 사이의 등가 마찰계수 μ.","클수록 같은 하중에서 필요동력·벨트장력이 커집니다."],
+    "롤러피치":["캐리어 롤러의 배치 간격 p(mm).","크면 롤러 사이에서 벨트가 처집니다. 통상 300mm 이하를 권장합니다."],
+    "안전율":["필요동력에 곱하는 여유 계수 Sf.","기동 충격·경년 마찰 증가·예상 밖 부하를 보정합니다. 일반 경량은 1.5~2.5, 보수 설계는 2.0 이상이며 본 툴 기본값은 3.0 입니다. STEP 4 설계토크와 STEP 5 필요동력에 각각 1회만 적용되므로 이중 곱셈이 아니며, 감속기·모터 선정의 기준값이 됩니다."],
+    "기계효율":["모터 출력이 구동력으로 전달되는 비율 η.","웜 감속기 0.6~0.8, 헬리컬 0.85~0.95. 손실만큼 필요동력이 커집니다."],
+    "벨트속도":["벨트 표면의 진행 선속도.","경량 컨베이어 실용 범위는 통상 5~30 m/min 입니다.","v = π·D·(rpm ÷ i)"],
+    "유효장력":["벨트를 실제로 끌기 위해 구동풀리가 내야 하는 힘 Fe(N).","지지면 마찰 저항과 경사 성분의 합입니다.","Fe = m·g·(μ·cosθ + sinθ)"],
+    "필요동력":["안전율과 기계효율을 반영한 모터측 요구 동력.","이 값보다 모터 정격출력이 커야 구동이 성립합니다.","P = Fe·v·Sf ÷ η"],
+    "여유율":["(모터출력 − 필요동력) ÷ 필요동력 × 100.","30% 이상이면 안전, 0~30%는 조건부, 음수면 구동 불가입니다."],
+    "초기장력":["설치 시 벨트에 미리 걸어두는 장력 T(N).","처짐을 버티는 힘으로, 여기서는 벨트폭 × 1.0 N/mm 로 가정합니다."],
+    "처짐률":["롤러 사이 처짐량 ÷ 롤러 피치 × 100(%).","1.0% 이하를 안전 기준으로 봅니다.","s = w·p² ÷ (8·T)"]
+  };
+  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function initTerms(){
+    Array.prototype.forEach.call(document.querySelectorAll("[data-term]"),function(el){
+      var g=GLOSSARY[el.getAttribute("data-term")]; if(!g||el.querySelector(".ttbox")) return;
+      var h='<span class="ttbox"><b>'+esc(el.getAttribute("data-term"))+"</b><br>"+esc(g[0]);
+      if(g[2]) h+='<span class="tfx">'+esc(g[2])+"</span>";
+      h+='<span class="nt">'+esc(g[1])+"</span></span>";
+      el.insertAdjacentHTML("beforeend",h); el.setAttribute("tabindex","0");
+    });
+  }
+  function stepTip(title,formula,subst,result,note){
+    return "<b>"+esc(title)+'</b><span class="tfx">'+esc(formula)+'</span><span class="tfx">'+esc(subst)+
+           '</span><span class="tres">= '+esc(result)+'</span><span class="nt">'+esc(note)+"</span>";
+  }
+
+  /* ---------- 지지방식 ---------- */
+    var SUP={}, ORDER=[], TBL=[];
+
+  var $=function(id){return document.getElementById(id);};
+  var num=function(id){var v=parseFloat($(id).value);return isFinite(v)?v:0;};
+  var fmt=function(x,d){ if(!isFinite(x)) return "∞";
+    return x.toLocaleString("ko-KR",{minimumFractionDigits:(d||0),maximumFractionDigits:(d||0)});};
+  function muOf(k){ return k==="custom" ? Math.min(Math.max(num("cmu"),0.01),1) : SUP[k].mu; }
+
+  /* ---------- 오버레이 (conveyor.jpg 기준 좌표, % 단위) ---------- */
+  /* 사진: 모터 좌하단(≈19,60) · 구동풀리(≈24,41) · 벨트 상면 중앙(≈58,28) · 종동풀리(≈92,14) */
+  var OV=[
+    {id:"ovv",  lx:40, ly:6,  ax:48, ay:29},   /* 벨트속도 : 벨트 상면 중앙 */
+    {id:"ovld", lx:57, ly:4,  ax:74, ay:23},   /* 총하중   : 반송물 적재 구간 */
+    {id:"ovd",  lx:10, ly:24, ax:24, ay:41},   /* 구동풀리 : 모터측 헤드풀리 */
+    {id:"ovbw", lx:33, ly:90, ax:30, ay:44},   /* 벨트폭   : 벨트 폭방향 에지 */
+    {id:"ovlen",lx:60, ly:90, ax:58, ay:33},   /* 축간거리 : 프레임 중간부 */
+    {id:"ovmw", lx:12, ly:88, ax:19, ay:62},   /* 모터     : 기어드모터 본체 */
+    {id:"ovang",lx:91, ly:68, ax:88, ay:21}    /* 경사각   : 종동풀리측 프레임 */
+  ];
+  function initOverlay(){
+    var s="";
+    OV.forEach(function(o){
+      var el=$(o.id); el.style.left=o.lx+"%"; el.style.top=o.ly+"%";
+      s+='<line x1="'+o.lx+'" y1="'+o.ly+'" x2="'+o.ax+'" y2="'+o.ay+'" stroke="#ffffff" stroke-opacity=".85" '+
+         'stroke-width="1" vector-effect="non-scaling-stroke" stroke-dasharray="3 2"/>'+
+         '<circle cx="'+o.ax+'" cy="'+o.ay+'" r="1.1" fill="#facc15" stroke="#111827" stroke-width=".4" vector-effect="non-scaling-stroke"/>';
+    });
+    $("lead").innerHTML=s;
+  }
+
+  /* ---------- 단면도 (소형 카드용) ---------- */
+  function svgSmall(type){
+    var W=300,H=118,x0=26,x1=274,s="",i,cx;
+    s+='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+SUP[type].name+' 단면도">';
+    s+='<rect width="'+W+'" height="'+H+'" fill="#fff"/>';
+    function frame(x){return '<rect x="'+x+'" y="28" width="18" height="66" rx="3" fill="#cbd5e1" stroke="#8fa0b5"/>'+
+      '<rect x="'+(x+4)+'" y="40" width="10" height="7" fill="#e2e8f0" stroke="#a9b7c8"/>'+
+      '<rect x="'+(x+4)+'" y="62" width="10" height="7" fill="#e2e8f0" stroke="#a9b7c8"/>';}
+    s+=frame(6)+frame(276);
+    s+='<rect x="118" y="22" width="66" height="16" rx="2" fill="#fbbf24" stroke="#d97706"/>'+
+       '<text x="151" y="34" font-size="9" text-anchor="middle" fill="#7c4a03" font-family="sans-serif">반송물</text>';
+    s+='<rect x="'+x0+'" y="40" width="'+(x1-x0)+'" height="8" rx="3" fill="#166534"/>';
+    if(type==="slider"){
+      s+='<rect x="'+x0+'" y="48" width="'+(x1-x0)+'" height="11" fill="#94a3b8" stroke="#64748b"/>'+
+         '<text x="150" y="57" font-size="8.5" text-anchor="middle" fill="#1f2937" font-family="sans-serif">강판 슬라이더 베드 (직접 미끄럼)</text>';
+      for(i=0;i<7;i++){cx=x0+18+i*38;s+='<path d="M'+cx+' 62 l6 6 M'+(cx+7)+' 62 l6 6" stroke="#dc2626" stroke-width="1.4"/>';}
+      s+='<text x="150" y="80" font-size="8" text-anchor="middle" fill="#dc2626" font-family="sans-serif">마찰 저항 큼 (μ=0.40)</text>';
+    }else if(type==="uhmw"){
+      s+='<rect x="'+x0+'" y="52" width="'+(x1-x0)+'" height="8" fill="#94a3b8" stroke="#64748b"/>'+
+         '<rect x="'+x0+'" y="48" width="'+(x1-x0)+'" height="5" fill="#dbeafe" stroke="#60a5fa"/>'+
+         '<text x="150" y="72" font-size="8.5" text-anchor="middle" fill="#1d4ed8" font-family="sans-serif">UHMW-PE 저마찰 시트 + 강판 베드</text>'+
+         '<text x="150" y="84" font-size="8" text-anchor="middle" fill="#2563eb" font-family="sans-serif">자기윤활 · 저소음 (μ=0.25)</text>';
+    }else if(type==="hybrid"){
+      s+='<rect x="'+x0+'" y="48" width="70" height="10" fill="#94a3b8" stroke="#64748b"/>'+
+         '<rect x="204" y="48" width="70" height="10" fill="#94a3b8" stroke="#64748b"/>';
+      for(i=0;i<3;i++){cx=113+i*37;s+='<circle cx="'+cx+'" cy="55" r="9" fill="#e5e7eb" stroke="#475569" stroke-width="1.4"/><circle cx="'+cx+'" cy="55" r="2" fill="#475569"/>';}
+      s+='<text x="150" y="80" font-size="8.5" text-anchor="middle" fill="#1f2937" font-family="sans-serif">중앙 롤러 + 양측 슬라이더 베드 혼합</text>'+
+         '<text x="150" y="92" font-size="8" text-anchor="middle" fill="#7c3aed" font-family="sans-serif">동력·안정성 절충 (μ=0.30)</text>';
+    }else if(type==="roller"){
+      for(i=0;i<6;i++){cx=x0+16+i*44;s+='<circle cx="'+cx+'" cy="57" r="11" fill="#e5e7eb" stroke="#475569" stroke-width="1.5"/>'+
+        '<circle cx="'+cx+'" cy="57" r="2.5" fill="#475569"/><path d="M'+(cx+13)+' 50 a13 13 0 0 1 0 14" stroke="#2563eb" stroke-width="1.2" fill="none"/>';}
+      s+='<text x="150" y="84" font-size="8.5" text-anchor="middle" fill="#1f2937" font-family="sans-serif">캐리어 롤러 (피치 p 간격 배치)</text>'+
+         '<text x="150" y="96" font-size="8" text-anchor="middle" fill="#16a34a" font-family="sans-serif">회전 저항만 발생 (μ=0.15)</text>';
+    }else if(type==="bearing"){
+      for(i=0;i<6;i++){cx=x0+16+i*44;s+='<circle cx="'+cx+'" cy="57" r="11.5" fill="#f1f5f9" stroke="#334155" stroke-width="1.5"/>'+
+        '<circle cx="'+cx+'" cy="57" r="6.5" fill="#fff" stroke="#64748b"/><circle cx="'+cx+'" cy="57" r="2" fill="#334155"/>'+
+        '<circle cx="'+cx+'" cy="50.5" r="1.3" fill="#94a3b8"/><circle cx="'+cx+'" cy="63.5" r="1.3" fill="#94a3b8"/>'+
+        '<circle cx="'+(cx-6.5)+'" cy="57" r="1.3" fill="#94a3b8"/><circle cx="'+(cx+6.5)+'" cy="57" r="1.3" fill="#94a3b8"/>';}
+      s+='<text x="150" y="86" font-size="8.5" text-anchor="middle" fill="#1f2937" font-family="sans-serif">무동력 정밀 볼베어링 아이들러 롤러</text>'+
+         '<text x="150" y="98" font-size="8" text-anchor="middle" fill="#16a34a" font-family="sans-serif">회전 저항 최소 (μ=0.10)</text>';
+    }
+    s+='<rect x="'+x0+'" y="102" width="'+(x1-x0)+'" height="7" rx="3" fill="#15803d" opacity=".75"/>'+
+       '<text x="'+(x0+2)+'" y="115" font-size="7.5" fill="#6b7280" font-family="sans-serif">리턴 벨트</text></svg>';
+    return s;
+  }
+
+  /* ---------- 대형 단면도 (선택된 방식) ---------- */
+  function drawCross(sup,mu,p,B){
+    var s="",i,cx, x0=70,x1=690, W=760;
+    s+='<rect width="760" height="240" fill="#fff"/>';
+    /* 프레임 */
+    s+='<rect x="30" y="60" width="34" height="120" rx="5" fill="#cbd5e1" stroke="#8fa0b5" stroke-width="2"/>'+
+       '<rect x="38" y="82" width="18" height="14" fill="#e2e8f0" stroke="#a9b7c8"/>'+
+       '<rect x="38" y="128" width="18" height="14" fill="#e2e8f0" stroke="#a9b7c8"/>'+
+       '<rect x="696" y="60" width="34" height="120" rx="5" fill="#cbd5e1" stroke="#8fa0b5" stroke-width="2"/>'+
+       '<rect x="704" y="82" width="18" height="14" fill="#e2e8f0" stroke="#a9b7c8"/>'+
+       '<rect x="704" y="128" width="18" height="14" fill="#e2e8f0" stroke="#a9b7c8"/>';
+    /* 반송물 */
+    s+='<rect x="300" y="24" width="160" height="40" rx="4" fill="#fcd34d" stroke="#d97706" stroke-width="2"/>'+
+       '<text x="380" y="49" text-anchor="middle" font-weight="700" font-size="15" fill="#7c2d12" font-family="sans-serif">반송물</text>';
+    /* 상부 벨트 */
+    s+='<rect x="'+x0+'" y="66" width="'+(x1-x0)+'" height="14" rx="6" fill="#166534"/>'+
+       '<text x="'+(x0+4)+'" y="62" font-size="11" fill="#166534" font-family="sans-serif">상부(반송) 벨트</text>';
+    var lab="", col="#1f2937";
+    if(sup==="slider"){
+      s+='<rect x="'+x0+'" y="80" width="'+(x1-x0)+'" height="34" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>'+
+         '<text x="380" y="102" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#1f2937">강판 슬라이더 베드 — 벨트가 면 전체에 직접 접촉</text>';
+      for(i=0;i<14;i++){cx=x0+22+i*46;s+='<path d="M'+cx+' 120 l10 12 M'+(cx+12)+' 120 l10 12" stroke="#dc2626" stroke-width="2.4"/>';}
+      s+='<text x="380" y="150" text-anchor="middle" font-size="12" fill="#dc2626" font-family="sans-serif">↑ 미끄럼 마찰 저항 (필요동력 최대)</text>';
+      col="#dc2626";
+    }else if(sup==="uhmw"){
+      s+='<rect x="'+x0+'" y="92" width="'+(x1-x0)+'" height="22" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>'+
+         '<rect x="'+x0+'" y="80" width="'+(x1-x0)+'" height="12" fill="#bfdbfe" stroke="#3b82f6" stroke-width="2"/>'+
+         '<text x="380" y="132" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#1d4ed8">UHMW-PE 라이너(청색) + 강판 베드 — 자기윤활로 마찰 저감</text>';
+      col="#1d4ed8";
+    }else if(sup==="hybrid"){
+      s+='<rect x="'+x0+'" y="80" width="170" height="26" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>'+
+         '<rect x="520" y="80" width="170" height="26" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>';
+      for(i=0;i<4;i++){cx=278+i*68;s+='<circle cx="'+cx+'" cy="100" r="21" fill="#ddd6fe" stroke="#7c3aed" stroke-width="2.5"/><circle cx="'+cx+'" cy="100" r="6" fill="#fff" stroke="#7c3aed"/>';}
+      s+='<text x="380" y="150" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#6d28d9">중앙 하중 구간만 롤러 + 양단 슬라이더 베드 (절충형)</text>';
+      col="#6d28d9";
+    }else if(sup==="roller"||sup==="bearing"){
+      var n=Math.max(3,Math.min(12,Math.round((x1-x0)/Math.max(40,p*0.38))));
+      var gap=(x1-x0)/n;
+      for(i=0;i<n;i++){
+        cx=x0+gap/2+i*gap;
+        if(sup==="roller"){
+          s+='<circle cx="'+cx.toFixed(1)+'" cy="102" r="21" fill="#fed7aa" stroke="#ea580c" stroke-width="2.5"/>'+
+             '<circle cx="'+cx.toFixed(1)+'" cy="102" r="6" fill="#fff" stroke="#ea580c"/>';
+        }else{
+          s+='<circle cx="'+cx.toFixed(1)+'" cy="102" r="21" fill="#e0e7ff" stroke="#4338ca" stroke-width="2.5"/>'+
+             '<circle cx="'+cx.toFixed(1)+'" cy="102" r="11" fill="#fff" stroke="#6366f1" stroke-width="1.5"/>'+
+             '<circle cx="'+cx.toFixed(1)+'" cy="102" r="4" fill="#4338ca"/>'+
+             '<circle cx="'+cx.toFixed(1)+'" cy="91" r="2.2" fill="#818cf8"/><circle cx="'+cx.toFixed(1)+'" cy="113" r="2.2" fill="#818cf8"/>'+
+             '<circle cx="'+(cx-11).toFixed(1)+'" cy="102" r="2.2" fill="#818cf8"/><circle cx="'+(cx+11).toFixed(1)+'" cy="102" r="2.2" fill="#818cf8"/>';
+        }
+      }
+      /* 피치 치수선 */
+      var a=x0+gap/2, b=a+gap;
+      s+='<line x1="'+a.toFixed(1)+'" y1="140" x2="'+b.toFixed(1)+'" y2="140" stroke="#0f172a" stroke-width="1.5" marker-start="url(#ar)" marker-end="url(#ar)"/>'+
+         '<line x1="'+a.toFixed(1)+'" y1="128" x2="'+a.toFixed(1)+'" y2="146" stroke="#0f172a" stroke-width="1.2"/>'+
+         '<line x1="'+b.toFixed(1)+'" y1="128" x2="'+b.toFixed(1)+'" y2="146" stroke="#0f172a" stroke-width="1.2"/>'+
+         '<text x="'+((a+b)/2).toFixed(1)+'" y="158" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#0f172a">피치 p = '+fmt(p,0)+' mm</text>';
+      s+='<text x="380" y="180" text-anchor="middle" font-size="13" font-family="sans-serif" fill="'+(sup==="roller"?"#c2410c":"#4338ca")+'">'+
+         (sup==="roller"?"무동력 캐리어 롤러 — 구름 저항만 발생 (동력 없음)":"무동력 정밀 볼베어링 아이들러 — 회전 저항 최소 (동력 없음)")+'</text>';
+      col=(sup==="roller"?"#c2410c":"#4338ca");
+    }else{
+      s+='<rect x="'+x0+'" y="80" width="'+(x1-x0)+'" height="34" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="8 5"/>'+
+         '<text x="380" y="103" text-anchor="middle" font-size="13" font-family="sans-serif" fill="#991b1b">사용자 지정 지지 구조 (μ 직접 입력)</text>';
+      col="#991b1b";
+    }
+    /* 리턴 벨트 + 벨트폭 표기 */
+    s+='<rect x="'+x0+'" y="196" width="'+(x1-x0)+'" height="12" rx="5" fill="#15803d" opacity=".7"/>'+
+       '<text x="'+(x0+4)+'" y="192" font-size="11" fill="#15803d" font-family="sans-serif">리턴 벨트</text>';
+    s+='<line x1="'+x0+'" y1="46" x2="'+x1+'" y2="46" stroke="#475569" stroke-width="1.2" stroke-dasharray="5 4"/>'+
+       '<text x="'+(x1-2)+'" y="42" text-anchor="end" font-size="11" fill="#475569" font-family="sans-serif">벨트폭 B = '+fmt(B,0)+' mm</text>';
+    s+='<text x="380" y="226" text-anchor="middle" font-size="15" font-weight="700" font-family="sans-serif" fill="'+col+'">'+
+       SUP[sup].name+" · μ = "+mu.toFixed(2)+'</text>';
+    s+='<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">'+
+       '<path d="M0 4 L8 1 L8 7 z" fill="#0f172a"/></marker></defs>';
+    $("cross").innerHTML=s;
+  }
+
+  /* ---------- 카드 · 표 골격 ---------- */
+  function buildCards(){
+    var h="";
+    ORDER.forEach(function(k){
+      var d=SUP[k];
+      h+='<div class="sup" id="sup-'+k+'"><div class="hd"><span class="nm">'+d.order+". "+d.name+"</span>"+
+         '<span class="mu">μ = '+d.mu.toFixed(2)+'</span><span class="cur" id="cur-'+k+'" style="display:none">현재 선택</span></div>'+
+         svgSmall(k)+"<dl><dt>구조 특징</dt><dd>"+d.feat+"</dd><dt>장점</dt><dd>"+d.pros+
+         "</dd><dt>단점</dt><dd>"+d.cons+"</dd><dt>적용처</dt><dd>"+d.apply+"</dd></dl>"+
+         '<button type="button" class="pick" data-k="'+k+'">이 방식으로 선택</button></div>';
+    });
+    $("supgrid").innerHTML=h;
+    Array.prototype.forEach.call(document.querySelectorAll(".pick"),function(b){
+      b.addEventListener("click",function(){ $("support").value=b.getAttribute("data-k"); onSupChange(); });
+    });
+  }
+
+  /* ---------- 메인 계산 ---------- */
+  async function calc(){
+    var request={load:num("load"),angle:num("angle"),pmotor:num("pmotor"),rpm:num("rpm"),ratio:num("ratio"),pulley:num("pulley"),center:num("center"),width:num("width"),support:$("support").value,pitch:num("pitch"),sf:num("sf"),eff:num("eff"),cmu:num("cmu")};
+    var api;
+    try{api=await globalThis.JCalculatorApi.conveyorCalculate(request);}catch(err){globalThis.JCalculatorApi.showError(err);return null;}
+    var {load,ang,pm,rpm,i,D,C,B,sup,p,sf,eff,mu,isRoll,outRpm,vmm,vmin,vms,area,mBelt,mTot,nRoll,perRoll,th,fFric,fGrad,Fe,T,Tk,Treq,Treqk,Tmotor,Trated,Tratio,Preq,PreqNoSf,margin,need30,ratio,Tini,wl}=api;
+    $("pitch").disabled=!isRoll;
+    $("pitchnote").textContent=isRoll?"롤러 지지 간격 (300mm 초과 시 처짐 경고)":"현재 지지방식에서는 사용하지 않음";
+    $("ovv").textContent="벨트속도 "+fmt(vmm,0)+" mm/min";
+    $("ovld").textContent="총하중 "+fmt(load,1)+" kg";
+    $("ovd").textContent="구동풀리 Ø"+fmt(D,0)+" / "+fmt(outRpm,1)+" rpm";
+    $("ovmw").textContent="모터 "+fmt(pm,0)+" W · i = "+fmt(i,1);
+    $("ovbw").textContent="벨트폭 "+fmt(B,0)+" mm";
+    $("ovlen").textContent="축간거리 "+fmt(C,0)+" mm";
+    $("ovang").textContent="경사각 "+fmt(ang,1)+"°";
+
+    /* KPI */
+    $("kn").textContent=fmt(outRpm,1);
+    $("kv").textContent=fmt(vmm,0);  $("kv2").textContent="mm/min ("+fmt(vmin,2)+" m/min)";
+    $("km").textContent=fmt(mTot,2)+" kg"; $("km2").textContent="반송물 "+fmt(load,1)+" + 벨트 "+fmt(mBelt,2);
+    $("kf").textContent=fmt(Fe,1);
+    $("kp").textContent=fmt(Preq/1000,3)+" kW"; $("kp2").textContent=fmt(Preq,1)+" W";
+    $("kmg").textContent=(isFinite(margin)?fmt(margin,1):"∞")+" %";
+    $("kmg2").textContent="동력 용량비 "+(isFinite(ratio)?fmt(ratio,1):"∞")+"% · 여유율 30% 이상 권장";
+
+    /* 게이지 */
+    var col=margin>=30?"#16a34a":(margin>=0?"#d97706":"#dc2626");
+    $("barfill").style.width=(margin<0?3:Math.max(0,Math.min(100,isFinite(margin)?margin:100)))+"%";
+    $("barfill").style.background=col;
+
+    /* STEP 표시 + 툴팁 */
+    $("r1").textContent=fmt(vmm,0)+" mm/min";
+    $("f1").innerHTML="v = π × "+fmt(D,0)+"mm × ("+fmt(rpm,0)+"rpm ÷ "+fmt(i,1)+") = π × "+fmt(D,0)+" × "+fmt(outRpm,2)+
+      " = <b>"+fmt(vmm,0)+" mm/min</b> ( "+fmt(vmin,2)+" m/min )";
+    $("n1").innerHTML="감속기 출력 회전수 = "+fmt(rpm,0)+" ÷ "+fmt(i,1)+" = <b>"+fmt(outRpm,2)+" rpm</b> → "+fmt(vms,3)+
+      " m/s. 경량 컨베이어 실용 범위는 통상 5~30 m/min 입니다.";
+    $("b1").innerHTML=stepTip("STEP 1 · 벨트속도 v","v = π × D × (모터rpm ÷ i)",
+      "v = π × "+fmt(D,0)+" × ("+fmt(rpm,0)+" ÷ "+fmt(i,1)+")",fmt(vmm,0)+" mm/min ("+fmt(vmin,2)+" m/min)",
+      "출력 회전수 "+fmt(outRpm,2)+" rpm 기준. 표시 단위는 mm/min, 괄호는 m/min 병기입니다.");
+
+    $("r2").textContent=fmt(mTot,2)+" kg";
+    $("f2").innerHTML="m<sub>belt</sub> = (2 × "+fmt(C,0)+"mm) × "+fmt(B,0)+"mm × 3.0 kg/m² = "+fmt(area,3)+
+      " m² × 3.0 = <b>"+fmt(mBelt,2)+" kg</b> ／ m<sub>total</sub> = "+fmt(load,1)+" + "+fmt(mBelt,2)+" = <b>"+fmt(mTot,2)+" kg</b>";
+    $("n2").innerHTML="질량 산정에는 베드·롤러 위를 지나는 <b>직선 2구간(상부+리턴) = 2C = "+fmt(2*C,0)+" mm</b> 만 반영합니다. "+
+      "풀리에 감기는 πD = "+fmt(Math.PI*D,0)+" mm 구간은 풀리가 지지하므로 베드 마찰에 관여하지 않아 제외한 것이며, 보수적 가산이 아닙니다. "+
+      "벨트 <b>전장(구매·제작 길이)</b>은 2C + πD = <b>"+fmt(api.beltPurchaseLengthMm,0)+" mm</b> (질량 "+
+      fmt(api.beltPurchaseMassKg,2)+" kg) 이므로 벨트 발주·장력조정 시에는 이 값을 사용하십시오.";
+    $("n2roll").innerHTML=isRoll?'<p class="hint">지지 롤러 개수 ≈ C ÷ p + 1 = '+fmt(C,0)+" ÷ "+fmt(p,0)+" + 1 = <b>"+nRoll+
+      " 개</b>, 롤러 1개당 평균 하중 ≈ "+fmt(perRoll,2)+" kg</p>":"";
+    $("n2warn").innerHTML=(isRoll&&p>300)?'<div class="note w">⚠ 롤러피치 '+fmt(p,0)+
+      "mm 는 권장 상한 300mm 를 초과합니다. 롤러 사이에서 벨트 처짐이 발생해 반송물 흔들림·벨트 사행·국부 마모가 생길 수 있습니다.</div>":"";
+    $("b2").innerHTML=stepTip("STEP 2 · 총 이동질량","m_belt = (2C) × B × 3.0 kg/m²  /  m_total = 총하중 + m_belt",
+      "m_belt = (2×"+fmt(C,0)+") × "+fmt(B,0)+" × 3.0 = "+fmt(mBelt,2)+" kg",fmt(mTot,2)+" kg",
+      "벨트 단위중량 3.0 kg/m². 마찰에 관여하는 직선 2구간(2C)만 반영하고 풀리 감김부(πD)는 제외합니다. 벨트 전장은 2C+πD = "+
+      fmt(api.beltPurchaseLengthMm,0)+" mm."+(isRoll?" 롤러 "+nRoll+"개, 개당 "+fmt(perRoll,2)+" kg.":""));
+
+    $("r3").textContent=fmt(Fe,1)+" N";
+    $("f3").innerHTML="Fe = "+fmt(mTot,2)+"kg × 9.81 × ( "+mu.toFixed(2)+" × cos"+fmt(ang,1)+"° + sin"+fmt(ang,1)+"° ) = "+
+      fmt(api.weightN,1)+"N × "+api.forceFactor.toFixed(4)+" = <b>"+fmt(Fe,1)+" N</b>";
+    $("n3").innerHTML="지지방식 <b>"+SUP[sup].name+"</b> (μ = "+mu.toFixed(2)+") 적용 ／ 마찰 성분 "+fmt(fFric,1)+
+      " N + 경사 성분 "+fmt(fGrad,1)+" N"+(ang>0?"":" (수평이므로 경사 성분 0)");
+    $("b3").innerHTML=stepTip("STEP 3 · 유효장력 Fe","Fe = m·g·(μ·cosθ + sinθ)",
+      "Fe = "+fmt(mTot,2)+" × 9.81 × ("+mu.toFixed(2)+"×cos"+fmt(ang,1)+"° + sin"+fmt(ang,1)+"°)",fmt(Fe,1)+" N",
+      "마찰 "+fmt(fFric,1)+" N + 경사 "+fmt(fGrad,1)+" N. 벨트 자중도 경사 성분에 포함시킨 보수적 계산입니다.");
+
+    $("r4").textContent="운전 "+fmt(T,2)+" / 설계 "+fmt(Treq,2)+" N·m";
+    $("f4").innerHTML=
+      "① T<sub>run</sub> = "+fmt(Fe,1)+"N × ("+fmt(D,0)+"mm ÷ 2) = <b>"+fmt(T,2)+" N·m</b> ("+fmt(Tk,1)+" kgf·cm) ← 정상운전 토크<br>"+
+      "② T<sub>req</sub> = "+fmt(T,2)+" × Sf "+fmt(sf,1)+" = <b>"+fmt(Treq,2)+" N·m</b> ("+fmt(Treqk,1)+" kgf·cm) ← <b>감속기 정격 출력토크는 이 값 이상</b><br>"+
+      "③ T<sub>motor</sub> = "+fmt(Treq,2)+" ÷ ("+fmt(i,1)+" × "+fmt(eff,2)+") = <b>"+fmt(Tmotor,3)+" N·m</b> ／ 모터 정격토크 = "+
+      fmt(pm,0)+"W ÷ (2π×"+fmt(rpm,0)+"÷60) = <b>"+fmt(Trated,3)+" N·m</b>";
+    $("n4box").innerHTML=(Tmotor<=Trated)
+      ? '<div class="note g">✓ 모터샤프트 환산 토크 '+fmt(Tmotor,3)+" N·m ≤ 모터 정격토크 "+fmt(Trated,3)+" N·m (여유 "+
+        (isFinite(Tratio)?fmt(Tratio,2):"∞")+"배) — 토크 기준으로도 성립합니다.</div>"
+      : '<div class="note w">⚠ 모터샤프트 환산 토크 '+fmt(Tmotor,3)+" N·m 가 모터 정격토크 "+fmt(Trated,3)+
+        " N·m 를 초과합니다 — 안전율 Sf 포함 기준으로 토크가 부족합니다.</div>";
+    $("n4").innerHTML="①은 실제 운전 상태의 토크(실측 부하 비교용), <b>②가 감속기 선정 기준값</b>입니다. "+
+      "기계효율 η는 감속기 <b>출력축</b> 정격토크와 비교할 때는 다시 나누지 않으며(정격치에 이미 반영), 모터샤프트로 환산하는 ③에서만 적용합니다. "+
+      "③은 STEP 5의 필요동력을 토크로 환산한 값과 동일합니다(P<sub>req</sub> ÷ ω<sub>motor</sub>). "+
+      "기동 시에는 관성·정지마찰로 ①의 1.5~2배가 순간 요구될 수 있으므로 별도의 기동토크 검토가 필요합니다.";
+    $("b4").innerHTML=stepTip("STEP 4 · 토크 3단 비교",
+      "T_run = Fe×(D÷2)   T_req = T_run×Sf   T_motor = T_req÷(i×η)",
+      "T_run = "+fmt(T,2)+"  →  T_req = "+fmt(T,2)+"×"+fmt(sf,1)+" = "+fmt(Treq,2)+"  →  T_motor = "+fmt(Treq,2)+"÷("+fmt(i,1)+"×"+fmt(eff,2)+")",
+      "운전 "+fmt(T,2)+" / 설계 "+fmt(Treq,2)+" / 모터샤프트 "+fmt(Tmotor,3)+" N·m",
+      "감속기 정격 출력토크는 설계값 "+fmt(Treq,2)+" N·m 이상, 모터 정격토크("+fmt(Trated,3)+" N·m)는 모터샤프트 환산값 "+
+      fmt(Tmotor,3)+" N·m 이상이면 성립합니다. η는 출력축 비교 시 재적용하지 않습니다.");
+
+    $("r5").textContent=fmt(Preq/1000,3)+" kW";
+    $("f5").innerHTML="P<sub>req</sub> = "+fmt(Fe,1)+"N × "+fmt(vms,4)+"m/s × "+fmt(sf,1)+" ÷ "+fmt(eff,2)+
+      " = <b>"+fmt(Preq/1000,3)+" kW</b> ( "+fmt(Preq,1)+" W )";
+    $("n5").innerHTML="안전율·효율 반영 전 순 소요동력은 "+fmt(PreqNoSf,1)+" W 입니다. 여기에 안전율 "+fmt(sf,1)+
+      "배를 곱하고 기계효율 "+fmt(eff,2)+"로 나누어 모터측 필요동력을 산출합니다.";
+    $("b5").innerHTML=stepTip("STEP 5 · 필요동력 P_req","P_req = Fe × v × Sf ÷ η",
+      "P_req = "+fmt(Fe,1)+" × "+fmt(vms,4)+" × "+fmt(sf,1)+" ÷ "+fmt(eff,2),
+      fmt(Preq/1000,3)+" kW ("+fmt(Preq,1)+" W)","순 소요동력 "+fmt(PreqNoSf,1)+" W 에 안전율·효율을 반영한 모터측 요구값입니다.");
+
+    $("r6").textContent=(isFinite(margin)?fmt(margin,1):"∞")+" %";
+    $("f6").innerHTML=
+      "동력 용량비 = "+fmt(pm,0)+"W ÷ "+fmt(Preq,1)+"W × 100 = <b>"+(isFinite(ratio)?fmt(ratio,1):"∞")+" %</b>　← 모터가 필요동력의 몇 %인가<br>"+
+      "여유율 = ( "+fmt(pm,0)+"W − "+fmt(Preq,1)+"W ) ÷ "+fmt(Preq,1)+"W × 100 = <b>"+
+      (isFinite(margin)?fmt(margin,1):"∞")+" %</b>　← 추가로 남는 여유분 （용량비 − 100%）";
+    $("n6extra").innerHTML='<p class="hint">안전율 Sf '+fmt(sf,1)+"배와 기계효율 η "+fmt(eff,2)+"는 이미 필요동력 안에 들어가 있습니다. "+
+      "안전율·효율 미적용 순 소요동력 "+fmt(PreqNoSf,1)+" W 기준으로는 모터가 "+
+      (PreqNoSf>0?fmt(pm/PreqNoSf,2):"∞")+"배이므로, 여유율 30% 기준은 이중 여유에 해당하는 보수적 잣대입니다.</p>";
+    $("b6").innerHTML=stepTip("STEP 6 · 여유율 판정",
+      "용량비 = 모터출력 ÷ 필요동력 × 100／여유율 = (모터출력 − 필요동력) ÷ 필요동력 × 100",
+      "용량비 = "+fmt(pm,0)+" ÷ "+fmt(Preq,1)+"／여유율 = ("+fmt(pm,0)+" − "+fmt(Preq,1)+") ÷ "+fmt(Preq,1),
+      "용량비 "+(isFinite(ratio)?fmt(ratio,1):"∞")+"% ／ 여유율 "+(isFinite(margin)?fmt(margin,1):"∞")+" %",
+      "30% 이상 안전 / 0~30% 조건부 / 0% 미만 구동 불가. 여유율 30% 기준 최소 모터출력은 "+fmt(need30,1)+" W 입니다.");
+
+    /* 판정 */
+    var v=$("verdict"), cls,big,sub,n6;
+    if(margin>=30){
+      cls="ok"; big="✅ 정상운전 기준 안전 — 구동 가능";
+      sub="모터 정격출력 "+fmt(pm,0)+"W 가 필요동력 "+fmt(Preq,1)+"W 를 상회합니다. (동력 용량비 "+
+        (isFinite(ratio)?fmt(ratio,1):"∞")+"% / 여유율 "+fmt(margin,1)+"%)";
+      n6='<div class="note g">판정: <b>정상운전(등속) 기준 안전</b>. 필요동력 '+fmt(Preq,1)+" W 대비 모터 "+fmt(pm,0)+
+        " W 로 동력 용량비 "+(isFinite(ratio)?fmt(ratio,1):"∞")+"%, 여유율 "+fmt(margin,1)+"% 이며 기준(30%)을 만족합니다. "+
+        "감속기는 설계 필요토크 "+fmt(Treq,2)+" N·m 이상(STEP 4 참조)으로 선정하십시오.<br>"+
+        "⚠ 단, <b>급가속·빈번한 기동·적재물 투입 충격</b>이 있는 경우 관성 가속 토크(기동토크)를 별도로 검토해야 합니다 "+
+        "— 본 툴은 가속시간·풀리 관성·투입 충격을 계산하지 않습니다.</div>";
+    }else if(margin>=0){
+      cls="wn"; big="⚠ 조건부 가능 — 재검토 권장";
+      sub="구동은 되지만 여유가 부족합니다. 필요동력 "+fmt(Preq,1)+"W / 모터 "+fmt(pm,0)+"W (여유율 "+fmt(margin,1)+"%)";
+      n6='<div class="note w">판정: 조건부 가능. 권장 하한 30% 미달입니다. 여유율 30% 확보에는 모터 <b>'+fmt(need30,1)+
+        "W 이상</b>이 필요합니다. 또는 감속비 상향(속도 저감)·저마찰 지지방식으로 변경하십시오.</div>";
+    }else{
+      cls="ng"; big="❌ 구동 불가";
+      sub="필요동력 "+fmt(Preq,1)+"W 가 모터 정격 "+fmt(pm,0)+"W 를 초과합니다. (부족 "+fmt(Preq-pm,1)+"W)";
+      n6='<div class="note w">판정: 구동 불가. 여유율 30% 확보에는 모터 <b>'+fmt(need30,1)+
+        "W 이상</b>이 필요합니다. 모터 증설·감속비 상향·지지방식 저마찰화·총하중 감소 중 하나 이상이 필요합니다.</div>";
+    }
+    v.className="verdict "+cls; $("vbig").textContent=big; $("vsub").textContent=sub; $("n6").innerHTML=n6;
+
+    /* 경고/제안 */
+    var tips=[];
+    if(margin<30) tips.push("여유율 30% 기준 최소 모터출력: <b>"+fmt(need30,1)+" W</b>");
+    if(margin<30&&mu>0.10){
+      var alt=api.altPower;
+      tips.push("정밀 베어링 롤러(μ=0.10)로 변경 시 필요동력 약 <b>"+fmt(alt,1)+" W</b>로 감소");
+    }
+    if(margin<30&&Preq>0&&pm>0){
+      var iNeed=api.iNeed;
+      if(isFinite(iNeed)&&iNeed>i) tips.push("현재 모터로 여유율 30%를 확보하려면 감속비를 약 <b>"+fmt(iNeed,0)+
+        " : 1</b> 이상으로 올려 속도를 "+fmt(vmm*i/iNeed,0)+" mm/min 로 낮추는 방법도 있습니다");
+    }
+    if(api.backdriveRisk) tips.push("⚠ <b>미끄러짐 위험: tanθ("+Math.tan(th).toFixed(3)+") > μ("+mu.toFixed(2)+")</b> — 요철·돌기 벨트 또는 경사 전용 벨트를 검토하십시오.");
+    if(ang>0) tips.push("경사 컨베이어는 정지 시 역주행 방지를 위해 브레이크 모터 또는 역회전 방지 장치를 권장합니다.");
+    if(Preq>200) tips.push("필요동력 "+fmt(Preq,1)+" W 는 경량 컨베이어 범위(약 200 W)를 초과합니다. 중하중용 기종 검토가 필요합니다.");
+    if(vmin>30) tips.push("벨트속도 "+fmt(vmin,1)+" m/min 는 경량 컨베이어 통상 범위(5~30 m/min)를 초과합니다.");
+    if(vmin>0&&vmin<3) tips.push("벨트속도가 3 m/min 미만으로 매우 낮습니다. 저속에서는 감속기 효율 저하와 맥동에 유의하십시오.");
+    if(D<40) tips.push("구동풀리 지름 "+fmt(D,0)+"mm 는 작아 벨트 굽힘 응력이 커집니다. 벨트 최소 풀리 지름 사양을 확인하십시오.");
+    $("alerts").innerHTML=tips.length?'<div class="note">💡 <b>검토 제안</b><ul style="margin:5px 0 0 17px;padding:0">'+
+      tips.map(function(t){return "<li>"+t+"</li>";}).join("")+"</ul></div>":"";
+
+    /* 대형 단면도 */
+    drawCross(sup,mu,p,B);
+
+    /* 카드 하이라이트 */
+    ORDER.forEach(function(k){
+      var on=(k===sup);
+      $("sup-"+k).className="sup"+(on?" on":"");
+      $("cur-"+k).style.display=on?"inline-block":"none";
+    });
+
+    /* 비교표 */
+    var rows="";
+    api.comparison.forEach(function(row){
+      var k=row.key,d=SUP[k],st=row.status==="safe"?"✅ 안전":(row.status==="conditional"?"△ 조건부":"✕ 불가");
+      rows+='<tr class="'+(k===sup?'sel':'')+'"><td>'+d.name+'</td><td>'+row.mu.toFixed(2)+'</td>'+ 
+        '<td>'+fmt(row.powerW,1)+' W<br><span style="color:#64748b">('+fmt(row.relativePct,0)+'%)</span></td>'+ 
+        '<td>'+(isFinite(row.marginPct)?fmt(row.marginPct,1):'–')+' %</td><td>'+st+'</td>'+ 
+        '<td>'+d.cost+'</td><td>'+d.noise+'</td><td>'+d.maint+'</td><td>'+d.apply+'</td></tr>';
+    });
+    $("cmpbody").innerHTML=rows;
+
+    /* 롤러 처짐 검증표 */
+    var srows="";
+    api.sagRows.forEach(function(row){
+      var st=row.status==="safe"?"✅ 안전":(row.status==="warning"?"△ 주의":"✕ 불가");
+      srows+='<tr class="'+(Math.round(p)===row.pitchMm?'sel':'')+'"><td>'+row.pitchMm+' mm</td><td>'+row.sagMm.toFixed(3)+' mm</td><td>'+ 
+        row.ratePct.toFixed(3)+' %</td><td>'+row.rollerCount+' 개</td><td>'+row.kgPerRoller.toFixed(2)+' kg</td><td>'+st+'</td></tr>';
+    });
+    $("sagbody").innerHTML=srows;
+    $("sagnote").innerHTML=isRoll
+      ? '<div class="note">단위길이 하중 w = (총하중 + 벨트자중÷2) × g ÷ 축간거리 = '+fmt(wl,1)+
+        " N/m, 초기장력 T = "+fmt(B,0)+"mm × 1.0 = "+fmt(Tini,0)+" N 기준입니다. 현재 선택 피치 "+fmt(p,0)+"mm 행이 하이라이트됩니다.</div>"
+      : '<div class="note w">현재 지지방식(' + SUP[sup].name + ")은 면 전체로 벨트를 받치는 구조여서 롤러 처짐이 발생하지 않습니다. 위 표는 롤러형으로 변경할 경우의 참고값입니다.</div>";
+  
+    return api;
+  }
+
+  /* ---------- 이벤트 ---------- */
+  function onSupChange(){
+    $("cmuwrap").style.display=($("support").value==="custom")?"block":"none";
+    calc();
+  }
+  async function initConveyor(){
+    try{
+      var data=await globalThis.JCalculatorApi.conveyorBootstrap();
+      SUP=data.supports; ORDER=data.order; TBL=data.tableOrder;
+      initTerms(); initOverlay(); buildCards();
+      Array.prototype.forEach.call(document.querySelectorAll("input,select"),function(e){e.addEventListener("input",calc);e.addEventListener("change",calc);});
+      $("support").addEventListener("change",onSupChange);
+      $("reset").addEventListener("click",function(){var d={load:20,angle:0,pmotor:90,rpm:1500,ratio:30,pulley:50,center:1000,width:300,pitch:200,sf:3.0,eff:0.8,cmu:0.20};for(var k in d)$(k).value=d[k];$("support").value="slider";onSupChange();});
+      $("fit").addEventListener("click",async function(){var result=await calc();if(!result)return;$("pmotor").value=Math.ceil(result.need30);await calc();});
+      onSupChange();
+    }catch(err){globalThis.JCalculatorApi.showError(err);}
+  }
+  document.addEventListener("DOMContentLoaded",initConveyor);
+})();
+</script>
+</body>
+</html>
