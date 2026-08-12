@@ -8678,7 +8678,7 @@ var x = globalThis.__JCALC_BOOTSTRAP__.catalog.guides,
       href: `./evidence/ball-screw-evidence.pdf#page=2`
     },
     ballScrew219: {
-      label: `삼익THK 국산 볼나사 No.219 · BNK/미가공/전조 전 계열`,
+      label: `삼익THK 국산 볼나사 카탈로그 (No.219)`,
       page: 3,
       href: `./evidence/ball-screw-219.pdf#page=3`
     },
@@ -8837,6 +8837,118 @@ var de = e(e => {
     lmAccuracy: `레일과 블록의 높이·폭·주행 평행도 허용오차 등급입니다. 보통급은 일반 자동화, H는 상급, P는 정밀급입니다. 높은 등급은 정밀하지만 장착면 가공·조립 정밀도와 비용 요구도 커집니다. 하중용량 계산값은 같고 최종 주문 사양에 반영됩니다.`,
     safetyGoal: `카탈로그 정격 자체를 변경하는 값이 아니라 계산기의 합격 여유 기준입니다. 표준은 일반 여유, 안전 우선은 토크 사용률과 수명에 더 넉넉한 여유, 매우 보수적은 충격과 불확실성이 큰 장비용입니다. 사용자가 원한 오버스펙 성향을 일관되게 적용하려면 필요합니다.`
   };
+function $catalogPdfPage(e) {
+  return e?.href?.match(/#page=(\d+)/)?.[1] ?? `1`;
+}
+function $catalogEvidenceHref(e, t, n) {
+  let r = n ? e.href.replace(/#page=\d+/, `#page=${n}`) : e.href;
+  return t ? `../${r.replace(/^\.\//, ``)}` : r;
+}
+function $catalogEvidenceDescription(e) {
+  return {
+    motorSpec: `HG-KR 시리즈의 정격·최대 토크, 회전자 관성, 정격·최대 회전속도 기준입니다.`,
+    motorBrake: `수직축 B형 모터의 전자브레이크 정적마찰토크와 전원 사양 기준입니다.`,
+    motorDim: `모터 축경과 외형·플랜지 치수를 최종 조립 검토할 때 사용하는 기준입니다.`,
+    reducer1: `KSB 1단 감속기의 형번별 정격 출력토크, 입력 회전수, 관성 및 효율 기준입니다.`,
+    reducer2: `KSB 2단 감속기의 형번별 정격 출력토크, 입력 회전수, 관성 및 효율 기준입니다.`,
+    ballScrew72: `SBN 소형 리드 볼스크류의 형번별 Ca·C0a와 주요 치수 기준입니다.`,
+    ballScrew74: `SBN 중리드 볼스크류의 형번별 Ca·C0a와 주요 치수 기준입니다.`,
+    ballScrew219: `BNK·BNK-K·BIF-V·SDA-VZ·MDK·WGF·BLK·BTK-V·BNT 전 계열의 형번별 Ca·C0a와 주요 치수 기준입니다.`,
+    support: `고정측·지지측 서포트 유니트의 축경별 형번과 조립 치수 기준입니다.`,
+    coupling: `SDS·SDCS 커플링의 축경, 허용토크 및 최고 회전속도 기준입니다.`,
+    guide: `HSR·SHS·SR·SSR·SRS·RSX 블록의 C·C0·허용모멘트와 외형 치수 기준입니다.`,
+    guideCalc: `LM 가이드 정적안전율, 정격수명과 하중계수 fw 계산 기준입니다.`
+  }[e] ?? ``;
+}
+function $catalogScrewEvidenceKey(e) {
+  if (!e) return null;
+  if (_(e.id) !== `SBN-V`) return `ballScrew219`;
+  return Number(e.page) === 72 || Number(e.leadMm) <= 5 ? `ballScrew72` : `ballScrew74`;
+}
+function $catalogScrewPageLabel(e) {
+  if (!e || $catalogScrewEvidenceKey(e) !== `ballScrew219`) return null;
+  return _(e.id).indexOf(`BNK`) === 0 ? `${e.page}~${Number(e.page) + 1}` : `${e.page}`;
+}
+function $catalogSourceLink({
+  sourceKey: e,
+  vertical: t,
+  sourcePage: n,
+  pageLabel: r
+}) {
+  let i = S[e];
+  if (!i) return null;
+  return (0, P.jsxs)(`a`, {
+    className: `catalog-source-link`,
+    href: $catalogEvidenceHref(i, t, n),
+    target: `_blank`,
+    rel: `noreferrer`,
+    title: `클릭하면 카탈로그 원본 근거 PDF가 열립니다`,
+    children: [(0, P.jsx)(`span`, {
+      className: `catalog-source-icon`,
+      "aria-hidden": `true`,
+      children: `▣`
+    }), (0, P.jsxs)(`span`, {
+      className: `catalog-source-title`,
+      children: [i.label, ` `, (0, P.jsxs)(`b`, {
+        children: [`p.`, r || n || i.page, ` · PDF `, n || $catalogPdfPage(i), `쪽`]
+      })]
+    }), (0, P.jsx)(`span`, {
+      className: `catalog-source-open`,
+      children: `🔍 원본 보기`
+    })]
+  });
+}
+function $catalogSourceBlock({
+  sourceKey: e,
+  vertical: t,
+  spec: n,
+  note: r,
+  sourcePage: i,
+  pageLabel: a
+}) {
+  return (0, P.jsxs)(`div`, {
+    className: `catalog-source-inline field-wide`,
+    children: [(0, P.jsx)($catalogSourceLink, {
+      sourceKey: e,
+      vertical: t,
+      sourcePage: i,
+      pageLabel: a
+    }), r && (0, P.jsx)(`p`, {
+      children: r
+    }), n && (0, P.jsx)(`span`, {
+      className: `catalog-source-spec`,
+      children: n
+    })]
+  });
+}
+function $catalogSourceRow({
+  label: e,
+  sourceKey: t,
+  vertical: n,
+  spec: r,
+  note: i,
+  sourcePage: a,
+  pageLabel: o
+}) {
+  return (0, P.jsxs)(`li`, {
+    key: e,
+    children: [(0, P.jsx)(`b`, {
+      className: `catalog-source-part`,
+      children: e
+    }), (0, P.jsx)($catalogSourceLink, {
+      sourceKey: t,
+      vertical: n,
+      sourcePage: a,
+      pageLabel: o
+    }), (0, P.jsx)(`span`, {
+      className: `catalog-source-description`,
+      children: i || $catalogEvidenceDescription(t)
+    }), r && (0, P.jsx)(`span`, {
+      className: `catalog-source-spec`,
+      children: r
+    })]
+  });
+}
 function me({
   text: e
 }) {
@@ -11008,6 +11120,7 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
   }];
   let we = JSON.stringify(i) !== JSON.stringify(n),
     Te = ie(i.reducerRatio),
+    $currentMotorInput = u.find(e => e.id === i.motorId) ?? u[0],
     Ee = (0, l.useMemo)(() => i.screwSeries === `all` ? v : v.filter(e => _(e.id) === i.screwSeries), [i.screwSeries]),
     De = (0, l.useMemo)(() => [...new Set(Ee.map(e => e.diameterMm))].sort((e, t) => e - t), [Ee]),
     Oe = (0, l.useMemo)(() => [...new Set(Ee.filter(e => e.diameterMm === i.screwDiameterMm).map(e => e.leadMm))].sort((e, t) => e - t), [i.screwDiameterMm, Ee]),
@@ -11306,6 +11419,11 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
                     children: [e.id, t ? `B` : ``, ` · `, e.powerW, ` W · `, t ? `브레이크 ${e.brakeStaticTorqueNm} N·m` : `비브레이크`]
                   }, e.id))
                 })
+              }), (0, P.jsx)($catalogSourceBlock, {
+                sourceKey: `motorSpec`,
+                vertical: t,
+                note: $catalogEvidenceDescription(`motorSpec`),
+                spec: `${i.motorId}${t ? `B` : ``} · 정격 ${$currentMotorInput.ratedTorqueNm} / 최대 ${$currentMotorInput.maxTorqueNm} N·m · 관성 ${ge(t ? $currentMotorInput.brakeInertiaKgm2 : $currentMotorInput.inertiaKgm2)} kg·m² · ${$currentMotorInput.ratedRpm}/${$currentMotorInput.maxRpm} rpm${t ? ` · 브레이크 ${$currentMotorInput.brakeStaticTorqueNm} N·m` : ``}`
               }), t && (0, P.jsxs)(`div`, {
                 className: `vertical-safety-note field-wide`,
                 children: [(0, P.jsx)(`strong`, {
@@ -11328,6 +11446,11 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
               }), (0, P.jsx)(`div`, {
                 className: `ratio-message ${Te === 1 ? `direct` : `gear`}`,
                 children: Te === 1 ? `1:1 → 감속기 미적용·직결` : `${Te}:1 KSB 표준 감속비`
+              }), Te !== 1 && (0, P.jsx)($catalogSourceBlock, {
+                sourceKey: Te <= 10 ? `reducer1` : `reducer2`,
+                vertical: t,
+                note: $catalogEvidenceDescription(Te <= 10 ? `reducer1` : `reducer2`),
+                spec: `KSB ${E.gear?.gear?.size ?? `호환 형번 자동 선정`} · ${Te}:1 · 정격 출력토크 ${E.gear?.ratedTorqueNm ?? `-`} N·m · 입력한계 ${E.gear ? R(E.gear.gear.ratedInputRpm, 0) : `-`} rpm`
               })]
             })]
           })
@@ -11594,6 +11717,11 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
                   note: `축경별: SDWC-39C · SDWA-47C · SDWB-54C · SDWB-64C(6,500rpm) · SDW-80C(6,000rpm)`
                 }],
                 selectedId: i.couplingSeries
+              }), (0, P.jsx)($catalogSourceBlock, {
+                sourceKey: `coupling`,
+                vertical: t,
+                note: $catalogEvidenceDescription(`coupling`),
+                spec: `${i.couplingSeries === `SDW` ? `SDW 더블 디스크 지정` : i.couplingSeries === `SD` ? `SDS/SDCS 싱글 디스크 지정` : `축경 기준 자동 선정`} · 현재 ${T.coupling}${T.couplingTorqueNm ? ` · 허용 ${T.couplingTorqueNm} N·m · 최대 ${T.couplingMaxRpm.toLocaleString()} rpm` : ``}`
               }), i.screwSelectionMode === `manual` ? (0, P.jsx)(I, {
                 label: `검증할 형번`,
                 help: `선택한 시리즈에 등록된 실제 형번입니다. 선택하면 직경·리드·Ca·C0a가 함께 적용되며 계산 중 다른 형번으로 바꾸지 않습니다.`,
@@ -11641,6 +11769,13 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
                 }), (0, P.jsxs)(`small`, {
                   children: [`Ø`, ke.diameterMm, ` × 리드 `, ke.leadMm, ` · Ca `, ke.caKn, ` kN · C0a `, ke.c0aKn, ` kN`]
                 })]
+              }), ke && (0, P.jsx)($catalogSourceBlock, {
+                sourceKey: $catalogScrewEvidenceKey(ke),
+                vertical: t,
+                sourcePage: $catalogScrewEvidenceKey(ke) === `ballScrew219` ? Number(ke.page) : void 0,
+                pageLabel: $catalogScrewPageLabel(ke),
+                note: $catalogEvidenceDescription($catalogScrewEvidenceKey(ke)),
+                spec: `${ke.id} · Ø${ke.diameterMm} × 리드 ${ke.leadMm} mm · Ca ${ke.caKn} kN · C0a ${ke.c0aKn} kN`
               }), (0, P.jsx)(I, {
                 label: `유효 지지거리`,
                 help: F.supportSpan,
@@ -11734,6 +11869,11 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
                 }), (0, P.jsxs)(`small`, {
                   children: [`C `, je.cKn, ` kN · C0 `, je.c0Kn, ` kN · `, je.widthMm, ` × `, je.lengthMm, ` mm`]
                 })]
+              }), je && (0, P.jsx)($catalogSourceBlock, {
+                sourceKey: `guide`,
+                vertical: t,
+                note: $catalogEvidenceDescription(`guide`),
+                spec: `${je.id} · C ${je.cKn} kN · C0 ${je.c0Kn} kN · ${je.widthMm} × ${je.lengthMm} mm`
               })]
             }), (0, P.jsx)(ve, {
               inputs: i
@@ -12326,7 +12466,7 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
             }), (0, P.jsx)(`button`, {
               className: p === `sources` ? `active` : ``,
               onClick: () => m(`sources`),
-              children: `근거 위치`
+              children: `근거 자료`
             })]
           }), p === `drive` && (0, P.jsxs)(`div`, {
             className: `detail-card`,
@@ -12472,20 +12612,48 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
           }), p === `sources` && (0, P.jsxs)(`div`, {
             className: `detail-card source-card`,
             children: [(0, P.jsx)(`h3`, {
-              children: `카탈로그 근거 위치`
+              children: `근거 자료 (카탈로그 출처)`
             }), (0, P.jsx)(`p`, {
-              children: `항목을 누르면 원본에서 필요한 페이지만 추출한 웹용 근거 PDF가 바로 열립니다. 아래 표의 숫자는 원본 카탈로그 페이지 번호입니다.`
-            }), (0, P.jsx)(`div`, {
-              className: `source-list`,
-              children: Object.values(S).map(e => (0, P.jsxs)(`a`, {
-                href: t ? `../${e.href.replace(/^\.\//, ``)}` : e.href,
-                target: `_blank`,
-                rel: `noreferrer`,
-                children: [(0, P.jsx)(`span`, {
-                  children: e.label
-                }), (0, P.jsxs)(`strong`, {
-                  children: [`원본 `, e.page, `쪽 ↗`]
-                })]
+              children: `현재 선택·선정된 부품에 사용된 근거만 표시합니다. 파란 카탈로그 항목을 누르면 해당 형번의 실제 원본 페이지가 바로 열립니다.`
+            }), (0, P.jsx)(`ul`, {
+              className: `catalog-evidence-list`,
+              children: [{
+                label: `서보모터`,
+                sourceKey: `motorSpec`,
+                spec: `${ne} · 정격 ${E.motor.ratedTorqueNm} / 최대 ${E.motor.maxTorqueNm} N·m · 관성 ${ge(E.motorInertiaKgm2)} kg·m² · ${E.motor.ratedRpm}/${E.motor.maxRpm} rpm`
+              }, ...(t ? [{
+                label: `전자브레이크`,
+                sourceKey: `motorBrake`,
+                spec: `${ne}B · 정적마찰토크 ${E.motor.brakeStaticTorqueNm} N·m · 24 V DC`
+              }] : []), ...(E.ratio !== 1 ? [{
+                label: `감속기`,
+                sourceKey: E.ratio <= 10 ? `reducer1` : `reducer2`,
+                spec: `KSB ${E.gear?.gear?.size ?? `-`} · ${E.ratio}:1 · 정격 ${E.gear?.ratedTorqueNm ?? `-`} N·m · 입력한계 ${E.gear ? R(E.gear.gear.ratedInputRpm, 0) : `-`} rpm`
+              }] : []), {
+                label: `커플링`,
+                sourceKey: `coupling`,
+                spec: `${T.coupling}${T.couplingTorqueNm ? ` · 허용 ${T.couplingTorqueNm} N·m · 최대 ${T.couplingMaxRpm.toLocaleString()} rpm` : ` · 축경 대조 필요`}`
+              }, {
+                label: `볼스크류`,
+                sourceKey: $catalogScrewEvidenceKey(E.screw),
+                sourcePage: $catalogScrewEvidenceKey(E.screw) === `ballScrew219` ? Number(E.screw.page) : void 0,
+                pageLabel: $catalogScrewPageLabel(E.screw),
+                spec: `${E.screw.id} · Ø${E.screw.diameterMm} × 리드 ${E.screw.leadMm} mm · Ca ${E.screw.caKn} kN · C0a ${E.screw.c0aKn} kN`
+              }, {
+                label: `서포트 유니트`,
+                sourceKey: `support`,
+                spec: `${T.support} · 고정측 + 지지측`
+              }, {
+                label: `LM 가이드`,
+                sourceKey: `guide`,
+                spec: `${D.guide.id} · C ${D.guide.cKn} kN · C0 ${D.guide.c0Kn} kN · ${n.railCount}열 × ${n.blocksPerRail}블록`
+              }, {
+                label: `LM 계산 기준`,
+                sourceKey: `guideCalc`,
+                spec: `정적안전율 · 정격수명 · 하중계수 fw ${D.loadFactor}`
+              }].map(e => (0, P.jsx)($catalogSourceRow, {
+                ...e,
+                vertical: t
               }, e.label))
             }), (0, P.jsxs)(`div`, {
               className: `evidence-note`,
