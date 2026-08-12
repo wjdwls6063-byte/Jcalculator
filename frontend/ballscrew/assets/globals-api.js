@@ -9818,7 +9818,7 @@ var $rcTxtW = (e, t) => {
   return n;
 };
 function $rcSvgText(e, t, n, r, i, a, o) {
-  let s = i || 11.5,
+  let s = (i || 11.5) * 1.35,
     c = $rcTxtW(n, s),
     l = a === `middle` ? e - c / 2 : a === `end` ? e - c : e,
     u = `t${e}-${t}-${n}`;
