@@ -248,6 +248,38 @@ details.vs[open]>summary:before{content:"▾ "}
   opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .16s,transform .16s}
 .tt:hover>.ttbox,.tt:focus>.ttbox{opacity:1;visibility:visible;transform:translateY(0)}
 .ttbox b{color:#8fd0ff}
+.ttvis{display:block;margin-top:9px;border:1px solid #38577f;border-radius:8px;background:#17233a;padding:7px;color:#9bd8ff}
+.ttvis svg{display:block;width:100%;height:74px}
+.ttvis text{fill:#dcecff;font-size:9px;font-family:Arial,sans-serif}
+.ttvis .body{fill:#203c5c;stroke:#78c9f7;stroke-width:2}
+.ttvis .metal{fill:#9aa9b8;stroke:#d9e5ef;stroke-width:1.4}
+.ttvis .air{fill:#165d88;stroke:#6bd0ff;stroke-width:1.2}
+.ttvis .arrow{fill:none;stroke:#fbbf24;stroke-width:2;marker-end:url(#tta)}
+.ttvis-cap{display:block;margin-top:4px;color:#a9bdd2;font-size:10px;text-align:center}
+
+/* theoretical cylinder output */
+.forcebox{margin-top:12px;border:1px solid #7dd3fc;border-radius:9px;background:#fff;padding:12px 13px}
+.forcehead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.forcehead h4{margin:0;color:#0c4a6e;font-size:14px}
+.forcehead p{margin:4px 0 0;color:#64748b;font-size:11px}
+.boretabs{display:flex;justify-content:flex-end;gap:5px;flex-wrap:wrap;max-width:58%}
+.boretabs button{border:1px solid #cbd5e1;border-radius:5px;background:#f8fafc;color:#334155;padding:5px 8px;font-size:10.5px;cursor:pointer}
+.boretabs button.on{border-color:#1d4ed8;background:#1d4ed8;color:#fff;font-weight:800}
+.forcemeta{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0}
+.forcemeta>div{border-left:3px solid #38a5dc;background:#f1f8fd;padding:8px 10px;color:#475569;font-size:10.5px}
+.forcemeta b{display:block;margin-top:2px;color:#0f172a;font-size:14px}
+.forcemeta em{display:block;margin-top:1px;color:#64748b;font-size:10px;font-style:normal;font-weight:400}
+.forcetablewrap{overflow-x:auto}
+.forcetable{width:100%;min-width:610px;border-collapse:collapse;font-size:11px;text-align:center}
+.forcetable th,.forcetable td{border:1px solid #d7e1ec;padding:7px 6px;white-space:nowrap}
+.forcetable th{background:#e8f3fb;color:#174b76;font-weight:700}
+.forcetable td:first-child{text-align:left;font-weight:700;color:#334155}
+.forcetable .sel{background:#fff4ca;color:#724b00;font-weight:700}
+.forcetable .kgf{display:block;margin-top:2px;color:#64748b;font-size:9.5px;font-weight:400}
+.forcefoot{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;color:#64748b;font-size:10px}
+.forcefoot .formula{color:#075985;background:#e0f2fe;border-radius:4px;padding:2px 6px;font-weight:700}
+.forcena{margin-top:12px;border:1px dashed #cbd5e1;border-radius:8px;background:#f8fafc;padding:9px 11px;color:#64748b;font-size:11px}
+@media(max-width:720px){.forcehead{display:block}.boretabs{justify-content:flex-start;max-width:none;margin-top:9px}.forcemeta{grid-template-columns:1fr}}
 
 
 /* ===== 검색 (A안 목록 필터 + B안 전역 자동완성) ===== */
@@ -414,11 +446,11 @@ footer a{color:var(--blue);text-decoration:underline}
 
 /* ---------- 용어 사전 ---------- */
 const GLOSSARY = {
-  "횡하중": ["피스톤 로드의 축 방향이 아닌, 옆에서 걸리는 하중. 로드형 실린더는 횡하중에 약해 가이드가 필요하다."],
-  "모멘트": ["하중이 중심에서 벗어나 생기는 회전력. 가이드·테이블형 선정에서 가장 중요한 검토 항목."],
-  "에어쿠션": ["행정 말단에서 공기를 압축시켜 충격을 줄이는 구조. 고속·중하중일 때 필수적으로 검토."],
-  "러버쿠션": ["말단에 고무 범퍼로 충격을 흡수. 저속·경하중용."],
-  "오토스위치": ["실린더 위치 검출용 자기 센서(D-□ 시리즈). 실린더에 자석 내장 사양(CD-)이 필요."],
+  "횡하중": ["피스톤 로드의 축 방향이 아닌, 옆에서 걸리는 하중. 로드형 실린더는 횡하중에 약해 가이드가 필요하다.", "side-load"],
+  "모멘트": ["하중이 중심에서 벗어나 생기는 회전력. 가이드·테이블형 선정에서 가장 중요한 검토 항목.", "moment"],
+  "에어쿠션": ["행정 말단에서 공기를 압축시켜 충격을 줄이는 구조. 고속·중하중일 때 필수적으로 검토.", "cushion"],
+  "러버쿠션": ["말단에 고무 범퍼로 충격을 흡수. 저속·경하중용.", "cushion"],
+  "오토스위치": ["실린더 위치 검출용 자기 센서(D-□ 시리즈). 실린더에 자석 내장 사양(CD-)이 필요.", "switch"],
   "미끄럼 베어링": ["부시식 안내. 저가·내충격이지만 마찰이 크고 정도는 낮다. (MGP의 M 타입)"],
   "볼 부시": ["볼 순환식 안내. 마찰이 작고 정도가 높다. (MGP의 L 타입)"],
   "고정도 볼 부시": ["볼 부시의 정도 향상판. 반복 정도가 중요할 때. (MGP의 A 타입)"],
@@ -427,16 +459,22 @@ const GLOSSARY = {
   "요동각도": ["로터리 액추에이터가 회전하는 각도 범위(90°/180°/270°/360° 등)."],
   "클레비스": ["핀으로 요동 가능하게 지지하는 설치 형식. 링크 구동에 사용."],
   "트러니언": ["실린더 중앙 부근을 핀으로 지지해 요동시키는 설치 형식."],
-  "로드리스": ["피스톤 로드가 밖으로 나오지 않는 구조. 설치 길이 ≈ 스트로크 + α 로 짧다."],
+  "로드리스": ["피스톤 로드가 밖으로 나오지 않는 구조. 설치 길이 ≈ 스트로크 + α 로 짧다.", "rodless"],
   "End Lock": ["행정 말단에서 기계적으로 위치를 잠그는 기능. 에어가 빠져도 말단 유지."],
   "파인록": ["임의(중간) 위치에서 로드를 잠그는 기능. 정지 정도가 요구될 때."],
-  "자유설치": ["4방향 어디서나 설치할 수 있는 구조(CU/CUJ 등). 좁은 틈새 배치에 유리."],
+  "자유설치": ["4방향 어디서나 설치할 수 있는 구조(CU/CUJ 등). 좁은 틈새 배치에 유리.", "mount"],
   "NAAMS": ["북미 자동차 업계 표준 치수 규격. 차체 라인용 클램프에서 요구된다."],
   "하이제닉": ["세척성·위생을 고려한 설계(HY/HYB/HYC). 식품·의약 라인용."],
   "반복 위치결정 정도": ["같은 지점을 반복 정지했을 때의 편차. 전동 액추에이터는 ±0.02mm급까지 가능."],
   "에스케이프먼트": ["연속으로 들어오는 반송물을 한 개씩 분리해 내보내는 기구(MIW/MIS)."],
-  "타이로드": ["앞뒤 커버를 통봉으로 조여 붙인 각형 실린더 구조. 강성이 높다."],
-  "스트로크": ["실린더가 움직이는 거리. 로드형은 설치 길이가 스트로크의 2배 이상 필요하다."]
+  "타이로드": ["앞뒤 커버를 통봉으로 조여 붙인 각형 실린더 구조. 강성이 높다.", "tie-rod"],
+  "스트로크": ["실린더가 움직이는 거리. 로드형은 설치 길이가 스트로크의 2배 이상 필요하다.", "stroke"],
+  "실린더 내경": ["피스톤이 움직이는 튜브 안쪽의 지름(Bore). 내경이 클수록 같은 압력에서 이론출력이 커진다.", "bore"],
+  "로드경": ["피스톤 로드의 지름. 후진할 때는 피스톤 면적에서 로드 단면적을 뺀 면적에 압력이 작용한다.", "rod"],
+  "전진 출력": ["로드가 나오는 방향의 이론출력. 피스톤 전체 단면적에 공급 압력을 곱한다.", "push"],
+  "후진 출력": ["로드가 들어가는 방향의 이론출력. 로드 단면적만큼 유효면적이 줄어 전진 출력보다 작다.", "pull"],
+  "사용 압력": ["실린더 포트에 실제로 공급되는 압력. 배관·밸브 압력강하 때문에 컴프레서 설정압보다 낮을 수 있다.", "pressure"],
+  "kgf": ["킬로그램힘. 질량 kg과 다른 힘 단위이며 1 kgf = 9.80665 N이다.", "force-unit"]
 };
 
 /* ---------- TYPE (15) ---------- */
@@ -883,12 +921,34 @@ function renderSeriesTab(){
 
 /* ---------- 유틸 ---------- */
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function glossaryVisual(kind){
+  if(!kind) return '';
+  var head='<span class="ttvis"><svg viewBox="0 0 260 74" role="img" aria-label="용어 구조 개념도"><defs><marker id="tta" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#fbbf24"/></marker></defs>';
+  var tail='</svg><span class="ttvis-cap">구조 이해를 위한 간략 개념도</span></span>';
+  var body='<rect class="body" x="70" y="21" width="112" height="34" rx="5"/><rect class="metal" x="178" y="33" width="58" height="8" rx="2"/><rect class="metal" x="126" y="24" width="7" height="28"/>';
+  var art='';
+  if(kind==='bore') art=body+'<path class="arrow" d="M91 25 L91 51"/><path class="arrow" d="M91 51 L91 25"/><text x="14" y="40">내경 Ø</text>';
+  else if(kind==='rod') art=body+'<path class="arrow" d="M205 29 L205 45"/><path class="arrow" d="M205 45 L205 29"/><text x="192" y="65">로드경</text>';
+  else if(kind==='push'||kind==='pressure') art=body+'<rect class="air" x="74" y="25" width="50" height="26"/><path class="arrow" d="M20 38 L61 38"/><text x="8" y="23">공급 공기</text><text x="191" y="27">전진</text>';
+  else if(kind==='pull') art=body+'<rect class="air" x="136" y="25" width="42" height="26"/><path class="arrow" d="M238 38 L190 38"/><text x="194" y="24">공급 공기</text><text x="14" y="41">후진</text>';
+  else if(kind==='side-load') art=body+'<path class="arrow" d="M218 8 L218 27"/><text x="191" y="68">횡하중</text>';
+  else if(kind==='moment') art=body+'<path class="arrow" d="M215 12 C245 18 245 54 215 61"/><text x="185" y="12">편심 모멘트</text>';
+  else if(kind==='stroke') art=body+'<path class="arrow" d="M132 66 L232 66"/><path class="arrow" d="M232 66 L132 66"/><text x="159" y="62">스트로크</text>';
+  else if(kind==='cushion') art=body+'<rect x="75" y="25" width="13" height="26" rx="3" fill="#f59e0b"/><text x="10" y="42">말단 충격 완화</text>';
+  else if(kind==='switch') art=body+'<rect x="139" y="10" width="34" height="10" rx="3" fill="#f59e0b"/><path class="arrow" d="M156 9 L146 1"/><text x="169" y="10">센서</text>';
+  else if(kind==='rodless') art='<rect class="body" x="32" y="32" width="196" height="25" rx="5"/><rect class="metal" x="112" y="15" width="38" height="18" rx="3"/><path class="arrow" d="M70 12 L190 12"/><text x="93" y="71">외부 로드 없음</text>';
+  else if(kind==='mount') art='<rect class="body" x="94" y="24" width="72" height="32" rx="5"/><path class="arrow" d="M130 21 L130 3"/><path class="arrow" d="M130 59 L130 72"/><path class="arrow" d="M91 40 L65 40"/><path class="arrow" d="M169 40 L195 40"/><text x="101" y="44">4방향 설치</text>';
+  else if(kind==='tie-rod') art=body+'<line x1="63" y1="17" x2="190" y2="17" stroke="#fbbf24" stroke-width="3"/><line x1="63" y1="59" x2="190" y2="59" stroke="#fbbf24" stroke-width="3"/><text x="92" y="12">타이로드</text>';
+  else if(kind==='force-unit') art='<text x="39" y="42" style="font-size:20px;fill:#e8eefc">9.80665 N</text><path class="arrow" d="M132 37 L168 37"/><text x="181" y="42" style="font-size:20px;fill:#e8eefc">1 kgf</text>';
+  else art=body;
+  return head+art+tail;
+}
 /* {{용어}} → 툴팁 */
 function term(s){
   return esc(s).replace(/\{\{(.+?)\}\}/g,function(m,w){
     var g=GLOSSARY[w];
     if(!g) return w;
-    return '<span class="tt" tabindex="0">'+w+'<span class="ttbox"><b>'+w+'</b><br>'+esc(g[0])+'</span></span>';
+    return '<span class="tt" tabindex="0">'+w+'<span class="ttbox"><b>'+w+'</b><br>'+esc(g[0])+glossaryVisual(g[1])+'</span></span>';
   });
 }
 function ser(code){return SERIES[code]||null;}
@@ -951,9 +1011,9 @@ function closeLbx(){ document.getElementById("lbx").className="lbx"; }
 if(typeof document!=="undefined") document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeLbx(); });
 
 /* ---------- 상태 ---------- */
-var ST={node:"root",path:[],flags:{},result:null,tab:"sel",q:"",ser:null};
+var ST={node:"root",path:[],flags:{},result:null,tab:"sel",q:"",ser:null,forceBore:null};
 
-function reset(){ ST={node:"root",path:[],flags:{},result:null,tab:"sel",q:"",ser:ST.ser}; render(); }
+function reset(){ ST={node:"root",path:[],flags:{},result:null,tab:"sel",q:"",ser:ST.ser,forceBore:null}; render(); }
 function back(){
   if(!ST.path.length){return;}
   var last=ST.path.pop();
@@ -971,7 +1031,7 @@ async function choose(oi){
   ST.path.push({node:ST.node,q:n.q,label:o.l,f:f,next:o.to||null});
   for(var k in f)ST.flags[k]=f[k];
   if(o.done){
-    try{ST.result=await globalThis.JCalculatorApi.smcResolve(ST.flags);ST.node=null;}
+    try{ST.result=await globalThis.JCalculatorApi.smcResolve(ST.flags);ST.node=null;ST.forceBore=null;}
     catch(err){globalThis.JCalculatorApi.showError(err);return;}
   }else ST.node=o.to;
   render();
@@ -1063,6 +1123,47 @@ function vsBlock(gid,openIt,q){
   return h;
 }
 
+/* ---------- 선정 시리즈 이론출력 ---------- */
+function forceNumber(value,digits){
+  var text=Number(value).toFixed(digits);
+  var parts=text.split('.');
+  parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  return parts.join('.');
+}
+function forceCell(point){
+  return forceNumber(point.newton,1)+' N<span class="kgf">'+forceNumber(point.kgf,2)+' kgf</span>';
+}
+function setForceBore(bore){ ST.forceBore=Number(bore); render(); }
+function theoreticalOutputBlock(data,series,type){
+  if(!data||!data.bores||!data.bores.length){
+    return '<div class="forcena"><b>이론출력값 표 미적용</b> · '+esc(type?type.name:'이 시리즈')+
+      '은(는) 단순 복동 편로드 계산으로 표시하기 어려운 구조입니다. 전용 카탈로그의 토크·파지력·유지력 또는 형번별 출력표를 확인하세요.</div>';
+  }
+  var bore=data.bores.filter(function(row){return Number(row.boreMm)===Number(ST.forceBore);})[0];
+  if(!bore){ bore=data.bores.filter(function(row){return Number(row.boreMm)===Number(data.defaultBoreMm);})[0]||data.bores[0]; ST.forceBore=bore.boreMm; }
+  var selectedPressureIndex=data.pressuresMpa.indexOf(0.5);
+  if(selectedPressureIndex<0) selectedPressureIndex=0;
+  var push=bore.push[selectedPressureIndex],pull=bore.pull[selectedPressureIndex];
+  var h='<div class="forcebox"><div class="forcehead"><div><h4>이론출력값 · '+esc(series.code)+' Series</h4>'+
+    '<p>선정된 시리즈의 '+term('{{실린더 내경}}')+'별 전진·후진 이론출력을 비교합니다.</p></div><div class="boretabs">';
+  data.bores.forEach(function(row){
+    h+='<button class="'+(Number(row.boreMm)===Number(bore.boreMm)?'on':'')+'" onclick="setForceBore('+Number(row.boreMm)+')">Ø'+esc(row.boreMm)+'</button>';
+  });
+  h+='</div></div>';
+  h+='<div class="forcemeta"><div>선택 '+term('{{실린더 내경}}')+'<b>Ø'+esc(bore.boreMm)+' mm</b><em>'+term('{{로드경}}')+' Ø'+esc(bore.rodMm)+' mm</em></div>'+
+    '<div>0.5 MPa · '+term('{{전진 출력}}')+'<b>'+forceNumber(push.newton,1)+' N</b><em>'+forceNumber(push.kgf,2)+' kgf</em></div>'+
+    '<div>0.5 MPa · '+term('{{후진 출력}}')+'<b>'+forceNumber(pull.newton,1)+' N</b><em>'+forceNumber(pull.kgf,2)+' kgf</em></div></div>';
+  h+='<div class="forcetablewrap"><table class="forcetable"><thead><tr><th rowspan="2">작동 방향</th><th colspan="'+data.pressuresMpa.length+'">'+term('{{사용 압력}}')+' MPa</th></tr><tr>';
+  data.pressuresMpa.forEach(function(pressure){h+='<th class="'+(Number(pressure)===0.5?'sel':'')+'">'+forceNumber(pressure,1)+'</th>';});
+  h+='</tr></thead><tbody><tr><td>전진 · 밀기</td>';
+  bore.push.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCell(point)+'</td>';});
+  h+='</tr><tr><td>후진 · 당기기</td>';
+  bore.pull.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCell(point)+'</td>';});
+  h+='</tr></tbody></table></div>';
+  h+='<div class="forcefoot"><span class="formula">'+esc(data.formula)+' · N / '+term('{{kgf}}')+'</span><span>1 kgf = 9.80665 N · '+esc(data.standard)+' · '+esc(data.note)+'</span></div></div>';
+  return h;
+}
+
 /* ---------- 렌더: 결과 ---------- */
 function renderResult(){
   var R=ST.result, p=R.primary, t=R.type;
@@ -1091,6 +1192,7 @@ function renderResult(){
   h+='<li class="echo">선택 조건: '+esc(echo.join(" · "))+'</li>';
   h+='</ul></div>';
   h+=linkBar(p.code,"full");
+  h+=theoreticalOutputBlock(R.theoreticalOutput,p,t);
   h+='<div class="rgrid"><div><b>구조 특징</b><p>'+term(p.feat)+'</p></div>'+
      '<div><b>이 시리즈를 고르는 조건</b><p>'+term(p.pick)+'</p></div>'+
      '<div class="warn"><b>한계 · 주의</b><p>'+term(p.limit)+'</p></div></div>';
@@ -1157,6 +1259,11 @@ function copyResult(){
   L.push("TYPE: "+(R.type?R.type.id+" "+R.type.name:"")+"  |  비교 그룹: "+R.group+" "+R.gname);
   L.push("추천 SERIES: "+R.primary.code+" ("+R.primary.label+", "+R.primary.bore+")");
   L.push("추천 이유: "+R.reasons.join(" / "));
+  if(R.theoreticalOutput&&R.theoreticalOutput.bores&&R.theoreticalOutput.bores.length){
+    var fb=R.theoreticalOutput.bores.filter(function(row){return Number(row.boreMm)===Number(ST.forceBore);})[0]||R.theoreticalOutput.bores[0];
+    var fi=R.theoreticalOutput.pressuresMpa.indexOf(0.5); if(fi<0) fi=0;
+    L.push("이론출력(Ø"+fb.boreMm+", 0.5 MPa): 전진 "+forceNumber(fb.push[fi].newton,1)+" N / "+forceNumber(fb.push[fi].kgf,2)+" kgf, 후진 "+forceNumber(fb.pull[fi].newton,1)+" N / "+forceNumber(fb.pull[fi].kgf,2)+" kgf");
+  }
   L.push("비교 후보: "+R.alts.slice(0,6).map(function(s){return s.code;}).join(", "));
   if(R.lock) L.push("록 병행: "+R.lock.primary.code);
   L.push("환경 옵션: "+R.opt.label+" → "+R.opt.mark);

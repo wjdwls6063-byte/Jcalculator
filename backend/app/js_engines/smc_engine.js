@@ -2359,6 +2359,88 @@ function applyRules(gid, f) {
   return g.rules[g.rules.length - 1];
 }
 
+const FORCE_PRESSURES_MPA = [0.3, 0.4, 0.5, 0.6, 0.7];
+const STANDARD_BORES_MM = [4, 5, 6, 8, 10, 12, 15, 16, 20, 25, 30, 32, 40, 50, 63, 80, 100, 125, 140, 160, 180, 200, 250, 300, 320];
+const FORCE_TABLE_TYPES = { T01: true, T02: true, T03: true, T05: true, T08: true };
+
+function seriesBores(series) {
+  if (!series || !FORCE_TABLE_TYPES[series.type]) return [];
+  var text = String(series.bore || "").replace(/Ø/g, "ø");
+  if (text.indexOf("ø") < 0) return [];
+  var matches = text.match(/\d+(?:\.\d+)?/g) || [];
+  var numbers = matches.map(Number).filter(function (value) { return value > 0; });
+  if (!numbers.length) return [];
+  var bores;
+  if (text.indexOf("~") >= 0 && numbers.length >= 2) {
+    var min = numbers[0], max = numbers[1];
+    bores = STANDARD_BORES_MM.filter(function (value) { return value >= min && value <= max; });
+    if (bores.indexOf(min) < 0) bores.unshift(min);
+    if (bores.indexOf(max) < 0) bores.push(max);
+  } else {
+    bores = numbers;
+  }
+  return bores.filter(function (value, index, all) { return all.indexOf(value) === index; });
+}
+
+function standardRodDiameterMm(boreMm) {
+  if (boreMm <= 4) return 2;
+  if (boreMm <= 6) return 3;
+  if (boreMm <= 8) return 4;
+  if (boreMm <= 10) return 4;
+  if (boreMm <= 12) return 5;
+  if (boreMm <= 16) return 6;
+  if (boreMm <= 20) return 8;
+  if (boreMm <= 25) return 10;
+  if (boreMm <= 32) return 12;
+  if (boreMm <= 40) return 16;
+  if (boreMm <= 63) return 20;
+  if (boreMm <= 80) return 25;
+  if (boreMm <= 100) return 30;
+  if (boreMm <= 125) return 36;
+  if (boreMm <= 160) return 40;
+  if (boreMm <= 200) return 50;
+  if (boreMm <= 250) return 70;
+  if (boreMm <= 300) return 80;
+  return 90;
+}
+
+function forceAt(areaMm2, pressureMpa) {
+  var newton = areaMm2 * pressureMpa;
+  return {
+    pressureMpa: pressureMpa,
+    newton: newton,
+    kgf: newton / 9.80665
+  };
+}
+
+function theoreticalOutputFor(series) {
+  var bores = seriesBores(series);
+  if (!bores.length) return null;
+  var rows = bores.map(function (boreMm) {
+    var rodMm = standardRodDiameterMm(boreMm);
+    var pushAreaMm2 = Math.PI * boreMm * boreMm / 4;
+    var pullAreaMm2 = Math.PI * (boreMm * boreMm - rodMm * rodMm) / 4;
+    return {
+      boreMm: boreMm,
+      rodMm: rodMm,
+      pushAreaMm2: pushAreaMm2,
+      pullAreaMm2: pullAreaMm2,
+      push: FORCE_PRESSURES_MPA.map(function (pressure) { return forceAt(pushAreaMm2, pressure); }),
+      pull: FORCE_PRESSURES_MPA.map(function (pressure) { return forceAt(pullAreaMm2, pressure); })
+    };
+  });
+  var defaultIndex = rows.length <= 3 ? Math.min(1, rows.length - 1) : Math.floor((rows.length - 1) / 2);
+  return {
+    series: series.code,
+    pressuresMpa: FORCE_PRESSURES_MPA.slice(),
+    defaultBoreMm: rows[defaultIndex].boreMm,
+    bores: rows,
+    standard: "복동 편로드 대표 치수 기준",
+    formula: "F = A × P",
+    note: "이론값입니다. 실제 선정은 부하율·마찰·배관 압력강하를 반영하고, 최종 로드경은 선택 형번의 공식 카탈로그를 확인하세요."
+  };
+}
+
 function resolve(f) {
   var gid = pickGroup(f);
   var rule = applyRules(gid, f);
@@ -2383,7 +2465,8 @@ function resolve(f) {
     primary: primary,
     alts: alts,
     type: typeOf(primary ? primary.type : GROUPS[gid].type),
-    reasons: (rule.r || []).slice()
+    reasons: (rule.r || []).slice(),
+    theoreticalOutput: theoreticalOutputFor(primary)
   };
   if (f.lock === "y" && gid !== "G9") {
     var lr = applyRules("G9", f);
