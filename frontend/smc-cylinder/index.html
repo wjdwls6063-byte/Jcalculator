@@ -276,10 +276,21 @@ details.vs[open]>summary:before{content:"▾ "}
 .forcetable td:first-child{text-align:left;font-weight:700;color:#334155}
 .forcetable .sel{background:#fff4ca;color:#724b00;font-weight:700}
 .forcetable .kgf{display:block;margin-top:2px;color:#64748b;font-size:9.5px;font-weight:400}
+.forcetable tr.recommended td{background:#f0fdf4;color:#166534}
+.forcetable tr.recommended td:first-child{padding-left:15px;font-weight:600}
+.forcetable tr.recommended .sel{background:#dcfce7;color:#14532d}
+.forcetable tr.stationary td{background:#f8fafc;color:#475569}
+.forcetable tr.stationary td:first-child{padding-left:15px;font-weight:600}
+.forcetable tr.stationary .sel{background:#fef3c7;color:#78350f}
+.forceguide{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin-top:10px;border:1px solid #86efac;border-radius:7px;background:#f0fdf4;padding:9px 10px;color:#166534;font-size:10.5px;line-height:1.55}
+.forceguide strong{color:#14532d;font-size:11px}
+.forceguide a{border:1px solid #16a34a;border-radius:5px;background:#fff;color:#166534;padding:5px 8px;text-decoration:none;font-weight:700;white-space:nowrap}
+.forceguide a:hover{background:#dcfce7}
+.forceguide .speedwarn{display:block;color:#9a3412;font-weight:700}
 .forcefoot{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;color:#64748b;font-size:10px}
 .forcefoot .formula{color:#075985;background:#e0f2fe;border-radius:4px;padding:2px 6px;font-weight:700}
 .forcena{margin-top:12px;border:1px dashed #cbd5e1;border-radius:8px;background:#f8fafc;padding:9px 11px;color:#64748b;font-size:11px}
-@media(max-width:720px){.forcehead{display:block}.boretabs{justify-content:flex-start;max-width:none;margin-top:9px}.forcemeta{grid-template-columns:1fr}}
+@media(max-width:720px){.forcehead{display:block}.boretabs{justify-content:flex-start;max-width:none;margin-top:9px}.forcemeta{grid-template-columns:1fr}.forceguide{grid-template-columns:1fr}.forceguide a{justify-self:start}}
 
 
 /* ===== 검색 (A안 목록 필터 + B안 전역 자동완성) ===== */
@@ -1133,6 +1144,9 @@ function forceNumber(value,digits){
 function forceCell(point){
   return forceNumber(point.newton,1)+' N<span class="kgf">'+forceNumber(point.kgf,2)+' kgf</span>';
 }
+function forceCellAtRatio(point,ratio){
+  return forceNumber(point.newton*ratio,1)+' N<span class="kgf">'+forceNumber(point.kgf*ratio,2)+' kgf</span>';
+}
 function setForceBore(bore){ ST.forceBore=Number(bore); render(); }
 function theoreticalOutputBlock(data,series,type){
   if(!data||!data.bores||!data.bores.length){
@@ -1144,6 +1158,9 @@ function theoreticalOutputBlock(data,series,type){
   var selectedPressureIndex=data.pressuresMpa.indexOf(0.5);
   if(selectedPressureIndex<0) selectedPressureIndex=0;
   var push=bore.push[selectedPressureIndex],pull=bore.pull[selectedPressureIndex];
+  var guide=data.selectionGuidance||{};
+  var dynamicRatio=Number(guide.dynamicLoadRatio)||0.5;
+  var stationaryRatio=Number(guide.stationaryLoadRatio)||0.7;
   var h='<div class="forcebox"><div class="forcehead"><div><h4>이론출력값 · '+esc(series.code)+' Series</h4>'+
     '<p>선정된 시리즈의 '+term('{{실린더 내경}}')+'별 전진·후진 이론출력을 비교합니다.</p></div><div class="boretabs">';
   data.bores.forEach(function(row){
@@ -1155,11 +1172,23 @@ function theoreticalOutputBlock(data,series,type){
     '<div>0.5 MPa · '+term('{{후진 출력}}')+'<b>'+forceNumber(pull.newton,1)+' N</b><em>'+forceNumber(pull.kgf,2)+' kgf</em></div></div>';
   h+='<div class="forcetablewrap"><table class="forcetable"><thead><tr><th rowspan="2">작동 방향</th><th colspan="'+data.pressuresMpa.length+'">'+term('{{사용 압력}}')+' MPa</th></tr><tr>';
   data.pressuresMpa.forEach(function(pressure){h+='<th class="'+(Number(pressure)===0.5?'sel':'')+'">'+forceNumber(pressure,1)+'</th>';});
-  h+='</tr></thead><tbody><tr><td>전진 · 밀기</td>';
+  h+='</tr></thead><tbody><tr><td>전진 · 이론출력</td>';
   bore.push.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCell(point)+'</td>';});
-  h+='</tr><tr><td>후진 · 당기기</td>';
+  h+='</tr><tr class="recommended"><td>↳ 일반 동작 · 50%</td>';
+  bore.push.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCellAtRatio(point,dynamicRatio)+'</td>';});
+  h+='</tr><tr class="stationary"><td>↳ 정지 상태 · 70%</td>';
+  bore.push.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCellAtRatio(point,stationaryRatio)+'</td>';});
+  h+='</tr><tr><td>후진 · 이론출력</td>';
   bore.pull.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCell(point)+'</td>';});
+  h+='</tr><tr class="recommended"><td>↳ 일반 동작 · 50%</td>';
+  bore.pull.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCellAtRatio(point,dynamicRatio)+'</td>';});
+  h+='</tr><tr class="stationary"><td>↳ 정지 상태 · 70%</td>';
+  bore.pull.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCellAtRatio(point,stationaryRatio)+'</td>';});
   h+='</tr></tbody></table></div>';
+  h+='<div class="forceguide"><strong>SMC 부하율 선정 기준</strong><span>'+
+    esc(guide.summary||'일반 동작은 이론출력의 50% 이하, 정지 상태는 70% 이하를 기준으로 선정하세요.')+
+    '<span class="speedwarn">⚠ '+esc(guide.highSpeedNote||'고속 동작은 50%보다 더 낮은 부하율로 여유를 확보하세요.')+'</span></span>'+
+    '<a href="'+esc(guide.sourceUrl||'https://www.smcworld.com/catalog/BEST-technical-data-en/pdf/AirCylinder-Select-Tech_en.pdf')+'" target="_blank" rel="noopener">📘 '+esc(guide.sourceLabel||'SMC 선정 기술자료')+' ↗</a></div>';
   h+='<div class="forcefoot"><span class="formula">'+esc(data.formula)+' · N / '+term('{{kgf}}')+'</span><span>1 kgf = 9.80665 N · '+esc(data.standard)+' · '+esc(data.note)+'</span></div></div>';
   return h;
 }
@@ -1263,6 +1292,9 @@ function copyResult(){
     var fb=R.theoreticalOutput.bores.filter(function(row){return Number(row.boreMm)===Number(ST.forceBore);})[0]||R.theoreticalOutput.bores[0];
     var fi=R.theoreticalOutput.pressuresMpa.indexOf(0.5); if(fi<0) fi=0;
     L.push("이론출력(Ø"+fb.boreMm+", 0.5 MPa): 전진 "+forceNumber(fb.push[fi].newton,1)+" N / "+forceNumber(fb.push[fi].kgf,2)+" kgf, 후진 "+forceNumber(fb.pull[fi].newton,1)+" N / "+forceNumber(fb.pull[fi].kgf,2)+" kgf");
+    L.push("일반 동작 권장출력(부하율 50%): 전진 "+forceNumber(fb.push[fi].newton*0.5,1)+" N / "+forceNumber(fb.push[fi].kgf*0.5,2)+" kgf, 후진 "+forceNumber(fb.pull[fi].newton*0.5,1)+" N / "+forceNumber(fb.pull[fi].kgf*0.5,2)+" kgf");
+    L.push("정지 상태 권장출력(부하율 70%): 전진 "+forceNumber(fb.push[fi].newton*0.7,1)+" N / "+forceNumber(fb.push[fi].kgf*0.7,2)+" kgf, 후진 "+forceNumber(fb.pull[fi].newton*0.7,1)+" N / "+forceNumber(fb.pull[fi].kgf*0.7,2)+" kgf");
+    L.push("SMC 선정 기술자료: "+((R.theoreticalOutput.selectionGuidance||{}).sourceUrl||"https://www.smcworld.com/catalog/BEST-technical-data-en/pdf/AirCylinder-Select-Tech_en.pdf"));
   }
   L.push("비교 후보: "+R.alts.slice(0,6).map(function(s){return s.code;}).join(", "));
   if(R.lock) L.push("록 병행: "+R.lock.primary.code);

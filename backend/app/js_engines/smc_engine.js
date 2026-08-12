@@ -2435,6 +2435,14 @@ function theoreticalOutputFor(series) {
     pressuresMpa: FORCE_PRESSURES_MPA.slice(),
     defaultBoreMm: rows[defaultIndex].boreMm,
     bores: rows,
+    selectionGuidance: {
+      dynamicLoadRatio: 0.5,
+      stationaryLoadRatio: 0.7,
+      summary: "일반 동작은 이론출력의 50% 이하, 정지 상태는 70% 이하를 기준으로 선정하세요.",
+      highSpeedNote: "고속 동작은 50%보다 더 낮은 부하율로 여유를 확보하세요.",
+      sourceLabel: "SMC 공압 실린더 선정 기술자료",
+      sourceUrl: "https://www.smcworld.com/catalog/BEST-technical-data-en/pdf/AirCylinder-Select-Tech_en.pdf"
+    },
     standard: "복동 편로드 대표 치수 기준",
     formula: "F = A × P",
     note: "이론값입니다. 실제 선정은 부하율·마찰·배관 압력강하를 반영하고, 최종 로드경은 선택 형번의 공식 카탈로그를 확인하세요."
