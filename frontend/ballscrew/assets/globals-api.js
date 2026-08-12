@@ -11677,51 +11677,6 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
                 title: `볼스크류 시리즈 설명`,
                 items: g,
                 selectedId: i.screwSeries
-              }), (0, P.jsxs)(`label`, {
-                className: `field`,
-                children: [(0, P.jsx)(`span`, {
-                  children: `커플링 시리즈`
-                }), (0, P.jsxs)(`select`, {
-                  value: i.couplingSeries,
-                  onChange: e => a(t => ({
-                    ...t,
-                    couplingSeries: e.target.value
-                  })),
-                  children: [(0, P.jsx)(`option`, {
-                    value: `auto`,
-                    children: `자동 선정 (권장)`
-                  }), (0, P.jsx)(`option`, {
-                    value: `SD`,
-                    children: `SDS/SDCS · 싱글 디스크`
-                  }), (0, P.jsx)(`option`, {
-                    value: `SDW`,
-                    children: `SDW · 더블 디스크`
-                  })]
-                })]
-              }), (0, P.jsx)(he, {
-                title: `커플링 시리즈 설명`,
-                items: [{
-                  id: `auto`,
-                  label: `자동 선정 (권장)`,
-                  help: `볼스크류 축경에 맞춰 성일기공 카탈로그 표준 싱글 디스크 형번(SDS/SDCS 클램프 타입)을 자동 배정합니다. 특별한 사유가 없으면 자동 선정을 권장합니다.`,
-                  note: `축경별: Ø≤16 SDS-39C · Ø≤25 SDCS-47C · Ø≤32 SDCS-54C · Ø≤36 SDCS-64C · Ø≤40 SDS-80C`
-                }, {
-                  id: `SD`,
-                  label: `SDS/SDCS · 싱글 디스크 지정`,
-                  help: `디스크 1장 구조로 축방향 길이가 짧고 비틀림 강성이 높습니다. 각도 오차는 흡수하지만 평행(편심) 오차 흡수량이 작아 모터-스크류 동심도가 좋은 구조에 적합합니다. 자동 선정과 동일한 형번이 배정됩니다.`,
-                  note: `허용토크 6~85 N·m · 최대 7,000~8,000 rpm (형번별 상이)`
-                }, {
-                  id: `SDW`,
-                  label: `SDW · 더블 디스크 지정`,
-                  help: `디스크 2장 구조로 각도 오차와 평행(편심) 오차를 모두 흡수합니다. 백래시 제로를 유지하면서 조립 오차에 관대하여 일반 이송축에서 안정적입니다. 싱글 대비 축방향 길이가 길고 일부 형번은 최대회전수가 낮습니다.`,
-                  note: `축경별: SDWC-39C · SDWA-47C · SDWB-54C · SDWB-64C(6,500rpm) · SDW-80C(6,000rpm)`
-                }],
-                selectedId: i.couplingSeries
-              }), (0, P.jsx)($catalogSourceBlock, {
-                sourceKey: `coupling`,
-                vertical: t,
-                note: $catalogEvidenceDescription(`coupling`),
-                spec: `${i.couplingSeries === `SDW` ? `SDW 더블 디스크 지정` : i.couplingSeries === `SD` ? `SDS/SDCS 싱글 디스크 지정` : `축경 기준 자동 선정`} · 현재 ${T.coupling}${T.couplingTorqueNm ? ` · 허용 ${T.couplingTorqueNm} N·m · 최대 ${T.couplingMaxRpm.toLocaleString()} rpm` : ``}`
               }), i.screwSelectionMode === `manual` ? (0, P.jsx)(I, {
                 label: `검증할 형번`,
                 help: `선택한 시리즈에 등록된 실제 형번입니다. 선택하면 직경·리드·Ca·C0a가 함께 적용되며 계산 중 다른 형번으로 바꾸지 않습니다.`,
@@ -11776,6 +11731,51 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
                 pageLabel: $catalogScrewPageLabel(ke),
                 note: $catalogEvidenceDescription($catalogScrewEvidenceKey(ke)),
                 spec: `${ke.id} · Ø${ke.diameterMm} × 리드 ${ke.leadMm} mm · Ca ${ke.caKn} kN · C0a ${ke.c0aKn} kN`
+              }), (0, P.jsxs)(`label`, {
+                className: `field field-wide`,
+                children: [(0, P.jsx)(`span`, {
+                  children: `커플링 시리즈`
+                }), (0, P.jsxs)(`select`, {
+                  value: i.couplingSeries,
+                  onChange: e => a(t => ({
+                    ...t,
+                    couplingSeries: e.target.value
+                  })),
+                  children: [(0, P.jsx)(`option`, {
+                    value: `auto`,
+                    children: `자동 선정 (권장)`
+                  }), (0, P.jsx)(`option`, {
+                    value: `SD`,
+                    children: `SDS/SDCS · 싱글 디스크`
+                  }), (0, P.jsx)(`option`, {
+                    value: `SDW`,
+                    children: `SDW · 더블 디스크`
+                  })]
+                })]
+              }), (0, P.jsx)(he, {
+                title: `커플링 시리즈 설명`,
+                items: [{
+                  id: `auto`,
+                  label: `자동 선정 (권장)`,
+                  help: `볼스크류 축경에 맞춰 성일기공 카탈로그 표준 싱글 디스크 형번(SDS/SDCS 클램프 타입)을 자동 배정합니다. 특별한 사유가 없으면 자동 선정을 권장합니다.`,
+                  note: `축경별: Ø≤16 SDS-39C · Ø≤25 SDCS-47C · Ø≤32 SDCS-54C · Ø≤36 SDCS-64C · Ø≤40 SDS-80C`
+                }, {
+                  id: `SD`,
+                  label: `SDS/SDCS · 싱글 디스크 지정`,
+                  help: `디스크 1장 구조로 축방향 길이가 짧고 비틀림 강성이 높습니다. 각도 오차는 흡수하지만 평행(편심) 오차 흡수량이 작아 모터-스크류 동심도가 좋은 구조에 적합합니다. 자동 선정과 동일한 형번이 배정됩니다.`,
+                  note: `허용토크 6~85 N·m · 최대 7,000~8,000 rpm (형번별 상이)`
+                }, {
+                  id: `SDW`,
+                  label: `SDW · 더블 디스크 지정`,
+                  help: `디스크 2장 구조로 각도 오차와 평행(편심) 오차를 모두 흡수합니다. 백래시 제로를 유지하면서 조립 오차에 관대하여 일반 이송축에서 안정적입니다. 싱글 대비 축방향 길이가 길고 일부 형번은 최대회전수가 낮습니다.`,
+                  note: `축경별: SDWC-39C · SDWA-47C · SDWB-54C · SDWB-64C(6,500rpm) · SDW-80C(6,000rpm)`
+                }],
+                selectedId: i.couplingSeries
+              }), (0, P.jsx)($catalogSourceBlock, {
+                sourceKey: `coupling`,
+                vertical: t,
+                note: $catalogEvidenceDescription(`coupling`),
+                spec: `${i.couplingSeries === `SDW` ? `SDW 더블 디스크 지정` : i.couplingSeries === `SD` ? `SDS/SDCS 싱글 디스크 지정` : `축경 기준 자동 선정`} · 현재 ${T.coupling}${T.couplingTorqueNm ? ` · 허용 ${T.couplingTorqueNm} N·m · 최대 ${T.couplingMaxRpm.toLocaleString()} rpm` : ``}`
               }), (0, P.jsx)(I, {
                 label: `유효 지지거리`,
                 help: F.supportSpan,
