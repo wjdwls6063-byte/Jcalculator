@@ -291,6 +291,7 @@ details.vs[open]>summary:before{content:"▾ "}
 .forcefoot .formula{color:#075985;background:#e0f2fe;border-radius:4px;padding:2px 6px;font-weight:700}
 .forcena{margin-top:12px;border:1px dashed #cbd5e1;border-radius:8px;background:#f8fafc;padding:9px 11px;color:#64748b;font-size:11px}
 @media(max-width:720px){.forcehead{display:block}.boretabs{justify-content:flex-start;max-width:none;margin-top:9px}.forcemeta{grid-template-columns:1fr}.forceguide{grid-template-columns:1fr}.forceguide a{justify-self:start}}
+@media(min-width:721px){.forcetablewrap{overflow:visible}}
 
 
 /* ===== 검색 (A안 목록 필터 + B안 전역 자동완성) ===== */
@@ -485,7 +486,9 @@ const GLOSSARY = {
   "전진 출력": ["로드가 나오는 방향의 이론출력. 피스톤 전체 단면적에 공급 압력을 곱한다.", "push"],
   "후진 출력": ["로드가 들어가는 방향의 이론출력. 로드 단면적만큼 유효면적이 줄어 전진 출력보다 작다.", "pull"],
   "사용 압력": ["실린더 포트에 실제로 공급되는 압력. 배관·밸브 압력강하 때문에 컴프레서 설정압보다 낮을 수 있다.", "pressure"],
-  "kgf": ["킬로그램힘. 질량 kg과 다른 힘 단위이며 1 kgf = 9.80665 N이다.", "force-unit"]
+  "kgf": ["킬로그램힘. 질량 kg과 다른 힘 단위이며 1 kgf = 9.80665 N이다.", "force-unit"],
+  "일반 동작 · 50%": ["실린더가 실제로 왕복하며 하중을 움직이는 경우의 권장 부하율입니다. 마찰·배압·압력 변동·속도 저하를 고려해 필요한 힘이 이론출력의 50% 이하가 되도록 선정합니다. 예: 이론출력 100 N이면 일반 동작 권장 하중은 50 N 이하입니다.", "dynamic-load"],
+  "정지 상태 · 70%": ["실린더가 움직이지 않은 상태에서 하중을 밀거나 유지하는 경우의 권장 부하율입니다. 필요한 힘이 이론출력의 70% 이하가 되도록 선정합니다. 위치 이동·고속·충격이 있으면 정지 기준이 아니라 50% 또는 그보다 낮은 부하율을 적용합니다. 예: 이론출력 100 N이면 정지 권장 하중은 70 N 이하입니다.", "stationary-load"]
 };
 
 /* ---------- TYPE (15) ---------- */
@@ -951,6 +954,8 @@ function glossaryVisual(kind){
   else if(kind==='mount') art='<rect class="body" x="94" y="24" width="72" height="32" rx="5"/><path class="arrow" d="M130 21 L130 3"/><path class="arrow" d="M130 59 L130 72"/><path class="arrow" d="M91 40 L65 40"/><path class="arrow" d="M169 40 L195 40"/><text x="101" y="44">4방향 설치</text>';
   else if(kind==='tie-rod') art=body+'<line x1="63" y1="17" x2="190" y2="17" stroke="#fbbf24" stroke-width="3"/><line x1="63" y1="59" x2="190" y2="59" stroke="#fbbf24" stroke-width="3"/><text x="92" y="12">타이로드</text>';
   else if(kind==='force-unit') art='<text x="39" y="42" style="font-size:20px;fill:#e8eefc">9.80665 N</text><path class="arrow" d="M132 37 L168 37"/><text x="181" y="42" style="font-size:20px;fill:#e8eefc">1 kgf</text>';
+  else if(kind==='dynamic-load') art='<rect x="20" y="18" width="218" height="17" rx="4" fill="#253650"/><rect x="20" y="18" width="109" height="17" rx="4" fill="#16a34a"/><text x="23" y="13">이론출력 100%</text><text x="54" y="30">동작 하중 ≤ 50%</text><path class="arrow" d="M72 56 L188 56"/><text x="91" y="70">왕복 이동</text>';
+  else if(kind==='stationary-load') art='<rect x="20" y="18" width="218" height="17" rx="4" fill="#253650"/><rect x="20" y="18" width="153" height="17" rx="4" fill="#d97706"/><text x="23" y="13">이론출력 100%</text><text x="52" y="30">정지 하중 ≤ 70%</text><rect class="body" x="88" y="47" width="84" height="20" rx="4"/><text x="105" y="61">정지·유지</text>';
   else art=body;
   return head+art+tail;
 }
@@ -1174,15 +1179,15 @@ function theoreticalOutputBlock(data,series,type){
   data.pressuresMpa.forEach(function(pressure){h+='<th class="'+(Number(pressure)===0.5?'sel':'')+'">'+forceNumber(pressure,1)+'</th>';});
   h+='</tr></thead><tbody><tr><td>전진 · 이론출력</td>';
   bore.push.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCell(point)+'</td>';});
-  h+='</tr><tr class="recommended"><td>↳ 일반 동작 · 50%</td>';
+  h+='</tr><tr class="recommended"><td>↳ '+term('{{일반 동작 · 50%}}')+'</td>';
   bore.push.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCellAtRatio(point,dynamicRatio)+'</td>';});
-  h+='</tr><tr class="stationary"><td>↳ 정지 상태 · 70%</td>';
+  h+='</tr><tr class="stationary"><td>↳ '+term('{{정지 상태 · 70%}}')+'</td>';
   bore.push.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCellAtRatio(point,stationaryRatio)+'</td>';});
   h+='</tr><tr><td>후진 · 이론출력</td>';
   bore.pull.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCell(point)+'</td>';});
-  h+='</tr><tr class="recommended"><td>↳ 일반 동작 · 50%</td>';
+  h+='</tr><tr class="recommended"><td>↳ '+term('{{일반 동작 · 50%}}')+'</td>';
   bore.pull.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCellAtRatio(point,dynamicRatio)+'</td>';});
-  h+='</tr><tr class="stationary"><td>↳ 정지 상태 · 70%</td>';
+  h+='</tr><tr class="stationary"><td>↳ '+term('{{정지 상태 · 70%}}')+'</td>';
   bore.pull.forEach(function(point){h+='<td class="'+(Number(point.pressureMpa)===0.5?'sel':'')+'">'+forceCellAtRatio(point,stationaryRatio)+'</td>';});
   h+='</tr></tbody></table></div>';
   h+='<div class="forceguide"><strong>SMC 부하율 선정 기준</strong><span>'+
