@@ -1438,7 +1438,11 @@ var WSEL = {
   src: {
     title: "SMC 공기압 기기 선정 프로그램 Ver4.0 취급설명서",
     section: "§1.7.4 부하율에 대해서 (p.19)",
-    rev: "2013-02-06 제2판"
+    rev: "2013-02-06 제2판",
+    url: "https://www.smckorea.co.kr/homepage/ver3.5/download/" +
+         encodeURIComponent("공기압기기선정프로그램Ver4취급설명서.pdf"),
+    tech: "https://www.smckorea.co.kr/homepage/ver3.5/technical/technical_data.asp",
+    catalog: "https://www.smckorea.co.kr/ppis/data/catalog/"
   }
 };
 
@@ -1541,11 +1545,46 @@ function wselNumInput(k, val, step, unit, width) {
          'border-radius:7px;font-size:14px;font-weight:700"> ' + unit;
 }
 
-function wselSourceHTML() {
-  return '<p class="qhint" style="margin-top:10px">근거 — 부하율 정의와 기준값은 ' +
-    esc(WSEL.src.title) + " " + esc(WSEL.src.section) + " (" + esc(WSEL.src.rev) + ") 확인값입니다. " +
-    "마찰계수 초기값(가이드 미사용 0 · 회전 0.1 · 미끄럼 0.3)과 공급압력 0.5 MPa 도 같은 문서 기준이며, " +
-    "모두 위에서 직접 바꿀 수 있습니다.</p>";
+function wselSourceHTML(extra) {
+  var S = WSEL.src;
+  var h = '<div class="sec" style="margin-top:16px"><h3>선정 근거 · 출처 <em>이 화면의 모든 기준값 출처</em></h3>';
+  h += '<table class="mt"><thead><tr><th style="width:120px">항목</th><th style="width:170px">적용값</th>' +
+       "<th>출처</th></tr></thead><tbody>";
+
+  h += '<tr><td class="c">부하율</td><td>일반 동작 <b>0.5</b> · 정지 유지 <b>0.7</b></td>' +
+       "<td>" + esc(S.title) + " " + esc(S.section) + " · " + esc(S.rev) +
+       '<br><a href="' + S.url + '" target="_blank" rel="noopener">📘 원문 PDF 열기 ↗</a></td></tr>';
+
+  h += '<tr><td class="c">부하율 정의식</td><td>총부하 ÷ 이론출력</td>' +
+       "<td>동 문서 — “(중력분력 + 마찰력 + 기타 힘부하) ÷ (피스톤 수압면적 × 공급 공기압력)”</td></tr>";
+
+  h += '<tr><td class="c">마찰계수 μ</td><td>가이드 없음 <b>0</b> · 롤러·볼 <b>0.1</b> · 미끄럼 <b>0.3</b></td>' +
+       "<td>동 문서 — 선정 프로그램 초기값 (화면에서 변경 가능)</td></tr>";
+
+  h += '<tr><td class="c">공급 압력</td><td><b>0.5 MPa</b> 기본</td>' +
+       "<td>동 문서의 표준 예시 조건 (화면에서 변경 가능)</td></tr>";
+
+  h += '<tr><td class="c">필요추력 식</td><td>W = m·g·(sinθ + μ·cosθ)</td>' +
+       "<td>중력분력 + 마찰력의 일반 물리식 · g = 9.80665 m/s²</td></tr>";
+
+  if (extra === "result") {
+    h += '<tr><td class="c">시리즈 추력값</td><td>보어별 전진·후진 출력</td>' +
+         '<td>SMC 공식 시리즈 출력표 (본 도구 카탈로그 데이터)<br>' +
+         '<a href="' + S.catalog + '" target="_blank" rel="noopener">📗 SMC 카탈로그 자료실 ↗</a></td></tr>';
+    h += '<tr><td class="c">취급 보어</td><td>시리즈별 실제 보어 목록</td>' +
+         "<td>SMC Korea 공식 제품 카탈로그 시리즈 구성표</td></tr>";
+  }
+
+  h += '<tr><td class="c">기술자료 출처</td><td>SMC Korea 기술가이드</td>' +
+       '<td><a href="' + S.tech + '" target="_blank" rel="noopener">📄 설계·선정 기술자료 ↗</a></td></tr>';
+
+  h += "</tbody></table>";
+  h += '<p class="qhint" style="margin-top:8px">계산하지 않는 항목 — <b>좌굴 한계 행정</b>과 ' +
+       "<b>허용 횡하중·모멘트</b>는 설치지지 형식·부하접속 형식에 따라 달라져 시리즈 카탈로그 표로 확인해야 합니다. " +
+       "SMC 선정 프로그램도 가이드 부착·로드레스 계열은 모멘트를 계산하지 않고 별도 도구를 안내합니다.</p>";
+  h += '<p class="qhint">※ 본 도구는 초기 선정용입니다. 최종 사양은 SMC 공식 카탈로그에서 확인하십시오.</p>';
+  h += "</div>";
+  return h;
 }
 
 /* 추력형 결과 */
@@ -1557,7 +1596,7 @@ function wselResultHTML(node) {
   var sizeKey = wselSizeKey(r.bore);
   var oi = wselOptIndex(node, sizeKey);
   var label = TREE[node].opts[oi].l;
-  var posture = WIN.deg >= 89 ? "수직" : (Math.abs(WIN.deg) < 1 ? "수평" : "경사 " + WIN.deg + "°");
+  var posture = WIN.deg >= 89 ? "수직" : "수평";
 
   var h = '<div class="forcebox" style="margin-top:14px">';
   h += '<div class="forcehead"><div><h4>산출 결과</h4>' +
@@ -1665,11 +1704,11 @@ function wselRenderQ(node) {
          wselNumInput("kg", WIN.kg, "0.5", "kg") + "</td></tr>";
 
     h += '<tr><td class="c">설치 자세</td><td><div class="chips">' +
-         wselBtn("deg", "90", "수직 (상하)", String(WIN.deg)) +
-         wselBtn("deg", "0", "수평", String(WIN.deg)) +
-         wselBtn("deg", "30", "경사 30°", String(WIN.deg)) +
-         wselBtn("deg", "45", "경사 45°", String(WIN.deg)) +
-         "</div></td></tr>";
+         wselBtn("deg", "90", "수직 (세워서 올림)", String(WIN.deg)) +
+         wselBtn("deg", "0", "수평 (밀거나 당김)", String(WIN.deg)) +
+         '</div><span class="qhint" style="display:block;margin-top:5px">' +
+         '기울어져 설치해도 <b>수직</b>으로 보면 됩니다. 경사는 필요 추력이 수직보다 작아 안전측입니다.' +
+         "</span></td></tr>";
 
     h += '<tr><td class="c">가이드 마찰</td><td><div class="chips">' +
          wselBtn("mu", "none", "가이드 없음 (μ 0)", WIN.mu) +
@@ -1710,6 +1749,124 @@ function wselRenderQ(node) {
       catch (e) { return orig(); }        /* 문제가 생기면 원래 질문으로 되돌린다 */
     }
     return orig();
+  };
+})();
+
+/* ══════════════════════════════════════════════════════════════════════
+   결과 화면 — 선정된 시리즈의 "실제 보어"로 구경 확정
+   ──────────────────────────────────────────────────────────────────────
+   Q3 는 구경대(size)만 정한다. 실제 몇 파이를 쓸지는 시리즈가 정해진 뒤
+   그 시리즈가 실제로 취급하는 보어와 카탈로그 추력값으로 판정해야 한다.
+   R.theoreticalOutput 에 보어별 전진/후진 추력이 이미 들어오므로
+   여기에 사용자가 입력한 무게·자세를 대입한다.
+
+   판정: 전진·후진 양방향 모두  실제추력 × 부하율 ≥ 필요추력  을 만족하는
+        가장 작은 보어를 권장한다(방향에 관계없이 안전한 값).
+   ══════════════════════════════════════════════════════════════════════ */
+
+function wselNeed() {
+  var th = WIN.deg * Math.PI / 180;
+  var mu = WSEL.mu[WIN.mu] !== undefined ? WSEL.mu[WIN.mu] : 0;
+  return {
+    W: WIN.kg * WSEL.G * (Math.sin(th) + mu * Math.cos(th)),
+    ratio: WSEL.ratio[WIN.mode],
+    mu: mu,
+    posture: WIN.deg >= 89 ? "수직" : "수평"
+  };
+}
+
+/* 시리즈 실제 보어 목록에서 권장 구경 찾기 */
+function wselPickBore(data) {
+  if (!data || !data.bores || !data.bores.length) return null;
+  var need = wselNeed();
+  if (!(need.W > 0)) return null;
+
+  var pref = Number(data.referencePressureMpa) || 0.5;
+  var pi = (data.pressuresMpa || []).indexOf(pref);
+  if (pi < 0) pi = 0;
+
+  var rows = data.bores.map(function (b) {
+    var pu = (b.push && b.push[pi]) ? Number(b.push[pi].newton) : 0;
+    var pl = (b.pull && b.pull[pi]) ? Number(b.pull[pi].newton) : 0;
+    var lim = Math.min(pu || 0, pl || 0) || pu || 0;   /* 약한 쪽 기준 */
+    return { bore: Number(b.boreMm), rod: b.rodMm, push: pu, pull: pl,
+             weak: lim, allow: lim * need.ratio, ok: lim * need.ratio >= need.W };
+  }).sort(function (a, b) { return a.bore - b.bore; });
+
+  var hit = null, i;
+  for (i = 0; i < rows.length; i++) { if (rows[i].ok) { hit = rows[i]; break; } }
+  return { need: need, rows: rows, hit: hit, pressure: pref,
+           structure: data.forceStructure || "standard" };
+}
+
+function wselBoreBlockHTML(data) {
+  var r = wselPickBore(data);
+  if (!r) return "";
+  var n = r.need;
+  var isRodless = r.structure === "rodless";
+
+  var h = '<div class="forcebox" style="border-color:#1d4ed8">';
+  h += '<div class="forcehead"><div><h4>무게 기준 권장 구경</h4><p>' +
+       WIN.kg + " kg · " + n.posture + " · " +
+       (n.posture === "수평" ? "μ " + n.mu + " · " : "") +
+       "부하율 " + n.ratio + " · " + r.pressure + " MPa 기준</p></div></div>";
+
+  h += '<div class="forcemeta">' +
+       "<div>필요 추력<b>" + n.W.toFixed(1) + " N</b><em>" + (n.W / WSEL.G).toFixed(2) + " kgf</em></div>" +
+       "<div>필요 이론출력<b>" + (n.W / n.ratio).toFixed(1) + " N</b><em>부하율 " + n.ratio + " 역산</em></div>" +
+       "<div>권장 구경<b>" + (r.hit ? "Ø" + r.hit.bore : "이 시리즈로는 부족") + "</b><em>" +
+       (r.hit ? "실제 카탈로그 추력 기준" : "더 큰 계열 검토 필요") + "</em></div></div>";
+
+  h += '<div class="forcetablewrap"><table class="forcetable"><thead><tr>' +
+       "<th>보어</th><th>" + (isRodless ? "방향 A" : "전진") + "</th><th>" +
+       (isRodless ? "방향 B" : "후진") + "</th><th>약한 쪽 × " + n.ratio + "</th>" +
+       "<th>필요 " + n.W.toFixed(0) + " N</th></tr></thead><tbody>";
+  r.rows.forEach(function (x) {
+    var sel = (r.hit && x.bore === r.hit.bore);
+    h += "<tr" + (sel ? ' class="recommended"' : "") + "><td>Ø" + x.bore + "</td>" +
+         "<td>" + x.push.toFixed(0) + " N</td><td>" + x.pull.toFixed(0) + " N</td>" +
+         "<td>" + x.allow.toFixed(0) + " N</td>" +
+         "<td>" + (x.ok ? "✔ 충족" + (sel ? " · 권장" : "") : "✕ 부족") + "</td></tr>";
+  });
+  h += "</tbody></table></div>";
+
+  if (!r.hit) {
+    h += '<div class="forcena">이 시리즈가 취급하는 보어로는 ' + WIN.kg +
+         " kg 를 부하율 " + n.ratio + " 안에서 감당하지 못합니다. " +
+         "공급 압력을 올리거나, 더 큰 구경대 계열 또는 다른 TYPE 을 검토하십시오.</div>";
+  }
+
+  h += '<div class="forceguide"><strong>판정 방법</strong><span>' +
+       "전진·후진 중 <b>약한 쪽</b> 추력에 부하율을 곱한 값이 필요 추력 이상인 " +
+       "가장 작은 보어를 권장합니다. 방향에 관계없이 안전한 값입니다." +
+       "<span class='speedwarn'>⚠ 좌굴 한계 행정과 허용 " +
+       "횡하중·모멘트는 계산하지 않습니다. 시리즈 카탈로그 표로 확인하십시오.</span></span></div>";
+
+  h += '<div class="forcefoot"><span class="formula">필요추력 W = m·g·(sinθ + μ·cosθ) = ' +
+       WIN.kg + " × 9.80665 × " + (Math.sin(WIN.deg * Math.PI / 180) +
+       n.mu * Math.cos(WIN.deg * Math.PI / 180)).toFixed(4) + " = " + n.W.toFixed(1) + " N</span>" +
+       "<span>부하율 기준 — SMC 공기압 기기 선정 프로그램 Ver4.0 §1.7.4 · 추력값은 시리즈 공식 출력표</span></div>";
+  h += "</div>";
+  return h;
+}
+
+/* 원본 theoreticalOutputBlock 앞에 권장 구경 블록을 덧붙인다 */
+(function () {
+  if (typeof theoreticalOutputBlock !== "function") return;
+  var orig = theoreticalOutputBlock;
+  theoreticalOutputBlock = function (data, series, type) {
+    var pre = "";
+    try {
+      pre = wselBoreBlockHTML(data);
+      /* 권장 보어를 기본 선택으로 (사용자가 아직 직접 고르지 않았을 때만) */
+      var r = wselPickBore(data);
+      if (r && r.hit && (ST.forceBore === null || ST.forceBore === undefined)) {
+        ST.forceBore = r.hit.bore;
+      }
+    } catch (e) { pre = ""; }
+    var post = "";
+    try { post = wselSourceHTML("result"); } catch (e) { post = ""; }
+    return pre + orig(data, series, type) + post;
   };
 })();
 
