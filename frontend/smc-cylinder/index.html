@@ -1400,6 +1400,319 @@ async function initSmc(){
     render();
   }catch(err){globalThis.JCalculatorApi.showError(err);}
 }
+/* ══════════════════════════════════════════════════════════════════════
+   무게 기준 구경 선정 (Weight-based SELection)
+   ──────────────────────────────────────────────────────────────────────
+   기존 질문은 "구경대"를 물었다. 구경은 이 도구가 답해야 할 값인데
+   사용자에게 먼저 묻고 있어 순환이었다. 그래서 무게와 설치 자세를 받아
+   구경을 산출하고, 그 결과를 기존 size 플래그로 바꿔 넘긴다.
+
+   설계 원칙
+     · TREE / GROUPS / rules / 백엔드는 전혀 손대지 않는다
+     · 계산 결과를 기존 보기 중 하나로 매핑해 원래 choose() 를 그대로 호출한다
+       (경로 기록·플래그·이동이 전부 원본 코드로 처리되어 회귀 위험이 없다)
+     · 기준값은 SMC 공식 문서 확인값만 쓰고 출처를 화면에 표기한다
+   ══════════════════════════════════════════════════════════════════════ */
+
+var WSEL = {
+  /* 대상 노드와 각 노드의 성격 */
+  nodes: {
+    lin_size: { kind: "thrust", title: "구동할 물체는 얼마나 무겁습니까?",
+                hint: "무게와 설치 자세로 필요 추력을 구해 검토할 구경대를 정합니다." },
+    gd_size:  { kind: "thrust", title: "가이드가 옮길 물체는 얼마나 무겁습니까?",
+                hint: "가이드 부착형도 추력 계산은 같습니다. 마찰은 가이드 종류로 정합니다." },
+    tb_mass:  { kind: "table",  title: "테이블에 얹는 워크의 질량과 편심은?",
+                hint: "질량으로 필요 구경을, 편심으로 모멘트를 함께 봅니다." }
+  },
+
+  /* SMC 공압 실린더 표준 보어 계열 */
+  bores: [2.5, 4, 6, 8, 10, 12, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 140, 160, 180, 200, 250, 300],
+
+  /* SMC 선정 프로그램 초기값 — 문서 확인값 */
+  mu: { none: 0, rolling: 0.1, sliding: 0.3 },
+  ratio: { dynamic: 0.5, stationary: 0.7 },
+
+  G: 9.80665,
+  defaultPressure: 0.5,          /* MPa — 선정 프로그램 표준 예시 조건 */
+
+  src: {
+    title: "SMC 공기압 기기 선정 프로그램 Ver4.0 취급설명서",
+    section: "§1.7.4 부하율에 대해서 (p.19)",
+    rev: "2013-02-06 제2판"
+  }
+};
+
+/* 입력 상태 — 노드별로 따로 보관해 뒤로가기 해도 값이 남는다 */
+var WIN = {
+  kg: 10, deg: 90, mu: "sliding", mode: "dynamic", mpa: 0.5,   /* 추력형 */
+  tkg: 5, ecc: 100, mkind: null                                /* 테이블형 */
+};
+
+/* ── 계산 ─────────────────────────────────────────────────────── */
+function wselThrust(kg, deg, muKey, modeKey, mpa) {
+  var mu = (muKey === "custom") ? Number(WIN.muCustom || 0) : WSEL.mu[muKey];
+  var th = deg * Math.PI / 180;
+  var W = kg * WSEL.G * (Math.sin(th) + mu * Math.cos(th));      /* 총부하 N */
+  var ratio = WSEL.ratio[modeKey];
+  var Freq = W > 0 ? W / ratio : 0;                              /* 필요 이론출력 N */
+  var Areq = mpa > 0 ? Freq / mpa : 0;                           /* 필요 수압면적 mm² */
+  var Dreq = Areq > 0 ? Math.sqrt(4 * Areq / Math.PI) : 0;       /* 필요 내경 mm */
+  var bore = null, i;
+  for (i = 0; i < WSEL.bores.length; i++) {
+    if (WSEL.bores[i] >= Dreq) { bore = WSEL.bores[i]; break; }
+  }
+  return { mu: mu, W: W, ratio: ratio, Freq: Freq, Areq: Areq, Dreq: Dreq, bore: bore,
+           over: bore === null };
+}
+
+/* 산출 구경 → 기존 size 플래그 */
+function wselSizeKey(bore) {
+  if (bore === null) return "xl";
+  if (bore <= 16) return "small";
+  if (bore <= 40) return "mid";
+  if (bore <= 100) return "large";
+  return "xl";
+}
+
+/* size 플래그 → 현재 노드의 보기 index (없으면 가장 가까운 상위) */
+function wselOptIndex(node, sizeKey) {
+  var n = TREE[node], order = ["small", "mid", "large", "xl"], i, j;
+  var have = n.opts.map(function (o) { return (o.f && o.f.size) || null; });
+  i = have.indexOf(sizeKey);
+  if (i >= 0) return i;
+  /* 해당 등급이 없으면(gd_size 에는 xl 이 없음) 있는 것 중 가장 큰 등급으로 */
+  for (j = order.indexOf(sizeKey); j >= 0; j--) {
+    i = have.indexOf(order[j]);
+    if (i >= 0) return i;
+  }
+  return n.opts.length - 1;
+}
+
+/* ── 입력 갱신 ──────────────────────────────────────────────────
+   숫자 입력칸은 결과만 다시 그린다(입력 포커스 유지).
+   버튼은 선택 표시가 바뀌어야 하므로 전체를 다시 그린다. */
+function wselSetNum(k, v) {
+  var n = parseFloat(v);
+  WIN[k] = isFinite(n) ? n : 0;
+  if (k === "kg" || k === "tkg") WIN[k] = Math.max(WIN[k], 0.01);
+  if (k === "ecc") WIN[k] = Math.max(WIN[k], 0);
+  if (k === "mpa") WIN[k] = Math.min(Math.max(WIN[k], 0.05), 1.0);
+  wselPaint();
+}
+
+function wselSet(k, v) {
+  if (k === "deg") {
+    var d = parseFloat(v);
+    WIN.deg = isFinite(d) ? Math.min(Math.max(d, -90), 90) : 0;
+  } else {
+    WIN[k] = v;
+  }
+  render();
+}
+
+function wselPaint() {
+  var el = document.getElementById("wselout");
+  if (el) el.innerHTML = wselResultHTML(ST.node);
+}
+
+/* ── 확정 — 원본 choose() 로 넘긴다 ───────────────────────────── */
+function wselGo(node) {
+  if (WSEL.nodes[node].kind === "table") {
+    var idx = WIN.mkind;
+    if (idx === null || idx === undefined) return;
+    choose(Number(idx));
+    return;
+  }
+  var r = wselThrust(WIN.kg, WIN.deg, WIN.mu, WIN.mode, WIN.mpa);
+  choose(wselOptIndex(node, wselSizeKey(r.bore)));
+}
+
+/* ── 화면 ─────────────────────────────────────────────────────── */
+function wselBtn(group, key, label, cur) {
+  return '<button class="opt' + (cur === key ? " on" : "") +
+         '" style="padding:9px 11px;min-height:0" onclick="wselSet(\'' + group + '\',\'' + key + '\')">' +
+         '<span class="ol" style="font-size:13px">' + label + "</span></button>";
+}
+
+function wselNumInput(k, val, step, unit, width) {
+  return '<input type="number" value="' + val + '" step="' + step + '" ' +
+         'oninput="wselSetNum(\'' + k + '\',this.value)" ' +
+         'style="width:' + (width || 92) + 'px;padding:7px 9px;border:1px solid #cbd5e1;' +
+         'border-radius:7px;font-size:14px;font-weight:700"> ' + unit;
+}
+
+function wselSourceHTML() {
+  return '<p class="qhint" style="margin-top:10px">근거 — 부하율 정의와 기준값은 ' +
+    esc(WSEL.src.title) + " " + esc(WSEL.src.section) + " (" + esc(WSEL.src.rev) + ") 확인값입니다. " +
+    "마찰계수 초기값(가이드 미사용 0 · 회전 0.1 · 미끄럼 0.3)과 공급압력 0.5 MPa 도 같은 문서 기준이며, " +
+    "모두 위에서 직접 바꿀 수 있습니다.</p>";
+}
+
+/* 추력형 결과 */
+function wselResultHTML(node) {
+  var cfg = WSEL.nodes[node];
+  if (cfg.kind === "table") return wselTableResultHTML(node);
+
+  var r = wselThrust(WIN.kg, WIN.deg, WIN.mu, WIN.mode, WIN.mpa);
+  var sizeKey = wselSizeKey(r.bore);
+  var oi = wselOptIndex(node, sizeKey);
+  var label = TREE[node].opts[oi].l;
+  var posture = WIN.deg >= 89 ? "수직" : (Math.abs(WIN.deg) < 1 ? "수평" : "경사 " + WIN.deg + "°");
+
+  var h = '<div class="forcebox" style="margin-top:14px">';
+  h += '<div class="forcehead"><div><h4>산출 결과</h4>' +
+       "<p>" + esc(posture) + " · 부하율 " + r.ratio + " · " + WIN.mpa + " MPa 기준</p></div></div>";
+
+  h += '<div class="forcemeta">' +
+       "<div>필요 추력<b>" + r.W.toFixed(1) + " N</b><em>" + (r.W / WSEL.G).toFixed(2) + " kgf</em></div>" +
+       "<div>필요 이론출력<b>" + r.Freq.toFixed(1) + " N</b><em>부하율 " + r.ratio + " 적용</em></div>" +
+       "<div>권장 구경<b>" + (r.bore ? "Ø" + r.bore : "범위 초과") + "</b><em>이론 필요내경 " +
+       r.Dreq.toFixed(1) + " mm</em></div></div>";
+
+  h += '<div class="forcetablewrap"><table class="forcetable"><tbody>' +
+       "<tr><td>총부하</td><td>W = m·g·(sinθ + μ·cosθ) = " + WIN.kg + " × 9.80665 × (sin" +
+       WIN.deg + "° + " + r.mu + "·cos" + WIN.deg + "°) = <b>" + r.W.toFixed(1) + " N</b></td></tr>" +
+       "<tr><td>필요 이론출력</td><td>F = W ÷ 부하율 = " + r.W.toFixed(1) + " ÷ " + r.ratio +
+       " = <b>" + r.Freq.toFixed(1) + " N</b></td></tr>" +
+       "<tr><td>필요 수압면적</td><td>A = F ÷ P = " + r.Freq.toFixed(1) + " ÷ " + WIN.mpa +
+       " = <b>" + r.Areq.toFixed(0) + " mm²</b></td></tr>" +
+       "<tr><td>필요 내경</td><td>D = √(4A÷π) = <b>" + r.Dreq.toFixed(1) +
+       " mm</b> → 표준 보어 <b>" + (r.bore ? "Ø" + r.bore : "범위 초과") + "</b></td></tr>" +
+       "</tbody></table></div>";
+
+  if (r.over) {
+    h += '<div class="forcena">표준 보어 범위를 넘습니다. 대형 고추력 구간으로 진행하되 ' +
+         "실제 사양은 카탈로그에서 직접 확인하십시오.</div>";
+  }
+  if (WIN.deg >= 89) {
+    h += '<div class="forceguide"><strong>수직 설치 확인 사항</strong><span>' +
+         "에어가 끊기면 자중으로 낙하합니다. 록 부착 사양이나 낙하방지 밸브를 함께 검토하십시오. " +
+         "하강 방향은 중력이 구동력이 되어 과속하기 쉬우므로 메터아웃·쿠션·쇼크업소버도 확인하십시오." +
+         "<span class='speedwarn'>⚠ 위 구경은 상승(중력을 이기는 방향) 기준입니다.</span></span></div>";
+  } else {
+    h += '<div class="forceguide"><strong>수평 설치 확인 사항</strong><span>' +
+         "로드에 옆방향 힘이 걸리면 별도 가이드가 필요합니다. 허용 " + term("{{횡하중}}") +
+         "은 시리즈 카탈로그에서 확인하십시오." +
+         "<span class='speedwarn'>⚠ 마찰계수 μ = " + r.mu + " 적용. 실제 가이드 상태에 따라 달라집니다.</span></span></div>";
+  }
+
+  h += '<div class="forcefoot"><span class="formula">이 구경대로 진행 → ' + esc(label) +
+       "</span><span>좌굴 한계 행정과 허용 횡하중·모멘트는 계산하지 않습니다. 시리즈별 카탈로그 표로 확인하십시오.</span></div>";
+  h += "</div>";
+  return h;
+}
+
+/* 테이블형 결과 */
+function wselTableResultHTML(node) {
+  var r = wselThrust(WIN.tkg, 0, "rolling", "dynamic", WIN.mpa);   /* 테이블은 수평·구름 기준 */
+  var M = WIN.tkg * WSEL.G * (WIN.ecc / 1000);                     /* 모멘트 N·m */
+  var opts = TREE[node].opts;
+
+  var h = '<div class="forcebox" style="margin-top:14px">';
+  h += '<div class="forcehead"><div><h4>참고 산출값</h4><p>수평 · 구름마찰 μ 0.1 · ' +
+       WIN.mpa + " MPa 기준</p></div></div>";
+  h += '<div class="forcemeta">' +
+       "<div>필요 추력<b>" + r.W.toFixed(1) + " N</b><em>수평 이송분</em></div>" +
+       "<div>참고 구경<b>" + (r.bore ? "Ø" + r.bore : "범위 초과") + "</b><em>추력 기준</em></div>" +
+       "<div>편심 모멘트<b>" + M.toFixed(2) + " N·m</b><em>" + WIN.tkg + "kg × " + WIN.ecc + "mm</em></div></div>";
+
+  h += '<div class="forcetablewrap"><table class="forcetable"><tbody>' +
+       "<tr><td>편심 모멘트</td><td>M = m·g·L = " + WIN.tkg + " × 9.80665 × " + (WIN.ecc / 1000) +
+       " m = <b>" + M.toFixed(2) + " N·m</b></td></tr></tbody></table></div>";
+
+  h += '<div class="forceguide"><strong>모멘트 판정은 자동으로 하지 않습니다</strong><span>' +
+       "허용 모멘트는 시리즈·보어·설치 방향마다 다르고 카탈로그의 허용 모멘트 그래프로 판정해야 합니다. " +
+       "임의 기준을 만들지 않기 위해 아래에서 직접 골라주십시오. 위 계산값은 판단 참고용입니다." +
+       "</span></div>";
+
+  h += '<div class="forcefoot"><span class="formula">아래에서 모멘트 조건을 선택하면 다음 질문으로 진행합니다</span></div>';
+  h += "</div>";
+
+  /* 원본 3보기 그대로 — 질량 근거가 있는 첫 보기만 권장 표시 */
+  h += '<div class="opts one" style="margin-top:12px">';
+  opts.forEach(function (o, i) {
+    var rec = (i === 0 && WIN.tkg <= 0.5);
+    h += '<button class="opt' + (String(WIN.mkind) === String(i) ? " on" : "") +
+         '" onclick="wselSet(\'mkind\',\'' + i + '\')">' +
+         '<span class="ol">' + term(o.l) + "</span>" +
+         (rec ? '<span class="od">계산 질량 ' + WIN.tkg + "kg — 이 보기의 기준(수백 g 이하)에 해당합니다</span>" : "") +
+         '<span class="oa">›</span></button>';
+  });
+  h += "</div>";
+  return h;
+}
+
+/* 질문 화면 */
+function wselRenderQ(node) {
+  var cfg = WSEL.nodes[node];
+  var h = '<div class="qhead"><span class="qno">Q' + (ST.path.length + 1) + "</span><h2>" +
+          esc(cfg.title) + "</h2></div>";
+  h += '<p class="qhint">' + esc(cfg.hint) + "</p>";
+
+  h += '<div class="optbox" style="border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;background:#fff">';
+
+  if (cfg.kind === "table") {
+    h += '<table class="mt"><tbody>' +
+         '<tr><td class="c" style="white-space:nowrap">워크 질량</td><td>' +
+         wselNumInput("tkg", WIN.tkg, "0.1", "kg") + "</td></tr>" +
+         '<tr><td class="c" style="white-space:nowrap">편심 거리</td><td>' +
+         wselNumInput("ecc", WIN.ecc, "10", "mm") +
+         '<span class="qhint" style="display:inline;margin-left:8px">테이블 중심에서 워크 무게중심까지</span></td></tr>' +
+         "</tbody></table>";
+  } else {
+    h += '<table class="mt"><tbody>';
+    h += '<tr><td class="c" style="white-space:nowrap">물체 무게</td><td>' +
+         wselNumInput("kg", WIN.kg, "0.5", "kg") + "</td></tr>";
+
+    h += '<tr><td class="c">설치 자세</td><td><div class="chips">' +
+         wselBtn("deg", "90", "수직 (상하)", String(WIN.deg)) +
+         wselBtn("deg", "0", "수평", String(WIN.deg)) +
+         wselBtn("deg", "30", "경사 30°", String(WIN.deg)) +
+         wselBtn("deg", "45", "경사 45°", String(WIN.deg)) +
+         "</div></td></tr>";
+
+    h += '<tr><td class="c">가이드 마찰</td><td><div class="chips">' +
+         wselBtn("mu", "none", "가이드 없음 (μ 0)", WIN.mu) +
+         wselBtn("mu", "rolling", "롤러·볼 (μ 0.1)", WIN.mu) +
+         wselBtn("mu", "sliding", "미끄럼 (μ 0.3)", WIN.mu) +
+         "</div></td></tr>";
+
+    h += '<tr><td class="c">동작 조건</td><td><div class="chips">' +
+         wselBtn("mode", "dynamic", "일반 동작 (부하율 50%)", WIN.mode) +
+         wselBtn("mode", "stationary", "정지 유지 (70%)", WIN.mode) +
+         "</div></td></tr>";
+
+    h += '<tr><td class="c">공급 압력</td><td>' +
+         wselNumInput("mpa", WIN.mpa, "0.05", "MPa") + "</td></tr>";
+    h += "</tbody></table>";
+  }
+
+  h += "</div>";
+  h += '<div id="wselout">' + wselResultHTML(node) + "</div>";
+
+  if (cfg.kind !== "table") {
+    h += '<div class="btnrow" style="margin-top:14px">' +
+         '<button onclick="wselGo(\'' + node + '\')" ' +
+         'style="background:#1d4ed8;color:#fff;border:0;font-weight:800;padding:12px 18px;border-radius:9px;cursor:pointer">' +
+         "이 구경대로 진행 →</button></div>";
+  }
+
+  h += wselSourceHTML();
+  return h;
+}
+
+/* ── 원본 renderQ 후킹 ────────────────────────────────────────── */
+(function () {
+  var orig = renderQ;
+  renderQ = function () {
+    if (ST.node && WSEL.nodes[ST.node] && typeof TREE !== "undefined" && TREE[ST.node]) {
+      try { return wselRenderQ(ST.node); }
+      catch (e) { return orig(); }        /* 문제가 생기면 원래 질문으로 되돌린다 */
+    }
+    return orig();
+  };
+})();
+
 document.addEventListener("DOMContentLoaded",initSmc);
 </script>
 </body>
