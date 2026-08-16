@@ -290,6 +290,14 @@ mark{background:#fef08a;color:#111827;padding:0 1px;border-radius:2px}
   padding:2px 6px;font-weight:700;cursor:pointer}
 .serchip:hover{background:#dbeafe;border-color:#93c5fd}
 .serchip.hit{background:#fef9c3;border-color:#fde047;color:#854d0e}
+.series-peek{position:fixed;z-index:99997;width:268px;max-width:calc(100vw - 20px);padding:10px;
+  border:1px solid #93c5fd;border-radius:11px;background:#fff;box-shadow:0 16px 38px rgba(15,23,42,.28);
+  color:#334155;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(4px);transition:opacity .14s,transform .14s}
+.series-peek.on{opacity:1;visibility:visible;transform:translateY(0)}
+.series-peek img{display:block;width:100%;height:145px;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#fff}
+.series-peek b{display:block;margin-top:8px;color:var(--navy);font-size:13px;line-height:1.4}
+.series-peek span{display:block;margin-top:2px;color:#64748b;font-size:10.5px;line-height:1.45}
+.series-peek small{display:block;margin-top:5px;color:#0284c7;font-size:10px;font-weight:700}
 .mt tr.hitrow td{background:#fffdf0}
 .flash{animation:fl 1.4s ease}
 @keyframes fl{0%{box-shadow:0 0 0 3px rgba(56,189,248,.5)}100%{box-shadow:0 0 0 0 rgba(56,189,248,0)}}
@@ -418,6 +426,7 @@ header h1{font-size:22px;letter-spacing:-.02em}
 </div>
 <div class="lbx" id="lbx" onclick="closeLbx()"><figure><button class="lbxx" onclick="closeLbx()" title="닫기 (ESC)">✕</button><img id="lbximg" alt=""><figcaption><b id="lbxcap"></b><span>SMC Korea 공식 카탈로그 이미지 · 클릭하면 닫힙니다</span></figcaption></figure></div>
 <div class="toast" id="toast"></div>
+<div class="series-peek" id="seriesPeek" role="tooltip" aria-hidden="true"></div>
 <script>
 /* ============================================================
    05 / SMC PNEUMATIC CYLINDER — 데이터
@@ -1949,7 +1958,7 @@ function typeBody(){
         '<div class="tc-row"><b>진입</b><span>'+ht(t.enter,q)+'</span></div>'+
         '<div class="tc-row out"><b>이탈</b><span>'+ht(t.out,q)+'</span></div>'+
         '<div class="tc-ser">'+mem.map(function(m){
-            return '<button class="serchip'+(memf[m]&&memf[m].length?" hit":"")+'" onclick="openSeries(\''+m+'\')" title="'+esc(SERIES[m].label)+' 상세 보기">'+esc(m)+'</button>';
+            return '<button class="serchip'+(memf[m]&&memf[m].length?" hit":"")+'" onclick="hideSeriesPeek();openSeries(\''+m+'\')" onmouseenter="showSeriesPeek(this,\''+m+'\')" onmouseleave="hideSeriesPeek()" onfocus="showSeriesPeek(this,\''+m+'\')" onblur="hideSeriesPeek()" aria-describedby="seriesPeek" title="'+esc(SERIES[m].label)+' 상세 보기">'+esc(m)+'</button>';
           }).join('')+'</div>'+
         '<div class="tc-g">비교 그룹: '+esc(t.groups.join(", "))+'</div></div>';
     });
@@ -2183,11 +2192,14 @@ function term(s){
   });
 }
 function ser(code){return SERIES[code]||null;}
+function imageSrc(code){
+  if(typeof IMGDATA!=="undefined" && IMGDATA[code]) return IMGDATA[code];
+  if(typeof IMG!=="undefined" && IMG[code]) return IMGBASE+IMG[code];
+  return null;
+}
 /* 제품 이미지 (없으면 빈 문자열) */
 function imgTag(code,cls){
-  var src=null;
-  if(typeof IMGDATA!=="undefined" && IMGDATA[code]) src=IMGDATA[code];          /* 인라인(단일 파일) */
-  else if(typeof IMG!=="undefined" && IMG[code]) src=IMGBASE+IMG[code];          /* img/ 폴더 */
+  var src=imageSrc(code);
   if(!src) return '<div class="noimg '+(cls||'')+'">공식 이미지 미제공</div>';
   return '<img class="pimg '+(cls||'')+'" src="'+src+'" alt="'+esc(code)+' 제품 이미지" loading="lazy" '+
          'title="'+esc(code)+' — 클릭하면 크게 보기" onclick="openLbx(event,\''+esc(code)+'\')" '+
@@ -2263,10 +2275,30 @@ function linkBar(code,kind){
 }
 
 /* ---------- 이미지 확대 ---------- */
+function showSeriesPeek(el,code){
+  var src=imageSrc(code),s=ser(code),box=document.getElementById("seriesPeek");
+  if(!src||!s||!box) return;
+  box.innerHTML='<img src="'+src+'" alt="'+esc(code)+' 실린더 이미지"><b>'+esc(s.label)+'</b><span>'+esc(s.bore)+' · '+esc(s.feat)+'</span><small>SMC Korea 공식 카탈로그 이미지</small>';
+  box.setAttribute("aria-hidden","false");
+  box.className="series-peek on";
+  box.style.left="-9999px"; box.style.top="-9999px";
+  requestAnimationFrame(function(){
+    var r=el.getBoundingClientRect(),w=box.offsetWidth,h=box.offsetHeight;
+    var left=Math.max(10,Math.min(window.innerWidth-w-10,r.left+r.width/2-w/2));
+    var top=r.top-h-10;
+    if(top<10) top=r.bottom+10;
+    top=Math.max(10,Math.min(window.innerHeight-h-10,top));
+    box.style.left=left+"px"; box.style.top=top+"px";
+  });
+}
+function hideSeriesPeek(){
+  var box=document.getElementById("seriesPeek");
+  if(!box) return;
+  box.className="series-peek"; box.setAttribute("aria-hidden","true");
+}
 function openLbx(e,code){
   if(e){ e.stopPropagation(); }
-  var src=(typeof IMGDATA!=="undefined"&&IMGDATA[code])?IMGDATA[code]:
-          ((typeof IMG!=="undefined"&&IMG[code])?IMGBASE+IMG[code]:null);
+  var src=imageSrc(code);
   if(!src) return;
   var s=ser(code);
   document.getElementById("lbximg").src=src;
