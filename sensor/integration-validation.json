@@ -1,0 +1,16 @@
+{
+  "build": "v16-e3z-integration-candidate",
+  "status": "PASS_STATIC",
+  "parentIndexModified": false,
+  "totalRecords": 180,
+  "seriesCounts": {
+    "E3T": 40,
+    "EE-SX47/67": 68,
+    "E3Z": 72
+  },
+  "fileCount": 88,
+  "missingReferences": 0,
+  "nodeSyntax": "PASS",
+  "mountPath": "frontend/sensor/",
+  "entry": "frontend/sensor/index.html"
+}

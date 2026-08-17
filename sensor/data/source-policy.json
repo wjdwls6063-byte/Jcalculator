@@ -1,0 +1,38 @@
+{
+  "policyVersion": "1.4",
+  "project": "Jcalculator Sensor Selection",
+  "currentStage": "v20 - E3T + E3Z + E2E Small New + EE-SX47/67 integrated catalog selection",
+  "omronSourcePolicy": {
+    "allowed": [
+      "OMRON Korea official website (https://www.ia.omron.co.kr/)",
+      "OMRON Korean-language official catalogs supplied or downloaded from OMRON Korea"
+    ],
+    "excluded": [
+      "resellers/distributors as spec sources",
+      "shopping sites",
+      "blogs/cafes",
+      "third-party databases",
+      "non-OMRON mirrors"
+    ],
+    "currentE3TBaseline": "OMRON Korea official website + E3T Korean General Catalog 2010",
+    "updateRule": "When a newer Korean official catalog is provided, compare document versions first; preserve prior evidence and update model/spec/lifecycle fields with source-version history.",
+    "recommendationRule": "Models whose current lifecycle is not verified must not be default recommendations.",
+    "catalogBaselines": [
+      "E3T Korean General Catalog 2010",
+      "EE-SX47/67 Korean Catalog 2010",
+      "E3Z Korean Catalog 2010",
+      "E2E Small New Korean Catalog 2014"
+    ],
+    "currentEESX4767Baseline": "User-supplied OMRON Korean official EE-SX47/67 Catalog 2010",
+    "currentE3ZBaseline": "User-supplied OMRON Korean official E3Z Catalog 2010",
+    "e3zPartialDataRule": "E3Z-LS/G/B values not present in the supplied detailed ratings pages must remain 확인 불가; do not infer from other E3Z families.",
+    "currentE2ESmallNewBaseline": "User-supplied OMRON Korean official E2E Small New Catalog 2014",
+    "e2eDataRule": "Use p.59 product composition and p.60 ratings/performance as the primary E2E Small New baseline. Nonshield full order codes may be constructed only from the p.60 official nonshield base family plus the p.59 same-lineup output/operation/connection matrix, and this derivation must remain disclosed."
+  },
+  "handoffRule": "Any future chat/AI continuing this project should read PROJECT_HANDOFF.md and data/source-policy.json before modifying product data or recommendation logic.",
+  "uiPolicies": {
+    "forkShapeImageHelp": "EE-SX47/67 8 shape choices must show an official Korean catalog image by hover on desktop and tap on touch devices.",
+    "evidenceSeparation": "ⓘ explains/visualizes; 📖 shows official evidence.",
+    "noInertFilters": "Do not show selectable filter controls that are not connected to selection logic."
+  }
+}
