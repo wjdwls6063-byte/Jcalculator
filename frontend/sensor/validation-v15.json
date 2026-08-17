@@ -1,0 +1,80 @@
+{
+  "build": "Jcalculator-sensor-only-v15-github",
+  "status": "PASS_STATIC",
+  "beforeFileCount": 168,
+  "afterFileCount": 63,
+  "reducedBy": 105,
+  "checks": {
+    "fileCountUnder100": true,
+    "sharedEvidencePagesExactly3": true,
+    "highlightMetadata108": true,
+    "noPerModelEvidenceFolder": true,
+    "noMissingModelAssets": true,
+    "noMissingStaticRefs": true,
+    "overlayUIInstalled": true,
+    "activeDataV08": true,
+    "allJsSyntax": true,
+    "dataJsSyntax": true
+  },
+  "sharedEvidencePages": [
+    "assets/evidence_pages/e3t-p287.png",
+    "assets/evidence_pages/ee-sx-p1170.png",
+    "assets/evidence_pages/ee-sx-p1171.png"
+  ],
+  "highlightMetadataRecords": 108,
+  "missingAssets": [],
+  "missingStaticRefs": [],
+  "javascriptSyntax": [
+    {
+      "script": 0,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "script": 1,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "script": 2,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "script": 3,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "script": 4,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "script": 5,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "script": 6,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "script": 7,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "script": 8,
+      "status": "PASS",
+      "error": ""
+    }
+  ],
+  "dataJs": "PASS",
+  "optimization": {
+    "before": "108 separate full-page highlighted model PNGs",
+    "after": "3 shared official full-page PNGs + per-model highlight coordinates in JSON",
+    "visualBehavior": "Official full page remains visible; selected model is highlighted with a blue browser overlay."
+  }
+}

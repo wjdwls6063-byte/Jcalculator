@@ -1,0 +1,41 @@
+{
+  "build": "1.0-integration-candidate",
+  "parentIndexModified": false,
+  "totalRecords": 108,
+  "htmlLocalReferenceCount": 4,
+  "missingHtmlReferences": [],
+  "jsonImageReferenceCount": 30,
+  "missingJsonImageAssets": [],
+  "shapeHoverImagesPresent": 8,
+  "nodeSyntaxChecks": {
+    "combinedDataJs": "PASS",
+    "inlineScripts": [
+      {
+        "index": 0,
+        "status": "PASS",
+        "error": ""
+      },
+      {
+        "index": 1,
+        "status": "PASS",
+        "error": ""
+      },
+      {
+        "index": 2,
+        "status": "PASS",
+        "error": ""
+      },
+      {
+        "index": 3,
+        "status": "PASS",
+        "error": ""
+      },
+      {
+        "index": 4,
+        "status": "PASS",
+        "error": ""
+      }
+    ]
+  },
+  "status": "PASS"
+}

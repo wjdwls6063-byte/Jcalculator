@@ -1,0 +1,2372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jcalculator 센서 선정 - UI/UX Wireframe Preview</title>
+<style>
+:root{
+  --bg:#f5f7fb; --panel:#fff; --text:#172033; --muted:#667085; --line:#dfe4ee;
+  --primary:#3157d5; --primary2:#eef2ff; --good:#16794b; --warn:#9a6700; --danger:#b42318;
+  --shadow:0 12px 30px rgba(24,39,75,.08); --radius:16px;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+button,input{font:inherit} button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:50;height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 24px}
+.brand{display:flex;align-items:center;gap:12px;min-width:260px}.brand-mark{width:36px;height:36px;border-radius:10px;background:#20293a;color:#fff;display:grid;place-items:center;font-weight:800}.brand strong{display:block;font-size:16px}.brand small{color:var(--muted)}
+.search{flex:1;max-width:760px;position:relative}.search input{width:100%;height:42px;border:1px solid var(--line);border-radius:12px;padding:0 42px 0 42px;background:#fafbfc;outline:none}.search .ico{position:absolute;left:14px;top:11px;color:#7d8799}.search .key{position:absolute;right:10px;top:9px;border:1px solid var(--line);border-radius:7px;padding:3px 7px;color:#7d8799;background:#fff;font-size:12px}
+.top-actions{display:flex;gap:8px;align-items:center}.pill{border:1px solid #b8c6ff;background:#f2f5ff;color:#2742a6;border-radius:999px;padding:7px 10px;font-weight:700;font-size:12px}.ghost{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;color:#475467}
+.layout{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:calc(100vh - 68px)}
+.sidebar{border-right:1px solid var(--line);background:#fbfcfe;padding:18px 16px;position:sticky;top:68px;height:calc(100vh - 68px);overflow:auto}
+.side-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.side-head h3{margin:0;font-size:15px}.side-head button{border:none;background:none;color:var(--primary);font-size:12px}
+.filter-section{border-top:1px solid var(--line);padding:14px 2px}.filter-section:first-of-type{border-top:none}.filter-title{font-weight:800;margin-bottom:9px;display:flex;align-items:center;gap:5px}.filter-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:8px}.check{display:flex;align-items:center;gap:7px;margin:7px 0;color:#344054}.check input{accent-color:var(--primary)}
+.range{display:grid;grid-template-columns:1fr 18px 1fr;gap:7px;align-items:center}.range input{width:100%;height:34px;border:1px solid var(--line);border-radius:9px;padding:0 8px}
+.info{width:18px;height:18px;border:1px solid #aab4c5;border-radius:50%;display:inline-grid;place-items:center;font-size:11px;color:#667085;background:#fff;cursor:help;position:relative;font-weight:700}
+.main{padding:20px 26px 48px;min-width:0}.notice{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;color:#475467;margin-bottom:14px}.notice strong{color:#20293a}.dot{width:8px;height:8px;background:#667085;border-radius:50%}
+.condition-bar{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}.condition-bar .label{font-weight:800;margin-right:3px}.chip{background:#eef2ff;color:#2944a4;border-radius:999px;padding:6px 10px;font-weight:700;font-size:12px;display:flex;align-items:center;gap:7px}.chip button{border:none;background:none;color:#6b7ac5;padding:0;font-size:14px}.clear{margin-left:auto;border:none;background:none;color:#667085}
+.wizard-shell{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:visible}.wizard-head{padding:18px 20px 0}.wizard-headline{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.wizard-headline h1{font-size:23px;margin:0 0 6px}.wizard-headline p{margin:0;color:var(--muted)}.mode-badge{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:8px 10px;color:#475467;font-size:12px}
+.stepper{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:18px;border-bottom:1px solid var(--line)}.step{position:relative;padding:0 8px 14px;text-align:center;color:#98a2b3;font-size:12px;font-weight:700;cursor:pointer}.step::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:3px;background:transparent}.step .num{width:26px;height:26px;border-radius:50%;border:1px solid #cdd5df;display:grid;place-items:center;margin:0 auto 7px;background:#fff}.step.active{color:var(--primary)}.step.active::after{background:var(--primary)}.step.active .num{border-color:var(--primary);background:var(--primary);color:#fff}.step.done{color:#475467}.step.done .num{background:#eef2ff;border-color:#b8c6ff;color:#3157d5}
+.panel{padding:24px 22px 22px}.panel-grid{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:22px}.question h2{font-size:21px;margin:0 0 7px}.question .sub{color:var(--muted);margin-bottom:18px}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.option-card{border:1px solid var(--line);background:#fff;border-radius:14px;padding:15px;min-height:120px;text-align:left;transition:.15s;position:relative}.option-card:hover{border-color:#aebfff;box-shadow:0 6px 18px rgba(49,87,213,.09)}.option-card.selected{border:2px solid var(--primary);background:#f7f9ff;padding:14px}.option-title{display:flex;align-items:center;gap:6px;font-weight:850;font-size:15px;margin-bottom:6px}.option-desc{color:#667085;line-height:1.5;font-size:13px}.option-meta{position:absolute;bottom:12px;left:15px;font-size:11px;color:#8791a3}.iconbox{width:36px;height:36px;border-radius:10px;background:#eef2ff;display:grid;place-items:center;margin-bottom:10px;font-size:18px}
+.guide{border:1px solid var(--line);border-radius:14px;background:#fafbfe;padding:14px;height:max-content;position:sticky;top:90px}.guide h4{margin:0 0 8px;font-size:14px}.guide p{margin:0;color:#667085;line-height:1.55;font-size:12px}.guide .mini{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}.mini strong{font-size:12px}.mini ul{padding-left:18px;margin:6px 0 0;color:#667085;font-size:12px;line-height:1.55}
+.qa{border:1px solid var(--line);border-radius:13px;padding:14px;margin-bottom:12px}.qa-title{font-weight:800;margin-bottom:10px}.seg{display:flex;gap:8px;flex-wrap:wrap}.seg button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 13px;color:#344054}.seg button.active{border-color:var(--primary);background:var(--primary2);color:#2342af;font-weight:800}
+.recommend-method{margin-top:14px;padding:13px;border-radius:12px;background:#f0f6ff;border:1px solid #bfd2ff;display:flex;align-items:center;justify-content:space-between;gap:10px}.recommend-method strong{color:#2342af}.method-chips{display:flex;gap:8px;flex-wrap:wrap}.method-tag{background:#fff;border:1px solid #b8c9ff;border-radius:999px;padding:6px 9px;color:#2944a4;font-weight:800;font-size:12px;display:flex;align-items:center;gap:5px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{border:1px solid var(--line);border-radius:12px;padding:13px}.field label{display:block;font-weight:800;margin-bottom:8px}.field input,.field select{width:100%;height:40px;border:1px solid var(--line);border-radius:9px;padding:0 10px;background:#fff}
+.advanced{margin-top:12px;border:1px dashed #cbd3df;border-radius:12px;padding:12px;color:#475467;background:#fbfcfe}.advanced summary{cursor:pointer;font-weight:800}
+.actions{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-top:1px solid var(--line);background:#fcfdff}.actions .left{color:#667085;font-size:12px}.btn{border:none;border-radius:10px;padding:10px 16px;font-weight:800}.btn-primary{background:var(--primary);color:#fff}.btn-secondary{background:#fff;border:1px solid var(--line);color:#344054;margin-right:8px}
+.result-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.result-top h2{margin:0}.result-count{color:#667085}.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.product-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff;position:relative}.product-card.best{border:2px solid #4b67dc;padding:13px}.best-badge{position:absolute;top:12px;left:12px;background:#3157d5;color:#fff;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:800}.product-img{width:100%;height:130px;object-fit:contain;background:#fbfbfd;border-radius:10px;margin-bottom:10px}.maker{font-size:11px;color:#667085}.model{font-size:18px;font-weight:900;margin:2px 0 8px}.specs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px 0}.spec{background:#f7f8fb;border-radius:8px;padding:7px;font-size:11px}.spec strong{display:block;color:#344054;margin-bottom:2px}.reason{border-top:1px solid var(--line);margin-top:9px;padding-top:9px;color:#475467;font-size:12px;line-height:1.55}.reason div::before{content:"✓";color:var(--good);font-weight:900;margin-right:5px}.card-actions{display:flex;gap:7px;margin-top:10px}.card-actions button{flex:1;border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px;font-weight:800;font-size:12px}.card-actions button.primary{background:#f0f4ff;border-color:#bdc9ff;color:#2844ad}
+.popover{position:fixed;z-index:200;width:360px;max-width:calc(100vw - 24px);background:#fff;border:1px solid #d8dee9;border-radius:14px;box-shadow:0 18px 55px rgba(16,24,40,.20);padding:14px;display:none}.popover.show{display:block}.pop-title{display:flex;align-items:center;justify-content:space-between;font-weight:900;font-size:15px;margin-bottom:8px}.pop-close{border:none;background:#f2f4f7;border-radius:7px;width:28px;height:28px;color:#667085}.pop-img{width:100%;height:150px;object-fit:contain;background:#fafafa;border-radius:10px;border:1px solid #eef0f4;margin:5px 0 10px}.pop-text{font-size:12px;color:#475467;line-height:1.6}.pop-label{font-size:11px;color:#667085;font-weight:800;margin-top:10px;margin-bottom:4px}.diagram{height:110px;border:1px solid #e2e7ef;border-radius:10px;background:#fafbfc;display:flex;align-items:center;justify-content:center;gap:10px;padding:10px;position:relative}.d-unit{background:#25334d;color:#fff;padding:8px 10px;border-radius:8px;font-size:11px;font-weight:800}.d-obj{background:#ffd36a;color:#4b3b06;padding:9px;border-radius:5px;font-size:11px;font-weight:800}.d-bg{background:#d0d5dd;color:#475467;padding:18px 8px;border-radius:5px;font-size:11px}.arrow{font-size:20px;color:#3157d5;font-weight:900}.reflect{border:3px dotted #98a2b3;padding:10px;border-radius:6px;font-size:11px}.caption{font-size:10px;color:#98a2b3;text-align:right;margin-top:3px}
+.modal-back{position:fixed;inset:0;background:rgba(16,24,40,.48);z-index:300;display:none;align-items:center;justify-content:center;padding:24px}.modal-back.show{display:flex}.modal{background:#fff;border-radius:16px;width:min(950px,95vw);max-height:90vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.25)}.modal-head{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;z-index:2}.modal-body{padding:16px}.evidence-img{width:100%;border:1px solid var(--line);border-radius:12px}.official-note{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:10px;color:#667085;font-size:12px;margin-bottom:12px}.official-note strong{color:#344054}
+@media(max-width:1100px){.layout{grid-template-columns:240px minmax(0,1fr)}.sidebar{padding:16px 12px}.panel-grid{grid-template-columns:1fr}.guide{position:static}.result-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:780px){.topbar{padding:0 12px}.brand{min-width:auto}.brand small,.brand strong{display:none}.top-actions{display:none}.layout{display:block}.sidebar{display:none}.main{padding:12px}.cards,.fields,.result-grid{grid-template-columns:1fr}.step span.labeltxt{display:none}.wizard-headline{display:block}.mode-badge{display:inline-block;margin-top:10px}.condition-bar{position:sticky;top:68px;z-index:20}.panel{padding:18px 14px}.actions{padding:12px 14px}}
+
+/* v0.2 · 비교 기능 */
+.compare-add{position:absolute;top:12px;right:12px;border:1px solid #cfd7e6;background:#fff;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:800;color:#475467;z-index:2}
+.compare-add.on{background:#eef2ff;border-color:#9fb2ff;color:#2742a6}
+.compare-tray{position:fixed;left:320px;right:24px;bottom:18px;z-index:120;background:#102a5f;color:#fff;border:1px solid rgba(255,255,255,.16);box-shadow:0 16px 40px rgba(16,42,95,.28);border-radius:14px;padding:10px 12px;display:none;align-items:center;gap:10px;flex-wrap:wrap}
+.compare-tray.show{display:flex}.compare-tray strong{font-size:13px}.compare-items{display:flex;gap:6px;flex:1;flex-wrap:wrap}.compare-item{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:5px 8px;font-size:11px}.compare-tray button{border:1px solid rgba(255,255,255,.35);background:#fff;color:#16346d;border-radius:9px;padding:8px 10px;font-weight:800;font-size:12px}.compare-tray button.alt{background:transparent;color:#fff}
+.compare-back{display:none;position:fixed;inset:0;background:rgba(15,23,42,.48);z-index:300;padding:22px;overflow:auto}.compare-back.show{display:block}.compare-modal{width:min(1180px,100%);margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.25);overflow:hidden}.compare-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;background:linear-gradient(135deg,#17346f,#295fd1);color:#fff}.compare-head h2{margin:0;font-size:20px}.compare-head p{margin:4px 0 0;color:#dbe7ff;font-size:12px}.compare-head button{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;border-radius:9px;padding:8px 10px}.compare-tabs{display:flex;gap:6px;padding:12px 18px;border-bottom:1px solid var(--line);background:#f8faff}.compare-tabs button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 12px;font-weight:800;color:#475467}.compare-tabs button.active{background:#16346d;color:#fff;border-color:#16346d}.compare-body{padding:18px 20px 24px}.compare-note{font-size:12px;color:#667085;margin:0 0 14px}.compare-filter{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:16px}.compare-filter .label{font-weight:800;margin-bottom:8px}.quick-chip{display:inline-block;border:1px solid #cbd5e1;background:#f8fafc;border-radius:999px;padding:5px 9px;margin:0 5px 5px 0;font-size:11px;color:#475467}.compare-group{margin:18px 0 22px}.compare-group-title{display:flex;align-items:center;gap:8px;font-weight:900;color:#123a80;border-bottom:2px solid #2f64e1;padding:0 0 8px}.g-badge{background:#2f64e1;color:#fff;border-radius:5px;padding:4px 7px;font-size:11px}.compare-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:12px}.compare-table th{background:#102a5f;color:#fff;text-align:left;padding:9px 10px;border:1px solid #102a5f}.compare-table td{padding:10px;border:1px solid #dfe5ef;vertical-align:top}.compare-table tr:nth-child(even) td{background:#f8fafc}.compare-model{font-weight:900;color:#133b80}.compare-reason{color:#475467;line-height:1.45}.matrix{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}.matrix th,.matrix td{padding:10px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:12px;vertical-align:top}.matrix th{background:#102a5f;color:#fff}.matrix tr:last-child td{border-bottom:none}.matrix th:last-child,.matrix td:last-child{border-right:none}.matrix .rowhead{width:150px;background:#f5f7fb;font-weight:850;color:#344054}.future-card{border:1px dashed #cbd5e1;background:#fbfcfe;border-radius:12px;padding:14px;margin-top:14px;color:#667085;font-size:12px;line-height:1.55}.compare-scope{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}.scope-tag{background:#eef2ff;color:#2944a4;border:1px solid #c3ceff;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:800}
+@media(max-width:780px){.compare-tray{left:12px;right:12px;bottom:12px}.compare-back{padding:8px}.compare-body{padding:12px}.compare-table{min-width:760px}.compare-group{overflow:auto}.matrix{min-width:820px}.matrix-wrap{overflow:auto}}
+
+/* v0.3 · 데이터 출처 / 업데이트 정책 */
+.source-policy{background:#fffdf7;border:1px solid #ead9a5;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:14px;color:#5f5131}
+.source-policy-icon{width:30px;height:30px;flex:0 0 30px;border-radius:9px;background:#fff3c7;border:1px solid #e7cc73;display:grid;place-items:center;font-weight:900;color:#7a5b00}
+.source-policy-copy{min-width:0;line-height:1.55;font-size:12px}.source-policy-copy strong{display:block;color:#3f351e;font-size:13px;margin-bottom:2px}.source-policy-copy b{color:#5c4710}
+.source-policy button{margin-left:auto;white-space:nowrap;border:1px solid #d8bf6f;background:#fff;border-radius:9px;padding:8px 10px;color:#6c5208;font-weight:800}
+.policy-grid{display:grid;grid-template-columns:150px minmax(0,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:12px}
+.policy-grid .k,.policy-grid .v{padding:10px 12px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.55}
+.policy-grid .k{background:#f7f8fb;font-weight:850;color:#344054}.policy-grid .v{color:#475467}
+.policy-grid .k.last,.policy-grid .v.last{border-bottom:none}
+.policy-warning{margin-top:12px;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:10px 12px;color:#9a5215;font-size:12px;line-height:1.55}
+@media(max-width:780px){.source-policy{align-items:flex-start;flex-wrap:wrap}.source-policy button{margin-left:42px}.policy-grid{grid-template-columns:1fr}.policy-grid .k{border-bottom:none;padding-bottom:4px}.policy-grid .v{padding-top:4px}}
+
+
+/* STEP 11 selection engine */
+.engine-status{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 14px}
+.engine-badge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:800;border:1px solid #cbd5e1;background:#fff;color:#475467}
+.engine-badge.live{background:#ecfdf3;border-color:#abefc6;color:#067647}.engine-badge.source{background:#fffaeb;border-color:#fedf89;color:#93370d}
+.result-empty{border:1px dashed #cbd5e1;border-radius:14px;padding:28px;text-align:center;color:#667085;background:#fbfcfe}
+.result-empty strong{display:block;color:#344054;font-size:16px;margin-bottom:6px}
+.scoreline{font-size:11px;color:#667085;margin:-3px 0 8px}.scoreline b{color:#3157d5}
+.cautionline{margin-top:8px;border-radius:8px;padding:7px 8px;background:#fff7ed;color:#9a5215;font-size:11px;line-height:1.45}
+.search-suggest{position:absolute;left:0;right:0;top:46px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);display:none;max-height:300px;overflow:auto;z-index:120}
+.search-suggest.show{display:block}.search-item{padding:9px 12px;border-bottom:1px solid #eef1f5;cursor:pointer}.search-item:last-child{border-bottom:none}.search-item:hover{background:#f7f9ff}.search-item b{display:block}.search-item small{color:#667085}
+.sidebar-count{font-size:11px;color:#667085;margin:2px 0 12px;padding:8px 9px;background:#f3f6fb;border-radius:9px}.sidebar-count b{color:#3157d5}
+
+
+/* STEP 11 v0.2 · detail/evidence/sync */
+.detail-modal{width:min(1040px,96vw);max-height:92vh}
+.detail-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:18px}
+.detail-summary{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfcfe;align-self:start;position:sticky;top:0}
+.detail-summary img{width:100%;height:150px;object-fit:contain;background:#fff;border-radius:10px;border:1px solid #eef1f5}
+.detail-summary .dmodel{font-size:22px;font-weight:900;color:#102a62;margin-top:10px}
+.detail-summary .dmeta{font-size:12px;color:#667085;line-height:1.6}
+.detail-section{margin-bottom:16px}.detail-section h4{font-size:13px;margin:0 0 8px;color:#344054}
+.detail-table{width:100%;border-collapse:collapse;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.detail-table th,.detail-table td{border-bottom:1px solid var(--line);padding:9px 10px;font-size:12px;text-align:left;vertical-align:top}
+.detail-table th{width:155px;background:#f7f8fb;color:#475467;font-weight:800}
+.detail-table tr:last-child th,.detail-table tr:last-child td{border-bottom:none}
+.ev-btn{border:1px solid #c7d7ff;background:#f7f9ff;color:#244fc4;border-radius:7px;padding:3px 7px;font-size:10px;font-weight:800;margin-left:6px;white-space:nowrap}
+.detail-source{border:1px solid #fedf89;background:#fffaeb;color:#7a4d00;border-radius:10px;padding:9px 10px;font-size:11px;line-height:1.5;margin-top:10px}
+.evidence-modal{width:min(1000px,96vw)}
+.evidence-headline{font-size:12px;color:#667085;line-height:1.55;margin-bottom:10px}
+.evidence-crop{width:100%;max-height:70vh;object-fit:contain;background:#f8fafc;border:1px solid var(--line);border-radius:12px}
+.evidence-badge{display:inline-flex;border:1px solid #c7d7ff;background:#f7f9ff;color:#244fc4;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800;margin-right:6px}
+.sync-note{font-size:10px;color:#667085;margin-top:5px;line-height:1.4}
+.chip.filter-chip{background:#eef4ff;border-color:#c7d7fe;color:#3449a5}
+.chip.wizard-chip{background:#f8fafc}
+@media(max-width:780px){.detail-layout{grid-template-columns:1fr}.detail-summary{position:static}.detail-summary img{height:120px}.detail-table th{width:120px}}
+
+
+/* STEP 11 v0.3 · catalog visuals / accessory auto recommendation */
+.doc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.doc-card{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff;cursor:pointer;transition:.15s}
+.doc-card:hover{border-color:#9db5ff;box-shadow:0 5px 18px rgba(30,64,175,.08)}
+.doc-card strong{display:block;font-size:12px;color:#344054;margin-bottom:4px}.doc-card small{color:#667085;line-height:1.4}
+.doc-card img{width:100%;height:130px;object-fit:contain;border-radius:8px;background:#f8fafc;margin-bottom:7px}
+.acc-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.acc-card{border:1px solid var(--line);border-radius:11px;padding:10px;background:#fbfcfe}
+.acc-top{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.acc-code{font-weight:900;color:#123a92}.acc-role{border-radius:999px;padding:2px 6px;font-size:9px;font-weight:850}
+.acc-role.required{background:#fef3f2;color:#b42318;border:1px solid #fecdca}.acc-role.option{background:#f2f4f7;color:#475467;border:1px solid #e4e7ec}.acc-role.connection{background:#eef4ff;color:#3449a5;border:1px solid #c7d7fe}
+.acc-card .note{font-size:10px;color:#667085;line-height:1.5;margin-top:5px}.acc-actions{margin-top:7px}.acc-actions button{font-size:10px;padding:4px 7px}
+.auto-acc-note{background:#f0f9ff;border:1px solid #b9e6fe;color:#026aa2;border-radius:10px;padding:9px 10px;font-size:11px;line-height:1.5;margin-bottom:9px}
+.catalog-tabs{display:flex;gap:6px;margin-bottom:9px;flex-wrap:wrap}.catalog-tabs button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 8px;font-size:11px;font-weight:800;color:#475467}
+.catalog-tabs button.active{background:#eaf0ff;border-color:#9db5ff;color:#244fc4}
+@media(max-width:780px){.doc-grid,.acc-list{grid-template-columns:1fr}.doc-card img{height:115px}}
+
+
+/* STEP 11 v0.4 · EE-SX47/67 / photo microsensor branch */
+.route-card{border:1px solid #b9e6fe;background:#f0f9ff;border-radius:14px;padding:12px 14px;margin:12px 0}
+.route-card strong{color:#026aa2}.route-card p{font-size:11px;color:#475467;line-height:1.55;margin:5px 0 0}
+.fork-shapes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.fork-shape{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px;text-align:left;font-size:11px;min-height:58px}
+.fork-shape.active{border-color:#5680ff;background:#edf3ff;color:#173f9d}
+.sensor-route-badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:850;background:#eef4ff;color:#3449a5;border:1px solid #c7d7fe}
+.sensor-route-badge.micro{background:#ecfdf3;color:#067647;border-color:#abefc6}
+.micro-caution{margin-top:7px;background:#fff7ed;border:1px solid #fed7aa;color:#9a5215;border-radius:8px;padding:7px 8px;font-size:10px;line-height:1.45}
+.category-line{display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-bottom:5px}
+@media(max-width:780px){.fork-shapes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* STEP 12 · EE-SX47/67 shape image hover/tap */
+.fork-shape{position:relative;padding-right:34px}
+.fork-shape .shape-info{position:absolute;right:8px;top:8px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;border:1px solid #c7d7fe;background:#f5f8ff;color:#3157d5;font-size:11px;font-weight:900}
+.fork-shape:hover .shape-info,.fork-shape:focus .shape-info{background:#3157d5;color:#fff}
+.shape-hover-hint{font-size:10px;color:#667085;margin-top:7px;line-height:1.45}
+.pop-img.shape-pop-img{height:220px;object-fit:contain;background:#fff}
+@media(max-width:780px){.pop-img.shape-pop-img{height:190px}}
+
+
+/* v1.1 · cylinder-style hover help + model-specific visual evidence */
+.info{width:16px;height:16px;border:0;border-radius:50%;display:inline-grid;place-items:center;
+  background:#dbeafe;color:#1d4ed8;font-size:11px;font-weight:800;cursor:help;vertical-align:1px;margin-left:4px}
+.popover{position:fixed;z-index:9999;width:360px;max-width:84vw;background:#fff;border:1.5px solid #2563eb;
+  border-radius:12px;padding:12px 14px;font-size:12.5px;color:#1f2937;box-shadow:0 12px 30px rgba(15,23,42,.18);
+  line-height:1.6;text-align:left;display:none;pointer-events:none}
+.popover.show{display:block}
+.pop-title{font-size:13px;font-weight:800;color:#1e3a8a;margin:0 0 4px;display:block}
+.pop-close{display:none!important}
+.pop-img{display:block;width:100%;height:auto;max-height:360px;object-fit:contain;border:1px solid #e2e8f0;
+  border-radius:8px;margin-top:8px;background:#fff}
+.pop-img.shape-pop-img{height:auto;max-height:300px}
+.pop-label{display:block;margin-top:6px;font-size:11px;color:#64748b}
+.product-img{border:1px solid #eef2f7;background:#fff}
+.model-line{display:flex;align-items:center;gap:5px;margin:2px 0 8px}
+.model-line .model{margin:0}
+.visual-proof-note{font-size:10px;color:#64748b;margin:-3px 0 7px}
+.compare-thumb{width:88px;height:66px;object-fit:contain;background:#fff;border:1px solid #e2e8f0;border-radius:7px}
+.compare-product{display:flex;align-items:center;gap:8px;min-width:190px}
+.compare-product .compare-model{font-weight:900;color:#123a92}
+.evidence-proof-block{margin-top:12px}
+.evidence-proof-title{font-size:12px;font-weight:900;color:#1e3a8a;margin-bottom:6px}
+.evidence-proof-note{font-size:10.5px;color:#64748b;line-height:1.5;margin-top:5px}
+.model-proof-crop{max-height:260px}
+@media(max-width:780px){.compare-thumb{width:70px;height:54px}.compare-product{min-width:150px}}
+
+
+/* v1.3 · large evidence viewer / true zoom */
+.evidence-modal{width:min(1320px,98vw);max-width:1320px}
+.evidence-modal .modal-body{max-height:86vh;overflow:auto;padding:18px}
+.evidence-crop{width:100%;max-height:66vh;object-fit:contain;background:#fff;border:1px solid #dbe3ee;border-radius:10px;cursor:zoom-in}
+.model-proof-crop{max-height:52vh}
+.evidence-zoom-btn{border:1px solid #2563eb;background:#eff6ff;color:#1d4ed8;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:800;cursor:pointer;margin-top:8px}
+.evidence-zoom-btn:hover{background:#dbeafe}
+.ev-zoom-back{display:none;position:fixed;inset:0;z-index:30000;background:rgba(15,23,42,.96);padding:10px}
+.ev-zoom-back.show{display:flex;flex-direction:column}
+.ev-zoom-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap;color:#fff;padding:2px 2px 10px}
+.ev-zoom-head strong{font-size:14px;margin-right:auto}
+.ev-zoom-head button{border:1px solid rgba(255,255,255,.38);background:rgba(255,255,255,.1);color:#fff;border-radius:8px;padding:8px 11px;font-size:12px;font-weight:800;cursor:pointer}
+.ev-zoom-head button:hover{background:rgba(255,255,255,.2)}
+.ev-zoom-percent{min-width:54px;text-align:center;font-weight:900;color:#fff}
+.ev-zoom-stage{flex:1;min-height:0;overflow:auto;background:#eef2f7;border-radius:10px;padding:24px}
+.ev-zoom-canvas{min-width:100%;min-height:100%;display:flex;align-items:flex-start;justify-content:center}
+.ev-zoom-stage img{display:block;height:auto;max-width:none;background:#fff;box-shadow:0 2px 12px rgba(15,23,42,.2)}
+.ev-zoom-tip{color:#cbd5e1;font-size:10.5px}
+@media(max-width:780px){
+  .evidence-modal{width:99vw}
+  .evidence-modal .modal-body{padding:10px;max-height:88vh}
+  .evidence-crop{max-height:62vh}
+  .ev-zoom-back{padding:5px}
+  .ev-zoom-stage{padding:10px}
+  .ev-zoom-head strong{width:100%}
+}
+.evidence-modal .modal-body{padding:10px;max-height:86vh}
+  .evidence-crop{max-height:58vh}
+  .ev-zoom-back{padding:8px}
+  .ev-zoom-head strong{width:100%}
+}
+
+
+/* v1.5 · unified global search */
+.topbar{overflow:visible;z-index:1000}
+.search{z-index:1100}
+.search-suggest{z-index:5000;max-height:420px}
+.search-item{display:flex;align-items:center;gap:10px}
+.search-item img{width:54px;height:42px;object-fit:contain;border:1px solid #e2e8f0;border-radius:6px;background:#fff;flex:none}
+.search-item .search-copy{min-width:0;flex:1}
+.search-item .search-copy b{font-size:12.5px}
+.search-item .search-copy small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search-empty{padding:12px;color:#667085;font-size:12px}
+
+
+/* v1.6 · pending features / detail conditions / footer */
+.option-card.coming{opacity:.58;background:#f8fafc;border-style:dashed;cursor:not-allowed;box-shadow:none}
+.option-card.coming:hover{border-color:var(--line);box-shadow:none}
+.coming-badge{display:inline-flex;margin-left:6px;padding:2px 6px;border-radius:999px;background:#f2f4f7;border:1px solid #d0d5dd;color:#667085;font-size:9px;font-weight:900}
+.advanced-status{margin-left:7px;font-size:10px;color:#667085;font-weight:600}
+.detail-example-note{margin-top:10px;border:1px solid #dbe5f3;background:#f8fbff;border-radius:9px;padding:9px 10px;font-size:11px;color:#526071;line-height:1.5}
+.target-detail-seg button{min-height:58px;text-align:left;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.target-detail-seg button b{font-size:11px}.target-detail-seg button small{display:block;font-size:9.5px;color:#667085;line-height:1.35;font-weight:500}
+.target-detail-seg button.active small{color:#edf3ff}
+.target-detail-selected{margin-top:8px;min-height:32px;border-radius:8px;background:#eef4ff;border:1px solid #c7d7fe;color:#3449a5;padding:8px 10px;font-size:11px;line-height:1.45}
+.actions{gap:16px;flex-wrap:wrap}.actions .left{flex:1 1 420px;min-width:0;line-height:1.5}.actions>div:last-child{display:flex;align-items:center;gap:8px;flex:none}.btn-secondary{margin-right:0}
+@media(max-width:780px){.actions .left{flex-basis:100%;font-size:11px}.actions>div:last-child{width:100%;justify-content:flex-end}}
+
+/* v1.6 · hover popup enlarges when pointer enters */
+.popover{width:min(520px,calc(100vw - 24px));max-width:calc(100vw - 24px);max-height:84vh;overflow:auto;pointer-events:auto;transition:width .12s ease}
+.popover.expanded{width:min(760px,calc(100vw - 24px))}
+.popover .pop-img{max-height:52vh;transition:max-height .12s ease}
+.popover.expanded .pop-img{max-height:70vh}
+.pop-hover-guide{margin-top:6px;font-size:10px;color:#667085}
+
+/* v1.6 · detection method visual comparison */
+.method-compare{margin-top:14px;border:1px solid #dbe5f3;border-radius:14px;background:#fbfdff;padding:12px}
+.method-compare-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+.method-compare-head strong{display:block;font-size:13px;color:#1d3f91}.method-compare-head small{display:block;color:#667085;font-size:10.5px;margin-top:2px}
+.compare-legend{font-size:10px;color:#475467;white-space:nowrap}.compare-legend i{display:inline-block;width:9px;height:9px;border-radius:3px;background:#2563eb;margin-right:4px}
+.method-compare-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.method-compare-card{border:1px solid #d8e1ed;border-radius:11px;background:#fff;padding:8px;min-width:0;position:relative}
+.method-compare-card.preferred{border:2px solid #2563eb;background:#f5f8ff;box-shadow:0 0 0 2px #dbeafe inset}
+.method-compare-top{display:flex;align-items:center;gap:5px;min-height:22px}.method-compare-top>span:first-child{font-size:11px;font-weight:900;color:#1f3d79}.method-compare-top b{margin-left:auto;background:#2563eb;color:#fff;border-radius:999px;padding:2px 5px;font-size:8.5px}
+.method-compare-card img{width:100%;height:92px;object-fit:contain;background:#fff;border-radius:7px;margin:6px 0;border:1px solid #eef2f7}
+.method-compare-card dl{margin:0}.method-compare-card dl>div{display:grid;grid-template-columns:43px minmax(0,1fr);gap:4px;border-top:1px solid #f0f2f5;padding:4px 0}
+.method-compare-card dt{font-size:9px;color:#667085;font-weight:800}.method-compare-card dd{margin:0;font-size:9px;color:#344054;line-height:1.35}
+.method-compare-note{font-size:9.5px;color:#667085;margin-top:8px;line-height:1.4}
+.selected-method{background:#2563eb!important;color:#fff!important;border-color:#2563eb!important}
+.micro-vs-photo{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:9px;margin:12px 0}
+.micro-vs-card{border:1px solid #d8e1ed;border-radius:11px;background:#fff;padding:10px;text-align:center;position:relative}.micro-vs-card.active{border:2px solid #16a34a;background:#f0fdf4}
+.micro-vs-card img{width:100%;height:100px;object-fit:contain}.micro-vs-card strong{display:block;font-size:11px;color:#1f3d79}.micro-vs-card span{display:block;font-size:9.5px;color:#667085;margin-top:3px}.micro-vs-card>b{position:absolute;right:6px;top:6px;border-radius:999px;background:#16a34a;color:#fff;padding:2px 6px;font-size:8px}.micro-vs-arrow{font-weight:900;color:#98a2b3}
+@media(max-width:1080px){.method-compare-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.method-compare-card:last-child{grid-column:1/-1}}
+@media(max-width:650px){.method-compare-grid{grid-template-columns:1fr}.method-compare-card:last-child{grid-column:auto}.method-compare-card img{height:110px}.method-compare-head{flex-direction:column}.micro-vs-photo{grid-template-columns:1fr}.micro-vs-arrow{transform:rotate(90deg);text-align:center}}
+
+
+/* v1.7 · official OMRON product/CAD links */
+.card-actions{align-items:stretch}
+.card-actions .cad-card-link{flex:1;display:grid;place-items:center;text-decoration:none;border:1px solid #86a5ff;background:#eef4ff;color:#2447b8;border-radius:9px;padding:8px;font-weight:900;font-size:11.5px}
+.card-actions .cad-card-link:hover{background:#dfe9ff;border-color:#4f72e8}
+.cad-card-hint{margin-top:6px;font-size:9.5px;color:#667085;line-height:1.4}
+.official-cad-box{margin-top:14px;border:1.5px solid #86a5ff;background:#f7f9ff;border-radius:12px;padding:12px 13px}
+.official-cad-box.detail-final{margin:14px 0 0}
+.official-cad-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.official-cad-head strong{display:block;color:#173a91;font-size:13px}
+.official-cad-head small{display:block;color:#667085;font-size:10.5px;margin-top:2px;line-height:1.45}
+.official-only{white-space:nowrap;border:1px solid #b8c7ff;background:#fff;color:#3157d5;border-radius:999px;padding:3px 7px;font-size:9px;font-weight:900}
+.official-cad-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.official-cad-actions a,.official-cad-actions button{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid #cbd5e1;background:#fff;color:#344054;border-radius:8px;padding:8px 10px;font-size:11px;font-weight:800;cursor:pointer}
+.official-cad-actions a:hover,.official-cad-actions button:hover{border-color:#5f7ce6;background:#f4f7ff;color:#2145b3}
+.official-cad-actions .cad-primary{background:#3157d5;border-color:#3157d5;color:#fff}
+.official-cad-actions .cad-primary:hover{background:#2449c1;color:#fff}
+.official-cad-note{margin-top:8px;font-size:10px;color:#667085;line-height:1.5}
+@media(max-width:760px){
+  .card-actions{display:grid;grid-template-columns:1fr 1fr}
+  .card-actions .cad-card-link{grid-column:1/-1}
+  .official-cad-head{flex-direction:column}
+  .official-cad-actions a,.official-cad-actions button{flex:1 1 100%}
+}
+
+
+/* v1.8 · beginner-friendly spec glossary */
+.detail-table th .info{margin-left:5px}
+.beginner-glossary h4{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.beginner-glossary h4 span{font-size:10px;color:#667085;font-weight:500}
+.beginner-glossary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.beginner-term-card{border:1px solid #dbe5f3;border-radius:9px;background:#fbfdff;padding:9px 10px}
+.beginner-term-title{font-size:11px;font-weight:900;color:#1d3f91;display:flex;align-items:center;gap:3px}
+.beginner-term-desc{font-size:10.5px;color:#475467;line-height:1.5;margin-top:4px}
+.beginner-glossary-note{margin-top:9px;border:1px solid #f4d38b;background:#fffaf0;border-radius:9px;padding:9px 10px;font-size:10.5px;color:#7a4a12;line-height:1.55}
+.beginner-glossary-note strong{color:#8a4b08}
+@media(max-width:720px){.beginner-glossary-grid{grid-template-columns:1fr}}
+
+
+/* v1.9 · characteristic graph explanation */
+.graph-reading-intro{display:flex;gap:8px;align-items:flex-start;margin:8px 0 10px;padding:9px 10px;border:1px solid #cddcff;background:#f7f9ff;border-radius:9px;font-size:10.5px;line-height:1.5}
+.graph-reading-intro strong{white-space:nowrap;color:#1d3f91}.graph-reading-intro span{color:#475467}
+.graph-doc-card{display:flex;flex-direction:column}
+.graph-card-explain{margin-top:7px;padding:7px 8px;border-radius:7px;background:#f8fafc;border:1px solid #e4e7ec;color:#475467;font-size:9.5px;line-height:1.45;flex:1}
+.graph-card-explain b{display:block;color:#1d3f91;font-size:9.5px;margin-bottom:2px}
+.graph-card-open{margin-top:6px;color:#3157d5;font-size:9.5px;font-weight:800}
+.graph-explain{margin-top:14px;border:1.5px solid #86a5ff;background:#f7f9ff;border-radius:12px;padding:13px 14px}
+.graph-guide-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.graph-guide-head strong{font-size:13px;color:#173a91}
+.graph-guide-badge{display:inline-flex;border-radius:999px;background:#3157d5;color:#fff;padding:3px 7px;font-size:9px;font-weight:900}
+.graph-guide-one{margin-top:6px;font-size:11px;color:#475467;line-height:1.55}
+.graph-guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}
+.graph-guide-grid>div{border:1px solid #dbe5f3;border-radius:9px;background:#fff;padding:9px 10px}
+.graph-guide-grid b{display:block;color:#1d3f91;font-size:10px;margin-bottom:3px}
+.graph-guide-grid span{display:block;color:#475467;font-size:10.5px;line-height:1.5}
+.graph-guide-caution{margin-top:9px;padding:8px 10px;border:1px solid #f0d18a;background:#fffaf0;border-radius:8px;color:#7a4a12;font-size:10px;line-height:1.5}
+@media(max-width:720px){.graph-guide-grid{grid-template-columns:1fr}.graph-reading-intro{flex-direction:column}}
+
+
+/* v2.0 · direct characteristic-data access */
+.char-available{display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:6px;margin-top:9px;padding:8px 9px;border:1px solid #b8c7ff;background:#f5f8ff;border-radius:9px}
+.char-available span{font-size:10.5px;font-weight:900;color:#1d3f91}
+.char-available b{display:inline-flex;align-items:center;justify-content:center;min-width:28px;border-radius:999px;background:#3157d5;color:#fff;padding:2px 6px;font-size:9px}
+.char-available small{color:#667085;font-size:9.5px;min-width:0}
+.card-actions-four{display:grid!important;grid-template-columns:1fr 1fr;gap:7px!important}
+.card-actions-four button,.card-actions-four .cad-card-link{min-height:38px}
+.characteristic-btn{background:#173a91!important;border-color:#173a91!important;color:#fff!important}
+.characteristic-btn:hover{background:#0f2e78!important}
+.card-actions-four .cad-card-link{grid-column:auto!important}
+.characteristic-modal{width:min(1050px,96vw)}
+.characteristic-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px;padding:10px;border:1px solid #dbe5f3;background:#f8fbff;border-radius:10px}
+.characteristic-meta strong{font-size:12px;color:#1d3f91}
+.characteristic-meta small{flex-basis:100%;color:#667085;font-size:10.5px;line-height:1.4}
+.characteristic-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.characteristic-pick{display:grid;grid-template-columns:118px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;border:1px solid #dbe5f3;background:#fff;border-radius:11px;padding:9px;cursor:pointer}
+.characteristic-pick:hover{border-color:#6f8bea;background:#f7f9ff;box-shadow:0 3px 12px rgba(49,87,213,.08)}
+.characteristic-pick img{width:118px;height:86px;object-fit:contain;border:1px solid #eef2f7;border-radius:7px;background:#fff}
+.characteristic-copy{min-width:0}
+.characteristic-copy b{display:block;color:#173a91;font-size:11.5px}
+.characteristic-copy small{display:block;color:#667085;font-size:9.5px;margin-top:2px}
+.characteristic-copy em{display:block;color:#475467;font-size:10px;font-style:normal;line-height:1.45;margin-top:5px}
+.characteristic-open{color:#3157d5;font-size:10px;font-weight:900;white-space:nowrap}
+.characteristic-empty{grid-column:1/-1;border:1px dashed #d0d5dd;border-radius:10px;padding:24px;text-align:center;color:#667085}
+.detail-char-shortcut{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px;padding:11px 12px;border:1.5px solid #3157d5;background:#f5f8ff;border-radius:11px}
+.detail-char-shortcut strong{display:block;color:#173a91;font-size:12.5px}
+.detail-char-shortcut small{display:block;color:#667085;font-size:10px;margin-top:2px;line-height:1.4}
+.detail-char-shortcut button{border:0;border-radius:8px;background:#3157d5;color:#fff;padding:8px 11px;font-size:11px;font-weight:900;cursor:pointer;white-space:nowrap}
+.detail-char-shortcut button:hover{background:#2449c1}
+@media(max-width:820px){
+  .characteristic-list{grid-template-columns:1fr}
+  .characteristic-pick{grid-template-columns:92px minmax(0,1fr) auto}
+  .characteristic-pick img{width:92px;height:72px}
+}
+@media(max-width:560px){
+  .char-available{grid-template-columns:auto auto}.char-available small{grid-column:1/-1}
+  .characteristic-pick{grid-template-columns:76px minmax(0,1fr)}.characteristic-pick img{width:76px;height:64px}.characteristic-open{grid-column:2}
+  .detail-char-shortcut{flex-direction:column;align-items:stretch}.detail-char-shortcut button{width:100%}
+}
+
+
+/* v2.1 · characteristic click fix / detailed-view integration */
+.detail-characteristic-section{border:1.5px solid #9db4ff!important;background:#f9fbff!important}
+.detail-characteristic-section h4{display:flex;align-items:center;gap:6px;color:#173a91}
+.section-count{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:#3157d5;color:#fff;padding:2px 7px;font-size:9px;font-weight:900}
+.doc-card.detail-char-card{font:inherit;color:inherit;width:100%;cursor:pointer;text-align:left}
+.doc-card.detail-char-card:hover{border-color:#3157d5;box-shadow:0 3px 12px rgba(49,87,213,.12);transform:translateY(-1px)}
+
+
+/* v2.2 · readability / slightly larger explanatory text */
+.graph-reading-intro{font-size:11.5px;line-height:1.6}
+.graph-card-explain{font-size:10.5px;line-height:1.55}
+.graph-card-explain b{font-size:10.5px}
+.graph-card-open{font-size:10.5px}
+.graph-guide-head strong{font-size:14px}
+.graph-guide-badge{font-size:9.5px}
+.graph-guide-one{font-size:12px;line-height:1.65}
+.graph-guide-grid b{font-size:11px}
+.graph-guide-grid span{font-size:11.5px;line-height:1.6}
+.graph-guide-caution{font-size:11px;line-height:1.6}
+.characteristic-copy b{font-size:12.5px}
+.characteristic-copy small{font-size:10.5px}
+.characteristic-copy em{font-size:11px;line-height:1.55}
+.characteristic-open{font-size:10.5px}
+.beginner-term-title{font-size:12px}
+.beginner-term-desc{font-size:11.5px;line-height:1.6}
+.beginner-glossary-note{font-size:11.5px;line-height:1.65}
+.detail-table th{font-size:11.5px}
+.detail-table td{font-size:11.5px}
+
+
+/* v2.3 · GitHub upload optimization: 3 shared evidence pages + browser highlight */
+.evidence-model-scroll{max-height:66vh;overflow:auto;border:1px solid #dbe3ee;border-radius:10px;background:#fff}
+.evidence-model-stage{position:relative;width:100%;line-height:0}
+.evidence-model-page{display:block;width:100%;height:auto;cursor:zoom-in}
+.evidence-model-highlight{display:none;position:absolute;box-sizing:border-box;border:4px solid #2563eb;background:rgba(37,99,235,.10);box-shadow:0 0 0 2px rgba(255,255,255,.72) inset;pointer-events:none;z-index:5}
+.ev-zoom-image-stage{position:relative;margin:0 auto;line-height:0}
+.ev-zoom-image-stage img{display:block;width:100%;height:auto}
+.zoom-highlight{border-width:5px;background:rgba(37,99,235,.12)}
+.github-opt-note{margin-top:6px;font-size:10px;color:#667085;line-height:1.45}
+
+</style>
+
+<meta name="jcalculator-module" content="sensor-selection">
+<meta name="jcalculator-module-version" content="1.0-sensor-only">
+<meta name="jcalculator-module-path" content="/frontend/sensor/">
+
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="brand-mark">J</div><div><strong>Jcalculator · 센서 선정</strong><small>Sensor Selection v2.3 · GitHub Optimized Evidence</small></div></div>
+  <div class="search"><span class="ico">⌕</span><input id="globalSearch" autocomplete="off" placeholder="모델명 / 품번 / 시리즈 / 키워드 검색 (예: E3T-FL11, BGS, NPN)"/><span class="key">Enter</span><div class="search-suggest" id="searchSuggest"></div></div>
+  <div class="top-actions"><span class="pill">OMRON 한국 공식자료 전용</span><button class="ghost" onclick="openPolicy()">데이터 기준</button><button class="ghost" onclick="openCompare('same')">그룹 비교</button><button class="ghost" onclick="showHelp()">사용법</button></div>
+</header>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-head"><h3>상세 필터 · 실무자용</h3><button onclick="resetAll()">초기화</button></div><div class="sidebar-count" id="sidebarCount">OMRON 센서 데이터 로딩...</div>
+    <div class="filter-section"><div class="filter-title">제조사</div><label class="check"><input type="checkbox" checked disabled> OMRON</label></div>
+    <div class="filter-section"><div class="filter-title">센서 종류 <span class="info term" data-term="photo">?</span></div><label class="check"><input type="checkbox" data-filter="category" value="photoelectric" checked> 광전센서</label><label class="check"><input type="checkbox" data-filter="category" value="proximity" disabled> 근접센서</label><label class="check"><input type="checkbox" data-filter="category" value="photo_microsensor"> 포토마이크로센서</label></div>
+    <div class="filter-section"><div class="filter-title">검출 방식</div>
+      <label class="check"><input type="checkbox" data-filter="method" value="through_beam"> 투과형 <span class="info term" data-term="through">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="method" value="retro_reflective"> 회귀 반사형 <span class="info term" data-term="retro">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="method" value="diffuse"> 확산 반사형 <span class="info term" data-term="diffuse">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="method" value="bgs"> BGS 반사형 <span class="info term" data-term="bgs">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="method" value="limited_reflective"> 한정 반사형 <span class="info term" data-term="limited">?</span></label>
+    </div>
+    <div class="filter-section"><div class="filter-title">검출 거리 <span class="info term" data-term="distance">?</span></div><div class="range"><input id="filterDistanceMin" type="number" placeholder="최소 mm"><span>~</span><input id="filterDistanceMax" type="number" placeholder="최대 mm"></div></div>
+    <div class="filter-section"><div class="filter-title">형상</div><label class="check"><input type="checkbox" data-filter="shape" value="flat"> 플랫</label><label class="check"><input type="checkbox" data-filter="shape" value="side_view"> 사이드 뷰</label></div><div class="filter-section"><div class="filter-title">말굽형 형상 <span class="info term" data-term="photomicro">?</span></div><details class="advanced"><summary>8가지 형상 선택</summary><div style="margin-top:8px"><label class="check"><input type="checkbox" data-filter="forkShape" value="standard"> 표준형</label><label class="check"><input type="checkbox" data-filter="forkShape" value="l_shape"> L형</label><label class="check"><input type="checkbox" data-filter="forkShape" value="t_center_7"> T형 · 홈 중심 7mm</label><label class="check"><input type="checkbox" data-filter="forkShape" value="close_mount_3"> 밀착 설치형 · 형상 3</label><label class="check"><input type="checkbox" data-filter="forkShape" value="close_mount_4"> 밀착 설치형 · 형상 4</label><label class="check"><input type="checkbox" data-filter="forkShape" value="t_center_10"> T형 · 홈 중심 10mm</label><label class="check"><input type="checkbox" data-filter="forkShape" value="f_shape"> F형</label><label class="check"><input type="checkbox" data-filter="forkShape" value="r_shape"> R형</label></div></details></div>
+    <div class="filter-section"><div class="filter-title">출력</div><label class="check"><input type="checkbox" data-filter="output" value="NPN"> NPN <span class="info term" data-term="npn">?</span></label><label class="check"><input type="checkbox" data-filter="output" value="PNP"> PNP <span class="info term" data-term="pnp">?</span></label></div>
+    <div class="filter-section"><div class="filter-title">동작 방식</div><label class="check"><input type="checkbox" data-filter="operation" value="light_on"> 입광 시 ON <span class="info term" data-term="lighton">?</span></label><label class="check"><input type="checkbox" data-filter="operation" value="dark_on"> 차광 시 ON <span class="info term" data-term="darkon">?</span></label></div>
+    <div class="filter-section"><div class="filter-title">접속</div><label class="check"><input type="checkbox" data-filter="connection" value="cable"> 코드 인출</label><label class="check"><input type="checkbox" data-filter="connection" value="m12"> M12 <span class="info term" data-term="m12">?</span></label><label class="check"><input type="checkbox" data-filter="connection" value="econ"> e-CON <span class="info term" data-term="econ">?</span></label><label class="check"><input type="checkbox" data-filter="connection" value="robot"> 로봇 코드</label><label class="check"><input type="checkbox" data-filter="connection" value="fork_connector"> 말굽형 4극 커넥터</label>
+<label class="check"><input type="checkbox" data-filter="connection" value="fork_cable"> 말굽형 코드 인출 1m</label>
+<label class="check"><input type="checkbox" data-filter="connection" value="fork_relay"> 말굽형 커넥터 중계 0.1m</label></div>
+    <div class="filter-section"><div class="filter-title">환경 / 상세 사양</div>
+<label class="check"><input type="checkbox" data-filter="environment" value="ip67"> IP67 필요 <span class="info term" data-term="ip67">?</span></label>
+<div class="sync-note">최소 검출 물체·응답 성능은 모델 상세보기의 공식 사양에서 확인합니다.</div></div>
+  </aside>
+  <main class="main">
+    <div class="notice"><span class="dot"></span><strong>통합 후보본:</strong> OMRON E3T + EE-SX47/67 통합 선정 엔진입니다. 현재 등록 데이터는 한글 공식 카탈로그 2010 기준이며, 현행 판매 여부와는 구분하여 표시합니다.</div>
+    <div class="source-policy">
+      <div class="source-policy-icon">i</div>
+      <div class="source-policy-copy">
+        <strong>데이터 기준 / 업데이트 원칙</strong>
+        현재 등록 범위는 <b>광전센서 E3T + 포토마이크로센서 EE-SX47/67</b>이며, OMRON 한국 공식자료와 한글 공식 카탈로그 2010을 기준으로 정리합니다.
+        이후 더 최신의 <b>한글 공식 카탈로그</b>가 확보되면 기존 근거를 삭제하지 않고 버전 비교 후 제품·사양·수명주기 정보를 업데이트합니다.
+        2010 카탈로그 모델은 선정 미리보기에는 사용하되, 현행 판매 여부로 표현하지 않습니다. 최신 한글 공식 카탈로그 확보 시 재검증합니다.
+      </div>
+      <button onclick="openPolicy()">정책 보기</button>
+    </div>
+    <div class="condition-bar" id="conditionBar"><span class="label">현재 조건</span><span class="chip">OMRON</span><span id="emptyCond" style="color:#98a2b3;font-size:12px">아직 선택된 조건이 없습니다.</span><button class="clear" onclick="resetAll()">전체 초기화</button></div>
+    <section class="wizard-shell">
+      <div class="wizard-head">
+        <div class="wizard-headline"><div><h1>조건을 따라 센서 찾기</h1><p>초보자는 쉬운 질문으로, 실무자는 왼쪽 상세 필터로 같은 제품 데이터를 탐색합니다.</p></div><span class="mode-badge">초보자 Wizard ↔ 실무자 Filter 동기화</span></div>
+        <div class="stepper" id="stepper"></div>
+      </div>
+      <div class="panel" id="panel"></div>
+      <div class="actions"><div class="left">※ ?에 마우스를 올리면 설명이 열립니다. 팝업 안으로 마우스를 옮기면 더 크게 볼 수 있습니다.</div><div><button class="btn btn-secondary" id="prevBtn">이전</button><button class="btn btn-primary" id="nextBtn">다음</button></div></div>
+    </section>
+  </main>
+</div>
+
+
+<div class="compare-tray" id="compareTray">
+  <strong>비교함 <span id="compareCount">0</span></strong>
+  <div class="compare-items" id="compareItems"></div>
+  <button class="alt" onclick="openCompare('same')">같은 제조사 비교</button>
+  <button onclick="openCompare('cross')">제조사 간 비교</button>
+</div>
+<div class="compare-back" id="compareBack">
+  <div class="compare-modal">
+    <div class="compare-head"><div><h2>센서 그룹 비교</h2><p>같은 제조사 모델 비교와 향후 제조사 간 비교를 동일한 비교 엔진에서 처리합니다.</p></div><button onclick="closeCompare()">닫기</button></div>
+    <div class="compare-tabs"><button id="sameTab" onclick="renderCompare('same')">같은 제조사 비교</button><button id="crossTab" onclick="renderCompare('cross')">제조사 간 비교</button></div>
+    <div class="compare-body" id="compareBody"></div>
+  </div>
+</div>
+
+<div class="popover" id="popover"></div>
+<div class="modal-back" id="detailBack">
+  <div class="modal detail-modal">
+    <div class="modal-head"><strong id="detailTitle">제품 상세</strong><button class="ghost" onclick="closeDetail()">닫기</button></div>
+    <div class="modal-body" id="detailBody"></div>
+  </div>
+</div>
+<div class="modal-back" id="evidenceBack">
+  <div class="modal evidence-modal">
+    <div class="modal-head"><strong id="evidenceTitle">📖 공식 근거</strong><button class="ghost" onclick="closeEvidence()">닫기</button></div>
+    <div class="modal-body">
+      <div id="evidenceMeta" class="evidence-headline"></div>
+      <div id="modelProofBlock" class="evidence-proof-block">
+        <div class="evidence-proof-title">① 형번 확인</div>
+        <div class="evidence-model-scroll" id="evidenceModelScroll">
+          <div class="evidence-model-stage" id="evidenceModelStage">
+            <img id="evidenceModelCrop" class="evidence-model-page" alt="공식 카탈로그 전체 페이지 · 선택 형번 강조" onclick="openModelEvidenceZoom()">
+            <div id="evidenceModelHighlight" class="evidence-model-highlight" aria-hidden="true"></div>
+          </div>
+        </div>
+        <button class="evidence-zoom-btn" onclick="openModelEvidenceZoom()">🔍 크게 보기 / 확대</button>
+        <div id="modelProofNote" class="evidence-proof-note"></div>
+      </div>
+      <div id="specProofBlock" class="evidence-proof-block">
+        <div class="evidence-proof-title">② 사양 근거</div>
+        <img id="evidenceCrop" class="evidence-crop" alt="OMRON 공식 카탈로그 사양 근거" onclick="openEvidenceZoom(this.src,document.getElementById('evidenceTitle').textContent+' · 사양 근거')">
+        <button class="evidence-zoom-btn" onclick="openEvidenceZoom(document.getElementById('evidenceCrop').src,document.getElementById('evidenceTitle').textContent+' · 사양 근거')">🔍 크게 보기 / 확대</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="catalogBack">
+  <div class="modal evidence-modal">
+    <div class="modal-head"><strong id="catalogTitle">공식 카탈로그</strong><button class="ghost" onclick="closeCatalogVisual()">닫기</button></div>
+    <div class="modal-body">
+      <div id="catalogMeta" class="evidence-headline"></div>
+      <img id="catalogImage" class="evidence-crop" alt="OMRON 공식 한글 카탈로그" onclick="openEvidenceZoom(this.src,document.getElementById('catalogTitle').textContent)">
+      <button class="evidence-zoom-btn" onclick="openEvidenceZoom(document.getElementById('catalogImage').src,document.getElementById('catalogTitle').textContent)">🔍 크게 보기 / 확대</button>
+      <div id="catalogExplain" class="graph-explain" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<div class="ev-zoom-back" id="evidenceZoomBack">
+  <div class="ev-zoom-head">
+    <strong id="evidenceZoomTitle">공식 근거 크게 보기</strong>
+    <span class="ev-zoom-tip">마우스 휠 또는 +/-로 확대 · 확대 후 스크롤 이동</span>
+    <button onclick="changeEvidenceZoom(-0.25)">－</button>
+    <span class="ev-zoom-percent" id="evidenceZoomPercent">150%</span>
+    <button onclick="changeEvidenceZoom(0.25)">＋</button>
+    <button onclick="resetEvidenceZoom()">100%</button>
+    <button onclick="openEvidenceOriginal()">원본 새 창</button>
+    <button onclick="closeEvidenceZoom()">닫기</button>
+  </div>
+  <div class="ev-zoom-stage" id="evidenceZoomStage">
+    <div class="ev-zoom-canvas">
+      <div class="ev-zoom-image-stage" id="evidenceZoomImageStage">
+        <img id="evidenceZoomImage" alt="공식 카탈로그 확대 이미지">
+        <div id="evidenceZoomHighlight" class="evidence-model-highlight zoom-highlight" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="charBack">
+  <div class="modal characteristic-modal">
+    <div class="modal-head">
+      <strong id="charTitle">📈 특성 데이터</strong>
+      <button class="ghost" onclick="closeCharacteristicList()">닫기</button>
+    </div>
+    <div class="modal-body">
+      <div id="charMeta" class="characteristic-meta"></div>
+      <div id="charList" class="characteristic-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="policyBack">
+  <div class="modal" style="width:min(820px,95vw)">
+    <div class="modal-head"><strong>데이터 출처 및 업데이트 정책</strong><button class="ghost" onclick="closePolicy()">닫기</button></div>
+    <div class="modal-body">
+      <div class="official-note"><strong>프로젝트 고정 원칙:</strong> OMRON 데이터는 OMRON 한국 공식 사이트와 OMRON 한글 공식 카탈로그만 제품·사양의 근거로 사용합니다. 대리점, 쇼핑몰, 블로그, 타사 데이터베이스 등은 제품 사양 근거에서 제외합니다.</div>
+      <div class="policy-grid">
+        <div class="k">현재 OMRON 기준</div><div class="v">OMRON 한국 공식 사이트 + E3T 한글 종합 카탈로그 2010 + EE-SX47/67 한글 공식 카탈로그 2010</div>
+        <div class="k">최신 한글판 확보 시</div><div class="v">기존 데이터를 즉시 덮어쓰지 않고 문서 버전별 차이를 대조한 뒤 모델, 사양, 액세서리, 수명주기 상태를 업데이트합니다.</div>
+        <div class="k">현행 여부 미확인</div><div class="v">검색/이력 조회는 가능하게 보존할 수 있지만 기본 추천 후보에서는 제외합니다.</div>
+        <div class="k">공식 근거</div><div class="v">중요 사양에는 📖 근거를 연결하고, 가능하면 해당 표·그래프·도면 영역을 Crop하여 표시합니다.</div>
+        <div class="k">타 제조사 추가</div><div class="v">해당 제조사 단계에서 별도의 공식자료 정책을 정하고, 공통 비교 스키마로 연결합니다. OMRON 자료로 타 제조사 사양을 추정하지 않습니다.</div>
+        <div class="k last">작업 인수인계</div><div class="v last">이 정책은 프로젝트 파일의 PROJECT_HANDOFF.md와 data/source-policy.json에도 기록되어 있습니다. 다른 채팅/AI가 이어서 작업할 때 이 파일을 우선 확인합니다.</div>
+      </div>
+      <div class="policy-warning"><strong>주의:</strong> 더 최신의 영문/일문 자료가 있더라도 사용자가 별도로 허용하지 않는 한 OMRON 제품 데이터의 기준 문서는 한글 공식자료를 우선합니다.</div>
+    </div>
+  </div>
+</div>
+<script type="application/json" id="project-source-policy">
+{
+  "policyVersion": "1.0",
+  "project": "Jcalculator Sensor Selection",
+  "currentStage": "STEP 10 - OMRON product data organization / current-lineup validation",
+  "omronSourcePolicy": {
+    "allowed": [
+      "OMRON Korea official website (https://www.ia.omron.co.kr/)",
+      "OMRON Korean-language official catalogs supplied or downloaded from OMRON Korea"
+    ],
+    "excluded": [
+      "resellers/distributors as spec sources",
+      "shopping sites",
+      "blogs/cafes",
+      "third-party databases",
+      "non-OMRON mirrors"
+    ],
+    "currentE3TBaseline": "OMRON Korea official website + E3T Korean General Catalog 2010",
+    "updateRule": "When a newer Korean official catalog is provided, compare document versions first; preserve prior evidence and update model/spec/lifecycle fields with source-version history.",
+    "recommendationRule": "Models whose current lifecycle is not verified must not be default recommendations."
+  },
+  "handoffRule": "Any future chat/AI continuing this project should read PROJECT_HANDOFF.md and data/source-policy.json before modifying product data or recommendation logic."
+}
+</script>
+<script src="data/omron-sensor-selection-data-v08.js"></script>
+<script>
+const state={step:1,purpose:null,target:null,targetDetails:[],through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null,compareSelected:['E3T-FL11','E3T-SR41'],compareMode:'same'};
+const labels=['용도','검출 대상','설치 환경','거리·형상','전기 조건','결과'];
+const sampleProducts={
+ 'E3T-FL11':{maker:'OMRON',series:'E3T',model:'E3T-FL11',method:'BGS 반사형',distance:'1~15mm',output:'NPN',op:'입광 시 ON',shape:'플랫',reason:'배경 영향 억제가 필요한 근거리 검출 조건에서 우선 비교'},
+ 'E3T-SR41':{maker:'OMRON',series:'E3T',model:'E3T-SR41',method:'회귀 반사형',distance:'200mm*',output:'NPN',op:'입광 시 ON',shape:'사이드 뷰',reason:'센서 한쪽 설치 + 반사판 사용이 가능한 조건에서 비교'},
+ 'E3T-FT11':{maker:'OMRON',series:'E3T',model:'E3T-FT11',method:'투과형',distance:'500mm',output:'NPN',op:'입광 시 ON',shape:'플랫',reason:'물체 양쪽 설치가 가능하고 비교적 긴 거리 검출이 필요한 조건에서 비교'}
+};
+
+const terms={
+ photo:{title:'광전센서',img:'assets/model_images/e3t/E3T-ST.png',text:'빛을 이용해 물체의 유무나 상태 변화를 검출하는 센서입니다. 이 미리보기에서는 OMRON E3T 공식 카탈로그 이미지를 사용했습니다.',foot:'제품 사진: OMRON E3T 공식 카탈로그'},
+ through:{title:'투과형',diagram:'through',img:'assets/model_images/e3t/E3T-ST.png',text:'투광기와 수광기를 물체 양쪽에 설치합니다. 물체가 빛을 가리면 검출합니다. 양쪽 설치 공간이 확보될 때 우선 검토하기 쉽습니다.',foot:'제품 이미지: OMRON E3T 한글 공식 카탈로그 2010'},
+ retro:{title:'회귀 반사형',diagram:'retro',img:'assets/model_images/e3t/E3T-SR.png',text:'센서는 한쪽에 두고 반대편에 반사판을 설치합니다. 별도 수광기를 반대편에 두기 어려울 때 검토할 수 있습니다.',foot:'제품 이미지: OMRON E3T 한글 공식 카탈로그 2010'},
+ diffuse:{title:'확산 반사형',diagram:'diffuse',img:'assets/model_images/e3t/E3T-FD.png',text:'센서가 보낸 빛이 물체에서 반사되어 돌아오는 빛을 이용합니다. 반대편 센서나 반사판이 필요하지 않습니다.',foot:'제품 이미지: OMRON E3T 한글 공식 카탈로그 2010'},
+ bgs:{title:'BGS 반사형',diagram:'bgs',img:'assets/model_images/e3t/E3T-FL.png',text:'Background Suppression. 원하는 검출 대상 뒤쪽의 배경 물체 영향을 줄이도록 만든 반사형 방식입니다. 배경이 가까운 경우 우선 검토합니다.',foot:'제품 이미지: OMRON E3T 한글 공식 카탈로그 2010'},
+ limited:{title:'한정 반사형',diagram:'limited',img:'assets/model_images/e3t/E3T-SL.png',text:'정해진 거리 영역의 물체를 검출하도록 설계된 반사형 방식입니다. 실제 적용 거리와 검출 영역은 제품 공식 사양으로 확인합니다.',foot:'제품 이미지: OMRON E3T 한글 공식 카탈로그 2010'},
+ distance:{title:'검출 거리',text:'센서가 안정적으로 검출할 수 있도록 제조사가 제시한 거리 범위입니다. 선정에서는 실제 설치 거리와 공식 검출 거리 범위가 맞는지 우선 확인합니다.'},
+ npn:{title:'NPN 출력',text:'PLC/제어기 입력 방식과 맞아야 하는 출력 형식입니다. 사용자가 NPN을 지정하면 선정에서는 Must 조건으로 처리하는 방향입니다.'},
+ pnp:{title:'PNP 출력',text:'PLC/제어기 입력 방식과 맞아야 하는 출력 형식입니다. 사용자가 PNP를 지정하면 선정에서는 Must 조건으로 처리하는 방향입니다.'},
+ lighton:{title:'입광 시 ON',text:'수광부에 빛이 들어오는 상태에서 출력이 ON되는 동작 모드입니다. 검출 방식에 따라 실제 “물체 있음/없음”과의 관계가 달라질 수 있어 최종 로직에서 정확히 매핑합니다.'},
+ darkon:{title:'차광 시 ON',text:'수광부의 빛이 차단된 상태에서 출력이 ON되는 동작 모드입니다. 초보자 화면에서는 상황 중심 문구와 함께 표시합니다.'},
+ m12:{title:'M12 접속',text:'M12 계열 커넥터를 이용하는 접속 방식입니다. E3T 카탈로그에는 M12 스마트 클릭 커넥터 중계 타입이 별도 접속 사양으로 제시됩니다.'},
+ econ:{title:'e-CON',text:'OMRON E3T 카탈로그에 별도 접속 사양으로 기재된 커넥터 중계 방식입니다. 적용 가능 모델과 케이블 사양은 공식 선정표로 확인합니다.'},
+ ip67:{title:'IP67',text:'보호 구조를 나타내는 등급입니다. 최종 제품 선정에서는 공식 카탈로그에 기재된 보호 구조를 근거로 사용 환경 적합성을 확인합니다.'},
+ spec_method:{title:'검출 방식',text:'센서가 물체를 알아내는 기본 원리입니다. 예: 투과형은 빛을 가리면 검출하고, 반사형은 물체에서 돌아오는 빛을 이용합니다.'},
+ standard_object:{title:'표준 검출 물체',text:'카탈로그의 검출 성능을 확인할 때 기준으로 사용한 물체입니다. 쉽게 말해 “이 크기·재질의 물체를 기준으로 성능을 표시했다”는 뜻이며, 최소 검출 크기와는 다릅니다.'},
+ minimum_object:{title:'최소 검출 물체',text:'특정 조건에서 검출 가능한 작은 물체의 대표값입니다. “대표 예”라고 적힌 값은 모든 설치 조건에서 보증되는 최소 크기라는 뜻은 아닙니다.'},
+ hysteresis_term:{title:'응차(히스테리시스)',text:'물체가 들어올 때 ON되는 위치와 다시 빠질 때 OFF되는 위치의 차이입니다. 쉽게 말해 스위칭 위치의 “되돌아오는 틈”입니다. 값이 작을수록 같은 위치 근처에서 더 촘촘하게 전환됩니다.'},
+ bw_error:{title:'흑백 오차',text:'흰 물체와 검은 물체를 검출할 때 검출 거리가 얼마나 달라지는지를 나타냅니다. 값이 작을수록 물체 색상 변화의 영향을 덜 받는다고 이해하면 됩니다.'},
+ directivity:{title:'지향각',text:'빛이 퍼지는 각도와 수광부가 빛을 받아들일 수 있는 각도 범위를 나타내는 값입니다. 손전등 빛이 퍼지는 폭과 비슷하게 생각하면 됩니다. 투과형에서는 투광기와 수광기를 얼마나 정확히 마주보게 설치해야 하는지 판단할 때 참고합니다. 값이 작을수록 정렬이 더 중요합니다.'},
+ light_source:{title:'광원(발광 파장)',text:'센서가 어떤 빛을 내는지 나타냅니다. 예: 650nm는 눈에 보이는 적색 LED, 940nm는 눈에 잘 보이지 않는 적외선 LED입니다. 빛의 종류를 나타내는 값이지 검출 거리 자체를 뜻하지는 않습니다.'},
+ supply_voltage:{title:'전원 전압',text:'센서가 정상 동작하도록 공급해야 하는 DC 전압 범위입니다. 예: DC 12~24V라면 그 범위 안에서 사용해야 합니다.'},
+ consumption_current:{title:'소비 전류',text:'센서 자체가 동작하면서 사용하는 전류입니다. 출력으로 부하에 흘려주는 전류와는 별개입니다.'},
+ control_output:{title:'제어 출력',text:'센서가 PLC나 제어기에 보내는 전기 신호의 규격입니다. NPN/PNP 방식, 허용 부하 전류, 잔류 전압 등을 확인합니다.'},
+ protection_circuit:{title:'보호 회로',text:'배선을 반대로 연결하거나 출력이 쇼트되는 등의 실수에서 센서를 보호하기 위한 내부 회로입니다. 보호 기능이 있다고 해서 잘못된 배선을 계속 허용한다는 뜻은 아닙니다.'},
+ response_time_term:{title:'응답 시간',text:'물체 상태가 바뀐 뒤 센서 출력이 바뀌기까지 걸리는 시간입니다. 값이 작을수록 빠르게 움직이는 물체를 검출하는 데 유리합니다.'},
+ ambient_light_term:{title:'사용 주위 조도',text:'센서 주변의 조명이 얼마나 밝아도 정상 사용 가능한지를 나타냅니다. 아주 강한 조명이나 직사광은 광전센서에 영향을 줄 수 있어 설치 환경에서 확인합니다.'},
+ ip_term:{title:'보호 구조(IP 등급)',text:'먼지와 물에 대한 외함 보호 정도입니다. 예: IP67은 높은 방진·방수 등급이고, IP50은 물·기름이 묻는 환경에 적합한 방수 구조가 아닙니다.'},
+ operation_term:{title:'동작 모드',text:'빛이 들어올 때 출력이 ON되는지, 빛이 가려질 때 ON되는지를 정하는 방식입니다. 입광 ON / 차광 ON으로 표시됩니다.'},
+ output_term:{title:'NPN / PNP 출력',text:'PLC 입력과 맞춰야 하는 센서 출력 배선 방식입니다. 어떤 쪽이 더 좋은 것이 아니라, 사용 중인 PLC 입력 규격과 맞는 형식을 선택해야 합니다.'},
+ response_frequency_term:{title:'응답 주파수',text:'센서가 1초에 얼마나 빠르게 반복 검출할 수 있는지를 나타내는 지표입니다. 값이 높을수록 고속으로 지나가는 작은 물체 검출에 유리합니다.'},
+ slot_width_term:{title:'검출 홈 폭',text:'말굽형 포토마이크로센서의 송광부와 수광부 사이 간격입니다. EE-SX47/67의 5mm는 일반적인 “센서와 물체 사이 검출 거리”가 아니라, 워크가 지나가는 홈의 폭입니다.'}
+};
+function diagram(type){
+ if(type==='through')return `<div class="diagram"><span class="d-unit">투광기</span><span class="arrow">→</span><span class="d-obj">물체</span><span class="arrow">→</span><span class="d-unit">수광기</span></div><div class="caption">개념도 · 이해용</div>`;
+ if(type==='retro')return `<div class="diagram"><span class="d-unit">센서</span><span class="arrow">⇄</span><span class="d-obj">물체</span><span class="arrow">⇄</span><span class="reflect">반사판</span></div><div class="caption">개념도 · 이해용</div>`;
+ if(type==='diffuse')return `<div class="diagram"><span class="d-unit">센서</span><span class="arrow">⇄</span><span class="d-obj">물체</span></div><div class="caption">개념도 · 이해용</div>`;
+ if(type==='bgs')return `<div class="diagram"><span class="d-unit">센서</span><span class="arrow">→</span><span class="d-obj">검출 대상 ✓</span><span class="d-bg">배경 ×</span></div><div class="caption">개념도 · 이해용</div>`;
+ return `<div class="diagram"><span class="d-unit">센서</span><span class="arrow">→</span><span class="d-obj">검출 영역</span><span class="d-bg">범위 밖</span></div><div class="caption">개념도 · 이해용</div>`;
+}
+let touchTermEl=null;
+function showTerm(key,el){
+  const t=terms[key];if(!t)return;
+  const p=document.getElementById('popover');
+  p.innerHTML=`<div class="pop-title"><span>${t.title}</span></div>${t.diagram?diagram(t.diagram):''}${t.img?`<img class="pop-img ${t.shapeImage?'shape-pop-img':''}" src="${t.img}" alt="${t.title}">`:''}<div class="pop-text">${t.text}</div>${t.foot?`<div class="pop-label">${t.foot}</div>`:''}<div class="pop-hover-guide">팝업 안으로 마우스를 옮기면 더 크게 볼 수 있습니다.</div>`;
+  const r=el.getBoundingClientRect();
+  const vw=document.documentElement.clientWidth;
+  const vh=document.documentElement.clientHeight;
+  const w=Math.min(520,vw-24);
+  p.style.right='';
+  let left=r.left;
+  if(r.left>vw*.62){
+    p.style.left='auto';
+    p.style.right='12px';
+  }else{
+    if(left+w>vw-12)left=vw-w-12;
+    p.style.left=Math.max(12,left)+'px';
+  }
+  let top=r.bottom+7;
+  p.classList.add('show');
+  const ph=p.offsetHeight||280;
+  if(top+ph>vh-12)top=Math.max(12,r.top-ph-7);
+  p.style.top=top+'px';
+}
+let popHideTimer=null;
+function hidePopover(){
+  clearTimeout(popHideTimer);
+  const p=document.getElementById('popover');
+  p.classList.remove('show','expanded');
+}
+function schedulePopoverHide(ms=180){
+  clearTimeout(popHideTimer);
+  popHideTimer=setTimeout(hidePopover,ms);
+}
+document.addEventListener('mouseover',e=>{
+  if(!window.matchMedia('(hover:hover)').matches)return;
+  const el=e.target.closest('.term');
+  if(el){clearTimeout(popHideTimer);showTerm(el.dataset.term,el);}
+});
+document.addEventListener('mouseout',e=>{
+  if(!window.matchMedia('(hover:hover)').matches)return;
+  const el=e.target.closest('.term');
+  if(el && (!e.relatedTarget || !el.contains(e.relatedTarget)))schedulePopoverHide(260);
+});
+const hoverPop=document.getElementById('popover');
+hoverPop.addEventListener('mouseenter',()=>{
+  if(!window.matchMedia('(hover:hover)').matches)return;
+  clearTimeout(popHideTimer);
+  hoverPop.classList.add('expanded');
+  requestAnimationFrame(()=>{
+    const r=hoverPop.getBoundingClientRect(),vw=document.documentElement.clientWidth;
+    if(r.right>vw-12){hoverPop.style.left='auto';hoverPop.style.right='12px';}
+  });
+});
+hoverPop.addEventListener('mouseleave',()=>{
+  if(!window.matchMedia('(hover:hover)').matches)return;
+  hoverPop.classList.remove('expanded');
+  schedulePopoverHide(120);
+});
+document.addEventListener('click',e=>{
+  const el=e.target.closest('.term');
+  if(el && !window.matchMedia('(hover:hover)').matches){
+    e.preventDefault();e.stopPropagation();
+    if(touchTermEl===el && document.getElementById('popover').classList.contains('show')){
+      hidePopover();touchTermEl=null;
+    }else{
+      touchTermEl=el;showTerm(el.dataset.term,el);
+    }
+  }else if(!el && !window.matchMedia('(hover:hover)').matches){
+    hidePopover();touchTermEl=null;
+  }
+});
+window.addEventListener('scroll',()=>{if(window.matchMedia('(hover:hover)').matches)schedulePopoverHide(80)},{passive:true});
+window.addEventListener('resize',hidePopover);
+function chips(){const vals=[];if(state.purpose)vals.push(state.purpose==='presence'?'제품 유무 확인':state.purpose);if(state.target)vals.push(state.target);(state.targetDetails||[]).forEach(v=>vals.push(v));if(state.through==='yes')vals.push('양쪽 설치 가능');if(state.through==='no')vals.push('양쪽 설치 불가');if(state.background==='yes')vals.push('배경 가까움');if(state.distance)vals.push(state.distance+'mm');if(state.shape)vals.push(state.shape);if(state.output)vals.push(state.output);if(state.operation)vals.push(state.operation);const bar=document.getElementById('conditionBar');bar.querySelectorAll('.chip.dynamic').forEach(x=>x.remove());const empty=document.getElementById('emptyCond');empty.style.display=vals.length?'none':'inline';vals.forEach(v=>{const c=document.createElement('span');c.className='chip dynamic';c.textContent=v;bar.insertBefore(c,bar.querySelector('.clear'))})}
+function setVal(k,v){state[k]=v;chips();render()}
+function toggleTargetDetail(v,btn){
+  state.targetDetails=state.targetDetails||[];
+  const i=state.targetDetails.indexOf(v);
+  if(i>=0)state.targetDetails.splice(i,1);else state.targetDetails.push(v);
+  if(btn)btn.classList.toggle('active',state.targetDetails.includes(v));
+  const box=document.getElementById('targetDetailSelected');
+  if(box)box.innerHTML=state.targetDetails.length?`<strong>선택됨:</strong> ${state.targetDetails.join(' · ')}`:'선택된 상세 조건이 없습니다.';
+  chips();
+}
+function renderStepper(){document.getElementById('stepper').innerHTML=labels.map((x,i)=>`<div class="step ${state.step===i+1?'active':state.step>i+1?'done':''}" onclick="goStep(${i+1})"><span class="num">${state.step>i+1?'✓':i+1}</span><span class="labeltxt">${x}</span></div>`).join('')}
+function purposeCard(icon,title,desc,value,meta,info='photo'){
+  const implemented=value==='presence';
+  return `<button class="option-card ${state.purpose===value?'selected':''} ${implemented?'':'coming'}" ${implemented?`onclick="setVal('purpose','${value}')"`:'disabled'}>
+    <div class="iconbox">${icon}</div>
+    <div class="option-title">${title}${info?` <span class="info term" data-term="${info}" onclick="event.stopPropagation()">?</span>`:''}${implemented?'':' <span class="coming-badge">미구현</span>'}</div>
+    <div class="option-desc">${desc}</div>
+    <div class="option-meta">${implemented?meta:'현재 비활성 · 해당 공식 카탈로그 추가 후 활성화'}</div>
+  </button>`;
+}
+function render(){renderStepper();chips();const p=document.getElementById('panel');let html='';
+ if(state.step===1){html=`<div class="panel-grid"><div class="question"><h2>무엇을 확인하려고 합니까?</h2><div class="sub">센서 이름을 몰라도 됩니다. 실제 작업 목적에서 시작합니다.</div><div class="cards">${purposeCard('●','제품·부품이 있는지 확인','컨베이어 통과, 부품 유무, 위치 확인 등','presence','광전 · 근접 · 포토마이크로 후보','photo')}${purposeCard('↔','거리·높이 측정','대상까지 거리를 숫자로 측정','distance','변위센서 후보',null)}${purposeCard('↕','폭·두께·치수 측정','폭, 두께, 치수를 판별·측정','dimension','측장센서 후보',null)}${purposeCard('▣','형상·외관 검사','형상, 방향, 외관 상태 등을 확인','vision','비전센서 후보',null)}</div></div><aside class="guide"><h4>가시성 원칙</h4><p>쉬운 작업 목적을 크게 표시하고, 관련 센서 종류는 보조 정보로 제공합니다.</p><div class="mini"><strong>Hover/Tap 설명</strong><ul><li>센서 공식 이미지</li><li>한 줄 정의</li><li>어디에 쓰는지</li><li>용어는 짧게</li></ul></div></aside></div>`}
+ if(state.step===2){html=`<div class="panel-grid"><div class="question"><h2>어떤 물체를 검출합니까?</h2><div class="sub">필요한 특성만 묻고, 모르는 항목은 건너뛸 수 있습니다. 아래 예시는 판단을 돕는 대표 사례입니다.</div><div class="cards">${[
+ ['금속 부품','◆','볼트·브라켓·가공 금속·도금 부품 등'],
+ ['플라스틱 / 일반 부품','■','사출품·캡·커넥터·일반 조립 부품 등'],
+ ['투명 물체','◇','유리·PET 병·투명 커버·투명 필름 등'],
+ ['매우 작은 부품','·','핀·단자·칩·소형 나사·미세 부품 등'],
+ ['얇은 물체 / 필름','▰','라벨·시트·필름·얇은 판재·리드 프레임 등'],
+ ['잘 모르겠음','?','재질을 몰라도 설치 조건과 거리부터 좁힐 수 있습니다']
+].map(v=>`<button class="option-card ${state.target===v[0]?'selected':''}" onclick="setVal('target','${v[0]}')"><div class="iconbox">${v[1]}</div><div class="option-title">${v[0]}</div><div class="option-desc">${v[2]}</div></button>`).join('')}</div>
+<details class="advanced" open><summary>+ 상세 조건 <span class="advanced-status">선택 내용이 바로 표시됩니다</span></summary>
+<div class="detail-example-note">형번별 대응 여부를 공식 카탈로그에서 확정할 수 없는 항목은 <b>참고 조건</b>으로 저장하며, 근거 없이 자동 제외하지 않습니다.</div>
+<div class="seg target-detail-seg" style="margin-top:10px">${[
+ ['광택이 강함','예: 도금 금속 · 유광 플라스틱 · 광택 필름'],
+ ['검정색/어두움','예: 검정 고무 · 검정 수지 · 어두운 도장면'],
+ ['색상이 자주 바뀜','예: 다품종 부품 · 여러 색 라벨 · 색상 변경 워크'],
+ ['투명함','예: 유리 · PET · 투명 커버 · 투명 필름']
+].map(v=>`<button class="${(state.targetDetails||[]).includes(v[0])?'active':''}" onclick="toggleTargetDetail('${v[0]}',this)"><b>${v[0]}</b><small>${v[1]}</small></button>`).join('')}</div>
+<div id="targetDetailSelected" class="target-detail-selected">${(state.targetDetails||[]).length?`<strong>선택됨:</strong> ${(state.targetDetails||[]).join(' · ')}`:'선택된 상세 조건이 없습니다.'}</div>
+</details></div><aside class="guide"><h4>물체 예시</h4><p>같은 재질이라도 표면 광택·색상·투명도·크기에 따라 검출 안정성이 달라질 수 있습니다.</p><div class="mini"><strong>대표 예</strong><ul><li>검정 고무 부품</li><li>도금 금속 브라켓</li><li>PET 투명 용기</li><li>색상이 바뀌는 다품종 워크</li></ul></div></aside></div>`}
+ if(state.step===3){let method='확산 반사형 포함 후보 유지';if(state.through==='yes')method='투과형 우선';else if(state.through==='no'&&state.reflector==='yes')method='회귀 반사형 우선';else if(state.through==='no'&&state.reflector==='no'&&state.background==='yes')method='BGS / 한정 반사형 우선';html=`<div class="panel-grid"><div class="question"><h2>센서를 어떻게 설치할 수 있습니까?</h2><div class="sub">전문 방식명을 먼저 고르지 않고 설치 상황으로 판단합니다.</div><div class="qa"><div class="qa-title">① 물체 양쪽에 센서를 설치할 수 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.through===v?'active':''}" onclick="setVal('through','${v}')">${['가능','불가능','잘 모르겠음'][i]}</button>`).join('')}</div></div><div class="qa"><div class="qa-title">② 반대편에 작은 반사판은 설치할 수 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.reflector===v?'active':''}" onclick="setVal('reflector','${v}')">${['가능','불가능','잘 모르겠음'][i]}</button>`).join('')}</div></div><div class="qa"><div class="qa-title">③ 검출 물체 뒤쪽에 벽·프레임이 가까이 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.background===v?'active':''}" onclick="setVal('background','${v}')">${['있음','없음','잘 모르겠음'][i]}</button>`).join('')}</div></div><div class="recommend-method"><div><div style="font-size:12px;color:#667085">현재 설치조건 기준</div><strong>${method}</strong></div><div class="method-chips"><span class="method-tag">투과형 <span class="info term" data-term="through">?</span></span><span class="method-tag">회귀 반사형 <span class="info term" data-term="retro">?</span></span><span class="method-tag">BGS <span class="info term" data-term="bgs">?</span></span></div></div></div><aside class="guide"><h4>핵심 UX</h4><p>“BGS가 뭔지 아십니까?”라고 묻지 않습니다. 사용자의 설치 조건을 받은 뒤 시스템이 검출 방식을 추천하고, ⓘ에서 5~10초 설명을 제공합니다.</p></aside></div>`}
+ if(state.step===4){html=`<div class="panel-grid"><div class="question"><h2>검출 거리와 설치 공간을 알려주세요.</h2><div class="sub">거리는 강한 Must 조건으로, 형상은 상황에 따라 Must/Prefer로 처리합니다.</div><div class="fields"><div class="field"><label>센서 ↔ 물체 거리 <span class="info term" data-term="distance">?</span></label><div style="display:flex;gap:8px"><input type="number" value="${state.distance}" placeholder="예: 20" oninput="state.distance=this.value;chips()"><span style="align-self:center">mm</span></div></div><div class="field"><label>설치 공간 / 형상</label><select onchange="setVal('shape',this.value)"><option value="">선택</option><option ${state.shape==='플랫 선호'?'selected':''}>플랫 선호</option><option ${state.shape==='사이드 뷰 선호'?'selected':''}>사이드 뷰 선호</option><option ${state.shape==='상관없음'?'selected':''}>상관없음</option></select></div></div><div class="qa" style="margin-top:12px"><div class="qa-title">빠른 거리 선택</div><div class="seg"><button onclick="setVal('distance','10')">10mm 이하</button><button onclick="setVal('distance','20')">10~30mm</button><button onclick="setVal('distance','50')">30~100mm</button><button onclick="setVal('distance','200')">100~300mm</button><button onclick="setVal('distance','500')">300mm 이상</button><button onclick="setVal('distance','')">잘 모르겠음</button></div></div><details class="advanced"><summary>+ 상세 조건</summary><p style="font-size:12px;color:#667085">최소 검출 물체·응차 등은 결과 상세보기에서 공식값을 확인할 수 있습니다. 이후 별도 Must 필터로 확장할 수 있습니다.</p></details></div><aside class="guide"><h4>실무자 관점</h4><p>왼쪽 필터에는 최소/최대 mm를 직접 입력할 수 있고, Wizard 선택값과 즉시 동기화합니다.</p></aside></div>`}
+ if(state.step===5){html=`<div class="panel-grid"><div class="question"><h2>전기 조건을 확인합니다.</h2><div class="sub">사용자가 값을 알면 Must, 모르면 후보 선정 후 “추가 확인 필요”로 표시합니다.</div><div class="qa"><div class="qa-title">PLC 입력에 맞는 출력 방식</div><div class="seg"><button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN <span class="info term" data-term="npn" onclick="event.stopPropagation()">?</span></button><button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP <span class="info term" data-term="pnp" onclick="event.stopPropagation()">?</span></button><button class="${state.output==='잘 모르겠음'?'active':''}" onclick="setVal('output','잘 모르겠음')">잘 모르겠음</button></div></div><div class="qa"><div class="qa-title">출력이 언제 ON되어야 합니까?</div><div class="seg"><button class="${state.operation==='입광 시 ON'?'active':''}" onclick="setVal('operation','입광 시 ON')">입광 시 ON <span class="info term" data-term="lighton" onclick="event.stopPropagation()">?</span></button><button class="${state.operation==='차광 시 ON'?'active':''}" onclick="setVal('operation','차광 시 ON')">차광 시 ON <span class="info term" data-term="darkon" onclick="event.stopPropagation()">?</span></button><button class="${state.operation==='잘 모르겠음'?'active':''}" onclick="setVal('operation','잘 모르겠음')">잘 모르겠음</button></div></div><details class="advanced"><summary>+ 접속 / 환경 조건</summary><div class="seg" style="margin-top:10px"><button id="wizConnM12" onclick="toggleWizardConnection('m12')">M12 <span class="info term" data-term="m12" onclick="event.stopPropagation()">?</span></button><button id="wizConnEcon" onclick="toggleWizardConnection('econ')">e-CON <span class="info term" data-term="econ" onclick="event.stopPropagation()">?</span></button><button id="wizConnRobot" onclick="toggleWizardConnection('robot')">로봇 코드</button><button>IP67 <span class="info term" data-term="ip67">?</span></button></div></details></div><aside class="guide"><h4>표현 원칙</h4><p>전문 용어는 숨기지 않습니다. 실무자는 바로 보고 선택하고, 초보자는 ⓘ를 통해 즉시 뜻을 확인할 수 있게 합니다.</p></aside></div>`}
+ if(state.step===6){html=`<div class="question"><div class="result-top"><div><h2>추천 결과 미리보기</h2><div class="result-count">샘플 3개 모델 · 카드의 ‘비교 담기’로 그룹 비교 가능</div></div><div style="display:flex;gap:8px"><button class="ghost" onclick="openCompare('same')">그룹 비교</button><button class="ghost" onclick="openPolicy()">데이터 기준</button></div></div><div class="result-grid">${product('E3T-FL11','BGS 반사형','1~15mm','NPN','입광 시 ON','플랫','best')}${product('E3T-SR41','회귀 반사형','200mm*','NPN','입광 시 ON','사이드 뷰','')}${product('E3T-FT11','투과형','500mm','NPN','입광 시 ON','플랫','')}</div><div class="official-note" style="margin-top:14px"><strong>비교 설계:</strong> 같은 제조사에서는 유사 모델/시리즈를 그룹으로 묶고, 향후 타 제조사 데이터가 추가되면 공통 사양을 정규화해 제조사 간 비교로 확장합니다. 현재 미리보기의 실제 제품 사양은 OMRON 자료만 사용합니다.</div><div class="official-note" style="margin-top:8px"><strong>* 회귀 반사형:</strong> E3T-SR4□의 검출 거리는 사용하는 반사판 조합에 따라 달라집니다. 실제 선정 화면에서는 반사판 조건을 결과와 함께 연결합니다.</div></div>`}
+ p.innerHTML=html;document.getElementById('prevBtn').style.visibility=state.step===1?'hidden':'visible';document.getElementById('nextBtn').textContent=state.step===6?'처음으로':'다음';updateCompareTray()}
+function product(model,method,distance,output,op,shape,best){const on=state.compareSelected.includes(model);return `<article class="product-card ${best}">${best?'<span class="best-badge">★ 가장 적합</span>':''}<button class="compare-add ${on?'on':''}" onclick="toggleCompare('${model}')">${on?'✓ 비교함':'＋ 비교 담기'}</button><img class="product-img" src="assets/e3t-product-group.png"><div class="maker">OMRON · E3T Series</div><div class="model">${model}</div><div class="specs"><div class="spec"><strong>검출 방식</strong>${method}</div><div class="spec"><strong>검출 거리</strong>${distance}</div><div class="spec"><strong>출력</strong>${output}</div><div class="spec"><strong>동작</strong>${op}</div><div class="spec"><strong>형상</strong>${shape}</div><div class="spec"><strong>공식 근거</strong>📖 연결</div></div><div class="reason"><div>설치 조건과 검출 방식 후보를 만족</div><div>출력 조건 확인 가능</div><div>공식 카탈로그 근거 연결 가능</div></div><div class="card-actions"><button>상세보기</button><button class="primary" onclick="openFieldEvidence(\'E3T-FL11\',\'model\')">📖 근거보기</button></div></article>`}
+
+function toggleCompare(model){
+ const i=state.compareSelected.indexOf(model);
+ if(i>=0)state.compareSelected.splice(i,1);else if(state.compareSelected.length<4)state.compareSelected.push(model);
+ updateCompareTray();render();
+}
+function updateCompareTray(){
+ const tray=document.getElementById('compareTray');if(!tray)return;
+ document.getElementById('compareCount').textContent=state.compareSelected.length;
+ document.getElementById('compareItems').innerHTML=state.compareSelected.map(m=>`<span class="compare-item">${m}</span>`).join('');
+ tray.classList.toggle('show',state.compareSelected.length>0 && state.step===6);
+}
+function openCompare(mode='same'){state.compareMode=mode;document.getElementById('compareBack').classList.add('show');renderCompare(mode)}
+function closeCompare(){document.getElementById('compareBack').classList.remove('show')}
+function renderCompare(mode){
+ state.compareMode=mode;document.getElementById('sameTab').classList.toggle('active',mode==='same');document.getElementById('crossTab').classList.toggle('active',mode==='cross');
+ const body=document.getElementById('compareBody');
+ const selected=state.compareSelected.map(m=>sampleProducts[m]).filter(Boolean);
+ if(mode==='same'){
+   const rows=selected.length?selected.map(p=>`<tr><td><span class="compare-model">${p.model}</span><br><span style="color:#667085">${p.series} Series</span></td><td>${p.method}</td><td>${p.distance}</td><td>${p.output}</td><td>${p.op}</td><td>${p.shape}</td><td class="compare-reason">${p.reason}</td></tr>`).join(''):`<tr><td colspan="7">결과 카드에서 비교할 모델을 담아주세요.</td></tr>`;
+   body.innerHTML=`<p class="compare-note">제공하신 ‘그룹 비교’ 화면처럼, 유사한 센서를 먼저 묶고 핵심 차이와 “어떤 조건에서 이 모델을 고르는지”를 한눈에 비교하는 구조입니다.</p><div class="compare-filter"><div class="label">이 비교 목록에서 빠르게 걸러내기</div><span class="quick-chip">BGS</span><span class="quick-chip">회귀 반사</span><span class="quick-chip">투과형</span><span class="quick-chip">NPN</span><span class="quick-chip">플랫</span><span class="quick-chip">근거리</span></div><section class="compare-group"><div class="compare-group-title"><span class="g-badge">G1</span> OMRON · 현재 선택 센서 비교 <span style="color:#667085;font-size:11px;font-weight:600">${selected.length}개</span></div><table class="compare-table"><thead><tr><th>제품</th><th>검출 방식</th><th>검출 거리</th><th>출력</th><th>동작</th><th>형상</th><th>이 모델을 고르는 조건</th></tr></thead><tbody>${rows}</tbody></table></section><div class="future-card"><strong>같은 제조사 그룹 비교 확장 방식</strong><br>모델 단위 비교뿐 아니라, 데이터가 늘어나면 <b>센서 종류 → 검출 방식 → 유사 시리즈 그룹</b> 순으로 묶습니다. 각 그룹은 공통점보다 <b>갈리는 핵심 조건</b>을 먼저 보여주고, 상세 사양은 필요할 때 펼칩니다.</div>`;
+ }else{
+   const omron=selected[0]||sampleProducts['E3T-FL11'];
+   body.innerHTML=`<p class="compare-note">향후 KEYENCE·Panasonic·SICK·Autonics 등 다른 제조사가 추가되어도 비교 UI를 다시 만들지 않고, 공통 비교 스키마에 연결하는 구조입니다. 현재는 OMRON 자료만 적용하므로 타 제조사 값은 표시하지 않습니다.</p><div class="compare-scope"><span class="scope-tag">공통 항목 우선</span><span class="scope-tag">제조사 전용 사양 분리</span><span class="scope-tag">각 값별 공식 근거 연결</span></div><div class="matrix-wrap" style="margin-top:14px"><table class="matrix"><thead><tr><th>비교 항목</th><th>OMRON</th><th>제조사 B · 추후</th><th>제조사 C · 추후</th></tr></thead><tbody><tr><td class="rowhead">시리즈 / 모델</td><td><b>${omron.series} / ${omron.model}</b></td><td>데이터 추가 후 선택</td><td>데이터 추가 후 선택</td></tr><tr><td class="rowhead">검출 방식</td><td>${omron.method}</td><td>—</td><td>—</td></tr><tr><td class="rowhead">검출 거리</td><td>${omron.distance}</td><td>—</td><td>—</td></tr><tr><td class="rowhead">출력</td><td>${omron.output}</td><td>—</td><td>—</td></tr><tr><td class="rowhead">동작 모드</td><td>${omron.op}</td><td>—</td><td>—</td></tr><tr><td class="rowhead">형상</td><td>${omron.shape}</td><td>—</td><td>—</td></tr><tr><td class="rowhead">접속 / 보호 / 응답</td><td>제품 상세 데이터에서 연결</td><td>각 제조사 공식자료 연결</td><td>각 제조사 공식자료 연결</td></tr><tr><td class="rowhead">공식 근거</td><td>📖 OMRON 공식 근거</td><td>해당 제조사 공식 근거</td><td>해당 제조사 공식 근거</td></tr></tbody></table></div><div class="future-card"><strong>제조사 간 비교 시 중요한 규칙</strong><br>① 명칭이 달라도 의미가 같은 사양은 공통 필드로 정규화합니다.<br>② 제조사 고유 기능은 억지로 같은 항목에 넣지 않고 ‘제조사 전용 특징’으로 분리합니다.<br>③ 비교값 옆의 📖 근거는 반드시 해당 제조사의 공식 카탈로그/공식 사이트로 연결합니다.</div>`;
+ }
+}
+document.getElementById('compareBack').addEventListener('click',e=>{if(e.target.id==='compareBack')closeCompare()});
+
+function goStep(n){state.step=Math.min(6,Math.max(1,n));render();window.scrollTo({top:0,behavior:'smooth'})}
+document.getElementById('nextBtn').onclick=()=>state.step===6?goStep(1):goStep(state.step+1);document.getElementById('prevBtn').onclick=()=>goStep(state.step-1);
+function resetAll(){Object.assign(state,{step:1,purpose:null,target:null,through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null});document.querySelectorAll('.sidebar input[type=checkbox]').forEach((x,i)=>{if(i>0)x.checked=false});render()}
+function openPolicy(){document.getElementById('policyBack').classList.add('show')}function closePolicy(){document.getElementById('policyBack').classList.remove('show')}
+function showHelp(){alert('미리보기 사용법\n\n1) 상단 Step을 눌러 원하는 화면으로 이동\n2) ⓘ에 Hover/Tap하여 용어·이미지 설명 확인\n3) 마지막 결과 카드의 📖 근거보기를 눌러 공식 카탈로그 Crop 확인\n4) 왼쪽은 실무자용 Dynamic Filter 배치 예시\n5) 결과 카드의 비교 담기 → 같은 제조사/제조사 간 그룹 비교 확인\n6) 상단 ‘데이터 기준’에서 공식자료/최신 한글판 업데이트 원칙 확인')}
+document.getElementById('globalSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){state.step=6;render()}});
+render();
+</script>
+
+<script>
+/* STEP 11 · E3T real filtering engine v0.1 */
+(() => {
+  const METHOD_KO={through_beam:'투과형',retro_reflective:'회귀 반사형',diffuse:'확산 반사형',limited_reflective:'한정 반사형',bgs:'BGS 반사형'};
+  const SHAPE_KO={flat:'플랫',side_view:'사이드 뷰'};
+  const OP_KO={light_on:'입광 시 ON',dark_on:'차광 시 ON'};
+  const db=(window.E3T_DATA&&window.E3T_DATA.products)||[];
+  const wireRender=render;
+  const oldReset=resetAll;
+
+  function checked(group){return [...document.querySelectorAll(`[data-filter="${group}"]:checked`)].map(x=>x.value)}
+  function numeric(id){const v=parseFloat(document.getElementById(id)?.value);return Number.isFinite(v)?v:null}
+  function sidebarFilters(){
+    return {methods:checked('method'),shapes:checked('shape'),outputs:checked('output'),ops:checked('operation'),connections:checked('connection'),
+      min:numeric('filterDistanceMin'),max:numeric('filterDistanceMax')};
+  }
+  function distanceEnvelope(p){
+    const d=p.specs?.sensingDistance||{};
+    if(d.type==='fixed')return {min:0,max:+d.value,label:`${d.value}mm`,semantic:'광학 설치 최대거리'};
+    if(d.type==='range')return {min:+d.min,max:+d.max,label:`${d.min}~${d.max}mm`,semantic:'센서↔검출물체'};
+    if(d.type==='reflector_dependent'){
+      const opts=d.options||[]; if(!opts.length)return {min:null,max:null,label:'반사판별 확인',semantic:'센서↔반사판'};
+      return {min:Math.min(...opts.map(x=>+x.minSensorReflectorDistance)),max:Math.max(...opts.map(x=>+x.rangeMax)),
+        label:opts.map(x=>`${x.reflector} ${x.rangeMax}mm[${x.minSensorReflectorDistance}mm]`).join(' / '),semantic:'센서↔반사판'};
+    }
+    return {min:null,max:null,label:'—',semantic:''};
+  }
+  function connectionTokens(p){
+    const out=['cable']; (p.connection?.variants||[]).forEach(v=>{
+      const t=v.type||'';
+      if(t.includes('M12'))out.push('m12');
+      if(t.includes('e-CON'))out.push('econ');
+      if(t.includes('robot'))out.push('robot');
+    }); return [...new Set(out)];
+  }
+  function inferredMethods(){
+    if(state.through==='yes')return {allowed:['through_beam'],preferred:['through_beam'],note:'양쪽 설치 가능 → 투과형'};
+    if(state.through==='no'&&state.reflector==='yes')return {allowed:['retro_reflective'],preferred:['retro_reflective'],note:'반사판 설치 가능 → 회귀 반사형'};
+    if(state.through==='no'&&state.reflector==='no'&&state.background==='yes')return {allowed:['bgs','limited_reflective'],preferred:['bgs','limited_reflective'],note:'배경 가까움 → BGS/한정 반사형'};
+    if(state.through==='no'&&state.reflector==='no'&&state.background==='no')return {allowed:['diffuse','limited_reflective','bgs'],preferred:['diffuse'],note:'한쪽 설치·배경 영향 낮음 → 확산 반사형 우선'};
+    return {allowed:[],preferred:[],note:'검출 방식 미확정'};
+  }
+  function wizardDistanceSemantic(){
+    if(state.through==='yes')return '투광기 ↔ 수광기 설치 거리';
+    if(state.through==='no'&&state.reflector==='yes')return '센서 ↔ 반사판 설치 거리';
+    return '센서 ↔ 검출 물체 거리';
+  }
+  function searchText(p){
+    const e=distanceEnvelope(p);
+    return [p.model,p.series,p.classification?.family,METHOD_KO[p.classification?.detectionMethod],SHAPE_KO[p.classification?.shape],
+      p.specs?.outputType,OP_KO[p.specs?.operationMode],e.label,'IP67','광전센서'].filter(Boolean).join(' ').toLowerCase();
+  }
+  function filterAndRank(){
+    if(state.purpose && !['presence','position'].includes(state.purpose)) return [];
+    const f=sidebarFilters(), inf=inferredMethods(), q=(document.getElementById('globalSearch')?.value||'').trim().toLowerCase();
+    const wd=Number.parseFloat(state.distance); const hasWD=Number.isFinite(wd);
+    const shapePref=state.shape==='플랫 선호'?'flat':state.shape==='사이드 뷰 선호'?'side_view':null;
+    const opReq=state.operation==='입광 시 ON'?'light_on':state.operation==='차광 시 ON'?'dark_on':null;
+    const outReq=['NPN','PNP'].includes(state.output)?state.output:null;
+
+    const rows=[];
+    for(const p of db){
+      const method=p.classification?.detectionMethod, shape=p.classification?.shape, env=distanceEnvelope(p);
+      const reasons=[]; let score=40; let fail=false;
+
+      if(q && !searchText(p).includes(q)) fail=true;
+      if(f.methods.length && !f.methods.includes(method)) fail=true;
+      if(f.shapes.length && !f.shapes.includes(shape)) fail=true;
+      if(f.outputs.length && !f.outputs.includes(p.specs?.outputType)) fail=true;
+      if(f.ops.length && !f.ops.includes(p.specs?.operationMode)) fail=true;
+      if(f.connections.length && !f.connections.some(x=>connectionTokens(p).includes(x))) fail=true;
+
+      if(inf.allowed.length && !inf.allowed.includes(method)) fail=true;
+      if(outReq && p.specs?.outputType!==outReq) fail=true;
+      if(opReq && p.specs?.operationMode!==opReq) fail=true;
+
+      if(f.min!=null && env.max!=null && env.max<f.min) fail=true;
+      if(f.max!=null && env.min!=null && env.min>f.max) fail=true;
+      if(hasWD && env.min!=null && env.max!=null && !(wd>=env.min && wd<=env.max)) fail=true;
+      if(fail)continue;
+
+      if(inf.preferred.includes(method)){score+=25;reasons.push(`${inf.note} 조건과 일치`)}
+      if(hasWD){score+=20;reasons.push(`${wizardDistanceSemantic()} ${wd}mm 조건 만족`)}
+      if(shapePref){
+        if(shape===shapePref){score+=10;reasons.push(`선호 형상(${SHAPE_KO[shape]}) 일치`)}
+        else score-=3;
+      }
+      if(outReq){score+=10;reasons.push(`${outReq} 출력 조건 만족`)}
+      if(opReq){score+=8;reasons.push(`${OP_KO[opReq]} 조건 만족`)}
+      if(f.connections.length){score+=5;reasons.push(`요청 접속 사양 제공 모델`)}
+      if(!reasons.length)reasons.push('현재 선택 조건에서 제외 사유 없음');
+      rows.push({p,score,reasons,env});
+    }
+    return rows.sort((a,b)=>b.score-a.score || a.p.model.localeCompare(b.p.model));
+  }
+  function productCard(row,index){
+    const p=row.p, method=METHOD_KO[p.classification.detectionMethod], shape=SHAPE_KO[p.classification.shape];
+    const on=state.compareSelected.includes(p.model);
+    const connLabel=connectionTokens(p).map(x=>({cable:'2m 코드',m12:'M12',econ:'e-CON',robot:'로봇 코드'}[x])).join(' · ');
+    return `<article class="product-card ${index===0?'best':''}">
+      ${index===0?'<span class="best-badge">★ 조건상 최상위</span>':''}
+      <button class="compare-add ${on?'on':''}" onclick="toggleCompare('${p.model}')">${on?'✓ 비교함':'＋ 비교 담기'}</button>
+      <img class="product-img" src="assets/e3t-product-group.png" alt="OMRON E3T">
+      <div class="maker">OMRON · E3T · 2010 한글 공식 카탈로그 기준</div>
+      <div class="model">${p.model}</div>
+      <div class="scoreline">적합도 <b>${row.score}</b> · 현행 판매 여부 별도 확인</div>
+      <div class="specs">
+        <div class="spec"><strong>검출 방식</strong>${method}</div>
+        <div class="spec"><strong>검출 거리</strong>${row.env.label}</div>
+        <div class="spec"><strong>출력</strong>${p.specs.outputType}</div>
+        <div class="spec"><strong>동작</strong>${OP_KO[p.specs.operationMode]}</div>
+        <div class="spec"><strong>형상</strong>${shape}</div>
+        <div class="spec"><strong>접속</strong>${connLabel}</div>
+      </div>
+      <div class="reason">${row.reasons.slice(0,4).map(x=>`<div>${x}</div>`).join('')}</div>
+      <div class="cautionline">2010 한글 공식 카탈로그 기반. “현재 판매중”을 의미하지 않으며 최신 한글판 확보 시 갱신합니다.</div>
+      <div class="card-actions"><button onclick="showDetail('${p.model}')">상세보기</button><button class="primary" onclick="openFieldEvidence(\'E3T-FL11\',\'model\')">📖 근거보기</button></div>
+    </article>`;
+  }
+  function renderResults(){
+    const rows=filterAndRank(), p=document.getElementById('panel');
+    const f=sidebarFilters(), inf=inferredMethods();
+    const purposeUnsupported=state.purpose && !['presence','position'].includes(state.purpose);
+    let body='';
+    if(purposeUnsupported){
+      body=`<div class="result-empty"><strong>현재 E3T 데이터 범위의 용도가 아닙니다.</strong>이번 STEP 11 엔진은 OMRON E3T(광전센서)의 제품 유무/위치 검출 범위만 구현했습니다. 변위·측장·비전 데이터는 해당 시리즈를 추가하는 단계에서 연결합니다.</div>`;
+    }else if(!rows.length){
+      body=`<div class="result-empty"><strong>조건을 모두 만족하는 E3T 모델이 없습니다.</strong>Must 조건(검출 방식·거리·출력·동작·전문가 필터)을 하나씩 완화해서 확인해 주세요.</div>`;
+    }else{
+      body=`<div class="result-grid">${rows.slice(0,12).map(productCard).join('')}</div>`;
+    }
+    p.innerHTML=`<div class="question">
+      <div class="result-top"><div><h2>실제 선정 엔진 결과</h2><div class="result-count">E3T 40개 기본 모델 중 <b>${rows.length}개</b> 조건 일치${rows.length>12?' · 상위 12개 표시':''}</div></div>
+      <div style="display:flex;gap:8px"><button class="ghost" onclick="openCompare('same')">그룹 비교</button><button class="ghost" onclick="openPolicy()">데이터 기준</button></div></div>
+      <div class="engine-status"><span class="engine-badge live">STEP 11 필터 엔진 작동</span><span class="engine-badge">${inf.note}</span><span class="engine-badge source">2010 한글 공식 카탈로그 기준</span></div>
+      ${body}
+      <div class="official-note" style="margin-top:14px"><strong>거리 입력 의미:</strong> 투과형은 투광기↔수광기, 회귀 반사형은 센서↔반사판, 확산/한정/BGS는 센서↔검출물체 거리로 해석합니다. 검출 방식에 따라 같은 “거리”라도 공식 사양의 기준점이 다릅니다.</div>
+      <div class="official-note" style="margin-top:8px"><strong>검출 대상 필터:</strong> “금속/플라스틱/투명체” 같은 재질 선택은 현재 E3T 2010 카탈로그의 모델별 공식 적합 범위가 충분히 명시되지 않아 하드필터에 사용하지 않았습니다. 임의 추정하지 않습니다.</div>
+    </div>`;
+    updateCompareTray(); updateSidebarCount(rows.length);
+  }
+  function updateSidebarCount(n=null){
+    const rows=n==null?filterAndRank():null; const count=n==null?rows.length:n;
+    const el=document.getElementById('sidebarCount'); if(el)el.innerHTML=`현재 조건 <b>${count}개</b> / E3T 40개 기본 모델`;
+  }
+  function syncStep4DistanceLabel(){
+    if(state.step!==4)return;
+    const label=document.querySelector('#panel .field label');
+    if(label) label.innerHTML=`${wizardDistanceSemantic()} <span class="info term" data-term="distance">?</span>`;
+    const sub=document.querySelector('#panel .question .sub');
+    if(sub) sub.textContent='검출 방식에 따라 공식 “검출 거리”의 기준점이 다르므로, 설치 방식에 맞는 거리로 입력합니다.';
+  }
+
+  render = function(){
+    wireRender();
+    syncStep4DistanceLabel();
+    if(state.step===6)renderResults(); else updateSidebarCount();
+  };
+
+  resetAll = function(){
+    Object.assign(state,{step:1,purpose:null,target:null,through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null,compareSelected:[]});
+    document.querySelectorAll('[data-filter]').forEach(x=>{x.checked=x.dataset.filter==='category'&&x.value==='photoelectric'});
+    ['filterDistanceMin','filterDistanceMax'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});
+    const gs=document.getElementById('globalSearch');if(gs)gs.value='';
+    render();
+  };
+
+  window.showDetail=function(model){
+    const p=db.find(x=>x.model===model); if(!p)return;
+    const e=distanceEnvelope(p), c=connectionTokens(p).map(x=>({cable:'표준 2m 코드',m12:'M12 Smart Click',econ:'e-CON',robot:'로봇 코드'}[x])).join(', ');
+    alert(`${p.model}\n\n검출 방식: ${METHOD_KO[p.classification.detectionMethod]}\n검출 거리: ${e.label}\n형상: ${SHAPE_KO[p.classification.shape]}\n출력: ${p.specs.outputType}\n동작: ${OP_KO[p.specs.operationMode]}\n전원: DC ${p.specs.supplyVoltage.min}~${p.specs.supplyVoltage.max}V\n응답: 동작·복귀 각 ${p.specs.responseTime.operateMax}ms 이하\n보호: ${p.specs.ipRating}\n접속: ${c}\n\n근거: E3T 한글 종합 카탈로그 2010\n현행 판매 여부는 별도 확인 필요`);
+  };
+
+  renderCompare=function(mode){
+    state.compareMode=mode;
+    document.getElementById('sameTab').classList.toggle('active',mode==='same');
+    document.getElementById('crossTab').classList.toggle('active',mode==='cross');
+    const body=document.getElementById('compareBody');
+    const selected=state.compareSelected.map(m=>db.find(p=>p.model===m)).filter(Boolean);
+    if(mode==='same'){
+      const rows=selected.length?selected.map(p=>{const e=distanceEnvelope(p);return `<tr><td><span class="compare-model">${p.model}</span><br><span style="color:#667085">E3T</span></td><td>${METHOD_KO[p.classification.detectionMethod]}</td><td>${e.label}</td><td>${p.specs.outputType}</td><td>${OP_KO[p.specs.operationMode]}</td><td>${SHAPE_KO[p.classification.shape]}</td><td class="compare-reason">${connectionTokens(p).map(x=>({cable:'2m 코드',m12:'M12',econ:'e-CON',robot:'로봇 코드'}[x])).join(' · ')}</td></tr>`}).join(''):`<tr><td colspan="7">결과 카드에서 비교할 모델을 담아주세요.</td></tr>`;
+      body.innerHTML=`<p class="compare-note">현재 선정 결과에서 최대 4개 모델을 같은 OMRON 그룹으로 비교합니다. 비교값은 STEP 11 실제 E3T 데이터에서 읽습니다.</p><section class="compare-group"><div class="compare-group-title"><span class="g-badge">E3T</span> OMRON 동일 제조사 비교 <span style="color:#667085;font-size:11px;font-weight:600">${selected.length}개</span></div><table class="compare-table"><thead><tr><th>제품</th><th>검출 방식</th><th>검출 거리</th><th>출력</th><th>동작</th><th>형상</th><th>접속 가능 사양</th></tr></thead><tbody>${rows}</tbody></table></section><div class="future-card">모든 값은 현재 E3T 한글 2010 공식 카탈로그 기준입니다. 최신 한글 카탈로그가 추가되면 비교표도 동일 데이터 구조에서 자동 갱신됩니다.</div>`;
+    } else {
+      const p=selected[0]||db[0], e=distanceEnvelope(p);
+      body.innerHTML=`<p class="compare-note">타 제조사는 아직 데이터 미적용입니다. 공통 스키마만 유지하고 타 제조사 공식자료가 추가될 때 연결합니다.</p><table class="matrix"><thead><tr><th>비교 항목</th><th>OMRON</th><th>타 제조사 · 추후</th></tr></thead><tbody><tr><td class="rowhead">모델</td><td>${p.model}</td><td>—</td></tr><tr><td class="rowhead">검출 방식</td><td>${METHOD_KO[p.classification.detectionMethod]}</td><td>—</td></tr><tr><td class="rowhead">검출 거리</td><td>${e.label}</td><td>—</td></tr><tr><td class="rowhead">출력</td><td>${p.specs.outputType}</td><td>—</td></tr><tr><td class="rowhead">형상</td><td>${SHAPE_KO[p.classification.shape]}</td><td>—</td></tr><tr><td class="rowhead">공식 근거</td><td>OMRON 한국 공식자료</td><td>해당 제조사 공식자료</td></tr></tbody></table>`;
+    }
+  };
+
+  // Dynamic sidebar
+  document.querySelectorAll('[data-filter],#filterDistanceMin,#filterDistanceMax').forEach(el=>{
+    el.addEventListener(el.type==='number'?'input':'change',()=>{if(state.step!==6)state.step=6;render()});
+  });
+
+  // Search autocomplete + direct search
+  const gs=document.getElementById('globalSearch'), box=document.getElementById('searchSuggest');
+  function suggestions(){
+    const q=gs.value.trim().toLowerCase(); if(!q){box.classList.remove('show');return}
+    const arr=db.filter(p=>searchText(p).includes(q)).slice(0,8);
+    box.innerHTML=arr.map(p=>`<div class="search-item" data-model="${p.model}"><b>${p.model}</b><small>${METHOD_KO[p.classification.detectionMethod]} · ${distanceEnvelope(p).label} · ${p.specs.outputType}</small></div>`).join('') || `<div class="search-item"><small>일치 모델 없음</small></div>`;
+    box.classList.add('show');
+  }
+  gs.addEventListener('input',suggestions);
+  box.addEventListener('click',e=>{const it=e.target.closest('[data-model]');if(!it)return;gs.value=it.dataset.model;box.classList.remove('show');state.step=6;render()});
+  document.addEventListener('click',e=>{if(!e.target.closest('.search'))box.classList.remove('show')});
+  gs.addEventListener('keydown',e=>{if(e.key==='Enter'){box.classList.remove('show');state.step=6;render()}});
+
+  // Re-render once after overrides are installed.
+  render();
+})();
+</script>
+
+
+<script>
+/* STEP 11 v0.2 · detail + field evidence + bidirectional state sync */
+(() => {
+  const db=(window.E3T_DATA&&window.E3T_DATA.products)||[];
+  const METHOD_KO={through_beam:'투과형',retro_reflective:'회귀 반사형',diffuse:'확산 반사형',limited_reflective:'한정 반사형',bgs:'BGS 반사형'};
+  const SHAPE_KO={flat:'플랫',side_view:'사이드 뷰'};
+  const OP_KO={light_on:'입광 시 ON',dark_on:'차광 시 ON'};
+  state.connection = state.connection || [];
+  state.distanceRange = state.distanceRange || {min:null,max:null};
+
+  function setChecks(group, values){
+    const vals=Array.isArray(values)?values:[values];
+    document.querySelectorAll(`[data-filter="${group}"]`).forEach(el=>el.checked=vals.includes(el.value));
+  }
+  function wizardMethod(){
+    if(state.through==='yes')return ['through_beam'];
+    if(state.through==='no'&&state.reflector==='yes')return ['retro_reflective'];
+    if(state.through==='no'&&state.reflector==='no'&&state.background==='yes')return ['bgs','limited_reflective'];
+    if(state.through==='no'&&state.reflector==='no'&&state.background==='no')return ['diffuse'];
+    return [];
+  }
+  function syncSidebarFromWizard(){
+    const methods=wizardMethod();
+    if(methods.length)setChecks('method',methods);
+    if(state.shape==='플랫 선호')setChecks('shape',['flat']);
+    else if(state.shape==='사이드 뷰 선호')setChecks('shape',['side_view']);
+    else if(state.shape==='상관없음')setChecks('shape',[]);
+    if(state.output==='NPN'||state.output==='PNP')setChecks('output',[state.output]);
+    else if(state.output==='잘 모르겠음')setChecks('output',[]);
+    if(state.operation==='입광 시 ON')setChecks('operation',['light_on']);
+    else if(state.operation==='차광 시 ON')setChecks('operation',['dark_on']);
+    else if(state.operation==='잘 모르겠음')setChecks('operation',[]);
+    setChecks('connection',state.connection||[]);
+    const d=parseFloat(state.distance);
+    if(Number.isFinite(d)){
+      const mn=document.getElementById('filterDistanceMin'),mx=document.getElementById('filterDistanceMax');
+      if(mn)mn.value=d;if(mx)mx.value=d;
+      state.distanceRange={min:d,max:d};
+    }
+  }
+  function syncWizardFromSidebar(group){
+    const vals=[...document.querySelectorAll(`[data-filter="${group}"]:checked`)].map(x=>x.value);
+    if(group==='method'){
+      if(vals.length===1){
+        const m=vals[0];
+        if(m==='through_beam')Object.assign(state,{through:'yes',reflector:null,background:null});
+        else if(m==='retro_reflective')Object.assign(state,{through:'no',reflector:'yes',background:null});
+        else if(m==='diffuse')Object.assign(state,{through:'no',reflector:'no',background:'no'});
+        else if(m==='bgs'||m==='limited_reflective')Object.assign(state,{through:'no',reflector:'no',background:'yes'});
+      }else if(vals.length===2&&vals.includes('bgs')&&vals.includes('limited_reflective')){
+        Object.assign(state,{through:'no',reflector:'no',background:'yes'});
+      }else if(vals.length!==0){
+        Object.assign(state,{through:null,reflector:null,background:null});
+      }
+    }
+    if(group==='shape'){
+      state.shape=vals.length===1?(vals[0]==='flat'?'플랫 선호':'사이드 뷰 선호'):(vals.length===0?'상관없음':null);
+    }
+    if(group==='output')state.output=vals.length===1?vals[0]:(vals.length===0?'잘 모르겠음':null);
+    if(group==='operation')state.operation=vals.length===1?(vals[0]==='light_on'?'입광 시 ON':'차광 시 ON'):(vals.length===0?'잘 모르겠음':null);
+    if(group==='connection')state.connection=vals.slice();
+  }
+  function syncDistanceFromSidebar(){
+    const mn=parseFloat(document.getElementById('filterDistanceMin')?.value);
+    const mx=parseFloat(document.getElementById('filterDistanceMax')?.value);
+    state.distanceRange={min:Number.isFinite(mn)?mn:null,max:Number.isFinite(mx)?mx:null};
+    if(Number.isFinite(mn)&&Number.isFinite(mx)&&mn===mx)state.distance=String(mn);
+    else state.distance='';
+  }
+  const originalSetVal=setVal;
+  setVal=function(k,v){
+    state[k]=v;
+    syncSidebarFromWizard();
+    render();
+  };
+  window.toggleWizardConnection=function(key){
+    const a=state.connection||[];
+    const i=a.indexOf(key); if(i>=0)a.splice(i,1); else a.push(key);
+    state.connection=a; setChecks('connection',a); render();
+  };
+
+  // Replace chips so Wizard + expert filter conditions are visible together.
+  chips=function(){
+    const vals=[];
+    const add=(txt,cls='wizard-chip')=>vals.push({txt,cls});
+    if(state.purpose)add(state.purpose==='presence'?'제품 유무 확인':state.purpose);
+    if(state.target)add(state.target);
+    if(state.through==='yes')add('양쪽 설치 가능');
+    if(state.through==='no')add('양쪽 설치 불가');
+    if(state.reflector==='yes')add('반사판 가능');
+    if(state.background==='yes')add('배경 가까움');
+    if(state.distance)add(state.distance+'mm');
+    else if(state.distanceRange&&(state.distanceRange.min!=null||state.distanceRange.max!=null))add(`${state.distanceRange.min??''}~${state.distanceRange.max??''}mm`,'filter-chip');
+    if(state.shape)add(state.shape);
+    if(state.output)add(state.output);
+    if(state.operation)add(state.operation);
+    const methodVals=[...document.querySelectorAll('[data-filter="method"]:checked')].map(x=>x.value);
+    if(methodVals.length&&!wizardMethod().length)methodVals.forEach(m=>add(METHOD_KO[m],'filter-chip'));
+    const conKo={cable:'코드 인출',m12:'M12',econ:'e-CON',robot:'로봇 코드'};
+    (state.connection||[]).forEach(x=>add(conKo[x]||x,'filter-chip'));
+    const bar=document.getElementById('conditionBar');
+    bar.querySelectorAll('.chip.dynamic').forEach(x=>x.remove());
+    const empty=document.getElementById('emptyCond');empty.style.display=vals.length?'none':'inline';
+    vals.forEach(o=>{const el=document.createElement('span');el.className=`chip dynamic ${o.cls}`;el.textContent=o.txt;bar.insertBefore(el,bar.querySelector('.clear'))});
+  };
+
+  // Capture-phase listener executes before v0.1 listeners, so shared state is ready before render.
+  document.querySelectorAll('[data-filter]').forEach(el=>{
+    el.addEventListener('change',()=>{
+      syncWizardFromSidebar(el.dataset.filter);
+      chips();
+    },true);
+  });
+  ['filterDistanceMin','filterDistanceMax'].forEach(id=>{
+    document.getElementById(id)?.addEventListener('input',()=>{syncDistanceFromSidebar();chips()},true);
+  });
+
+  function fmtMinObj(v){
+    if(!v)return '—';
+    if(typeof v==='string')return v;
+    return [v.value,v.condition?`(${v.condition})`:'',v.representative?'· 대표 예':''].filter(Boolean).join(' ');
+  }
+  function fmtHys(v){return v?`${v.max}${v.unit} 이하${v.referenceTarget?` (${v.referenceTarget})`:''}`:'—'}
+  function fmtBW(v){return v?`${v.max}${v.unit} 이하`:'—'}
+  function fmtSupply(v){return v?`DC ${v.min}~${v.max}V ${v.tolerance||''} · 리플 ${v.rippleMax||''}`:'—'}
+  function fmtConn(p){
+    const names={cable:'표준 2m 코드', 'M12 Smart Click relay':'M12 Smart Click 중계','e-CON relay':'e-CON 중계',robot_cable:'로봇 코드'};
+    const arr=['표준 2m 코드'];
+    (p.connection?.variants||[]).forEach(v=>arr.push(names[v.type]||v.type));
+    return [...new Set(arr)].join(' · ');
+  }
+  function distanceLabel(p){
+    const d=p.specs?.sensingDistance||{};
+    if(d.type==='fixed')return `${d.value}mm`;
+    if(d.type==='range')return `${d.min}~${d.max}mm${d.referenceTarget?` (${d.referenceTarget})`:''}`;
+    if(d.type==='reflector_dependent')return (d.options||[]).map(x=>`${x.reflector}: ${x.rangeMax}mm [최소 ${x.minSensorReflectorDistance}mm]`).join(' / ');
+    return '—';
+  }
+  function evButton(p,key){
+    const ev=p.fieldEvidence?.[key]; if(!ev)return '';
+    return `<button class="ev-btn" onclick="openFieldEvidence('${p.model}','${key}')">📖 p.${ev.catalogPage}</button>`;
+  }
+  function specLabel(label,termKey){
+    return termKey?`${label} <span class="info term" data-term="${termKey}">?</span>`:label;
+  }
+  function lightSourceText(v){
+    if(!v)return '—';
+    const type=v.type==='red_LED'?'적색 LED':v.type==='GaAs infrared LED'?'GaAs 적외선 LED':v.type||'LED';
+    return `${type}${v.wavelength?` · λ=${v.wavelength}${v.unit||'nm'}`:''}`;
+  }
+  function consumptionText(v){
+    if(!v)return '—';
+    return `${v.max}${v.unit||'mA'} 이하${v.note?` · ${v.note}`:''}`;
+  }
+  function beginnerGlossaryHTML(kind='e3t'){
+    const common=[
+      ['표준 검출 물체','standard_object','성능표의 기준이 되는 물체. “최소 크기”와는 다릅니다.'],
+      ['최소 검출 물체','minimum_object','특정 조건에서 검출 가능한 작은 물체의 대표값입니다.'],
+      ['응차','hysteresis_term','ON 위치와 OFF 위치가 다시 바뀌는 위치 사이의 차이입니다.'],
+      ['흑백 오차','bw_error','흰색·검정색 물체 때문에 검출 거리가 얼마나 달라지는지 보는 값입니다.'],
+      ['지향각','directivity','빛이 퍼지고 받아들여지는 각도. 투과형 센서 정렬 여유를 이해하는 값입니다.'],
+      ['광원 / 파장','light_source','센서가 내는 빛의 종류와 파장입니다.'],
+      ['전원 전압','supply_voltage','센서에 공급해야 하는 DC 전압 범위입니다.'],
+      ['소비 전류','consumption_current','센서 자체가 사용하는 전류입니다.'],
+      ['제어 출력','control_output','PLC로 보내는 출력 방식과 허용 부하 규격입니다.'],
+      ['보호 회로','protection_circuit','역접속·출력 쇼트 등에서 센서를 보호하는 내부 회로입니다.'],
+      ['응답 시간','response_time_term','물체 변화 후 출력이 바뀌기까지 걸리는 시간입니다.'],
+      ['사용 주위 조도','ambient_light_term','주변 조명이 얼마나 밝아도 사용할 수 있는지 보는 값입니다.']
+    ];
+    const ee=[
+      ['검출 홈 폭','slot_width_term','EE-SX47/67의 5mm는 센서↔물체 거리가 아니라 워크가 지나가는 홈 폭입니다.'],
+      ['응답 주파수','response_frequency_term','1초에 얼마나 빠르게 반복 검출할 수 있는지 보는 값입니다.'],
+      ['보호 구조','ip_term','물·먼지에 대한 보호 정도입니다. EE-SX47/67은 IP50입니다.']
+    ];
+    const list=kind==='ee'?[...ee,...common.filter(x=>!['최소 검출 물체','흑백 오차','지향각','응답 시간'].includes(x[0]))]:common;
+    return `<section class="detail-section beginner-glossary">
+      <h4>초보자용 용어 설명 <span>용어만 봐도 뜻을 알 수 있게 정리</span></h4>
+      <div class="beginner-glossary-grid">${list.map(x=>`
+        <div class="beginner-term-card">
+          <div class="beginner-term-title">${x[0]} <span class="info term" data-term="${x[1]}">?</span></div>
+          <div class="beginner-term-desc">${x[2]}</div>
+        </div>`).join('')}</div>
+      <div class="beginner-glossary-note"><strong>지향각 예시:</strong> 손전등 빛이 넓게 퍼지는지 좁게 모이는지 생각하면 쉽습니다. 투과형 센서는 투광기와 수광기가 서로 마주보므로, 지향각이 작을수록 설치 정렬을 더 정확하게 해야 합니다.</div>
+    </section>`;
+  }
+  window.showDetail=function(model){
+    const p=db.find(x=>x.model===model);if(!p)return;
+    const s=p.specs||{};
+    const rows=[
+      ['검출 방식',METHOD_KO[p.classification.detectionMethod], 'detectionMethod','spec_method'],
+      ['검출 거리',distanceLabel(p),'sensingDistance','distance'],
+      ['표준 검출 물체',s.standardDetectableObject||'—','standardDetectableObject','standard_object'],
+      ['최소 검출 물체',fmtMinObj(s.minimumDetectableObject),'minimumDetectableObject','minimum_object'],
+      ['응차',fmtHys(s.hysteresis),'hysteresis','hysteresis_term'],
+      ['흑백 오차',fmtBW(s.blackWhiteError),'blackWhiteError','bw_error'],
+      ['출력',s.outputType,'outputType','output_term'],
+      ['동작 모드',OP_KO[s.operationMode],'operationMode','operation_term'],
+      ['광원(발광 파장)',lightSourceText(s.lightSource),null,'light_source'],
+      ['전원',fmtSupply(s.supplyVoltage),'supplyVoltage','supply_voltage'],
+      ['소비 전류',consumptionText(s.consumptionCurrent),null,'consumption_current'],
+      ['응답 시간',s.responseTime?`동작·복귀 각 ${s.responseTime.operateMax}ms 이하`:'—','responseTime','response_time_term'],
+      ['보호 구조',s.ipRating||'—','ipRating','ip_term'],
+      ['접속',fmtConn(p),'connection',null],
+      ['형상',SHAPE_KO[p.classification.shape],'detectionMethod',null]
+    ];
+    document.getElementById('detailTitle').textContent=`${p.model} · 상세 사양`;
+    document.getElementById('detailBody').innerHTML=`<div class="detail-layout">
+      <aside class="detail-summary">
+        <img src="${p.productImage}" alt="${p.model} 공식 카탈로그 형상 이미지">
+        <div class="dmodel">${p.model}</div>
+        <div class="dmeta">OMRON · E3T<br>${METHOD_KO[p.classification.detectionMethod]} · ${SHAPE_KO[p.classification.shape]}<br>${s.outputType} · ${OP_KO[s.operationMode]}</div>
+        <div class="detail-source"><strong>자료 기준</strong><br>E3T 한글 종합 카탈로그 2010 + OMRON 한국 공식사이트 정책.<br><b>현재 판매 여부를 의미하지 않습니다.</b></div>
+      </aside>
+      <div>
+        <section class="detail-section"><h4>선정에 필요한 핵심 사양</h4>
+          <table class="detail-table"><tbody>${rows.map(r=>`<tr><th>${specLabel(r[0],r[3])}</th><td>${r[1]} ${r[2]?evButton(p,r[2]):''}</td></tr>`).join('')}</tbody></table>
+        </section>
+        ${beginnerGlossaryHTML('e3t')}
+        <section class="detail-section"><h4>공식 근거 사용 원칙</h4>
+          <div class="official-note">각 📖 버튼은 해당 사양이 실린 공식 카탈로그 표로 연결됩니다. 대표값은 “대표 예”를 유지하여 정격처럼 과장하지 않습니다. 값이 공식자료에서 모델별로 명확하지 않은 항목은 빈값/—로 둡니다.</div>
+        </section>
+      </div></div>`;
+    document.getElementById('detailBack').classList.add('show');
+  };
+  window.closeDetail=function(){document.getElementById('detailBack').classList.remove('show')};
+  window.openFieldEvidence=function(model,key){
+    const p=db.find(x=>x.model===model);if(!p)return;
+    const ev=p.fieldEvidence?.[key];if(!ev)return;
+    const mev=p.modelEvidence||p.fieldEvidence?.model||ev;
+    document.getElementById('evidenceTitle').textContent=`📖 ${model} · 공식 근거`;
+    document.getElementById('evidenceMeta').innerHTML=
+      `<span class="evidence-badge">OMRON 공식</span><span class="evidence-badge">한글 카탈로그 2010</span>`+
+      `<span class="evidence-badge">해당 형번: ${model}</span><br>`+
+      `형번 확인 p.<b>${mev.catalogPage||ev.catalogPage}</b>${key!=='model'?` · 사양 근거 p.<b>${ev.catalogPage}</b>`:''}`;
+
+    const modelBlock=document.getElementById('modelProofBlock');
+    const specBlock=document.getElementById('specProofBlock');
+    const modelImg=document.getElementById('evidenceModelCrop');
+    const specImg=document.getElementById('evidenceCrop');
+    const note=document.getElementById('modelProofNote');
+
+    window.__currentModelEvidence=mev;
+    modelImg.src=mev.image||ev.image;
+    const modelHL=document.getElementById('evidenceModelHighlight');
+    const h=mev.highlight;
+    if(h){
+      modelHL.style.display='block';
+      modelHL.style.left=h.xPct+'%';
+      modelHL.style.top=h.yPct+'%';
+      modelHL.style.width=h.wPct+'%';
+      modelHL.style.height=h.hPct+'%';
+    }else{
+      modelHL.style.display='none';
+    }
+    modelImg.onload=()=>{
+      const sc=document.getElementById('evidenceModelScroll');
+      const stage=document.getElementById('evidenceModelStage');
+      if(sc&&stage&&h){
+        const center=(h.yPct+h.hPct/2)/100*stage.scrollHeight;
+        sc.scrollTop=Math.max(0,center-sc.clientHeight/2);
+      }
+    };
+    note.textContent=(mev.highlightNote||'공식 카탈로그 전체 페이지에서 선택된 형번 위치를 파란색 박스로 강조합니다.');
+    if(key==='model'){
+      document.querySelector('#modelProofBlock .evidence-proof-title').textContent='형번 확인';
+      specBlock.style.display='none';
+    }else{
+      document.querySelector('#modelProofBlock .evidence-proof-title').textContent='① 형번 확인';
+      specBlock.style.display='';
+      document.querySelector('#specProofBlock .evidence-proof-title').textContent=`② ${ev.label}`;
+      specImg.src=ev.image;
+    }
+    modelBlock.style.display='';
+    document.getElementById('evidenceBack').classList.add('show');
+  };
+  window.closeEvidence=function(){document.getElementById('evidenceBack').classList.remove('show')};
+
+  document.getElementById('detailBack')?.addEventListener('click',e=>{if(e.target.id==='detailBack')closeDetail()});
+  document.getElementById('evidenceBack')?.addEventListener('click',e=>{if(e.target.id==='evidenceBack')closeEvidence()});
+
+  // Keep Wizard visual controls aligned after every render.
+  const prevRender=render;
+  render=function(){
+    prevRender();
+    syncSidebarFromWizard();
+    chips();
+    if(state.step===5){
+      const map={m12:'wizConnM12',econ:'wizConnEcon',robot:'wizConnRobot'};
+      Object.entries(map).forEach(([k,id])=>document.getElementById(id)?.classList.toggle('active',(state.connection||[]).includes(k)));
+    }
+  };
+  render();
+})();
+</script>
+
+
+<script>
+/* STEP 11 v0.3 · characteristic graphs + dimensions + auto accessories */
+(() => {
+  const db=(window.E3T_DATA&&window.E3T_DATA.products)||[];
+  const oldShowDetail=window.showDetail;
+  const METHOD_KO={through_beam:'투과형',retro_reflective:'회귀 반사형',diffuse:'확산 반사형',limited_reflective:'한정 반사형',bgs:'BGS 반사형'};
+
+  window.openCatalogVisual=function(model,type,index=0){
+    const p=db.find(x=>x.model===model);if(!p)return;
+    let item=null;
+    if(type==='dimension')item=p.catalogVisuals?.dimensions;
+    if(type==='characteristic')item=p.catalogVisuals?.characteristics?.[index];
+    if(type==='accessory'){
+      const all=[...(p.accessories||[]),...Object.values(p.connectionAccessories||{}).flat()];
+      item=all[index];
+    }
+    if(!item)return;
+    document.getElementById('catalogTitle').textContent=`📖 ${model} · ${item.label||item.code||'공식 카탈로그'}`;
+    document.getElementById('catalogMeta').innerHTML=`<span class="evidence-badge">OMRON 공식</span><span class="evidence-badge">한글 카탈로그 2010</span><br>Catalog Page <b>${item.catalogPage}</b>${item.code?` · ${item.code}`:''}${item.note?`<br>${item.note}`:''}`;
+    document.getElementById('catalogImage').src=item.image;
+    const explain=document.getElementById('catalogExplain');
+    if(explain){
+      if(type==='characteristic'){explain.innerHTML=window.__graphExplainHTML?window.__graphExplainHTML(item,p):'';explain.style.display='block'}
+      else{explain.innerHTML='';explain.style.display='none'}
+    }
+    document.getElementById('catalogBack').classList.add('show');
+  };
+  window.closeCatalogVisual=function(){document.getElementById('catalogBack').classList.remove('show')};
+  document.getElementById('catalogBack')?.addEventListener('click',e=>{if(e.target.id==='catalogBack')closeCatalogVisual()});
+
+  function roleLabel(role){
+    if(role==='required_reflector')return ['필수 구성','required'];
+    if(role==='connection')return ['접속 선택 시','connection'];
+    if(role==='reflector_variant')return ['형식 선택','option'];
+    return ['선택 액세서리','option'];
+  }
+  function allAutoAccessories(p){
+    let list=[...(p.accessories||[])];
+    const selected=state.connection||[];
+    if(selected.includes('m12'))list.push(...(p.connectionAccessories?.m12||[]));
+    if(selected.includes('econ'))list.push(...(p.connectionAccessories?.econ||[]));
+    return list;
+  }
+  function accessoryHTML(p){
+    const list=allAutoAccessories(p);
+    if(!list.length)return '<div class="official-note">현재 카탈로그에서 자동 연결할 액세서리가 없습니다.</div>';
+    const base=[...(p.accessories||[]),...Object.values(p.connectionAccessories||{}).flat()];
+    return `<div class="auto-acc-note"><strong>자동 추천 원칙:</strong> 센서가 먼저 선정된 뒤 형상·검출 방식·접속 조건에 맞는 공식 액세서리를 후속 제안합니다. 액세서리가 센서 선정의 첫 질문이 되지는 않습니다.</div>
+      <div class="acc-list">${list.map(a=>{
+        const [txt,cls]=roleLabel(a.role);
+        const idx=base.findIndex(x=>x.code===a.code);
+        return `<div class="acc-card"><div class="acc-top"><span class="acc-code">${a.code}</span><span class="acc-role ${cls}">${txt}</span></div>
+          <div class="note">${a.name}${a.note?` · ${a.note}`:''}${a.quantityNote?`<br><b>${a.quantityNote}</b>`:''}</div>
+          <div class="acc-actions"><button onclick="openCatalogVisual('${p.model}','accessory',${idx})">📖 p.${a.catalogPage}</button></div></div>`;
+      }).join('')}</div>`;
+  }
+  function characteristicHTML(p){
+    const chars=p.catalogVisuals?.characteristics||[];
+    return `<div class="doc-grid">
+      ${chars.map((x,i)=>`<button type="button" class="doc-card graph-doc-card detail-char-card" data-detail-model="${p.model}" data-detail-char="${i}"><img src="${x.image}" alt=""><strong>특성 데이터 · p.${x.catalogPage}</strong><small>${x.label}</small><div class="graph-card-explain"><b>그래프 뜻</b>${window.__graphQuickText?window.__graphQuickText(x,p):x.label}</div><span class="graph-card-open">클릭 → 큰 그래프 + 해설</span></button>`).join('')}
+    </div>`;
+  }
+  function dimensionHTML(p){
+    const dim=p.catalogVisuals?.dimensions;
+    return dim?`<div class="doc-grid"><button type="button" class="doc-card" onclick="openCatalogVisual('${p.model}','dimension',0)"><img src="${dim.image}" alt=""><strong>외형 치수 · p.${dim.catalogPage}</strong><small>${dim.label}</small></button></div>`:'';
+  }
+
+  window.showDetail=function(model){
+    oldShowDetail(model);
+    const p=db.find(x=>x.model===model);if(!p)return;
+    const body=document.getElementById('detailBody');
+    const layout=body.querySelector('.detail-layout > div:last-child');
+    if(!layout)return;
+    layout.insertAdjacentHTML('beforeend',`
+      <section class="detail-section detail-characteristic-section"><h4>📈 특성 데이터 <span class="section-count">${(p.catalogVisuals?.characteristics||[]).length}개</span></h4>
+      <div class="graph-reading-intro"><strong>그래프는 이렇게 봅니다</strong><span>① 실제 사용할 거리를 찾기 → ② 파란선/영역 확인 → ③ 내 워크가 안쪽에 들어오는지 보기 → ④ 끝선보다 여유 있게 사용</span></div>
+      ${characteristicHTML(p)}</section>
+      <section class="detail-section"><h4>외형 치수</h4>${dimensionHTML(p)}</section>
+      <section class="detail-section"><h4>자동 액세서리 후보</h4>${accessoryHTML(p)}</section>
+    `);
+  };
+})();
+</script>
+
+
+<script>
+/* STEP 11 v0.4 · E3T + EE-SX47/67 integrated selection */
+(() => {
+  const db=(window.E3T_DATA&&window.E3T_DATA.products)||[];
+  const E3T_METHOD={through_beam:'투과형',retro_reflective:'회귀 반사형',diffuse:'확산 반사형',limited_reflective:'한정 반사형',bgs:'BGS 반사형'};
+  const ALL_METHOD={...E3T_METHOD,slot_through_beam:'투과형(말굽형)'};
+  const OP_KO={light_on:'입광 시 ON',dark_on:'차광 시 ON',switchable:'입광/차광 전환 가능'};
+  const SHAPE_KO={flat:'플랫',side_view:'사이드 뷰',fork:'말굽형'};
+  const FORK_SHAPE={
+    standard:'표준형',l_shape:'L형',t_center_7:'T형 · 홈 중심 7mm',
+    close_mount_3:'밀착 설치형 · 형상 3',close_mount_4:'밀착 설치형 · 형상 4',
+    t_center_10:'T형 · 홈 중심 10mm',f_shape:'F형',r_shape:'R형'
+  };
+  function modelTermKey(p){return 'modelimg_'+String(p.id||p.model).replace(/[^a-zA-Z0-9_-]/g,'_')}
+  db.forEach(p=>{
+    const method=ALL_METHOD[p.classification?.detectionMethod]||'';
+    const shape=p.classification?.shapeNameKo||SHAPE_KO[p.classification?.shape]||'';
+    terms[modelTermKey(p)]={
+      title:`${p.model} · 공식 형상 이미지`,
+      img:p.productImage,
+      text:`${p.productImageNote||''} ${method}${shape?' · '+shape:''}.`,
+      foot:`OMRON 한글 공식 카탈로그 2010 · ${p.productImageScope||p.productImageEvidence?.label||'공식 제품 이미지'}`,
+      shapeImage:true
+    };
+  });
+  state.slotPass = state.slotPass ?? null;
+  state.forkShape = state.forkShape ?? null;
+
+  // Add beginner glossary entries using only the attached official catalog.
+  terms.photomicro={
+    title:'포토마이크로센서 · 말굽형',
+    img:'assets/ee_sx47_67/product-group.png',
+    text:'투광부와 수광부가 한 몸의 말굽(홈) 형상에 들어 있는 투과형 센서입니다. 워크·도그·플래그가 홈 사이를 지나며 빛을 가리면 위치/유무를 검출하기 좋습니다.',
+    foot:'이미지: OMRON EE-SX47/67 한글 공식 카탈로그 2010'
+  };
+  terms.slot={
+    title:'5mm 홈 폭',
+    img:'assets/ee_sx47_67/selection-p1170.png',
+    text:'EE-SX47/67은 카탈로그상 검출 거리가 5mm(홈 폭)로 정의됩니다. 일반 광전센서처럼 수십~수백 mm 거리로 설치하는 방식이 아니라, 검출 물체가 센서의 홈 사이를 통과하는 방식입니다.',
+    foot:'OMRON 공식 카탈로그 p.1170~1172'
+  };
+
+  const forkShapeTermData={
+    standard:['표준형','standard'],
+    l_shape:['L형','l_shape'],
+    t_center_7:['T형 · 홈 중심 7mm','t_center_7'],
+    close_mount_3:['밀착 설치형 · 형상 3','close_mount_3'],
+    close_mount_4:['밀착 설치형 · 형상 4','close_mount_4'],
+    t_center_10:['T형 · 홈 중심 10mm','t_center_10'],
+    f_shape:['F형','f_shape'],
+    r_shape:['R형','r_shape']
+  };
+  Object.entries(forkShapeTermData).forEach(([key,[label,file]])=>{
+    terms['fork_'+key]={
+      title:label,
+      img:`assets/ee_sx47_67/shapes/${file}.png`,
+      text:'OMRON EE-SX47/67의 공식 형상 이미지입니다. 설치 공간과 센서의 장착 방향이 가장 가까운 형상을 선택하고, 최종 간섭 여부는 상세 외형 치수에서 확인합니다.',
+      foot:'이미지: OMRON EE-SX47/67 한글 공식 카탈로그 2010 · p.1170',
+      shapeImage:true
+    };
+  });
+
+  function checked(group){return [...document.querySelectorAll(`[data-filter="${group}"]:checked`)].map(x=>x.value)}
+  function setChecks(group, values){
+    const a=Array.isArray(values)?values:[values];
+    document.querySelectorAll(`[data-filter="${group}"]`).forEach(x=>x.checked=a.includes(x.value));
+  }
+  function nval(id){const x=parseFloat(document.getElementById(id)?.value);return Number.isFinite(x)?x:null}
+
+  function isMicro(p){return p.sensorCategory?.code==='photo_microsensor'}
+  function productCategory(p){return p.sensorCategory?.code||'photoelectric'}
+  function recordSupportsOp(p,op){
+    if(!op)return true;
+    const a=p.specs?.supportedOperationModes;
+    if(Array.isArray(a))return a.includes(op);
+    return p.specs?.operationMode===op;
+  }
+  function distanceInfo(p){
+    const d=p.specs?.sensingDistance||{};
+    if(d.type==='slot_width')return {min:+d.value,max:+d.value,label:`홈 폭 ${d.value}mm`,semantic:'검출 홈 폭'};
+    if(d.type==='fixed')return {min:0,max:+d.value,label:`${d.value}mm`,semantic:'광학 설치 최대거리'};
+    if(d.type==='range')return {min:+d.min,max:+d.max,label:`${d.min}~${d.max}mm`,semantic:'센서↔검출물체'};
+    if(d.type==='reflector_dependent'){
+      const a=d.options||[];return {min:Math.min(...a.map(x=>+x.minSensorReflectorDistance)),max:Math.max(...a.map(x=>+x.rangeMax)),
+        label:a.map(x=>`${x.reflector} ${x.rangeMax}mm[${x.minSensorReflectorDistance}mm]`).join(' / '),semantic:'센서↔반사판'};
+    }
+    return {min:null,max:null,label:'—',semantic:''};
+  }
+  function connTokens(p){
+    if(isMicro(p)){
+      const t=p.connection?.base?.type;
+      const a=[];
+      if(t==='connector_4pole')a.push('fork_connector');
+      if(t==='robot_cable_1m')a.push('fork_cable','robot');
+      if(t==='connector_relay_0_1m')a.push('fork_relay','robot');
+      return a;
+    }
+    const a=['cable'];
+    (p.connection?.variants||[]).forEach(v=>{
+      const t=v.type||'';
+      if(t.includes('M12'))a.push('m12');
+      if(t.includes('e-CON'))a.push('econ');
+      if(t.includes('robot'))a.push('robot');
+    });
+    return [...new Set(a)];
+  }
+  function inferredE3TMethods(){
+    if(state.through==='yes')return ['through_beam'];
+    if(state.through==='no'&&state.reflector==='yes')return ['retro_reflective'];
+    if(state.through==='no'&&state.reflector==='no'&&state.background==='yes')return ['bgs','limited_reflective'];
+    if(state.through==='no'&&state.reflector==='no'&&state.background==='no')return ['diffuse','limited_reflective','bgs'];
+    return [];
+  }
+  function sidebarFilters(){
+    return {
+      cats:checked('category'),methods:checked('method'),shapes:checked('shape'),forkShapes:checked('forkShape'),
+      outputs:checked('output'),ops:checked('operation'),connections:checked('connection'),envs:checked('environment'),
+      min:nval('filterDistanceMin'),max:nval('filterDistanceMax')
+    };
+  }
+  function routeCategory(){
+    if(state.slotPass==='yes')return 'photo_microsensor';
+    if(state.slotPass==='no')return 'photoelectric';
+    return null;
+  }
+  function searchText(p){
+    const d=distanceInfo(p);
+    return [
+      p.model,p.series,p.subSeries,p.classification?.family,
+      p.sensorCategory?.nameKo,ALL_METHOD[p.classification?.detectionMethod],
+      p.classification?.shapeNameKo,FORK_SHAPE[p.classification?.shapeCode],
+      p.specs?.outputType,OP_KO[p.specs?.operationMode],d.label,
+      p.specs?.standardDetectableObject,p.specs?.ipRating
+    ].filter(Boolean).join(' ').toLowerCase();
+  }
+  function combinedResults(){
+    if(state.purpose && !['presence','position'].includes(state.purpose))return [];
+    const f=sidebarFilters(),route=routeCategory(),e3m=inferredE3TMethods();
+    const q=(document.getElementById('globalSearch')?.value||'').trim().toLowerCase();
+    const wd=parseFloat(state.distance),hasWD=Number.isFinite(wd);
+    const outReq=['NPN','PNP'].includes(state.output)?state.output:null;
+    const opReq=state.operation==='입광 시 ON'?'light_on':state.operation==='차광 시 ON'?'dark_on':null;
+    const shapePref=state.shape==='플랫 선호'?'flat':state.shape==='사이드 뷰 선호'?'side_view':null;
+    const rows=[];
+    for(const p of db){
+      let fail=false,score=40;const reasons=[];
+      const cat=productCategory(p),method=p.classification?.detectionMethod,d=distanceInfo(p);
+      if(route&&cat!==route)fail=true;
+      if(f.cats.length&&!f.cats.includes(cat))fail=true;
+      if(f.methods.length&&!f.methods.includes(method))fail=true;
+      if(f.outputs.length&&!f.outputs.includes(p.specs?.outputType))fail=true;
+      if(f.ops.length&&!f.ops.some(x=>recordSupportsOp(p,x)))fail=true;
+      if(f.connections.length&&!f.connections.some(x=>connTokens(p).includes(x)))fail=true;
+      if(f.envs.length&&f.envs.includes('ip67')&&p.specs?.ipRating!=='IP67')fail=true;
+      if(q&&!searchText(p).includes(q))fail=true;
+
+      if(isMicro(p)){
+        if(state.target==='투명 물체')fail=true; // catalog standard target is opaque.
+        if(e3m.length&&state.slotPass!=='yes'){} // E3T method state is irrelevant to a confirmed slot route.
+        if(f.shapes.length)fail=true; // flat/side-view filter is not a fork-shape filter.
+        if(f.forkShapes.length&&!f.forkShapes.includes(p.classification?.shapeCode))fail=true;
+        if(state.forkShape&&p.classification?.shapeCode!==state.forkShape)fail=true;
+        if(outReq&&p.specs?.outputType!==outReq)fail=true;
+        if(opReq&&!recordSupportsOp(p,opReq))fail=true;
+        if(f.min!=null&&d.max<f.min)fail=true;
+        if(f.max!=null&&d.min>f.max)fail=true;
+        if(fail)continue;
+        if(state.slotPass==='yes'){score+=35;reasons.push('워크가 5mm 홈 사이를 통과하는 설치 조건과 일치')}
+        if(state.forkShape){score+=18;reasons.push(`선택 형상(${FORK_SHAPE[state.forkShape]}) 일치`)}
+        if(outReq){score+=10;reasons.push(`${outReq} 출력 조건 만족`)}
+        if(opReq){score+=10;reasons.push(`${opReq==='light_on'?'입광':'차광'} 시 ON 사용 가능`)}
+        if((state.connection||[]).some(x=>connTokens(p).includes(x))){score+=12;reasons.push('선택한 접속 방식과 일치')}
+        if(!reasons.length)reasons.push('말굽형 포토마이크로센서 기본 조건에 해당');
+      }else{
+        if(f.forkShapes.length)fail=true;
+        if(route==='photo_microsensor')fail=true;
+        if(e3m.length&&!e3m.includes(method))fail=true;
+        if(f.shapes.length&&!f.shapes.includes(p.classification?.shape))fail=true;
+        if(outReq&&p.specs?.outputType!==outReq)fail=true;
+        if(opReq&&!recordSupportsOp(p,opReq))fail=true;
+        if(f.min!=null&&d.max!=null&&d.max<f.min)fail=true;
+        if(f.max!=null&&d.min!=null&&d.min>f.max)fail=true;
+        if(hasWD&&d.min!=null&&d.max!=null&&!(wd>=d.min&&wd<=d.max))fail=true;
+        if(fail)continue;
+        if(e3m.includes(method)){score+=25;reasons.push('설치 조건에서 추천되는 광전 검출 방식과 일치')}
+        if(hasWD){score+=20;reasons.push(`입력 거리 ${wd}mm 조건 만족`)}
+        if(shapePref&&p.classification?.shape===shapePref){score+=10;reasons.push('선호 형상 일치')}
+        if(outReq){score+=10;reasons.push(`${outReq} 출력 조건 만족`)}
+        if(opReq){score+=8;reasons.push(`${opReq==='light_on'?'입광':'차광'} 시 ON 조건 만족`)}
+        if(!reasons.length)reasons.push('현재 광전센서 조건에서 제외 사유 없음');
+      }
+      rows.push({p,score,reasons,d});
+    }
+    return rows.sort((a,b)=>b.score-a.score||a.p.model.localeCompare(b.p.model));
+  }
+
+  const OMRON_OFFICIAL_LINKS={
+    productSearchBase:'https://www.ia.omron.co.kr/products/search.asp?keyword=',
+    cadSearch:'https://www.ia.omron.co.kr/products/download3',
+    e3tCad:'https://www.ia.omron.co.kr/products/product_detail5_cad.asp?list_code2=002002001&prodPk=62'
+  };
+  function officialProductUrl(p){
+    return OMRON_OFFICIAL_LINKS.productSearchBase+encodeURIComponent(p.model);
+  }
+  function officialCadUrl(p){
+    return p.series==='E3T'?OMRON_OFFICIAL_LINKS.e3tCad:OMRON_OFFICIAL_LINKS.cadSearch;
+  }
+  function copyModelCode(model,btn){
+    const done=()=>{
+      if(btn){const old=btn.textContent;btn.textContent='✓ 형번 복사됨';setTimeout(()=>btn.textContent=old,1400);}
+    };
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(model).then(done).catch(()=>fallbackCopy(model,done));
+    }else fallbackCopy(model,done);
+  }
+  function fallbackCopy(text,done){
+    const ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');done&&done();}catch(e){}
+    ta.remove();
+  }
+  function officialLinksHTML(p,compact=false){
+    const e3t=p.series==='E3T';
+    return `<div class="official-cad-box ${compact?'compact':''}">
+      <div class="official-cad-head">
+        <div><strong>OMRON 공식 제품 · 2D/3D CAD</strong>
+        <small>형번 <b>${p.model}</b> · 다운로드는 OMRON 공식 사이트에서 사용자가 직접 진행</small></div>
+        <span class="official-only">공식 사이트</span>
+      </div>
+      <div class="official-cad-actions">
+        <a href="${officialProductUrl(p)}" target="_blank" rel="noopener">제품/형번 공식 검색 ↗</a>
+        <a class="cad-primary" href="${officialCadUrl(p)}" target="_blank" rel="noopener">${e3t?'E3T 2D/3D CAD 목록 ↗':'OMRON CAD 검색 ↗'}</a>
+        <button type="button" onclick="copyModelCode('${p.model}',this)">형번 복사</button>
+      </div>
+      <div class="official-cad-note">${e3t
+        ?'OMRON Korea E3T CAD 페이지에서 제공되는 DWG · DXF · 3D 항목을 확인해 직접 다운로드하세요.'
+        :'EE-SX47/67의 개별 CAD 등록 여부는 현재 공식 한국 사이트에서 형번별 확인이 필요합니다. 형번을 복사한 뒤 OMRON CAD 검색 페이지에서 확인하세요.'}</div>
+    </div>`;
+  }
+
+  function characteristicGuide(item,p){
+    const label=(item?.label||'').trim();
+    const page=Number(item?.catalogPage||0);
+    const common={
+      caution:'카탈로그의 특성 데이터는 대표 예입니다. 실제 검출 여유는 물체 재질·색·표면·설치각도·주변광 등에 따라 달라질 수 있으므로 최종 설치에서는 실제 워크로 확인하세요.'
+    };
+    if(label.includes('평행 이동 특성')){
+      return {...common,
+        title:'평행 이동 특성 — 센서를 얼마나 정확히 맞춰야 하는지 보는 그래프',
+        one:'투광기와 수광기, 또는 센서와 반사판이 조금 옆으로 어긋나도 검출되는 범위를 보여줍니다.',
+        x:'X축: 센서와 상대측 사이 거리',
+        y:'Y축: 중심선에서 위·아래 또는 좌·우로 벗어난 거리',
+        read:'내가 사용할 거리를 X축에서 찾고, 그 위치에서 파란 영역의 폭을 봅니다. 폭이 넓으면 설치가 조금 어긋나도 검출할 여유가 큽니다.',
+        design:'설계 체크: 조립 오차, 진동, 브라켓 처짐까지 포함해도 파란 영역 안에 들어오는지 확인합니다.'
+      };
+    }
+    if(label.includes('동작 영역') && label.includes('각도')){
+      return {...common,
+        title:'동작 영역 / 각도 검출 영역 — 물체 위치와 기울기 허용 범위를 보는 그래프',
+        one:'물체가 센서 앞의 어느 위치에 있어야 잘 검출되는지, 또 물체가 기울어져도 검출되는지 보여줍니다.',
+        x:'위 그래프: 센서와 물체 사이 거리 · 아래 그래프: 물체 기울기 각도',
+        y:'Y축: 중심선에서 벗어난 위치 또는 검출 가능한 거리',
+        read:'파란선 안쪽이 대표적으로 검출 가능한 범위입니다. 선에 가까울수록 여유가 적습니다.',
+        design:'설계 체크: 실제 워크의 위치 흔들림과 기울기까지 포함해 파란 영역 안쪽에 충분히 들어오도록 잡습니다.'
+      };
+    }
+    if(label.includes('동작 영역 특성')){
+      return {...common,
+        title:'동작 영역 특성 — 물체가 어디까지 움직여도 검출되는지 보는 그래프',
+        one:'물체가 센서 앞에서 앞뒤나 위아래로 움직일 때, 어느 범위까지 검출되는지 보여줍니다.',
+        x:'X축: 센서에서 물체까지 거리',
+        y:'Y축: 센서 중심선에서 위·아래로 벗어난 거리',
+        read:'파란선 안쪽이 대표 검출 영역입니다. 중앙에서 멀어질수록 검출 여유가 줄어듭니다.',
+        design:'설계 체크: 워크 흔들림, 높이 편차, 조립 오차를 포함한 실제 이동 범위가 파란선 안쪽에 들어오는지 봅니다.'
+      };
+    }
+    if(label.includes('각도 검출 영역')){
+      return {...common,
+        title:'각도 검출 영역 — 물체가 기울었을 때도 검출되는지 보는 그래프',
+        one:'물체가 센서를 정면으로 보지 않고 기울어진 상태에서 어느 거리까지 검출되는지 보여줍니다.',
+        x:'X축: 물체가 기울어진 각도',
+        y:'Y축: 검출 가능한 거리',
+        read:'실제 워크의 기울기 각도를 X축에서 찾고, 해당 재질 영역의 검출 거리를 봅니다.',
+        design:'설계 체크: 워크가 돌아가거나 흔들릴 수 있으면 정면 0°뿐 아니라 실제 최대 기울기에서도 검출되는지 확인합니다.'
+      };
+    }
+    if(label.includes('수광 출력-거리')){
+      return {...common,
+        title:'수광 출력-거리 특성 — 검출 신호에 얼마나 여유가 있는지 보는 그래프',
+        one:'거리가 바뀔 때 센서가 받는 빛의 세기가 얼마나 남는지 보여줍니다. 쉽게 말해 검출 신호의 여유입니다.',
+        x:'X축: 센서와 수광기·반사판·물체 사이 거리',
+        y:'Y축: 센서가 받는 빛의 여유 정도',
+        read:'그래프의 “동작 레벨 1”이 기준선입니다. 파란선이 1보다 충분히 위에 있으면 검출 신호에 여유가 있다고 봅니다.',
+        design:'설계 체크: 최대 거리 끝에 딱 맞추지 말고, 먼지·진동·정렬 오차가 생겨도 1보다 여유가 남는 위치를 선택합니다.'
+      };
+    }
+    if(label.includes('검출물체 크기-거리')){
+      return {...common,
+        title:'수광 출력 / 검출물체 크기-거리 — 거리와 물체 크기를 같이 보는 그래프',
+        one:'센서를 멀리 설치할수록 빛의 여유와 검출 가능한 물체 크기가 어떻게 달라지는지 함께 보여줍니다.',
+        x:'X축: 센서와 물체 사이 거리',
+        y:'위 그래프: 빛의 여유 · 아래 그래프: 검출 가능한 물체 크기',
+        read:'먼저 사용할 거리를 X축에서 찾고, 위 그래프에서 빛의 여유를 보고 아래 그래프에서 필요한 물체 크기를 확인합니다.',
+        design:'설계 체크: 실제 워크의 가장 작은 부분도 그 거리에서 검출 가능한 크기보다 충분히 큰지 확인합니다.'
+      };
+    }
+    if(label.includes('검출 거리-재질')){
+      return {...common,
+        title:'검출 거리-재질 특성 — 물체 재질 때문에 검출 거리가 얼마나 달라지는지 보는 그래프',
+        one:'흰색 종이, 금속, 유리, 검정 고무처럼 재질이 달라지면 센서가 보는 거리도 달라질 수 있습니다.',
+        x:'X축: 검출 물체의 재질',
+        y:'Y축: 실제 검출 거리',
+        read:'내 워크와 가장 비슷한 재질의 막대를 찾아 검출 거리를 봅니다. 재질별 막대 차이가 크면 워크 재질 영향이 큰 편입니다.',
+        design:'설계 체크: 검정색·투명·광택 물체는 카탈로그 값만 믿기보다 실제 워크로 테스트하고 충분한 거리 여유를 둡니다.'
+      };
+    }
+    if(label.includes('감도 조정 유니트')){
+      return {...common,
+        title:'감도 조정 유니트 거리 특성 — 감도 노브를 돌리면 거리가 어떻게 바뀌는지 보는 그래프',
+        one:'감도 조정 노브(VR)를 어느 정도 돌렸을 때 검출 거리가 어떻게 변하는지 보여줍니다.',
+        x:'X축: 감도 조정 노브 위치(Min → Max)',
+        y:'Y축: 검출 거리',
+        read:'현재 필요한 거리를 Y축에서 찾고, 파란선과 만나는 X축 위치를 보면 어느 정도 감도로 맞춰야 하는지 감을 잡을 수 있습니다.',
+        design:'설계 체크: 필요한 거리보다 약간 여유 있게 맞추되, 너무 민감하게 설정해 배경이나 먼지를 잘못 검출하지 않도록 합니다.'
+      };
+    }
+    if(label.includes('검출 위치 특성') || page===1173){
+      return {...common,
+        title:'검출 위치 / 반복 검출 위치 — 센서가 정확히 어느 위치에서 ON/OFF되는지 보는 그래프',
+        one:'워크나 차광판이 5mm 홈을 지나갈 때 센서 출력이 바뀌는 위치와, 같은 동작을 반복했을 때 그 위치가 얼마나 일정한지 보여줍니다.',
+        x:'X축: 차광판이 움직인 위치',
+        y:'Y축: 센서 출력 상태(ON / OFF)',
+        read:'출력이 바뀌는 지점을 먼저 보고, 반복 특성에서는 여러 번 움직였을 때 그 지점이 얼마나 퍼지는지 확인합니다.',
+        design:'설계 체크: 위치 검출용이라면 목표 위치와 ON/OFF 전환점 사이에 충분한 여유를 두고, 반복 편차가 기계 공차보다 작은지 봅니다.'
+      };
+    }
+    return {...common,
+      title:'특성 데이터 그래프 보는 법',
+      one:'이 그래프는 센서를 실제로 설치했을 때 어느 정도 여유가 있는지 보여주는 공식 대표 데이터입니다.',
+      x:'X축: 거리·각도·재질처럼 내가 넣는 조건',
+      y:'Y축: 검출거리·위치 여유·빛의 세기처럼 그 결과',
+      read:'먼저 X축에서 실제 사용할 조건을 찾고, 파란선이나 파란 영역이 어디까지 이어지는지 봅니다.',
+      design:'설계 체크: 그래프 끝선에 딱 맞추지 말고 실제 조립 오차와 환경 변화를 생각해 여유 있게 사용합니다.'
+    };
+  }
+  function graphExplainHTML(item,p){
+    const g=characteristicGuide(item,p);
+    return `<div class="graph-guide-head"><span class="graph-guide-badge">그래프 해설</span><strong>${g.title}</strong></div>
+      <div class="graph-guide-one">${g.one}</div>
+      <div class="graph-guide-grid">
+        <div><b>① X축</b><span>${g.x.replace(/^X축:\s*/,'')}</span></div>
+        <div><b>② Y축</b><span>${g.y.replace(/^Y축:\s*/,'')}</span></div>
+        <div><b>③ 읽는 법</b><span>${g.read}</span></div>
+        <div><b>④ 설계에서 볼 것</b><span>${g.design.replace(/^설계 체크:\s*/,'')}</span></div>
+      </div>
+      <div class="graph-guide-caution">${g.caution}</div>`;
+  }
+  function graphQuickText(item,p){
+    const g=characteristicGuide(item,p);
+    return g.one;
+  }
+  window.__graphExplainHTML=graphExplainHTML;
+  window.__graphQuickText=graphQuickText;
+
+  function operationLabel(p){
+    if(p.specs?.operationMode==='switchable')return '입광/차광 전환 가능';
+    return OP_KO[p.specs?.operationMode]||'—';
+  }
+  function connectionLabel(p){
+    if(isMicro(p))return p.connection?.base?.label||'—';
+    return connTokens(p).map(x=>({cable:'2m 코드',m12:'M12',econ:'e-CON',robot:'로봇 코드'}[x])).filter(Boolean).join(' · ');
+  }
+  function card(row,index){
+    const p=row.p,micro=isMicro(p);
+    const on=state.compareSelected.includes(p.model);
+    const charCount=(p.catalogVisuals?.characteristics||[]).length;
+    const shape=micro?(p.classification?.shapeNameKo||FORK_SHAPE[p.classification?.shapeCode]):SHAPE_KO[p.classification?.shape];
+    return `<article class="product-card ${index===0?'best':''}">
+      ${index===0?'<span class="best-badge">★ 조건상 최상위</span>':''}
+      <button class="compare-add ${on?'on':''}" onclick="toggleCompare('${p.model}')">${on?'✓ 비교함':'＋ 비교 담기'}</button>
+      <img class="product-img" src="${p.productImage}" alt="${p.model} 공식 카탈로그 형상 이미지">
+      <div class="category-line"><span class="sensor-route-badge ${micro?'micro':''}">${p.sensorCategory?.nameKo}</span><span class="sensor-route-badge">${p.series}</span></div>
+      <div class="maker">OMRON · ${micro?'EE-SX47/67 한글 공식 카탈로그 2010':'E3T 한글 공식 카탈로그 2010'} 기준</div>
+      <div class="model-line"><div class="model">${p.model}</div><span class="info term" data-term="${modelTermKey(p)}" onclick="event.stopPropagation()">?</span></div>
+      <div class="visual-proof-note">${p.productImageScope} · ? Hover로 확대</div>
+      <div class="scoreline">적합도 <b>${row.score}</b> · 현행 판매 여부 별도 확인</div>
+      <div class="specs">
+        <div class="spec"><strong>검출 방식</strong>${ALL_METHOD[p.classification?.detectionMethod]||'—'}</div>
+        <div class="spec"><strong>${micro?'검출 홈':'검출 거리'}</strong>${row.d.label}</div>
+        <div class="spec"><strong>출력</strong>${p.specs?.outputType||'—'}</div>
+        <div class="spec"><strong>동작</strong>${operationLabel(p)}</div>
+        <div class="spec"><strong>형상</strong>${shape||'—'}</div>
+        <div class="spec"><strong>접속</strong>${connectionLabel(p)}</div>
+      </div>
+      <div class="reason">${row.reasons.slice(0,4).map(x=>`<div>${x}</div>`).join('')}</div>
+      ${micro?'<div class="micro-caution">IP50 · 방수/방진 구조가 아니며 물·기름 부착 환경에는 사용하지 않도록 카탈로그에 명시되어 있습니다.</div>':'<div class="cautionline">2010 한글 공식 카탈로그 기반. “현재 판매중”을 의미하지 않습니다.</div>'}
+      <div class="char-available"><span>📈 특성 데이터</span><b>${charCount}개</b><small>이 모델에 연결된 공식 특성 그래프</small></div>
+      <div class="card-actions card-actions-four">
+        <button onclick="showDetail('${p.model}')">상세보기</button>
+        <button class="characteristic-btn" onclick="openCharacteristicList('${p.model}')">📈 특성 데이터 ${charCount}</button>
+        <button class="primary" onclick="openFieldEvidence('${p.model}','model')">📖 근거보기</button>
+        <a class="cad-card-link" href="${officialCadUrl(p)}" target="_blank" rel="noopener">2D/3D CAD ↗</a>
+      </div>
+      <div class="cad-card-hint">특성 그래프는 특성 데이터 버튼에서 바로 확인 · 최종 형번 확정 후 OMRON 공식 사이트에서 도면/CAD를 직접 확인·다운로드</div>
+    </article>`;
+  }
+
+  function renderCombinedResults(){
+    const rows=combinedResults(),p=document.getElementById('panel'),route=routeCategory();
+    const e3=rows.filter(x=>!isMicro(x.p)).length,micro=rows.filter(x=>isMicro(x.p)).length;
+    const unsupported=state.purpose&&!['presence','position'].includes(state.purpose);
+    let body='';
+    if(unsupported){
+      body=`<div class="result-empty"><strong>현재 등록된 E3T / EE-SX47/67 범위의 용도가 아닙니다.</strong>거리 측정·측장·비전은 해당 센서 카탈로그가 추가되는 단계에서 연결합니다.</div>`;
+    }else if(!rows.length){
+      body=`<div class="result-empty"><strong>현재 조건을 만족하는 등록 모델이 없습니다.</strong>${state.slotPass==='yes'?'말굽형 형상·출력·동작·접속 조건을 하나씩 완화해 확인하세요.':'설치 방식·거리·출력·동작 조건을 하나씩 완화해 확인하세요.'}</div>`;
+    }else{
+      body=`<div class="result-grid">${rows.slice(0,12).map(card).join('')}</div>`;
+    }
+    p.innerHTML=`<div class="question">
+      <div class="result-top"><div><h2>OMRON 센서 선정 결과</h2>
+      <div class="result-count">등록 ${db.length}개 레코드 중 <b>${rows.length}개</b> 일치 · E3T ${e3}개 / EE-SX47/67 ${micro}개${rows.length>12?' · 상위 12개 표시':''}</div></div>
+      <div style="display:flex;gap:8px"><button class="ghost" onclick="openCompare('same')">그룹 비교</button><button class="ghost" onclick="openPolicy()">데이터 기준</button></div></div>
+      <div class="engine-status"><span class="engine-badge live">E3T + EE-SX47/67 통합 엔진</span><span class="engine-badge">${route==='photo_microsensor'?'말굽형 포토마이크로 경로':route==='photoelectric'?'일반 광전센서 경로':'통합 검색'}</span><span class="engine-badge source">한글 공식 카탈로그 2010 기준</span></div>
+      ${body}
+      <div class="official-note" style="margin-top:14px"><strong>센서 선정 분기:</strong> 워크·도그가 센서의 5mm 홈 사이를 지나갈 수 있으면 EE-SX47/67 같은 말굽형 포토마이크로센서를 별도 후보군으로 선정합니다. 그렇지 않으면 E3T의 투과/회귀/확산/BGS 등 일반 광전센서 경로를 사용합니다.</div>
+    </div>`;
+    updateCompareTray();
+    const sc=document.getElementById('sidebarCount');if(sc)sc.innerHTML=`현재 조건 <b>${rows.length}개</b> / OMRON 등록 ${db.length}개`;
+  }
+
+  window.setSlotPass=function(v){
+    state.slotPass=v;
+    state.forkShape=null;
+    if(v==='yes'){
+      Object.assign(state,{through:null,reflector:null,background:null,distance:'',shape:null});
+      setChecks('category',['photo_microsensor']);
+      setChecks('method',['slot_through_beam']);
+      document.getElementById('filterDistanceMin').value='';
+      document.getElementById('filterDistanceMax').value='';
+    }else if(v==='no'){
+      setChecks('category',['photoelectric']);
+      setChecks('method',[]);
+    }else{
+      setChecks('category',['photoelectric','photo_microsensor']);
+      setChecks('method',[]);
+    }
+    render();
+  };
+  window.setForkShape=function(code){state.forkShape=code;setChecks('forkShape',code?[code]:[]);render()};
+  window.setMicroConnection=function(code){
+    state.connection=[code];
+    setChecks('connection',[code]);
+    render();
+  };
+
+  const METHOD_COMPARE = {
+    through_beam:{
+      name:'투과형',term:'through',img:'assets/model_images/e3t/E3T-ST.png',
+      install:'투광기 + 수광기를 물체 양쪽에 설치',
+      detect:'물체가 광축을 차단하면 검출',
+      range:'E3T: 300~1000mm 계열',
+      best:'양쪽 설치 가능 · 긴 거리 · 물체 색 영향이 적은 쪽을 우선 검토'
+    },
+    retro_reflective:{
+      name:'회귀 반사형',term:'retro',img:'assets/model_images/e3t/E3T-SR.png',
+      install:'센서 한쪽 + 반대편 반사판',
+      detect:'반사판으로 돌아오는 빛이 끊기면 검출',
+      range:'E3T-SR4: 100/200mm',
+      best:'반대편에 수광기는 어렵지만 반사판 설치는 가능한 경우'
+    },
+    diffuse:{
+      name:'확산 반사형',term:'diffuse',img:'assets/model_images/e3t/E3T-FD.png',
+      install:'센서 한쪽만 설치',
+      detect:'물체 자체에서 반사되는 빛으로 검출',
+      range:'E3T-FD: 5~30mm',
+      best:'반사판 없이 근거리에서 단순하게 설치할 때'
+    },
+    limited_reflective:{
+      name:'한정 반사형',term:'limited',img:'assets/model_images/e3t/E3T-SL.png',
+      install:'센서 한쪽만 설치',
+      detect:'정해진 근거리 검출 영역을 사용',
+      range:'E3T-SL: 5~15 / 5~30mm',
+      best:'검출 영역을 좁혀 배경 영향을 줄이고 싶은 경우'
+    },
+    bgs:{
+      name:'BGS 반사형',term:'bgs',img:'assets/model_images/e3t/E3T-FL.png',
+      install:'센서 한쪽만 설치',
+      detect:'배경 억제(Background Suppression)',
+      range:'E3T-FL: 1~15 / 1~30mm',
+      best:'검출 대상 뒤에 벽·프레임 등 배경이 가까운 경우'
+    }
+  };
+  function preferredMethods(){
+    if(state.through==='yes')return ['through_beam'];
+    if(state.through==='no'&&state.reflector==='yes')return ['retro_reflective'];
+    if(state.through==='no'&&state.reflector==='no'&&state.background==='yes')return ['bgs','limited_reflective'];
+    if(state.through==='no'&&state.reflector==='no'&&state.background==='no')return ['diffuse','limited_reflective','bgs'];
+    return [];
+  }
+  function methodCompareHTML(){
+    const preferred=preferredMethods();
+    const keys=['through_beam','retro_reflective','diffuse','limited_reflective','bgs'];
+    return `<div class="method-compare">
+      <div class="method-compare-head"><div><strong>검출 방식 차이 한눈에 비교</strong><small>공식 E3T 형상 이미지 + 설치 방식 + 검출 원리로 비교합니다.</small></div>
+      <span class="compare-legend"><i></i> 현재 조건 우선 후보</span></div>
+      <div class="method-compare-grid">${keys.map(k=>{const x=METHOD_COMPARE[k],on=preferred.includes(k);return `
+        <article class="method-compare-card ${on?'preferred':''}">
+          <div class="method-compare-top"><span>${x.name}</span>${on?'<b>현재 우선</b>':''}<span class="info term" data-term="${x.term}">?</span></div>
+          <img src="${x.img}" alt="${x.name} OMRON 공식 카탈로그 이미지">
+          <dl>
+            <div><dt>설치</dt><dd>${x.install}</dd></div>
+            <div><dt>검출</dt><dd>${x.detect}</dd></div>
+            <div><dt>거리</dt><dd>${x.range}</dd></div>
+            <div><dt>언제 유리?</dt><dd>${x.best}</dd></div>
+          </dl>
+        </article>`}).join('')}</div>
+      <div class="method-compare-note">※ 거리값은 현재 등록된 E3T 2010 한글 공식 카탈로그 범위입니다. 최종 형번 선정에서는 각 모델 사양을 다시 확인합니다.</div>
+    </div>`;
+  }
+
+  function renderStep3(){
+    const micro=state.slotPass==='yes';
+    let lower='';
+    if(!micro){
+      let method='광전 방식 후보 유지';
+      if(state.through==='yes')method='E3T 투과형 우선';
+      else if(state.through==='no'&&state.reflector==='yes')method='E3T 회귀 반사형 우선';
+      else if(state.through==='no'&&state.reflector==='no'&&state.background==='yes')method='E3T BGS / 한정 반사형 우선';
+      lower=`<div class="qa"><div class="qa-title">② 물체 양쪽에 센서를 설치할 수 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.through===v?'active':''}" onclick="setVal('through','${v}')">${['가능','불가능','잘 모르겠음'][i]}</button>`).join('')}</div></div>
+      <div class="qa"><div class="qa-title">③ 반대편에 작은 반사판은 설치할 수 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.reflector===v?'active':''}" onclick="setVal('reflector','${v}')">${['가능','불가능','잘 모르겠음'][i]}</button>`).join('')}</div></div>
+      <div class="qa"><div class="qa-title">④ 검출 물체 뒤쪽에 벽·프레임이 가까이 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.background===v?'active':''}" onclick="setVal('background','${v}')">${['있음','없음','잘 모르겠음'][i]}</button>`).join('')}</div></div>
+      <div class="recommend-method"><div><div style="font-size:12px;color:#667085">현재 설치조건 기준</div><strong>${method}</strong></div><div class="method-chips">${preferredMethods().map(k=>`<span class="method-tag selected-method">${METHOD_COMPARE[k].name}</span>`).join('')||'<span class="method-tag">조건 입력 중</span>'}</div></div>
+      ${methodCompareHTML()}`;
+    }else{
+      lower=`<div class="route-card"><span class="sensor-route-badge micro">포토마이크로센서 경로</span><strong style="display:block;margin-top:7px">EE-SX47/67 후보</strong><p>이 계열은 투광부와 수광부가 한 몸의 말굽형으로 되어 있고, 카탈로그의 검출 거리는 <b>5mm 홈 폭</b>입니다. 따라서 일반 광전센서의 장거리 설치 질문은 생략합니다.</p></div>
+      <div class="micro-vs-photo">
+        <div class="micro-vs-card active"><img src="assets/ee_sx47_67/shapes/standard.png"><strong>말굽형 포토마이크로</strong><span>워크가 5mm 홈 사이를 통과</span><b>현재 경로</b></div>
+        <div class="micro-vs-arrow">↔</div>
+        <div class="micro-vs-card"><img src="assets/model_images/e3t/E3T-ST.png"><strong>일반 광전센서</strong><span>센서와 워크 사이에 검출 거리를 확보</span></div>
+      </div>
+      <div class="official-note"><strong>다음 단계:</strong> 8가지 본체 형상 중 설치 공간에 맞는 형태를 고른 뒤 NPN/PNP, 동작 모드, 접속 방식을 확인합니다.</div>`;
+    }
+    document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question"><h2>센서를 어떻게 설치할 수 있습니까?</h2>
+      <div class="sub">일반 광전센서와 말굽형 포토마이크로센서를 먼저 설치 방식으로 분기합니다.</div>
+      <div class="qa"><div class="qa-title">① 워크·도그·플래그가 센서의 <b>5mm 홈 사이</b>를 지나갈 수 있습니까? <span class="info term" data-term="slot">?</span></div>
+      <div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.slotPass===v?'active':''}" onclick="setSlotPass('${v}')">${['가능','불가능','잘 모르겠음'][i]}</button>`).join('')}</div></div>${lower}
+      </div><aside class="guide"><h4>왜 먼저 묻나요?</h4><p>EE-SX47/67은 일반 광전센서와 같은 “거리형” 제품이 아니라 홈 사이를 통과하는 워크를 검출하는 말굽형 센서입니다. 설치 가능 여부가 가장 빠른 분기 조건입니다.</p><div class="mini"><strong>포토마이크로센서 <span class="info term" data-term="photomicro">?</span></strong></div></aside></div>`;
+  }
+  function renderStep4(){
+    if(state.slotPass!=='yes')return;
+    const buttons=Object.entries(FORK_SHAPE).map(([k,v])=>`<button class="fork-shape ${state.forkShape===k?'active':''}" onclick="setForkShape('${k}')"><strong>${v}</strong><span class="shape-info term" data-term="fork_${k}" onclick="event.stopPropagation()">?</span></button>`).join('');
+    document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question"><h2>말굽형 센서의 설치 형상을 선택합니다.</h2>
+      <div class="sub">EE-SX47/67은 검출 홈 폭이 5mm로 공통이며, 설치 방향과 공간에 따라 8가지 형상을 고릅니다.</div>
+      <div class="route-card"><strong>검출 홈 폭 5mm <span class="info term" data-term="slot">?</span></strong><p>표준 검출 물체는 카탈로그 기준 2×0.8mm 이상의 불투명체입니다.</p></div>
+      <div class="qa-title">설치 공간에 가장 가까운 형상</div><div class="fork-shapes">${buttons}</div><div class="shape-hover-hint">ⓘ에 마우스를 올리거나 터치하면 OMRON 공식 카탈로그의 해당 형상 이미지를 확인할 수 있습니다.</div>
+      <div style="margin-top:10px"><button class="ghost" onclick="openMicroSelectionTable()">📖 8가지 공식 형상표 보기</button></div>
+      </div><aside class="guide"><h4>초보자용 선택</h4><p>형상 번호를 외울 필요 없이 공식 카탈로그 형상표를 보고 설치 방향이 가장 비슷한 제품을 고릅니다. 실무자는 왼쪽 “말굽형 형상” 필터에서 바로 선택할 수 있습니다.</p></aside></div>`;
+  }
+  function renderStep5(){
+    if(state.slotPass!=='yes')return;
+    const c=(state.connection||[])[0]||'';
+    document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question"><h2>말굽형 센서의 전기·접속 조건을 확인합니다.</h2>
+      <div class="sub">EE-SX47/67의 NPN/PNP, 동작 방식, 접속 형식을 이용해 실제 형식을 좁힙니다.</div>
+      <div class="qa"><div class="qa-title">출력 방식</div><div class="seg"><button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN</button><button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP</button><button class="${state.output==='잘 모르겠음'?'active':''}" onclick="setVal('output','잘 모르겠음')">잘 모르겠음</button></div></div>
+      <div class="qa"><div class="qa-title">출력이 언제 ON되어야 합니까?</div><div class="seg"><button class="${state.operation==='입광 시 ON'?'active':''}" onclick="setVal('operation','입광 시 ON')">입광 시 ON</button><button class="${state.operation==='차광 시 ON'?'active':''}" onclick="setVal('operation','차광 시 ON')">차광 시 ON</button><button class="${state.operation==='잘 모르겠음'?'active':''}" onclick="setVal('operation','잘 모르겠음')">잘 모르겠음</button></div><div class="sync-note">EE-SX67은 입광/차광 ON 전환 가능 형식이 있고, EE-SX47은 입광 시 ON 고정 형식입니다.</div></div>
+      <div class="qa"><div class="qa-title">접속 방식</div><div class="seg"><button class="${c==='fork_connector'?'active':''}" onclick="setMicroConnection('fork_connector')">4극 커넥터</button><button class="${c==='fork_cable'?'active':''}" onclick="setMicroConnection('fork_cable')">코드 인출 1m</button><button class="${c==='fork_relay'?'active':''}" onclick="setMicroConnection('fork_relay')">커넥터 중계 0.1m</button><button class="${!c?'active':''}" onclick="state.connection=[];setChecks('connection',[]);render()">잘 모르겠음</button></div></div>
+      <div class="micro-caution"><strong>환경 주의:</strong> EE-SX47/67은 IP50입니다. 공식 카탈로그는 방수·방진 구조가 아니며 물이나 기름이 부착되는 용도에는 사용하지 않도록 안내합니다.</div>
+      </div><aside class="guide"><h4>형식 차이</h4><p><b>EE-SX47</b>: 커넥터 타입, 입광 시 ON 고정 형식.<br><b>EE-SX67</b>: 입광/차광 ON 전환 가능 형식과 코드 인출/커넥터 중계 타입을 포함합니다.</p></aside></div>`;
+  }
+  window.openMicroSelectionTable=function(){
+    document.getElementById('catalogTitle').textContent='📖 EE-SX47/67 · 종류 / 형상 선정표';
+    document.getElementById('catalogMeta').innerHTML='<span class="evidence-badge">OMRON 공식</span><span class="evidence-badge">한글 카탈로그 2010</span><br>Catalog Page <b>1170</b> · 8가지 형상 / 투과형(말굽형) / 5mm 홈 폭';
+    document.getElementById('catalogImage').src='assets/ee_sx47_67/selection-p1170.png';
+    const explain=document.getElementById('catalogExplain');if(explain){explain.innerHTML='';explain.style.display='none'}
+    document.getElementById('catalogBack').classList.add('show');
+  };
+
+  // EE-specific detail view. E3T keeps the previous detail implementation.
+  const prevShowDetail=window.showDetail;
+  window.showDetail=function(model){
+    const p=db.find(x=>x.model===model);
+    if(!p||!isMicro(p)){return prevShowDetail(model)}
+    const s=p.specs||{},ev=(key)=>p.fieldEvidence?.[key]?`<button class="ev-btn" onclick="openFieldEvidence('${p.model}','${key}')">📖 p.${p.fieldEvidence[key].catalogPage}</button>`:'';
+    const rows=[
+      ['센서 종류','포토마이크로센서 · 말굽형','detectionMethod',null],
+      ['검출 방식','투과형(말굽형)','detectionMethod','spec_method'],
+      ['검출 거리 / 홈 폭',`${s.slotWidth.value}${s.slotWidth.unit}`,'sensingDistance','slot_width_term'],
+      ['표준 검출 물체',s.standardDetectableObject,'standardDetectableObject','standard_object'],
+      ['응차',`${s.hysteresis.max}${s.hysteresis.unit} 이하`,'hysteresis','hysteresis_term'],
+      ['광원(발광 파장)',lightSourceText(s.lightSource),null,'light_source'],
+      ['출력',`${s.outputType} 오픈 컬렉터 · 부하 ${s.output.loadCurrentMax}mA 이하`,'outputType','control_output'],
+      ['동작 모드',operationLabel(p),'operationMode','operation_term'],
+      ['표시등',s.indicatorMode==='light_when_blocked'?'차광 시 점등':'입광 시 점등','operationMode',null],
+      ['전원',`DC ${s.supplyVoltage.min}~${s.supplyVoltage.max}V ${s.supplyVoltage.tolerance}`,'supplyVoltage','supply_voltage'],
+      ['소비 전류',consumptionText(s.consumptionCurrent),null,'consumption_current'],
+      ['응답 주파수',`${s.responseFrequency.min}kHz 이상 (평균 ${s.responseFrequency.average}kHz)`,'responseFrequency','response_frequency_term'],
+      ['사용 주위 조도',s.ambientLight?`형광등 ${s.ambientLight.fluorescentMax}${s.ambientLight.unit} 이하`:'—',null,'ambient_light_term'],
+      ['보호 구조',s.ipRating,'ipRating','ip_term'],
+      ['형상',p.classification.shapeNameKo,'model',null],
+      ['접속',p.connection.base.label,'connection',null],
+    ];
+    const visuals=p.catalogVisuals||{};
+    const acc=p.accessories||[];
+    document.getElementById('detailTitle').textContent=`${p.model} · 상세 사양`;
+    document.getElementById('detailBody').innerHTML=`<div class="detail-layout">
+      <aside class="detail-summary"><img src="${p.productImage}" alt="${p.model} 공식 카탈로그 형상 이미지"><div class="dmodel">${p.model}</div>
+      <div class="dmeta">OMRON · EE-SX47/67<br>포토마이크로센서 · ${p.classification.shapeNameKo}<br>${s.outputType} · ${operationLabel(p)}</div>
+      <div class="detail-source"><strong>자료 기준</strong><br>사용자 제공 OMRON EE-SX47/67 한글 공식 카탈로그 2010.<br><b>현재 판매 여부를 의미하지 않습니다.</b></div></aside>
+      <div><section class="detail-section"><h4>핵심 선정 사양</h4><table class="detail-table"><tbody>${rows.map(r=>`<tr><th>${specLabel(r[0],r[3])}</th><td>${r[1]} ${r[2]?ev(r[2]):''}</td></tr>`).join('')}</tbody></table></section>
+      ${beginnerGlossaryHTML('ee')}
+      <section class="detail-section detail-characteristic-section"><h4>📈 특성 데이터 <span class="section-count">${(visuals.characteristics||[]).length}개</span></h4>
+      <div class="graph-reading-intro"><strong>그래프는 이렇게 봅니다</strong><span>EE-SX47/67은 워크가 5mm 홈을 지나갈 때 어느 위치에서 ON/OFF되는지, 그 위치가 반복해도 일정한지 확인합니다.</span></div>
+      <div class="doc-grid">
+        <button type="button" class="doc-card graph-doc-card detail-char-card" data-detail-model="${p.model}" data-detail-char="0"><img src="${visuals.characteristics[0].image}"><strong>특성 데이터 · p.1173</strong><small>검출 위치 특성 / 반복 검출 위치 특성</small><div class="graph-card-explain"><b>그래프 뜻</b>${graphQuickText(visuals.characteristics[0],p)}</div><span class="graph-card-open">클릭 → 큰 그래프 + 해설</span></button>
+      </div></section>
+      <section class="detail-section"><h4>외형 치수</h4><div class="doc-grid">
+        <button type="button" class="doc-card" onclick="openCatalogVisual('${p.model}','dimension',0)"><img src="${visuals.dimensions.image}"><strong>외형 치수 · p.${visuals.dimensions.catalogPage}</strong><small>${visuals.dimensions.label}</small></button>
+      </div></section>
+      <section class="detail-section"><h4>접속 액세서리</h4>${acc.length?`<div class="acc-list">${acc.map((a,i)=>`<div class="acc-card"><div class="acc-top"><span class="acc-code">${a.code}</span><span class="acc-role connection">접속</span></div><div class="note">${a.name}${a.note?` · ${a.note}`:''}</div><div class="acc-actions"><button onclick="openCatalogVisual('${p.model}','accessory',${i})">📖 p.${a.catalogPage}</button></div></div>`).join('')}</div>`:'<div class="official-note">본체 일체형 접속이므로 별도 액세서리 자동 추천 없음.</div>'}</section>
+      <section class="detail-section"><h4>환경 주의</h4><div class="micro-caution">${p.usageCautions.join('<br>')}</div></section></div></div>`;
+    document.getElementById('detailBack').classList.add('show');
+  };
+
+  // Generic official visual opener for both families.
+  const oldOpenCatalogVisual=window.openCatalogVisual;
+  window.openCatalogVisual=function(model,type,index=0){
+    const p=db.find(x=>x.model===model);
+    if(!p||!isMicro(p))return oldOpenCatalogVisual(model,type,index);
+    let item=null;
+    if(type==='dimension')item=p.catalogVisuals?.dimensions;
+    if(type==='characteristic')item=p.catalogVisuals?.characteristics?.[index];
+    if(type==='accessory')item=p.accessories?.[index];
+    if(!item)return;
+    document.getElementById('catalogTitle').textContent=`📖 ${model} · ${item.label||item.code||item.name}`;
+    document.getElementById('catalogMeta').innerHTML=`<span class="evidence-badge">OMRON 공식</span><span class="evidence-badge">한글 카탈로그 2010</span><br>Catalog Page <b>${item.catalogPage}</b>${item.note?`<br>${item.note}`:''}`;
+    document.getElementById('catalogImage').src=item.image;
+    const explain=document.getElementById('catalogExplain');
+    if(explain){
+      if(type==='characteristic'){explain.innerHTML=window.__graphExplainHTML?window.__graphExplainHTML(item,p):'';explain.style.display='block'}
+      else{explain.innerHTML='';explain.style.display='none'}
+    }
+    document.getElementById('catalogBack').classList.add('show');
+  };
+
+  // Compare across OMRON sensor categories without pretending they are equivalent products.
+  window.renderCompare=function(mode){
+    state.compareMode=mode;
+    document.getElementById('sameTab').classList.toggle('active',mode==='same');
+    document.getElementById('crossTab').classList.toggle('active',mode==='cross');
+    const body=document.getElementById('compareBody');
+    const selected=state.compareSelected.map(m=>db.find(p=>p.model===m)).filter(Boolean);
+    if(mode==='same'){
+      const mixed=new Set(selected.map(productCategory)).size>1;
+      const rows=selected.length?selected.map(p=>`<tr><td><div class="compare-product"><img class="compare-thumb" src="${p.productImage}" alt="${p.model}"><div><span class="compare-model">${p.model}</span><span class="info term" data-term="${modelTermKey(p)}">?</span><br><span style="color:#667085">${p.series}</span></div></div></td>
+        <td>${p.sensorCategory?.nameKo}</td><td>${ALL_METHOD[p.classification?.detectionMethod]||'—'}</td><td>${distanceInfo(p).label}</td><td>${p.specs?.outputType||'—'}</td><td>${operationLabel(p)}</td><td>${isMicro(p)?p.classification.shapeNameKo:(SHAPE_KO[p.classification?.shape]||'—')}</td></tr>`).join(''):`<tr><td colspan="7">결과 카드에서 비교할 모델을 담아주세요.</td></tr>`;
+      body.innerHTML=`<p class="compare-note">OMRON 내부 비교입니다. 같은 기술군은 대체 후보 비교로, 서로 다른 기술군은 설치 방식 차이를 확인하는 용도로 봅니다.</p>
+      ${mixed?'<div class="micro-caution"><strong>비교 주의:</strong> 광전센서(E3T)와 포토마이크로센서(EE-SX47/67)가 함께 선택되어 있습니다. 직접 대체품 비교가 아니라 설치 방식/검출 원리 비교입니다.</div>':''}
+      <section class="compare-group"><div class="compare-group-title"><span class="g-badge">OMRON</span> 선택 센서 비교 <span style="color:#667085;font-size:11px">${selected.length}개</span></div>
+      <table class="compare-table"><thead><tr><th>제품</th><th>센서 종류</th><th>검출 방식</th><th>거리/홈 폭</th><th>출력</th><th>동작</th><th>형상</th></tr></thead><tbody>${rows}</tbody></table></section>`;
+    }else{
+      body.innerHTML='<p class="compare-note">타 제조사 데이터는 아직 적용하지 않습니다. 향후 각 제조사의 공식자료를 추가할 때 공통 비교 스키마로 연결합니다.</p>';
+    }
+  };
+
+  // Combined global-search suggestions.
+  const gs=document.getElementById('globalSearch'),box=document.getElementById('searchSuggest');
+  gs?.addEventListener('input',()=>{
+    const q=gs.value.trim().toLowerCase();if(!q)return;
+    const arr=db.filter(p=>searchText(p).includes(q)).slice(0,10);
+    box.innerHTML=arr.map(p=>`<div class="search-item" data-model="${p.model}"><b>${p.model}</b><small>${p.sensorCategory?.nameKo} · ${ALL_METHOD[p.classification?.detectionMethod]||''} · ${distanceInfo(p).label} · ${p.specs?.outputType||''}</small></div>`).join('')||'<div class="search-item"><small>일치 모델 없음</small></div>';
+    box.classList.add('show');
+  });
+
+  // Category/fork-shape synchronization.
+  document.querySelectorAll('[data-filter="category"]').forEach(el=>el.addEventListener('change',()=>{
+    const cats=checked('category');
+    if(cats.length===1&&cats[0]==='photo_microsensor')state.slotPass='yes';
+    else if(cats.length===1&&cats[0]==='photoelectric')state.slotPass='no';
+    else state.slotPass='unknown';
+  },true));
+  document.querySelectorAll('[data-filter="forkShape"]').forEach(el=>el.addEventListener('change',()=>{
+    const a=checked('forkShape');state.forkShape=a.length===1?a[0]:null;
+  },true));
+
+  // Reset must include the new route state.
+  const prevReset=resetAll;
+  resetAll=function(){
+    state.slotPass=null;state.forkShape=null;
+    prevReset();
+    setChecks('category',['photoelectric']);
+    setChecks('forkShape',[]);
+    setChecks('method',[]);
+    render();
+  };
+
+  // Final render override.
+  const prevRender=render;
+  render=function(){
+    prevRender();
+    if(state.step===3&&state.purpose==='presence')renderStep3();
+    if(state.step===4&&state.purpose==='presence'&&state.slotPass==='yes')renderStep4();
+    if(state.step===5&&state.purpose==='presence'&&state.slotPass==='yes')renderStep5();
+    if(state.step===6)renderCombinedResults();
+  };
+  render();
+})();
+</script>
+
+
+<script>
+/* v1.3 evidence fullscreen zoom */
+let evidenceZoomScale=1.5;
+let evidenceZoomSrc='';
+function updateEvidenceZoomPercent(){
+  const el=document.getElementById('evidenceZoomPercent');
+  if(el)el.textContent=Math.round(evidenceZoomScale*100)+'%';
+}
+let evidenceZoomHighlightData=null;
+function applyZoomHighlight(){
+  const box=document.getElementById('evidenceZoomHighlight');
+  const h=evidenceZoomHighlightData;
+  if(!box)return;
+  if(!h){box.style.display='none';return}
+  box.style.display='block';
+  box.style.left=h.xPct+'%';
+  box.style.top=h.yPct+'%';
+  box.style.width=h.wPct+'%';
+  box.style.height=h.hPct+'%';
+}
+function applyEvidenceZoom(){
+  const img=document.getElementById('evidenceZoomImage');
+  const stage=document.getElementById('evidenceZoomStage');
+  const imageStage=document.getElementById('evidenceZoomImageStage');
+  if(!img||!stage||!imageStage)return;
+  const natural=img.naturalWidth||1200;
+  const fit=Math.max(320,stage.clientWidth-48);
+  const base100=Math.min(natural,fit);
+  const target=Math.max(200,Math.round(base100*evidenceZoomScale));
+  imageStage.style.width=target+'px';
+  img.style.width='100%';
+  img.style.maxWidth='none';
+  img.style.height='auto';
+  applyZoomHighlight();
+  updateEvidenceZoomPercent();
+}
+function openEvidenceZoom(src,title,highlight=null){
+  const back=document.getElementById('evidenceZoomBack');
+  const img=document.getElementById('evidenceZoomImage');
+  if(!back||!img||!src)return;
+  evidenceZoomSrc=src;
+  evidenceZoomHighlightData=highlight;
+  evidenceZoomScale=1.5;
+  document.getElementById('evidenceZoomTitle').textContent=title||'공식 근거 크게 보기';
+  img.onload=()=>{
+    applyEvidenceZoom();
+    const st=document.getElementById('evidenceZoomStage');
+    const imageStage=document.getElementById('evidenceZoomImageStage');
+    if(st&&imageStage&&highlight){
+      const center=(highlight.yPct+highlight.hPct/2)/100*imageStage.scrollHeight;
+      st.scrollTop=Math.max(0,center-st.clientHeight/2);
+    }else if(st)st.scrollTo(0,0);
+  };
+  img.src=src;
+  back.classList.add('show');
+  document.documentElement.style.overflow='hidden';
+  if(img.complete)applyEvidenceZoom();
+}
+function openModelEvidenceZoom(){
+  const mev=window.__currentModelEvidence;
+  if(!mev)return;
+  const title=document.getElementById('evidenceTitle')?.textContent||'공식 근거';
+  openEvidenceZoom(mev.image,title+' · 전체 형식표',mev.highlight||null);
+}
+function closeEvidenceZoom(){document.getElementById('evidenceZoomBack')?.classList.remove('show');document.documentElement.style.overflow=''}
+function changeEvidenceZoom(delta){
+  evidenceZoomScale=Math.max(.5,Math.min(4,evidenceZoomScale+delta));
+  applyEvidenceZoom();
+}
+function resetEvidenceZoom(){evidenceZoomScale=1;applyEvidenceZoom()}
+function openEvidenceOriginal(){if(evidenceZoomSrc)window.open(evidenceZoomSrc,'_blank','noopener')}
+document.getElementById('evidenceZoomBack')?.addEventListener('click',e=>{if(e.target.id==='evidenceZoomBack')closeEvidenceZoom()});
+document.getElementById('evidenceZoomStage')?.addEventListener('wheel',e=>{
+  e.preventDefault();
+  changeEvidenceZoom(e.deltaY<0?.25:-.25);
+},{passive:false});
+document.getElementById('evidenceZoomImage')?.addEventListener('dblclick',()=>changeEvidenceZoom(.5));
+window.addEventListener('resize',()=>{if(document.getElementById('evidenceZoomBack')?.classList.contains('show'))applyEvidenceZoom()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('evidenceZoomBack')?.classList.contains('show'))closeEvidenceZoom()});
+</script>
+
+
+
+
+<script>
+/* v2.0 · direct characteristic-data access */
+(() => {
+  const db=(window.E3T_DATA&&window.E3T_DATA.products)||[];
+
+  function quickGraphMeaning(item){
+    const label=(item?.label||'').trim();
+    if(label.includes('평행 이동'))return '센서가 좌우·상하로 얼마나 어긋나도 검출 가능한지 보는 정렬 여유 그래프';
+    if(label.includes('수광 출력-거리'))return '거리에 따라 센서가 받아들이는 빛의 여유가 어떻게 변하는지 보는 그래프';
+    if(label.includes('검출물체 크기-거리'))return '검출 거리와 필요한 물체 크기의 관계를 보는 그래프';
+    if(label.includes('검출 거리-재질'))return '물체 재질에 따라 실제 검출 거리가 얼마나 달라지는지 보는 그래프';
+    if(label.includes('동작 영역') && label.includes('각도'))return '물체 위치와 기울기에 따라 검출 가능한 영역을 보는 그래프';
+    if(label.includes('동작 영역'))return '센서 앞에서 물체가 어느 위치에 있을 때 검출되는지 보는 영역 그래프';
+    if(label.includes('각도 검출'))return '물체가 기울었을 때 검출 거리 변화가 어떻게 생기는지 보는 그래프';
+    if(label.includes('감도 조정'))return '감도 조정 노브 위치와 검출 거리의 관계를 보는 그래프';
+    if(label.includes('검출 위치') || Number(item?.catalogPage)===1173)return '차광판이 홈 사이를 지날 때 ON/OFF 위치와 반복 위치 편차를 보는 그래프';
+    return '이 모델의 대표 특성을 확인하는 OMRON 공식 카탈로그 그래프';
+  }
+
+  window.openCharacteristicList=function(model){
+    const p=db.find(x=>x.model===model);if(!p)return;
+    const chars=p.catalogVisuals?.characteristics||[];
+    const title=document.getElementById('charTitle');
+    const meta=document.getElementById('charMeta');
+    const list=document.getElementById('charList');
+    title.textContent=`📈 ${model} · 특성 데이터`;
+    meta.innerHTML=`<span class="evidence-badge">OMRON 공식</span><span class="evidence-badge">한글 카탈로그 2010</span>
+      <strong>${chars.length}개 특성 그래프</strong>
+      <small>보고 싶은 그래프를 클릭하면 큰 공식 이미지와 초보자용 해설이 함께 열립니다.</small>`;
+    list.innerHTML=chars.length?chars.map((x,i)=>`
+      <button type="button" class="characteristic-pick" data-char-model="${model}" data-char-index="${i}">
+        <img src="${x.image}" alt="${x.label}">
+        <span class="characteristic-copy">
+          <b>${x.label}</b>
+          <small>공식 카탈로그 p.${x.catalogPage}</small>
+          <em>${quickGraphMeaning(x)}</em>
+        </span>
+        <span class="characteristic-open">보기 →</span>
+      </button>`).join(''):`<div class="characteristic-empty">이 모델에 연결된 특성 데이터가 없습니다.</div>`;
+    document.getElementById('charBack').classList.add('show');
+  };
+  window.closeCharacteristicList=function(){
+    document.getElementById('charBack')?.classList.remove('show');
+  };
+  document.getElementById('charList')?.addEventListener('click',e=>{
+    const btn=e.target.closest('.characteristic-pick');
+    if(!btn)return;
+    const model=btn.dataset.charModel;
+    const index=Number(btn.dataset.charIndex||0);
+    closeCharacteristicList();
+    requestAnimationFrame(()=>window.openCatalogVisual?.(model,'characteristic',index));
+  });
+  document.addEventListener('click',e=>{
+    const btn=e.target.closest('.detail-char-card');
+    if(!btn)return;
+    const model=btn.dataset.detailModel;
+    const index=Number(btn.dataset.detailChar||0);
+    window.openCatalogVisual?.(model,'characteristic',index);
+  });
+  document.getElementById('charBack')?.addEventListener('click',e=>{
+    if(e.target.id==='charBack')closeCharacteristicList();
+  });
+
+})();
+</script>
+
+<script>
+/* v1.7 · final-selection official OMRON links */
+(() => {
+  const previousShowDetail=window.showDetail;
+  if(typeof previousShowDetail!=='function')return;
+  window.showDetail=function(model){
+    previousShowDetail(model);
+    const p=(window.E3T_DATA?.products||[]).find(x=>x.model===model);
+    const body=document.getElementById('detailBody');
+    if(!p||!body)return;
+    body.querySelector('.official-cad-box.detail-final')?.remove();
+    const wrap=document.createElement('div');
+    wrap.className='official-cad-box detail-final';
+    wrap.innerHTML=officialLinksHTML(p,false)
+      .replace(/^<div class="official-cad-box[^"]*">/,'')
+      .replace(/<\/div>$/,'');
+    body.appendChild(wrap);
+  };
+})();
+</script>
+
+<script>
+/* v1.5 · single authoritative global search */
+(() => {
+  const oldInput=document.getElementById('globalSearch');
+  const oldBox=document.getElementById('searchSuggest');
+  if(!oldInput||!oldBox)return;
+
+  // Remove duplicate listeners installed by older preview layers.
+  const input=oldInput.cloneNode(true);
+  oldInput.replaceWith(input);
+  const box=oldBox.cloneNode(false);
+  oldBox.replaceWith(box);
+
+  const db=(window.E3T_DATA&&window.E3T_DATA.products)||[];
+  const methodKo={
+    through_beam:'투과형',retro_reflective:'회귀 반사형',diffuse:'확산 반사형',
+    limited_reflective:'한정 반사형',bgs:'BGS 반사형',slot_through_beam:'투과형(말굽형)'
+  };
+  const opKo={light_on:'입광 시 ON',dark_on:'차광 시 ON',switchable:'입광/차광 전환 가능'};
+
+  function distanceLabel(p){
+    const d=p.specs?.sensingDistance||{};
+    if(d.type==='slot_width')return `홈 폭 ${d.value}mm`;
+    if(d.type==='fixed')return `${d.value}mm`;
+    if(d.type==='range')return `${d.min}~${d.max}mm`;
+    if(d.type==='reflector_dependent')return (d.options||[]).map(x=>`${x.reflector} ${x.rangeMax}mm`).join(' / ');
+    return '';
+  }
+  function searchable(p){
+    return [
+      p.model,p.series,p.subSeries,p.classification?.family,
+      p.sensorCategory?.nameKo,methodKo[p.classification?.detectionMethod],
+      p.classification?.shapeNameKo,p.classification?.shapeCode,
+      p.specs?.outputType,opKo[p.specs?.operationMode],
+      p.specs?.standardDetectableObject,p.specs?.ipRating,distanceLabel(p)
+    ].filter(Boolean).join(' ').toLowerCase();
+  }
+  function matches(q){
+    q=q.trim().toLowerCase();
+    if(!q)return [];
+    return db.filter(p=>searchable(p).includes(q)).sort((a,b)=>{
+      const am=a.model.toLowerCase(),bm=b.model.toLowerCase();
+      const ae=am===q?0:am.startsWith(q)?1:2;
+      const be=bm===q?0:bm.startsWith(q)?1:2;
+      return ae-be||am.localeCompare(bm);
+    });
+  }
+  function renderSuggest(){
+    const q=input.value.trim();
+    if(!q){box.classList.remove('show');box.innerHTML='';return}
+    const arr=matches(q).slice(0,12);
+    box.innerHTML=arr.length?arr.map(p=>`
+      <div class="search-item" data-model="${p.model}">
+        <img src="${p.productImage||''}" alt="">
+        <div class="search-copy">
+          <b>${p.model}</b>
+          <small>${p.sensorCategory?.nameKo||''} · ${methodKo[p.classification?.detectionMethod]||''} · ${distanceLabel(p)} · ${p.specs?.outputType||''}</small>
+        </div>
+      </div>`).join(''):`<div class="search-empty">등록 데이터에서 일치 모델을 찾지 못했습니다.</div>`;
+    box.classList.add('show');
+  }
+  function clearSelectionConstraints(){
+    if(typeof state!=='undefined'){
+      state.purpose=null; state.target=null; state.slotPass=null; state.forkShape=null;
+      state.through=null; state.reflector=null; state.background=null;
+      state.distance=''; state.distanceRange=null; state.shape=null;
+      state.output='잘 모르겠음'; state.operation='잘 모르겠음'; state.connection=[]; state.step=6;
+    }
+    document.querySelectorAll('[data-filter]').forEach(el=>{
+      if(el.type==='checkbox'||el.type==='radio')el.checked=false;
+    });
+    ['filterDistanceMin','filterDistanceMax'].forEach(id=>{
+      const el=document.getElementById(id);if(el)el.value='';
+    });
+  }
+  function runGlobalSearch(model){
+    if(model)input.value=model;
+    if(!input.value.trim())return;
+    clearSelectionConstraints();
+    box.classList.remove('show');
+    if(typeof render==='function')render();
+  }
+
+  input.addEventListener('input',renderSuggest);
+  input.addEventListener('focus',()=>{if(input.value.trim())renderSuggest()});
+  input.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){e.preventDefault();runGlobalSearch();}
+    if(e.key==='Escape')box.classList.remove('show');
+  });
+  box.addEventListener('click',e=>{
+    const item=e.target.closest('[data-model]');
+    if(!item)return;
+    runGlobalSearch(item.dataset.model);
+  });
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('.search'))box.classList.remove('show');
+  });
+
+  window.__sensorGlobalSearch={matches,runGlobalSearch};
+})();
+</script>
+
+</body>
+</html>

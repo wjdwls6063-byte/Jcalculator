@@ -1,0 +1,75 @@
+{
+  "validationVersion": "STEP12-v0.1",
+  "build": "Selection Engine Preview v0.8",
+  "dataIntegrity": {
+    "totalRecords": 108,
+    "e3tRecords": 40,
+    "eeSx4767Records": 68,
+    "duplicateModels": [],
+    "missingReferencedAssets": [],
+    "shapeHoverImages": 8
+  },
+  "codeChecks": {
+    "javascriptSyntax": "PASS (Node.js --check on executable inline scripts and combined data JS)",
+    "htmlStructure": "PASS (required STEP 12 controls/terms present)",
+    "browserAutomation": "NOT COMPLETED",
+    "browserAutomationReason": "Sandbox Chromium navigation/headless execution is blocked/hangs in the current environment. Manual preview confirmation is required for final visual/browser sign-off."
+  },
+  "functionalScenarios": [
+    {
+      "scenario": "EE-SX47/67 · 표준형 · NPN · 차광 시 ON · 4극 커넥터",
+      "expected": [
+        "EE-SX670",
+        "EE-SX670A"
+      ],
+      "status": "PASS"
+    },
+    {
+      "scenario": "EE-SX47/67 · R형 · PNP · 차광 시 ON · 4극 커넥터",
+      "expected": [
+        "EE-SX677P"
+      ],
+      "status": "PASS"
+    },
+    {
+      "scenario": "EE-SX47/67 · NPN · 코드 인출 1m",
+      "expectedCount": 8,
+      "status": "PASS"
+    },
+    {
+      "scenario": "EE-SX47/67 경로 + IP67 필요",
+      "expectedCount": 0,
+      "reason": "EE-SX47/67은 공식 카탈로그 기준 IP50",
+      "status": "PASS"
+    },
+    {
+      "scenario": "E3T · 배경 가까움 · 20mm · NPN · 입광 ON · IP67",
+      "expected": [
+        "E3T-SL21",
+        "E3T-FL21"
+      ],
+      "status": "PASS"
+    },
+    {
+      "scenario": "E3T · 투과형 · 500mm · NPN · 입광 ON",
+      "expected": [
+        "E3T-ST11",
+        "E3T-FT11"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "uiFixes": [
+    "EE-SX47/67 8 shape cards now provide official catalog image help by hover/tap on the ⓘ control.",
+    "IP67 checkbox is connected to real selection filtering.",
+    "EE-SX47/67 (IP50) is excluded when IP67 is required.",
+    "Previously inert minimum-object/response checkboxes were removed from the selectable sidebar and replaced with detail-view guidance."
+  ],
+  "remainingManualReview": [
+    "Desktop hover placement near viewport edges",
+    "Mobile tap popup placement and close interaction",
+    "Small-screen card wrapping/legibility",
+    "End-to-end clicking through Wizard without direct state manipulation",
+    "Final visual review before frontend/sensor integration"
+  ]
+}

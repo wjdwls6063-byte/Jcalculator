@@ -1,0 +1,36 @@
+{
+  "module": "sensor-selection",
+  "version": "1.0-sensor-only",
+  "mountPath": "frontend/sensor/",
+  "entry": "frontend/sensor/index.html",
+  "parentIndexModified": false,
+  "currentManufacturers": [
+    "OMRON"
+  ],
+  "currentSeries": [
+    "E3T",
+    "EE-SX47/67"
+  ],
+  "recordCount": 108,
+  "sourcePolicy": {
+    "OMRON": "OMRON Korea official site + Korean-language OMRON official catalogs only",
+    "catalogBaselines": [
+      "E3T Korean General Catalog 2010",
+      "EE-SX47/67 Korean official catalog 2010"
+    ],
+    "newerKoreanCatalogPolicy": "Compare versions, preserve prior evidence, then update model/spec/lifecycle data."
+  },
+  "integrationRules": [
+    "Do not modify frontend/index.html automatically.",
+    "Keep all sensor module assets under frontend/sensor/.",
+    "Use relative paths inside the sensor module.",
+    "Do not mark catalog-baseline models as currently sold unless current official lifecycle is verified.",
+    "Any future manufacturer must be added through its own official-source policy and the common comparison schema."
+  ],
+  "packageScope": "sensor-only",
+  "notes": [
+    "Cylinder/actuator index.html is NOT included.",
+    "catalog.html is NOT included.",
+    "This folder is intended to be copied into the existing project's frontend/sensor/ path."
+  ]
+}
