@@ -1,0 +1,227 @@
+{
+  "build": "Jcalculator-sensor-only-v20-all-connector-review",
+  "status": "PASS_STATIC",
+  "registeredProducts": 284,
+  "seriesCounts": {
+    "E3T": 40,
+    "EE-SX47/67": 68,
+    "E3Z": 72,
+    "E2E Small New": 104
+  },
+  "fileCount": 99,
+  "checks": {
+    "products284": true,
+    "seriesCountsCorrect": true,
+    "sharedEngineBothPages": true,
+    "E3TM12Exact": true,
+    "E3TeCONExact": true,
+    "E3ZM1TJNoGuess": true,
+    "E3ZM1JExact": true,
+    "E3ZM8HasStdPur": true,
+    "E2EM8Eight": true,
+    "EEAccessorySet": true,
+    "catalogAllVariants": true,
+    "catalogAccessoryContinuation": true,
+    "catalogConnectionContext": true,
+    "selectionAllConnectionHelp": true,
+    "selectionNpnPnpBeginner": true,
+    "selectionLightDarkBeginner": true,
+    "selectionResultConnectorFinish": true,
+    "selectionPopupClickExpand": true,
+    "catalogPopupClickExpand": true,
+    "E2EP61Image": true,
+    "noStaleEEOnlySymbols": true,
+    "noStaleM8Term": true,
+    "noMissingAssets": true,
+    "inlineJSSyntax": true,
+    "engineJSSyntax": true,
+    "dataJSSyntax": true,
+    "fileCountUnder100": true
+  },
+  "staleMarkerCheck": {
+    "EE_ACCESSORY_SOURCE": false,
+    "eeAccessoryGroupsFor": false,
+    "data-term=\"m8\"": false
+  },
+  "javascriptSyntax": [
+    {
+      "file": "index",
+      "script": 0,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 1,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 2,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 3,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 4,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 5,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 6,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 7,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 8,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 9,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 10,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 11,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "catalog",
+      "script": 0,
+      "status": "PASS",
+      "error": ""
+    }
+  ],
+  "engineSyntax": {
+    "status": "PASS",
+    "error": ""
+  },
+  "dataJs": "PASS",
+  "semanticEngineTest": {
+    "E3T_M12": {
+      "requirement": "required",
+      "parts": [
+        "XS5F-D421-D80-A",
+        "XS5F-D421-G80-A"
+      ]
+    },
+    "E3T_eCON": {
+      "requirement": "required",
+      "parts": [
+        "E39-ECON2M",
+        "E39-ECON5M",
+        "E39-ECONW□M"
+      ]
+    },
+    "E3Z_M1TJ": {
+      "requirement": "unknown",
+      "summary": "M12 Smart Click(-M1TJ) 접속 코드 정확한 형번: 확인 불가"
+    },
+    "E3Z_M1J": {
+      "requirement": "required",
+      "parts": [
+        "XS2F-D421-DC0-A",
+        "XS2F-D421-GC0-A",
+        "XS2F-D422-DC0-A",
+        "XS2F-D422-GC0-A"
+      ]
+    },
+    "E3Z_M8": {
+      "requirement": "required",
+      "parts": [
+        "XS3F-M421-402-A",
+        "XS3F-M421-405-A",
+        "XS3F-M422-402-A",
+        "XS3F-M422-405-A",
+        "XS3F-M421-402-L",
+        "XS3F-M421-405-L",
+        "XS3F-M422-402-L",
+        "XS3F-M422-405-L"
+      ]
+    },
+    "E2E_M8": {
+      "requirement": "required",
+      "parts": [
+        "XS3F-M321-302-A",
+        "XS3F-M321-305-A",
+        "XS3F-M322-302-A",
+        "XS3F-M322-305-A",
+        "XS3F-M321-302-R",
+        "XS3F-M321-305-R",
+        "XS3F-M322-302-R",
+        "XS3F-M322-305-R"
+      ]
+    },
+    "EE_connector": {
+      "requirement": "required",
+      "parts": [
+        "EE-1001",
+        "EE-1001-1",
+        "EE-1009",
+        "EE-1006",
+        "EE-1010",
+        "EE-1006",
+        "EE-1010",
+        "EE-1010-R",
+        "EE-1010-R"
+      ]
+    }
+  },
+  "missingAssets": [],
+  "coverage": {
+    "typeCatalog": "E3T/E3Z/E2E/EE-SX47/67 all use the same connector/accessory engine. Connection variants appear in the tree and required cable/connector part numbers continue after the sensor model.",
+    "sensorSelection": "Every result card and final detail view exposes connector/accessory completion. All connection choices have beginner-oriented explanations.",
+    "beginnerTerms": [
+      "광전 방식",
+      "투과/회귀/확산/BGS",
+      "실드/비실드",
+      "설정거리",
+      "NPN/PNP",
+      "입광/차광 ON",
+      "NO/NC",
+      "코드 인출",
+      "M8",
+      "M12",
+      "e-CON",
+      "로봇 코드",
+      "4극 커넥터",
+      "커넥터 중계"
+    ]
+  },
+  "sourceCaution": "E3Z -M1TJ Smart Click exact mating cable remains 확인 불가 under current Korean baseline; no E3T cross-series inference.",
+  "browserAutomation": {
+    "status": "NOT_COMPLETED",
+    "note": "Chromium headless smoke test could not be completed in this sandbox. Static JavaScript syntax, data, local asset references, stale-code checks, and connector semantic mapping tests all passed."
+  }
+}

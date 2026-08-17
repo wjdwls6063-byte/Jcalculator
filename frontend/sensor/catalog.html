@@ -141,6 +141,139 @@ button,input,select{font:inherit}
   .part-card-top{grid-template-columns:1fr}.part-image{height:180px}.part-specs,.detail-grid{grid-template-columns:1fr}.detail-visuals{grid-template-columns:1fr 1fr}
 }
 
+
+/* v20 TREE catalog */
+.tree-toolbar{grid-template-columns:minmax(280px,1fr) auto auto}
+.tree-toolbar-actions{display:flex;gap:6px}
+.tree-toolbar-actions button{border:1px solid var(--line);background:#fff;color:#475467;border-radius:9px;padding:8px 10px;font-size:10px;font-weight:850;cursor:pointer}
+.tree-toolbar-actions button:hover{background:#f5f8ff;border-color:#9db4ff;color:#244fc4}
+
+.tree-catalog-layout{display:grid;grid-template-columns:minmax(330px,420px) minmax(0,1fr);gap:12px;align-items:start}
+.tree-panel,.tree-detail-panel{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 0 rgba(16,42,98,.02)}
+.tree-panel{position:sticky;top:126px;max-height:calc(100vh - 148px);overflow:auto}
+.tree-panel-head{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:13px 14px;border-bottom:1px solid var(--line);background:#fbfcfe;position:sticky;top:0;z-index:2}
+.tree-panel-head strong{display:block;color:#173a91;font-size:13px}.tree-panel-head small{display:block;color:#667085;font-size:9px;margin-top:2px}.tree-panel-head>span{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#eaf0ff;color:#3157d5;font-size:10px;font-weight:900}
+#catalogTree{padding:7px 6px 12px}
+.tree-node-children{display:none}.tree-node.expanded>.tree-node-children{display:block}
+.tree-node-row{display:grid;grid-template-columns:24px minmax(0,1fr) auto auto auto;gap:5px;align-items:center;min-height:38px;border:1px solid transparent;border-radius:9px;padding:4px 6px;margin:2px 0}
+.tree-node-row:hover{background:#f7f9ff;border-color:#e3e9f4}
+.tree-node-row.selected{background:#eef3ff;border-color:#9db4ff}
+.tree-node-row[data-level="0"]{min-height:46px;background:#f8fafc;border-color:#e3e8f0;margin-top:5px}
+.tree-node-row[data-level="0"] .tree-node-label{font-size:12.5px;color:#173a91}
+.tree-node-row[data-level="1"]{margin-left:14px}.tree-node-row[data-level="2"]{margin-left:28px}.tree-node-row[data-level="3"]{margin-left:42px}.tree-node-row[data-level="4"]{margin-left:56px}
+.tree-toggle{width:23px;height:23px;border:0;background:transparent;color:#475467;font-size:11px;cursor:pointer;border-radius:6px}.tree-toggle:hover{background:#e9eef8;color:#244fc4}.tree-toggle.blank{visibility:hidden}
+.tree-node-label{border:0;background:transparent;text-align:left;padding:0;cursor:pointer;color:#344054;font-size:10.5px;font-weight:850;line-height:1.35;min-width:0}
+.tree-node-label small{display:block;color:#98a2b3;font-size:8.5px;font-weight:650;margin-top:1px}
+.tree-count{border:1px solid #d9e2ef;background:#fff;border-radius:999px;padding:2px 6px;color:#667085;font-size:8.5px;font-weight:850;white-space:nowrap}
+.tree-help-btn{width:20px;height:20px;border:0;border-radius:50%;background:#eaf0ff;color:#3157d5;font-size:10px;font-weight:950;cursor:help;padding:0}.tree-help-btn:hover{background:#3157d5;color:#fff}
+.tree-compare-btn{border:1px solid #d7e1ef;background:#fff;color:#3157d5;border-radius:7px;padding:3px 6px;font-size:8.5px;font-weight:900;cursor:pointer;white-space:nowrap}.tree-compare-btn.active{background:#3157d5;color:#fff;border-color:#3157d5}
+.tree-detail-panel{min-height:620px;padding:16px}
+.tree-detail-empty{display:grid;place-items:center;min-height:560px;text-align:center;color:#667085}.tree-detail-empty strong{display:block;color:#173a91;font-size:18px;margin-bottom:7px}.tree-detail-empty p{font-size:11px;line-height:1.65;margin:0}.tree-detail-empty .guide-steps{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:14px}.guide-steps span{border:1px solid #dbe5f3;background:#f8fbff;border-radius:999px;padding:5px 8px;font-size:9px;font-weight:850;color:#475467}
+.tree-breadcrumb{display:flex;gap:4px;align-items:center;flex-wrap:wrap;color:#667085;font-size:9.5px;margin-bottom:8px}.tree-breadcrumb b{color:#3157d5}.tree-detail-head{display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.tree-detail-image{height:100px;border:1px solid #e7ebf1;border-radius:10px;display:grid;place-items:center;overflow:hidden;background:#fff;cursor:zoom-in}.tree-detail-image img{width:100%;height:100%;object-fit:contain}
+.tree-detail-title{font-size:19px;font-weight:950;color:#173a91}.tree-detail-sub{color:#667085;font-size:10.5px;line-height:1.6;margin-top:5px}.tree-detail-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.tree-detail-badges span{border:1px solid #dbe5f3;background:#f8fafc;border-radius:999px;padding:3px 7px;font-size:8.5px;font-weight:850;color:#475467}
+.tree-next-title{font-size:12px;font-weight:950;color:#173a91;margin:14px 0 7px}.tree-next-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.tree-next-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:center;border:1px solid #dfe6f0;background:#fff;border-radius:10px;padding:9px 10px;cursor:pointer;text-align:left}.tree-next-card:hover{border-color:#9db4ff;background:#f7f9ff}.tree-next-card b{display:block;color:#344054;font-size:10.5px}.tree-next-card small{display:block;color:#98a2b3;font-size:8.5px;margin-top:2px}.tree-next-card .tree-help-btn{flex:none}
+.tree-model-head{display:flex;align-items:end;justify-content:space-between;gap:8px;margin:16px 0 7px}.tree-model-head strong{font-size:12px;color:#173a91}.tree-model-head span{font-size:9px;color:#667085}.tree-model-table-wrap{max-height:430px;overflow:auto;border:1px solid #dfe5ef;border-radius:10px;background:#fff}
+.tree-model-table{width:100%;border-collapse:collapse;min-width:760px}.tree-model-table th{position:sticky;top:0;background:#102a5f;color:#fff;font-size:9px;text-align:left;padding:7px 8px}.tree-model-table td{border-bottom:1px solid #edf0f5;padding:7px 8px;font-size:9.5px;color:#475467}.tree-model-table td.model{font-weight:900;color:#173a91}.tree-model-table tbody tr{cursor:pointer}.tree-model-table tbody tr:hover td{background:#f7f9ff}.tree-model-table tbody tr.selected td{background:#eaf0ff!important}
+.tree-search-note{border:1px solid #b8c7ff;background:#f5f8ff;border-radius:10px;padding:10px 11px;color:#475467;font-size:10px;line-height:1.55;margin-bottom:10px}
+.tree-search-note b{color:#173a91}
+
+/* compact beginner help: small first, large only when cursor enters popup */
+.tree-help-pop{position:fixed;z-index:160;display:none;width:min(320px,calc(100vw - 24px));max-height:78vh;overflow:auto;background:#fff;border:1.5px solid #3157d5;border-radius:13px;padding:9px 10px;box-shadow:0 18px 50px rgba(16,42,98,.22)}
+.tree-help-pop.show{display:block}.tree-help-pop.expanded{width:min(540px,calc(100vw - 24px));max-height:88vh}
+.tree-help-pop strong{display:block;color:#173a91;font-size:12px;margin-bottom:6px}
+.tree-help-pop img{display:block;width:100%;height:125px;object-fit:contain;border:1px solid #e7ebf1;border-radius:8px;background:#fff;transition:.12s ease}
+.tree-help-pop.expanded img{height:350px}
+.tree-help-text{font-size:10.5px;line-height:1.6;color:#475467;margin-top:7px}.tree-help-key{font-size:10px;line-height:1.55;color:#1f2937;background:#f7f9fc;border-radius:8px;padding:7px 8px;margin-top:7px}.tree-help-key b{color:#173a91}
+.tree-help-foot{font-size:8.5px;color:#98a2b3;margin-top:6px}.tree-help-hint{font-size:8.5px;color:#3157d5;font-weight:850;margin-top:5px}
+
+/* current group compare bar stays available from tree TYPE nodes */
+.group-compare-bar{right:18px}
+@media(max-width:980px){
+  .tree-catalog-layout{grid-template-columns:1fr}.tree-panel{position:relative;top:auto;max-height:none}.tree-detail-panel{min-height:440px}
+}
+@media(max-width:760px){
+  .tree-toolbar{grid-template-columns:1fr}.tree-toolbar-actions{display:grid;grid-template-columns:1fr 1fr}
+  .tree-next-grid{grid-template-columns:1fr}.tree-detail-head{grid-template-columns:90px minmax(0,1fr)}.tree-detail-image{height:80px}
+  .tree-node-row[data-level="1"]{margin-left:8px}.tree-node-row[data-level="2"]{margin-left:16px}.tree-node-row[data-level="3"]{margin-left:24px}.tree-node-row[data-level="4"]{margin-left:32px}
+}
+
+
+/* v20 TREE catalog · final-selection depth */
+.tree-node-row.model-leaf{margin-left:70px;background:#fff}
+.tree-node-row.model-leaf .tree-node-label{color:#173a91;font-weight:950}
+.tree-node-row.model-leaf.selected{background:#eaf0ff;border-color:#6f8df0}
+.tree-node-row.model-leaf .tree-count{display:none}
+.tree-node-row.model-leaf .tree-model-mark{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;border:1.5px solid #9aa8bd;background:#fff}
+.tree-node-row.model-leaf.selected .tree-model-mark{border-color:#3157d5;background:#3157d5;box-shadow:inset 0 0 0 4px #fff}
+.tree-final-card{margin-top:10px;border:2px solid #3157d5;border-radius:14px;padding:12px;background:#fff}
+.tree-final-top{display:grid;grid-template-columns:210px minmax(0,1fr);gap:14px;align-items:center}
+.tree-final-image{height:150px;border:1px solid #e5eaf2;border-radius:10px;display:grid;place-items:center;overflow:hidden;background:#fff;cursor:zoom-in}
+.tree-final-image img{width:100%;height:100%;object-fit:contain}
+.tree-final-kicker{display:inline-flex;border-radius:999px;background:#3157d5;color:#fff;padding:4px 8px;font-size:9px;font-weight:950}
+.tree-final-model{font-size:21px;font-weight:950;color:#132e69;margin-top:7px}
+.tree-final-series{font-size:9.5px;color:#667085;margin-top:3px}
+.tree-final-specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:11px}
+.tree-final-spec{background:#f6f8fb;border-radius:8px;padding:7px 8px}.tree-final-spec b{display:block;font-size:8.5px;color:#667085}.tree-final-spec span{display:block;font-size:10.5px;color:#1f2937;margin-top:2px;line-height:1.45}
+.tree-final-note{margin-top:10px;border-top:1px solid #e5e9f0;padding-top:9px;color:#475467;font-size:10px;line-height:1.55}
+.tree-final-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.tree-final-actions button{border:1px solid #cfd9e8;background:#fff;border-radius:9px;padding:9px 10px;font-size:11px;font-weight:900;cursor:pointer}.tree-final-actions .primary{background:#eef3ff;border-color:#9db4ff;color:#244fc4}
+.tree-path-complete{display:flex;align-items:center;gap:6px;margin-top:8px;color:#067647;font-size:10px;font-weight:850}.tree-path-complete:before{content:"✓";display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#ecfdf3;color:#067647}
+.tree-select-guide{border:1px solid #dbe5f3;background:#f8fbff;border-radius:9px;padding:8px 9px;color:#667085;font-size:9.5px;line-height:1.55;margin-top:8px}
+@media(max-width:760px){
+  .tree-node-row.model-leaf{margin-left:40px}
+  .tree-final-top{grid-template-columns:1fr}.tree-final-image{height:180px}.tree-final-specs{grid-template-columns:1fr}
+}
+
+
+/* v20 TREE · table type column + click-to-expand popup */
+.sensor-type-cell{font-weight:850;color:#244fc4;white-space:nowrap}
+.tree-model-table th:nth-child(5),.tree-model-table td:nth-child(5){min-width:126px}
+
+.tree-help-pop.click-expanded{
+  width:min(760px,calc(100vw - 24px));
+  max-height:92vh;
+}
+.tree-help-pop.click-expanded img{height:min(560px,66vh)}
+.catalog-image-pop.click-expanded{
+  width:min(760px,calc(100vw - 24px));
+  max-height:92vh;
+}
+.catalog-image-pop.click-expanded img{height:min(560px,70vh)}
+.tree-help-pop.click-expanded .tree-help-hint,
+.catalog-image-pop.click-expanded .hint{font-weight:900;color:#173a91}
+
+
+/* v20 TREE · beginner connection guidance */
+.tree-help-key{white-space:pre-line}
+.tree-next-card small{line-height:1.45}
+
+
+/* v20 TREE · EE-SX connector/accessory selection */
+.tree-node-row.accessory-leaf{margin-left:70px;background:#fffdf8;border-color:#f3e3b5}
+.tree-node-row.accessory-leaf.selected{background:#fff7e6;border-color:#e8b64d}
+.tree-accessory-mark{display:grid;place-items:center;width:18px;height:18px;color:#b7791f;font-size:10px}
+.connector-required span{font-weight:850;color:#b54708}
+.connector-next-note{display:flex;gap:8px;align-items:flex-start;margin-top:10px;padding:9px 10px;border-radius:9px;font-size:10px;line-height:1.5}
+.connector-next-note b{white-space:nowrap}
+.connector-next-note.required{border:1px solid #f5c66a;background:#fffaf0;color:#8a4b08}
+.connector-next-note.done{border:1px solid #a7dfc2;background:#f3fff8;color:#067647}
+.connector-next-note span{color:#475467}
+.accessory-final-card{border-color:#e8b64d}
+.tree-breadcrumb-inline{font-size:10px;color:#667085;margin-bottom:10px}.tree-breadcrumb-inline b{color:#173a91}
+.accessory-final-grid{display:grid;grid-template-columns:minmax(0,1fr) 38px minmax(0,1.1fr);gap:10px;align-items:stretch}
+.accessory-sensor-box,.accessory-part-box{border:1px solid #dfe5ef;border-radius:11px;padding:10px;background:#fff}
+.accessory-sensor-box small,.accessory-part-box small{display:block;color:#667085;font-size:9px;font-weight:850}
+.accessory-sensor-box img{display:block;width:100%;height:110px;object-fit:contain;margin:5px 0}.accessory-sensor-box b{display:block;color:#173a91;font-size:13px}.accessory-sensor-box span{display:block;color:#667085;font-size:9.5px;margin-top:3px}
+.accessory-plus{display:grid;place-items:center;color:#3157d5;font-size:25px;font-weight:950}
+.accessory-part-number{font-size:20px;font-weight:950;color:#8a4b08;margin-top:15px}.accessory-part-meta{font-size:10px;font-weight:850;color:#475467;margin-top:4px}.accessory-part-box p{font-size:10px;line-height:1.55;color:#667085;margin:8px 0 0}.accessory-option{margin-top:8px;padding:6px 7px;border-radius:7px;background:#fff7e6;color:#8a4b08;font-size:9.5px}
+.accessory-warning{margin-top:10px;border:1px solid #f5c66a;background:#fffaf0;border-radius:9px;padding:9px 10px;color:#6b4a16;font-size:9.5px;line-height:1.55}.accessory-warning b{color:#8a4b08}
+.accessory-verified{margin-top:10px;border:1px solid #a7dfc2;background:#f3fff8;border-radius:9px;padding:8px 10px;color:#067647;font-size:9.5px}
+@media(max-width:760px){
+  .tree-node-row.accessory-leaf{margin-left:40px}
+  .accessory-final-grid{grid-template-columns:1fr}.accessory-plus{min-height:28px}
+}
+
 </style>
 </head>
 <body>
@@ -151,26 +284,33 @@ button,input,select{font:inherit}
 
 <section class="hero" id="type">
   <div class="hero-inner">
-    <span class="eyebrow">TYPE CATALOG · 전체 보기</span>
-    <h1>센서 타입별 전체 카탈로그</h1>
-    <p>현재 v20 선정 데이터에 등록된 모든 센서를 타입별로 한 화면에서 확인합니다. 광전센서는 <b>검출 방식</b>, 근접센서는 <b>본체 사이즈 + 실드/비실드</b>, 포토마이크로센서는 <b>본체 형상</b>을 TYPE 기준으로 묶었습니다.</p>
+    <span class="eyebrow">TYPE CATALOG · TREE VIEW</span>
+    <h1>센서 종류를 아는 사용자를 위한 TYPE 카탈로그</h1>
+    <p>처음부터 모든 TYPE을 펼치지 않습니다. <b>센서 종류 → 구조/방식 → 거리·사이즈·형상 → 출력 → 동작 → 접속 → 센서 형번 → 필요 시 접속 부품</b> 순서로 트리를 내려가며 직접 선정합니다. 잘 모르는 항목은 선택하기 전에 <b>?</b>에 마우스를 올려 공식 이미지와 쉬운 설명을 먼저 확인하세요.</p>
     <div class="summary" id="summary"></div>
   </div>
 </section>
 
 <main class="shell">
-  <div class="toolbar">
-    <div class="search"><input id="catalogSearch" autocomplete="off" placeholder="타입 / 시리즈 / 형번 검색 (예: 투과형, E3Z, E2E-C04, R형)"></div>
-    <div class="filter-btns" id="categoryFilters">
-      <button class="active" data-cat="all">전체</button>
-      <button data-cat="photoelectric">광전센서</button>
-      <button data-cat="proximity">근접센서</button>
-      <button data-cat="photo_microsensor">포토마이크로센서</button>
+  <div class="toolbar tree-toolbar">
+    <div class="search"><input id="catalogSearch" autocomplete="off" placeholder="형번 / 시리즈 / 타입 검색 (예: E3T-FT11, 투과형, φ4, 비실드, R형)"></div>
+    <div class="tree-toolbar-actions">
+      <button type="button" id="treeCollapseAll">모두 접기</button>
+      <button type="button" id="treeClearSearch">검색 초기화</button>
     </div>
     <div class="view-count" id="viewCount">-</div>
   </div>
 
-  <div id="catalogRoot"></div>
+  <div class="tree-catalog-layout" id="catalogRoot">
+    <aside class="tree-panel">
+      <div class="tree-panel-head">
+        <div><strong>센서 TYPE 트리</strong><small>▶를 눌러 조건을 내려가면 최종 형번까지 선택됩니다.</small></div>
+        <span>?</span>
+      </div>
+      <div id="catalogTree"></div>
+    </aside>
+    <section class="tree-detail-panel" id="treeDetail"></section>
+  </div>
 
   <div class="source-note">
     <strong>자료 기준</strong><br>
@@ -210,9 +350,18 @@ button,input,select{font:inherit}
   <strong id="catalogImagePopTitle"></strong>
   <img id="catalogImagePopImg" alt="센서 타입 대표 이미지 확대">
   <p id="catalogImagePopText"></p>
-  <div class="hint">팝업 안으로 마우스를 옮기면 더 크게 표시됩니다.</div>
+  <div class="hint">팝업 안으로 마우스를 옮기면 확대되고, 클릭하면 더 크게 고정 확대됩니다.</div>
 </div>
 
+
+<div class="tree-help-pop" id="treeHelpPop">
+  <strong id="treeHelpTitle"></strong>
+  <img id="treeHelpImage" alt="선택 도움 공식 이미지">
+  <div class="tree-help-text" id="treeHelpText"></div>
+  <div class="tree-help-key" id="treeHelpKey"></div>
+  <div class="tree-help-foot" id="treeHelpFoot"></div>
+  <div class="tree-help-hint">팝업 안으로 마우스를 옮기면 확대되고, 팝업을 클릭하면 더 크게 고정 확대됩니다.</div>
+</div>
 <div class="part-back" id="partInfoBack">
   <div class="part-modal">
     <div class="part-head"><strong id="partInfoTitle">부품 정보</strong><button type="button" onclick="closePartInfo()">닫기</button></div>
@@ -269,6 +418,7 @@ button,input,select{font:inherit}
 <div class="footer">Jcalculator · Sensor TYPE Catalog</div>
 
 <script src="data/omron-sensor-selection-data-v10.js"></script>
+<script src="data/connection-accessory-engine-v01.js"></script>
 <script>
 (() => {
   const products=(window.E3T_DATA?.products||[]);
@@ -377,62 +527,19 @@ button,input,select{font:inherit}
   }
   const allGroups=grouping();
 
-  function matchesGroup(g){
-    if(category!=='all'&&g.category!==category)return false;
-    if(!query)return true;
-    const q=query.toLowerCase();
-    const hay=[
-      g.name,CAT_NAME[g.category],...g.list.flatMap(p=>[
-        p.model,p.series,p.classification?.family,p.classification?.shapeNameKo,
-        METHOD[p.classification?.detectionMethod],p.specs?.outputType,OP[p.specs?.operationMode]
-      ])
-    ].filter(Boolean).join(' ').toLowerCase();
-    return hay.includes(q);
-  }
-  function row(p){
-    const selected=selectedModel===p.model;
-    return `<tr class="${selected?'selected':''}" data-select-model="${esc(p.model)}" tabindex="0" aria-selected="${selected?'true':'false'}">
-      <td class="model-select-cell"><span class="model-select-dot" aria-hidden="true"></span></td>
-      <td class="model">${esc(p.model)}<span class="row-select-hint">${selected?'선택됨':'클릭하여 선택'}</span></td>
-      <td>${esc(p.series)}</td>
-      <td>${esc(distanceText(p))}</td>
-      <td>${esc(p.specs?.outputType||'—')}</td>
-      <td>${esc(OP[p.specs?.operationMode]||p.specs?.operationMode||'—')}</td>
-      <td>${esc(p.connection?.base?.label||CONN[p.connection?.base?.type]||p.connection?.base?.type||'—')}</td>
-      <td>${esc(p.specs?.ipRating||'—')}</td>
-    </tr>`;
-  }
-  function card(g){
-    const list=g.list, p=g.first;
-    const series=uniq(list.map(x=>x.series));
-    const models=list.map(x=>x.model).join(' ');
-    return `<article class="type-card" id="${esc(g.key.replace(/\|/g,'-'))}" data-search="${esc((g.name+' '+series.join(' ')+' '+models).toLowerCase())}">
-      <div class="type-top">
-        <div class="type-image" data-hover-image="${esc(p.productImage||'')}" data-hover-title="${esc(g.name)}" data-hover-text="${esc(series.join(' / ')+' · '+distanceSummary(list))}">
-          <img src="${esc(p.productImage||'')}" alt="${esc(g.name)} 공식 카탈로그 이미지">
-        </div>
-        <div>
-          <div class="type-title-row"><div><div class="type-title">${esc(g.name)}</div><div class="type-sub">${esc(typeSubtitle(p))}</div></div><span class="count-badge">${list.length} 모델</span></div>
-          <div class="series-tags">${series.map(x=>`<span class="series-tag">${esc(x)} · ${sourceLabel(x)}</span>`).join('')}</div>
-          <div class="type-facts">
-            <div class="fact"><b>거리 / 홈</b><span>${esc(distanceSummary(list))}</span></div>
-            <div class="fact"><b>출력</b><span>${esc(outputSummary(list))}</span></div>
-            <div class="fact"><b>동작</b><span>${esc(opSummary(list))}</span></div>
-            <div class="fact"><b>보호</b><span>${esc(ipSummary(list))}</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="type-note"><b>접속:</b> ${esc(connSummary(list))}</div>
-      <div class="type-actions">
-        <button type="button" onclick="toggleType(this)">형번 전체 보기 ${list.length}</button>
-        <button type="button" class="compare-type-btn ${compareGroups.includes(g.key)?'active':''}" data-compare-key="${esc(g.key)}" onclick="toggleGroupCompare('${esc(g.key)}')">${compareGroups.includes(g.key)?'✓ 비교 선택':'＋ 그룹 비교'}</button>
-      </div>
-      <div class="models">
-        <div class="model-table-wrap"><table class="model-table"><thead><tr><th class="model-select-cell">선택</th><th>형번</th><th>시리즈</th><th>거리/홈</th><th>출력</th><th>동작</th><th>접속</th><th>보호</th></tr></thead><tbody>${list.map(row).join('')}</tbody></table></div>
-      </div>
-    </article>`;
-  }
   function groupByKey(key){return allGroups.find(g=>g.key===key)}
+  function compareCell(g,kind){
+    const list=g.list;
+    if(kind==='series')return uniq(list.map(x=>x.series)).join(' / ');
+    if(kind==='distance')return distanceSummary(list);
+    if(kind==='output')return outputSummary(list);
+    if(kind==='operation')return opSummary(list);
+    if(kind==='connection')return connSummary(list);
+    if(kind==='ip')return ipSummary(list);
+    if(kind==='models')return `${list.length} 모델`;
+    return '';
+  }
+
   function refreshGroupCompareUI(){
     const bar=document.getElementById('groupCompareBar');
     const list=document.getElementById('groupCompareList');
@@ -444,11 +551,10 @@ button,input,select{font:inherit}
       return `<span class="group-compare-chip">${esc(g.name)}<button type="button" onclick="removeGroupCompare('${esc(k)}')">×</button></span>`;
     }).join('');
     bar.classList.toggle('show',compareGroups.length>0);
-    document.querySelectorAll('.compare-type-btn').forEach(btn=>{
+    document.querySelectorAll('[data-compare-key]').forEach(btn=>{
       const on=compareGroups.includes(btn.dataset.compareKey);
       btn.classList.toggle('active',on);
-      btn.textContent=on?'✓ 비교 선택':'＋ 그룹 비교';
-      btn.closest('.type-card')?.classList.toggle('compare-selected',on);
+      btn.textContent=on?'✓ 비교':'＋ 비교';
     });
   }
   window.toggleGroupCompare=function(key){
@@ -460,33 +566,13 @@ button,input,select{font:inherit}
     }
     refreshGroupCompareUI();
   };
-  window.removeGroupCompare=function(key){
-    compareGroups=compareGroups.filter(x=>x!==key);
-    refreshGroupCompareUI();
-  };
-  window.clearGroupCompare=function(){
-    compareGroups=[];
-    refreshGroupCompareUI();
-    closeGroupCompare();
-  };
-  function compareCell(g,kind){
-    const list=g.list,p=g.first;
-    if(kind==='series')return uniq(list.map(x=>x.series)).join(' / ');
-    if(kind==='distance')return distanceSummary(list);
-    if(kind==='output')return outputSummary(list);
-    if(kind==='operation')return opSummary(list);
-    if(kind==='connection')return connSummary(list);
-    if(kind==='ip')return ipSummary(list);
-    if(kind==='models')return `${list.length} 모델`;
-    return '';
-  }
+  window.removeGroupCompare=function(key){compareGroups=compareGroups.filter(x=>x!==key);refreshGroupCompareUI()};
+  window.clearGroupCompare=function(){compareGroups=[];refreshGroupCompareUI();closeGroupCompare()};
   window.openGroupCompare=function(){
     if(compareGroups.length<2){alert('비교할 TYPE을 2개 이상 선택하세요.');return}
     const gs=compareGroups.map(groupByKey).filter(Boolean);
     const body=document.getElementById('groupCompareBody');
-    const rows=[
-      ['시리즈','series'],['모델 수','models'],['거리 / 홈','distance'],['출력','output'],['동작','operation'],['접속','connection'],['보호 구조','ip']
-    ];
+    const rows=[['시리즈','series'],['모델 수','models'],['거리 / 홈','distance'],['출력','output'],['동작','operation'],['접속','connection'],['보호 구조','ip']];
     body.innerHTML=`<table class="compare-table">
       <thead><tr><th>비교 항목</th>${gs.map(g=>`<th><div class="compare-product"><img src="${esc(g.first.productImage||'')}" alt="${esc(g.name)}"><b>${esc(g.name)}</b><small>${esc(CAT_NAME[g.category])}</small></div></th>`).join('')}</tr></thead>
       <tbody>${rows.map(([label,key])=>`<tr><th>${label}</th>${gs.map(g=>`<td>${esc(compareCell(g,key))}</td>`).join('')}</tr>`).join('')}</tbody>
@@ -494,30 +580,584 @@ button,input,select{font:inherit}
     document.getElementById('groupCompareBack').classList.add('show');
     document.documentElement.style.overflow='hidden';
   };
-  window.closeGroupCompare=function(){
-    document.getElementById('groupCompareBack')?.classList.remove('show');
-    document.documentElement.style.overflow='';
-  };
+  window.closeGroupCompare=function(){document.getElementById('groupCompareBack')?.classList.remove('show');document.documentElement.style.overflow=''};
 
-  function render(){
-    const shown=allGroups.filter(matchesGroup);
-    const byCat={};
-    CAT_ORDER.forEach(c=>byCat[c]=shown.filter(g=>g.category===c));
-    let html='';
-    CAT_ORDER.forEach(c=>{
-      const groups=byCat[c]; if(!groups.length)return;
-      const modelCount=groups.reduce((a,g)=>a+g.list.length,0);
-      html+=`<section class="section" data-category="${c}">
-        <div class="category-head"><div><h2>${CAT_NAME[c]}</h2><p>${CAT_DESC[c]}</p></div><div class="category-count">${groups.length} TYPE · ${modelCount} 모델</div></div>
-        <div class="type-grid">${groups.map(card).join('')}</div>
-      </section>`;
+  const METHOD_ORDER=['through_beam','retro_reflective','diffuse','limited_reflective','bgs','fine_beam_reflective','distance_setting','fork_through_beam','transparent_retro'];
+  const SIZE_ORDER=['phi3','phi4','phi65','m4','m5'];
+  const SHIELD_ORDER=['shield','unshield'];
+  const SHAPE_ORDER=['standard','l_shape','t_center_7','close_mount_3','close_mount_4','t_center_10','f_shape','r_shape'];
+  const SHAPE_LABEL={standard:'표준형',l_shape:'L형',t_center_7:'T형 · 홈 중심 7mm',close_mount_3:'밀착 설치형 · 형상 3',close_mount_4:'밀착 설치형 · 형상 4',t_center_10:'T형 · 홈 중심 10mm',f_shape:'F형',r_shape:'R형'};
+  const SHAPE_IMAGE={standard:'assets/ee_sx47_67/shapes/standard.png',l_shape:'assets/ee_sx47_67/shapes/l_shape.png',t_center_7:'assets/ee_sx47_67/shapes/t_center_7.png',close_mount_3:'assets/ee_sx47_67/shapes/close_mount_3.png',close_mount_4:'assets/ee_sx47_67/shapes/close_mount_4.png',t_center_10:'assets/ee_sx47_67/shapes/t_center_10.png',f_shape:'assets/ee_sx47_67/shapes/f_shape.png',r_shape:'assets/ee_sx47_67/shapes/r_shape.png'};
+
+  const treeNodes=new Map();
+  const modelNodeByModel=new Map();
+  function makeNode(o){treeNodes.set(o.id,o);return o}
+  function uniqMap(list,keyFn){
+    const map=new Map();
+    list.forEach(p=>{const k=keyFn(p);if(!map.has(k))map.set(k,[]);map.get(k).push(p)});
+    return map;
+  }
+  function normalizedSetting(p){
+    const d=p.specs?.settingDistance;
+    return d?`${d.min??0}~${d.max}${d.unit||'mm'}`:'설정거리 확인';
+  }
+  function connTypeLabel(p){return p.connection?.base?.label||CONN[p.connection?.base?.type]||p.connection?.base?.type||'접속 확인'}
+  function connectionChoiceSummary(label,category){
+    const t=String(label||'');
+    if(t.includes('코드 인출'))return t.includes('로봇')?'케이블 일체형 · 반복 굽힘 고려':'케이블 일체형 · 센서측 추가 커넥터 없음';
+    if(t.includes('Smart Click'))return '짧은 중계선 뒤 M12 · 접속 코드 형번 확인';
+    if(t.includes('M12'))return '짧은 중계선 뒤 M12 · 별도 I/O 코드 필요';
+    if(t.includes('M8')&&t.includes('중계'))return '짧은 중계선 뒤 M8 · 별도 I/O 코드 필요';
+    if(t.includes('M8'))return '센서에 M8 직접 체결 · 별도 I/O 코드 필요';
+    if(t.includes('e-CON'))return '소형 e-CON 중계 · 별도 접속 코드 필요';
+    if(t.includes('4극 커넥터'))return '센서에 직접 체결 · 별매 접속 부품 필요';
+    if(t.includes('0.1m'))return '짧은 코드 뒤 커넥터 · 별매 접속 부품 필요';
+    return '배선·교체 방법에 맞춰 선택';
+  }
+
+  function connectionHelpImage(node){
+    if(node.category==='photo_microsensor')return 'assets/ee_sx47_67/connections-p1171.png';
+    if(node.category==='proximity')return 'assets/e2e/selection-p59.jpg';
+    return node.helpImage||node.list?.[0]?.productImage||'';
+  }
+  function operationNodeLabel(p){
+    const mode=p.specs?.operationMode;
+    if(mode==='switchable')return '입광 / 차광 ON 전환 가능';
+    if(mode==='light_on')return '입광 시 ON';
+    if(mode==='dark_on')return '차광 시 ON';
+    if(mode==='normally_open')return 'NO · 검출 시 ON';
+    if(mode==='normally_closed')return 'NC · 평상 시 ON';
+    return '동작 모드 확인 필요';
+  }
+  function outputNodeLabel(p){return p.specs?.outputType||'출력 확인 필요'}
+
+  function currentAccessoryInfo(p,choice){
+    return window.SensorConnection.accessoryInfo(p,choice||window.SensorConnection.choices(p)[0]);
+  }
+  function accessoryRequirementText(p,choice){
+    return currentAccessoryInfo(p,choice).summary;
+  }
+  function accessoryLeaf(parentId,p,choice,item,index,image){
+    const suffix=`${item.part}|${item.length}|${index}`.replace(/[^A-Za-z0-9가-힣_-]+/g,'_');
+    return makeNode({
+      id:`accessory|${p.model}|${window.SensorConnection.safe(choice?.key||'base')}|${suffix}`,
+      label:item.part==='추가 부품 없음'?'추가 부품 없음':`${item.part}${item.length&&item.length!=='—'?` · ${item.length}`:''}`,
+      sub:item.note||item.kind,kind:'accessory',category:cat(p),list:[p],children:[],
+      parentId,product:p,connectionChoice:choice,accessory:item,
+      helpKind:'conn_accessory_part',helpImage:image||p.productImage
     });
-    if(!html)html='<div class="empty"><strong>검색 결과가 없습니다.</strong><br>다른 타입명·시리즈·형번으로 검색하세요.</div>';
-    document.getElementById('catalogRoot').innerHTML=html;
-    const modelCount=shown.reduce((a,g)=>a+g.list.length,0);
-    document.getElementById('viewCount').textContent=`${shown.length} TYPE · ${modelCount} 모델`;
-    syncSelectionBar();
-    refreshGroupCompareUI();
+  }
+  function accessoryBranches(parentId,p,choice){
+    const info=currentAccessoryInfo(p,choice);
+    if(info.requirement==='none')return [];
+    if(info.requirement==='unknown'){
+      const gid=`${parentId}|accessory_unknown`;
+      const a={part:'확인 불가',kind:'접속 코드 형번',length:'—',note:info.summary,certainty:'unverified',warning:info.beginner};
+      return [makeNode({
+        id:gid,label:'접속 코드 형번 확인 필요',sub:'현재 한글 공식 기본 카탈로그에서 정확한 부품 형번 확인 불가',
+        kind:'accessory_group',category:cat(p),list:[p],parentId,product:p,connectionChoice:choice,
+        helpKind:'conn_accessory_unknown',helpImage:info.image,accessoryGroup:{label:'확인 필요',help:info.beginner},
+        children:[accessoryLeaf(gid,p,choice,a,0,info.image)]
+      })];
+    }
+    return (info.groups||[]).map((g,gi)=>{
+      const gid=`${parentId}|accessory_group|${gi}`;
+      return makeNode({
+        id:gid,label:g.label,sub:g.sub,kind:'accessory_group',category:cat(p),list:[p],parentId,
+        product:p,connectionChoice:choice,helpKind:'conn_accessory_group',helpImage:g.image||info.image,accessoryGroup:g,
+        children:(g.items||[]).map((a,i)=>accessoryLeaf(gid,p,choice,a,i,g.image||info.image))
+      });
+    });
+  }
+
+  function modelNode(p,parentId,choice){
+    const c=choice||window.SensorConnection.choices(p)[0];
+    const id=`model|${p.model}|${window.SensorConnection.safe(c?.key||'base')}`;
+    const node=makeNode({
+      id,label:p.model,sub:`${p.series} · ${c?.label||'접속 확인'}`,kind:'model',category:cat(p),list:[p],
+      children:[],parentId,product:p,connectionChoice:c,helpKind:null,helpImage:p.productImage
+    });
+    if(!modelNodeByModel.has(p.model)||c?.source==='base')modelNodeByModel.set(p.model,id);
+    const info=currentAccessoryInfo(p,c);
+    node.children=accessoryBranches(node.id,p,c);
+    if(info.requirement==='required')node.sub=`${p.series} · 센서 형번 선택 후 접속 부품 선택`;
+    else if(info.requirement==='unknown')node.sub=`${p.series} · 접속 부품 형번 추가 확인 필요`;
+    else node.sub=`${p.series} · 최종 형번 · 센서측 추가 커넥터 없음`;
+    return node;
+  }
+
+  function buildFinalBranches(parentId,list,category,mode){
+    const outputMap=uniqMap(list,p=>outputNodeLabel(p));
+    return [...outputMap.entries()].sort((a,b)=>a[0].localeCompare(b[0])).map(([output,outItems],oi)=>{
+      const outId=`${parentId}|out|${oi}`;
+      const opMap=uniqMap(outItems,p=>operationNodeLabel(p));
+      const opChildren=[...opMap.entries()].map(([op,opItems],opi)=>{
+        const opId=`${outId}|op|${opi}`;
+        const entries=[];
+        opItems.forEach(p=>window.SensorConnection.choices(p).forEach(choice=>entries.push({p,choice})));
+        const connMap=new Map();
+        entries.forEach(x=>{
+          const k=[x.choice.type,x.choice.label,x.choice.codeSuffix,x.choice.cableLength].join('|');
+          if(!connMap.has(k))connMap.set(k,[]);
+          connMap.get(k).push(x);
+        });
+        const connChildren=[...connMap.values()].map((arr,ci)=>{
+          const first=arr[0],connId=`${opId}|conn|${ci}`,h=window.SensorConnection.choiceHelp(first.p,first.choice);
+          const plist=[...new Map(arr.map(x=>[x.p.model,x.p])).values()];
+          return makeNode({
+            id:connId,label:first.choice.label,sub:connectionChoiceSummary(first.choice.label,category),
+            kind:'connection',category,list:plist,parentId:opId,helpKind:'connection_choice',
+            helpImage:h.image||first.p.productImage,connectionChoice:first.choice,choiceHelp:h,
+            children:arr.map(x=>modelNode(x.p,connId,x.choice))
+          });
+        });
+        return makeNode({
+          id:opId,label:op,sub:category==='proximity'?'출력 동작':'동작 모드',kind:'operation',category,
+          list:opItems,parentId:outId,helpKind:category==='proximity'?'prox_operation':'photo_operation',
+          helpImage:opItems[0]?.productImage,children:connChildren
+        });
+      });
+      return makeNode({
+        id:outId,label:output,sub:'출력 방식',kind:'output',category,list:outItems,parentId,
+        helpKind:'output',helpImage:outItems[0]?.productImage,children:opChildren
+      });
+    });
+  }
+
+  function buildTree(){
+    treeNodes.clear();modelNodeByModel.clear();
+
+    // 광전센서: 검출 방식 → 검출 거리 → 출력 → 동작 → 접속 → 형번
+    const photo=products.filter(p=>cat(p)==='photoelectric');
+    const photoChildren=METHOD_ORDER.map(method=>{
+      const list=photo.filter(p=>p.classification?.detectionMethod===method);
+      if(!list.length)return null;
+      const g=allGroups.find(x=>x.category==='photoelectric'&&x.first.classification?.detectionMethod===method);
+      const methodId=`photo|${method}`;
+      const dmap=uniqMap(list,p=>distanceText(p));
+      const distanceChildren=[...dmap.entries()].sort((a,b)=>{
+        const na=parseFloat(String(a[0]).replace(/[^0-9.]/g,'')),nb=parseFloat(String(b[0]).replace(/[^0-9.]/g,''));
+        return (isNaN(na)?999999:na)-(isNaN(nb)?999999:nb);
+      }).map(([dist,items],i)=>{
+        const distId=`${methodId}|distance|${i}`;
+        return makeNode({
+          id:distId,label:dist,sub:'검출 거리 선택',kind:'distance',category:'photoelectric',
+          list:items,parentId:methodId,helpKind:'photo_distance',helpImage:items[0]?.productImage,
+          children:buildFinalBranches(distId,items,'photoelectric','photo')
+        });
+      });
+      return makeNode({
+        id:methodId,label:METHOD[method]||method,sub:'검출 방식',kind:'photo_method',category:'photoelectric',
+        list,parentId:'photoelectric',groupKey:g?.key,helpKind:`method_${method}`,helpImage:list[0]?.productImage,children:distanceChildren
+      });
+    }).filter(Boolean);
+    const photoRoot=makeNode({
+      id:'photoelectric',label:'광전센서',sub:'빛을 이용한 검출',kind:'category',category:'photoelectric',
+      list:photo,children:photoChildren,parentId:null,helpKind:'photoelectric',helpImage:'assets/e3z/intro-p176.png'
+    });
+
+    // 근접센서: 사이즈 → 실드/비실드 → 설정거리 → 출력 → NO/NC → 접속 → 형번
+    const prox=products.filter(p=>cat(p)==='proximity');
+    const proxChildren=SIZE_ORDER.map(size=>{
+      const sizeList=prox.filter(p=>p.classification?.sizeCode===size);
+      if(!sizeList.length)return null;
+      const sizeId=`prox|${size}`;
+      const shieldChildren=SHIELD_ORDER.map(shield=>{
+        const list=sizeList.filter(p=>p.classification?.shieldType===shield);
+        if(!list.length)return null;
+        const shieldId=`${sizeId}|${shield}`;
+        const g=allGroups.find(x=>x.category==='proximity'&&x.first.classification?.sizeCode===size&&x.first.classification?.shieldType===shield);
+        const smap=uniqMap(list,p=>normalizedSetting(p));
+        const settingChildren=[...smap.entries()].map(([label,items],i)=>{
+          const settingId=`${shieldId}|setting|${i}`;
+          return makeNode({
+            id:settingId,label:`설정거리 ${label}`,sub:'안정 사용 권장 범위',kind:'setting_distance',category:'proximity',
+            list:items,parentId:shieldId,helpKind:'setting_distance',helpImage:'assets/e2e/specs-p60.jpg',
+            children:buildFinalBranches(settingId,items,'proximity','proximity')
+          });
+        });
+        return makeNode({
+          id:shieldId,label:shield==='shield'?'실드':'비실드',sub:`검출거리 ${distanceSummary(list)}`,kind:'shield',category:'proximity',
+          list,parentId:sizeId,groupKey:g?.key,helpKind:shield,helpImage:'assets/e2e/shield-vs-unshield-p59.jpg',children:settingChildren
+        });
+      }).filter(Boolean);
+      return makeNode({
+        id:sizeId,label:sizeList[0].classification?.sizeLabel||size,sub:'본체 사이즈',kind:'prox_size',category:'proximity',
+        list:sizeList,parentId:'proximity',helpKind:'prox_size',helpImage:sizeList[0]?.productImage,children:shieldChildren
+      });
+    }).filter(Boolean);
+    const proxRoot=makeNode({
+      id:'proximity',label:'근접센서',sub:'금속을 비접촉 근거리 검출',kind:'category',category:'proximity',
+      list:prox,children:proxChildren,parentId:null,helpKind:'proximity',helpImage:'assets/e2e/intro-p58.jpg'
+    });
+
+    // 포토마이크로센서: 홈 5mm → 형상 → 출력 → 동작 → 접속 → 형번
+    const micro=products.filter(p=>cat(p)==='photo_microsensor');
+    const shapeChildren=SHAPE_ORDER.map(shape=>{
+      const list=micro.filter(p=>p.classification?.shapeCode===shape);
+      if(!list.length)return null;
+      const shapeId=`micro|${shape}`;
+      const g=allGroups.find(x=>x.category==='photo_microsensor'&&x.first.classification?.shapeCode===shape);
+      return makeNode({
+        id:shapeId,label:SHAPE_LABEL[shape]||list[0].classification?.shapeNameKo||shape,sub:'본체 형상',kind:'micro_shape',category:'photo_microsensor',
+        list,parentId:'micro_slot',groupKey:g?.key,helpKind:'micro_shape',helpImage:SHAPE_IMAGE[shape]||list[0]?.productImage,
+        children:buildFinalBranches(shapeId,list,'photo_microsensor','micro')
+      });
+    }).filter(Boolean);
+    const slot=makeNode({
+      id:'micro_slot',label:'홈 폭 5mm',sub:'워크가 지나가는 홈 폭',kind:'slot',category:'photo_microsensor',
+      list:micro,children:shapeChildren,parentId:'photo_microsensor',helpKind:'slot',helpImage:'assets/ee_sx47_67/selection-p1170.png'
+    });
+    const microRoot=makeNode({
+      id:'photo_microsensor',label:'포토마이크로센서',sub:'말굽형 5mm 홈 통과 검출',kind:'category',category:'photo_microsensor',
+      list:micro,children:[slot],parentId:null,helpKind:'photomicro',helpImage:'assets/ee_sx47_67/product-group.png'
+    });
+
+    return [photoRoot,proxRoot,microRoot];
+  }
+
+  const treeRoots=buildTree();
+  const expandedTree=new Set();
+  let selectedTreeNode=null;
+
+  function ancestors(node){
+    const a=[];let cur=node;
+    while(cur?.parentId){cur=treeNodes.get(cur.parentId);if(cur)a.unshift(cur)}
+    return a;
+  }
+  function breadcrumb(node){return [...ancestors(node),node].map(x=>x.label)}
+
+  function helpData(node){
+    const kind=node.helpKind;
+    const base={title:node.label,img:node.helpImage||node.list?.[0]?.productImage||'',text:'이 항목을 선택하기 전에 구조와 사용 목적을 확인하세요.',key:'',foot:''};
+
+    if(kind==='connection_choice'){
+      const h=node.choiceHelp||{title:node.label,text:'접속 방식을 확인합니다.',key:'공식 접속 사양을 확인하세요.',image:node.helpImage,footer:'공식 한글 카탈로그'};
+      return {...base,img:h.image||base.img,title:h.title,text:h.text,key:h.key,foot:h.footer};
+    }
+    if(kind==='conn_accessory_group'){
+      const g=node.accessoryGroup||{};
+      return {...base,img:node.helpImage,title:`접속 부품 선택 · ${g.label||node.label}`,
+        text:g.help||'센서 뒤에 실제로 연결할 별매 커넥터/센서 I/O 코드를 선택하는 단계입니다.',
+        key:'초보자 기준: ① 필요한 케이블 길이 ② 센서 뒤 공간이 충분한지(스트레이트/L형) ③ 케이블이 고정인지 반복 이동인지 순서로 판단하세요.',
+        foot:`${node.product?.series||''} 공식 한글 카탈로그 · 접속 액세서리`};
+    }
+    if(kind==='conn_accessory_unknown'){
+      return {...base,img:node.helpImage,title:'접속 부품 형번 확인 필요',
+        text:'센서의 접속 사양은 확인되지만 현재 등록된 한글 공식 기본 카탈로그에서 뒤에 연결할 정확한 코드 형번을 확정할 수 없습니다.',
+        key:'다른 시리즈의 비슷한 커넥터 형번을 임의로 적용하지 않습니다. OMRON Korea 액세서리 상세자료에서 최종 확인해야 합니다.',
+        foot:`${node.product?.series||''} · 현재 기준 확인 불가`};
+    }
+    if(kind==='conn_accessory_part'){
+      const a=node.accessory||{},unknown=a.certainty==='unverified';
+      return {...base,img:node.helpImage,title:`접속 부품 · ${node.label}`,
+        text:unknown?'현재 등록 자료에서 정확한 접속 부품 형번을 확정하지 못한 항목입니다.':`${a.part}은(는) 선택한 접속 방식에 대응하는 공식 카탈로그 등재 부품입니다.`,
+        key:unknown?(a.warning||'OMRON Korea 액세서리 상세자료에서 확인하세요.'):`${a.kind||'접속 부품'}${a.length&&a.length!=='—'?` · ${a.length}`:''}. ${a.note||''}${a.optional?` 선택 옵션: ${a.optional}`:''}`,
+        foot:`${node.product?.series||''} 공식 한글 카탈로그`};
+    }
+
+    if(kind==='photoelectric')return {...base,title:'광전센서',text:'빛을 보내고 받는 변화를 이용해 물체의 유무나 위치를 검출합니다. 일반적으로 센서와 물체 사이에 거리를 두고 사용합니다.',key:'먼저 투과형 / 회귀 반사형 / 확산 반사형 / BGS 등에서 설치 구조와 가장 가까운 방식을 선택하세요.',foot:'OMRON E3T/E3Z 한글 공식 카탈로그'};
+    if(kind==='proximity')return {...base,title:'근접센서 · E2E Small New',text:'금속 물체가 센서 앞에 가까워지면 접촉하지 않고 검출합니다. 빛을 사용하지 않기 때문에 금속 부품의 유무·위치 검출에 적합합니다.',key:'본체 크기 → 실드/비실드 → 설정거리 순서로 고르면 됩니다.',foot:'OMRON E2E Small New 한글 공식 카탈로그 2014'};
+    if(kind==='photomicro')return {...base,title:'포토마이크로센서 · EE-SX47/67',text:'투광부와 수광부가 말굽형 본체에 함께 있고, 워크·도그가 홈 사이를 지나가며 빛을 가리는 방식입니다.',key:'5mm는 센서와 물체 사이 검출거리가 아니라 워크가 통과하는 홈 폭입니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010'};
+
+    if(kind==='method_through_beam')return {...base,title:'투과형',text:'투광기와 수광기를 물체 양쪽에 설치합니다. 물체가 사이를 지나가 빛을 끊으면 검출합니다.',key:'물체 색·표면 영향이 비교적 적고 장거리 검출에 유리하지만 양쪽 설치 공간이 필요합니다.',foot:'OMRON E3T/E3Z 공식 형상 이미지'};
+    if(kind==='method_retro_reflective')return {...base,title:'회귀 반사형',text:'센서는 한쪽에 설치하고 반대편에는 반사판을 둡니다. 반사판에서 되돌아오는 빛이 물체에 의해 끊기는 것을 검출합니다.',key:'양쪽에 배선된 센서를 두기 어렵지만 반사판은 설치할 수 있을 때 사용하기 쉽습니다.',foot:'OMRON E3T/E3Z 공식 형상 이미지'};
+    if(kind==='method_diffuse')return {...base,title:'확산 반사형',text:'센서가 보낸 빛이 물체 표면에서 반사되어 돌아오는 양을 이용해 검출합니다. 반사판이 필요 없습니다.',key:'물체 색·광택·재질에 따라 검출 거리가 달라질 수 있으므로 실제 워크 조건을 확인하세요.',foot:'OMRON E3T/E3Z 공식 형상 이미지'};
+    if(kind==='method_limited_reflective')return {...base,title:'한정 반사형',text:'센서 바로 앞의 정해진 근거리 영역에 들어온 물체를 검출하는 방식입니다.',key:'검출 영역을 좁게 제한하고 싶은 근거리 유무 검출에 적합합니다.',foot:'OMRON E3T 공식 형상 이미지'};
+    if(kind==='method_bgs')return {...base,title:'BGS 반사형',text:'검출 물체 뒤의 배경 영향을 줄이도록 설계된 반사형입니다.',key:'배경 벽·프레임이 가까운 곳에서 물체와 배경을 구분해야 할 때 우선 검토하세요.',foot:'OMRON E3T 공식 형상 이미지'};
+    if(kind==='method_fine_beam_reflective')return {...base,title:'가는 빔 반사형',text:'작은 광 스폿으로 좁은 부분을 검출하는 E3Z 계열 방식입니다.',key:'작은 부품이나 좁은 위치를 보고 싶을 때 검토합니다.',foot:'OMRON E3Z 공식 형상 이미지'};
+    if(kind==='method_distance_setting')return {...base,title:'거리 설정형',text:'설정한 거리 차이를 이용해 물체와 배경을 구분하는 방식입니다.',key:'배경 억제가 필요하거나 물체 위치를 거리 기준으로 구분하고 싶을 때 검토합니다.',foot:'OMRON E3Z 공식 형상 이미지'};
+    if(kind==='method_fork_through_beam')return {...base,title:'말굽형 투과형 · 25mm',text:'E3Z-G 계열의 말굽 구조로, 워크가 25mm 홈 사이를 통과하며 빛을 가립니다.',key:'EE-SX47/67의 5mm 포토마이크로센서와는 다른 광전센서 계열입니다.',foot:'OMRON E3Z 공식 형상 이미지'};
+    if(kind==='method_transparent_retro')return {...base,title:'투명 PET 병용 회귀 반사형',text:'투명 PET 병처럼 일반 센서에서 검출이 어려운 투명체를 대상으로 하는 회귀 반사형입니다.',key:'투명 PET 병 검출 목적일 때 선택하세요.',foot:'OMRON E3Z 공식 형상 이미지'};
+
+    if(kind==='photo_distance')return {...base,title:`검출 거리 · ${node.label}`,text:'이 거리 조건에 맞는 후보만 다음 단계로 내려갑니다.',key:'투과형은 투광기↔수광기, 회귀 반사형은 센서↔반사판, 나머지 반사형은 센서↔물체 거리를 기준으로 읽습니다.',foot:'등록 공식 카탈로그 사양 기준'};
+    if(kind==='prox_size')return {...base,title:`본체 사이즈 · ${node.label}`,text:'센서 외경 또는 나사 크기입니다. 설치 홀·브라켓·주변 공간에 맞는 크기를 먼저 고릅니다.',key:'같은 E2E Small New라도 사이즈와 실드/비실드 조합에 따라 검출거리·설정거리가 달라집니다.',foot:'OMRON E2E Small New 한글 공식 카탈로그 2014'};
+    if(kind==='shield')return {...base,title:'실드형',text:'검출면 주변의 금속 영향을 줄이도록 검출부가 금속 케이스 안쪽에 들어간 구조입니다.',key:'주변 금속에 가깝게 묻어 설치해야 하면 실드형이 유리합니다. 대신 같은 크기의 비실드형보다 검출 거리가 짧은 편입니다.',foot:'OMRON E2E Small New p.59'};
+    if(kind==='unshield')return {...base,title:'비실드형',text:'검출부가 케이스 앞쪽으로 돌출된 구조라 검출 영역이 더 넓게 형성됩니다.',key:'더 긴 검출 거리가 필요하면 비실드형이 유리합니다. 대신 주변 금속과 충분히 떨어뜨려 설치해야 합니다.',foot:'OMRON E2E Small New p.59'};
+    if(kind==='setting_distance')return {...base,title:node.label,text:'정격 검출거리 끝까지 쓰는 값이 아니라 실제 설계에서 안정적으로 사용하도록 잡은 권장 범위입니다.',key:'설정거리 안에 실제 금속 물체가 들어오도록 설치하면 안정적인 검출 여유를 확보하기 쉽습니다.',foot:'OMRON E2E Small New p.60'};
+    if(kind==='slot')return {...base,title:'홈 폭 5mm',text:'말굽형 센서 안쪽의 투광부와 수광부 사이 간격입니다.',key:'5mm는 검출 거리가 아닙니다. 워크·도그가 실제로 이 홈 사이를 지나갈 수 있어야 합니다.',foot:'OMRON EE-SX47/67 p.1170~1172'};
+    if(kind==='micro_shape')return {...base,title:`본체 형상 · ${node.label}`,text:'같은 5mm 홈 센서라도 설치 방향과 브라켓 공간에 맞춰 본체 형상을 선택합니다.',key:'형상 이미지를 보고 실제 장비 공간과 가장 가까운 것을 선택하세요.',foot:'OMRON EE-SX47/67 공식 형상표'};
+    if(kind==='output')return {...base,title:`출력 방식 · ${node.label}`,text:'센서가 ON일 때 출력선이 어느 전위 쪽으로 동작하는지 정하는 배선 방식입니다. NPN은 0V 쪽, PNP는 +전원 쪽으로 동작한다고 이해하면 쉽습니다.',key:'NPN/PNP 중 더 좋은 것이 있는 것이 아닙니다. 사용 중인 PLC 입력 회로와 반드시 맞아야 하므로 PLC 입력 공통(COM) 사양을 모르면 먼저 PLC 매뉴얼을 확인하세요.',foot:'등록 공식 카탈로그 출력 사양'};
+    if(kind==='photo_operation')return {...base,title:`동작 모드 · ${node.label}`,text:'센서가 어느 상태에서 출력 ON이 되는지 선택합니다.',key:'입광 ON은 빛이 들어올 때 ON, 차광 ON은 물체가 빛을 막을 때 ON입니다. “전환 가능” 형식은 현장에서 둘 중 하나로 설정할 수 있습니다.',foot:'등록 공식 카탈로그 동작 사양'};
+    if(kind==='prox_operation')return {...base,title:`출력 동작 · ${node.label}`,text:'근접센서의 NO/NC 동작을 선택합니다.',key:'NO는 평상시 OFF이고 금속을 검출하면 ON, NC는 평상시 ON이고 금속을 검출하면 OFF로 이해하면 쉽습니다.',foot:'OMRON E2E Small New 공식 사양'};
+    if(kind==='connection'){
+      const label=String(node.label||'');
+      const img=connectionHelpImage(node);
+
+      if(label.includes('커넥터 타입(4극)')||label==='4극 커넥터'){
+        return {...base,img,title:'4극 커넥터 타입',
+          text:'센서 본체에 4극 커넥터를 직접 꽂아 배선하는 방식입니다. 센서가 고장 나면 커넥터를 뽑고 센서만 교체하기 쉬운 것이 가장 큰 장점입니다.',
+          key:'이럴 때 선택: 센서를 나중에 교체하기 쉽게 만들고 싶고, 센서 뒤쪽에 커넥터와 케이블을 꽂을 공간이 있을 때.\n주의: 센서 바로 뒤 공간이 매우 좁으면 커넥터가 간섭할 수 있습니다.',
+          foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 커넥터 타입'};
+      }
+
+      if(label.includes('코드 인출 타입(1m)')){
+        return {...base,img,title:'코드 인출 타입 1m',
+          text:'센서 본체에서 약 1m 케이블이 바로 붙어서 나오는 방식입니다. 센서 바로 옆에 별도 커넥터를 꽂을 필요가 없어 구조가 단순합니다.',
+          key:'이럴 때 선택: 센서 주변이 좁고 케이블을 한 방향으로 바로 빼는 것이 편할 때.\n주의: 센서를 교체할 때 센서에 붙은 케이블도 함께 빼거나 다시 배선해야 할 수 있습니다. 로봇 코드 적용 형식은 반복 굽힘이 있는 장치에서 검토합니다.',
+          foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 코드 인출 타입'};
+      }
+
+      if(label.includes('커넥터 중계 타입(0.1m)')){
+        return {...base,img,title:'커넥터 중계 타입 0.1m',
+          text:'센서에서 짧은 약 0.1m 케이블이 나온 뒤 커넥터가 달리는 방식입니다. 커넥터 위치를 센서 본체에서 조금 떨어뜨릴 수 있습니다.',
+          key:'이럴 때 선택: 센서 바로 뒤에는 커넥터를 꽂을 공간이 없지만, 조금 떨어진 곳에는 커넥터를 둘 공간이 있을 때.\n장점: 좁은 설치 공간과 커넥터 방식의 교체 편의성을 둘 다 얻기 쉽습니다.',
+          foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 커넥터 중계 타입'};
+      }
+
+      if(label.includes('M8 커넥터 중계')){
+        return {...base,img,title:'M8 커넥터 중계 타입',
+          text:'센서에서 짧은 케이블이 나온 뒤 M8 커넥터로 연결하는 방식입니다. 센서 바로 뒤에 커넥터 몸체가 붙지 않도록 위치를 조금 옮길 수 있습니다.',
+          key:'이럴 때 선택: 센서 주변 공간은 좁지만 유지보수 때 커넥터로 빠르게 분리하고 싶을 때.\n확인: 중계 케이블 길이와 M8 커넥터가 놓일 공간을 실제 기구에서 확인하세요.',
+          foot:'OMRON 공식 한글 카탈로그 · M8 커넥터 중계 사양'};
+      }
+
+      if(label.includes('M8 커넥터 타입')||label.includes('커넥터 타입(M8)')){
+        return {...base,img,title:'M8 직접 커넥터 타입',
+          text:'센서 본체에 M8 커넥터를 직접 체결하는 방식입니다. 배선을 분리하기 쉬워 센서 교체와 유지보수가 편합니다.',
+          key:'이럴 때 선택: 센서 뒤쪽에 M8 커넥터를 꽂고 돌릴 공간이 충분하고, 센서를 쉽게 교체하고 싶을 때.\n주의: 좁은 공간에서는 커넥터 몸체와 케이블 굽힘 반경이 간섭할 수 있습니다.',
+          foot:'OMRON 공식 한글 카탈로그 · M8 커넥터 사양'};
+      }
+
+      if(label.includes('코드 인출 타입(2m)')||label==='cable'){
+        return {...base,img,title:node.category==='proximity'?'코드 인출형':'코드 인출 타입 2m',
+          text:'센서 본체에서 케이블이 바로 나오는 방식입니다. 별도 커넥터 없이 배선을 그대로 제어반이나 단자대 방향으로 보냅니다.',
+          key:'이럴 때 선택: 센서를 자주 교체하지 않고, 센서 주변을 단순하게 구성하고 싶을 때.\n주의: 교체 시 케이블까지 같이 처리해야 하므로 유지보수 빈도가 높은 설비에서는 커넥터형과 비교하세요.',
+          foot:'OMRON 공식 한글 카탈로그 · 코드 인출 사양'};
+      }
+
+      return {...base,img,title:`접속 방식 · ${node.label}`,
+        text:'센서와 배선이 실제로 어떻게 연결되고 분리되는지를 정하는 항목입니다.',
+        key:'초보자 판단 순서: ① 센서 바로 뒤에 커넥터 공간이 있는가? ② 센서를 자주 교체할 가능성이 있는가? ③ 센서 주변이 좁다면 짧은 중계 케이블이 필요한가?',
+        foot:'등록 공식 카탈로그 접속 사양'};
+    }
+
+    return base;
+  }
+
+  function row(p){
+    const selected=selectedModel===p.model;
+    return `<tr class="${selected?'selected':''}" data-select-model="${esc(p.model)}" tabindex="0" aria-selected="${selected?'true':'false'}">
+      <td class="model-select-cell"><span class="model-select-dot" aria-hidden="true"></span></td>
+      <td class="model">${esc(p.model)}<span class="row-select-hint">${selected?'선택됨':'클릭하여 선택'}</span></td>
+      <td>${esc(p.series)}</td>
+      <td>${esc(distanceText(p))}</td>
+      <td class="sensor-type-cell">${esc(typeDisplay(p))}</td>
+      <td>${esc(p.specs?.outputType||'—')}</td>
+      <td>${esc(OP[p.specs?.operationMode]||p.specs?.operationMode||'—')}</td>
+      <td>${esc(p.connection?.base?.label||CONN[p.connection?.base?.type]||p.connection?.base?.type||'—')}</td>
+      <td>${esc(p.specs?.ipRating||'—')}</td>
+    </tr>`;
+  }
+
+  function renderTreeNode(node,level=0){
+    const has=node.children?.length;
+    const expanded=expandedTree.has(node.id);
+    const selected=selectedTreeNode===node.id;
+    if(node.kind==='model'){
+      return `<div class="tree-node ${expanded?'expanded':''}" data-node="${esc(node.id)}">
+        <div class="tree-node-row model-leaf ${selected?'selected':''}" data-level="${Math.min(level,4)}">
+          ${has?`<button type="button" class="tree-toggle" data-tree-toggle="${esc(node.id)}">${expanded?'▼':'▶'}</button>`:'<span class="tree-model-mark" aria-hidden="true"></span>'}
+          <button type="button" class="tree-node-label" data-tree-select="${esc(node.id)}">${esc(node.label)}<small>${esc(node.sub||'')}</small></button>
+          ${has?`<span class="tree-count">${node.children.length} 선택</span>`:'<span></span>'}
+          <span></span><span></span>
+        </div>
+        ${has?`<div class="tree-node-children">${node.children.map(ch=>renderTreeNode(ch,level+1)).join('')}</div>`:''}
+      </div>`;
+    }
+    if(node.kind==='accessory'){
+      return `<div class="tree-node" data-node="${esc(node.id)}">
+        <div class="tree-node-row accessory-leaf ${selected?'selected':''}" data-level="${Math.min(level,4)}">
+          <span class="tree-accessory-mark" aria-hidden="true">◆</span>
+          <button type="button" class="tree-node-label" data-tree-select="${esc(node.id)}">${esc(node.label)}<small>${esc(node.sub||'')}</small></button>
+          <span></span>
+          <button type="button" class="tree-help-btn" data-tree-help="${esc(node.id)}" aria-label="${esc(node.label)} 설명">?</button>
+          <span></span>
+        </div>
+      </div>`;
+    }
+    const compare=node.groupKey?`<button type="button" class="tree-compare-btn" data-compare-key="${esc(node.groupKey)}" title="그룹 비교">${compareGroups.includes(node.groupKey)?'✓ 비교':'＋ 비교'}</button>`:'<span></span>';
+    return `<div class="tree-node ${expanded?'expanded':''}" data-node="${esc(node.id)}">
+      <div class="tree-node-row ${selected?'selected':''}" data-level="${Math.min(level,4)}">
+        <button type="button" class="tree-toggle ${has?'':'blank'}" data-tree-toggle="${esc(node.id)}">${has?(expanded?'▼':'▶'):'•'}</button>
+        <button type="button" class="tree-node-label" data-tree-select="${esc(node.id)}">${esc(node.label)}<small>${esc(node.sub||'')}</small></button>
+        <span class="tree-count">${node.list?.length||0}</span>
+        <button type="button" class="tree-help-btn" data-tree-help="${esc(node.id)}" aria-label="${esc(node.label)} 설명">?</button>
+        ${compare}
+      </div>
+      ${has?`<div class="tree-node-children">${node.children.map(ch=>renderTreeNode(ch,level+1)).join('')}</div>`:''}
+    </div>`;
+  }
+
+  function renderTree(){document.getElementById('catalogTree').innerHTML=treeRoots.map(r=>renderTreeNode(r)).join('');refreshGroupCompareUI()}
+
+  function childCards(node){
+    if(!node.children?.length)return '';
+    return `<div class="tree-next-title">다음 선택</div><div class="tree-next-grid">${node.children.map(ch=>{
+      const model=ch.kind==='model';
+      return `<button type="button" class="tree-next-card" data-tree-select="${esc(ch.id)}"><span><b>${esc(ch.label)}</b><small>${esc(ch.sub||'')}${model?'':` · ${ch.list?.length||0} 모델`}</small></span>${model?'<span>→</span>':`<span class="tree-help-btn" data-tree-help="${esc(ch.id)}">?</span>`}</button>`;
+    }).join('')}</div>`;
+  }
+
+  function finalModelCard(p,node=null){
+    const choice=node?.connectionChoice||window.SensorConnection.choices(p)[0];
+    const info=currentAccessoryInfo(p,choice),needs=info.requirement==='required',unknown=info.requirement==='unknown';
+    const order=window.SensorConnection.orderText(p,choice);
+    return `<div class="tree-final-card">
+      <div class="tree-final-top">
+        <div class="tree-final-image type-image" data-hover-image="${esc(p.productImage||'')}" data-hover-title="${esc(p.model)}" data-hover-text="${esc(methodName(p)+' · '+distanceText(p))}"><img src="${esc(p.productImage||'')}" alt="${esc(p.model)}"></div>
+        <div>
+          <span class="tree-final-kicker">${needs?'센서 형번 선택 완료 · 접속 부품 남음':unknown?'센서 형번 선택 완료 · 접속 부품 확인 필요':'최종 선택 형번'}</span>
+          <div class="tree-final-model">${esc(p.model)}</div>
+          <div class="tree-final-series">OMRON · ${esc(p.series)} · 한글 공식 카탈로그 ${catalogYear(p)} 기준</div>
+          <div class="tree-path-complete">선택 접속 사양: ${esc(choice?.label||connectionText(p))}${choice?.source==='variant'?` · 주문 조합 ${esc(order)}`:''}</div>
+          <div class="tree-final-specs">
+            <div class="tree-final-spec"><b>검출 방식</b><span>${esc(methodName(p))}</span></div>
+            <div class="tree-final-spec"><b>거리 / 홈</b><span>${esc(distanceText(p))}</span></div>
+            <div class="tree-final-spec"><b>출력</b><span>${esc(p.specs?.outputType||'—')}</span></div>
+            <div class="tree-final-spec"><b>동작</b><span>${esc(operationText(p))}</span></div>
+            <div class="tree-final-spec"><b>접속 사양</b><span>${esc(choice?.label||connectionText(p))}</span></div>
+            <div class="tree-final-spec connector-required"><b>추가 접속 부품</b><span>${esc(info.summary)}</span></div>
+          </div>
+        </div>
+      </div>
+      ${needs?`<div class="connector-next-note required"><b>접속 부품 선정 필요</b><span>${esc(info.beginner||'아래에서 접속 부품을 선택하세요.')}</span></div>`:''}
+      ${unknown?`<div class="accessory-warning"><b>확인 불가</b><br>${esc(info.beginner||info.summary)}</div>`:''}
+      ${info.requirement==='none'?`<div class="connector-next-note done"><b>센서측 추가 커넥터 없음</b><span>${esc(info.beginner||info.summary)}</span></div>`:''}
+      <div class="tree-final-note">상세 사양과 공식 카탈로그의 센서 형번 위치는 아래 버튼에서 확인합니다.</div>
+      <div class="tree-final-actions"><button type="button" onclick="openPartDetail('${esc(p.model)}')">상세보기</button><button type="button" class="primary" onclick="openPartEvidence('${esc(p.model)}')">▣ 근거보기</button></div>
+      ${node&&node.children?.length?childCards(node):''}
+    </div>`;
+  }
+
+  function finalAccessoryCard(node){
+    const p=node.product,a=node.accessory||{},choice=node.connectionChoice||window.SensorConnection.choices(p)[0];
+    const unknown=a.certainty==='unverified',dedicated=a.certainty==='dedicated_verified';
+    return `<div class="tree-final-card accessory-final-card">
+      <div class="tree-breadcrumb-inline">센서 <b>${esc(p.model)}</b> · 접속 <b>${esc(choice?.label||'')}</b> · 접속 부품</div>
+      <div class="accessory-final-grid">
+        <div class="accessory-sensor-box"><small>선택 센서</small><img src="${esc(p.productImage||'')}" alt="${esc(p.model)}"><b>${esc(p.model)}</b><span>${esc(choice?.label||connectionText(p))}</span></div>
+        <div class="accessory-plus">＋</div>
+        <div class="accessory-part-box"><small>${unknown?'접속 부품 확인 필요':'선택 접속 부품'}</small>
+          <div class="accessory-part-number">${esc(a.part||node.label)}</div>
+          <div class="accessory-part-meta">${esc(a.kind||'')} ${a.length&&a.length!=='—'?`· ${esc(a.length)}`:''}</div>
+          <p>${esc(a.note||'')}</p>${a.optional?`<div class="accessory-option">선택 옵션: ${esc(a.optional)}</div>`:''}
+        </div>
+      </div>
+      <div class="tree-path-complete">${unknown?'센서 형번은 선택되었지만 접속 부품은 추가 확인이 필요합니다.':'센서 + 접속 부품 조합이 선택되었습니다.'}</div>
+      ${unknown?`<div class="accessory-warning"><b>확인 불가</b><br>${esc(a.warning||'현재 등록된 공식 기본 카탈로그에서 정확한 접속 부품 형번을 확정할 수 없습니다.')}</div>`:''}
+      ${dedicated?`<div class="accessory-verified"><b>전용 부품 확인</b> · 공식 카탈로그에서 전용 접속 부품으로 지정된 형번입니다.</div>`:''}
+      ${a.warning&&!unknown?`<div class="accessory-warning">${esc(a.warning)}</div>`:''}
+      <div class="tree-final-actions"><button type="button" onclick="openPartDetail('${esc(p.model)}')">센서 상세보기</button><button type="button" class="primary" data-tree-help="${esc(node.id)}">▣ 접속 부품 근거</button></div>
+    </div>`;
+  }
+
+
+  function renderDetail(node){
+    const root=document.getElementById('treeDetail');
+    if(!node){
+      root.innerHTML=`<div class="tree-detail-empty"><div><strong>센서 종류부터 선택하세요.</strong><p>왼쪽 트리에서 조건을 하나씩 내려가면 마지막에 정확한 형번까지 선택할 수 있습니다.<br>모르는 항목은 선택 전에 <b>?</b>에 마우스를 올려 설명을 확인하세요.</p><div class="guide-steps"><span>① 센서 종류</span><span>② 방식/사이즈/홈</span><span>③ 거리/형상</span><span>④ 출력/동작/접속</span><span>⑤ 센서 형번 → 접속 부품</span></div></div></div>`;
+      return;
+    }
+
+    const bc=breadcrumb(node);
+    if(node.kind==='model'){
+      const p=node.product;
+      root.innerHTML=`<div class="tree-breadcrumb">${bc.map((x,i)=>`${i?'<span>›</span>':''}<b>${esc(x)}</b>`).join('')}</div>${finalModelCard(p,node)}`;
+      return;
+    }
+    if(node.kind==='accessory'){
+      root.innerHTML=`<div class="tree-breadcrumb">${bc.map((x,i)=>`${i?'<span>›</span>':''}<b>${esc(x)}</b>`).join('')}</div>${finalAccessoryCard(node)}`;
+      return;
+    }
+
+    const h=helpData(node);
+    root.innerHTML=`<div class="tree-breadcrumb">${bc.map((x,i)=>`${i?'<span>›</span>':''}<b>${esc(x)}</b>`).join('')}</div>
+      <div class="tree-detail-head">
+        <div class="tree-detail-image type-image" data-hover-image="${esc(h.img||'')}" data-hover-title="${esc(h.title)}" data-hover-text="${esc(h.text)}"><img src="${esc(h.img||'')}" alt="${esc(h.title)}"></div>
+        <div><div class="tree-detail-title">${esc(node.label)}</div><div class="tree-detail-sub">${esc(h.text)}</div><div class="tree-detail-badges"><span>${node.list?.length||0} 모델</span><span>${esc(CAT_NAME[node.category]||'센서')}</span>${node.groupKey?'<span>그룹 비교 가능</span>':''}</div></div>
+      </div>
+      ${h.key?`<div class="tree-search-note"><b>선택 포인트</b><br>${esc(h.key)}</div>`:''}
+      ${childCards(node)}
+      <div class="tree-select-guide">트리의 다음 항목을 계속 선택하면 <b>출력 → 동작 → 접속 → 센서 형번 → 필요 시 접속 부품</b>까지 내려갑니다.</div>`;
+  }
+
+  function selectTreeNode(id,expand=true,clearSearch=true){
+    const node=treeNodes.get(id);if(!node)return;
+    selectedTreeNode=id;
+    if(expand&&node.children?.length)expandedTree.add(id);
+    ancestors(node).forEach(a=>expandedTree.add(a.id));
+
+    if(node.kind==='model'||node.kind==='accessory'){
+      selectedModel=node.product.model;
+      window.__catalogConnectionContext={model:node.product.model,choice:node.connectionChoice||null};
+      syncSelectionBar();
+    }else{
+      window.__catalogConnectionContext=null;
+    }
+
+    if(clearSearch){
+      query='';
+      const input=document.getElementById('catalogSearch');if(input)input.value='';
+    }
+    renderTree();
+    renderDetail(node);
+    document.getElementById('viewCount').textContent=node.kind==='accessory'?`조합 선택 · ${node.product.model} + ${node.accessory?.part||''}`:(node.kind==='model'?`센서 선택 · ${node.product.model}`:`${node.list?.length||0} 모델`);
+  }
+
+  function collapseAll(){
+    expandedTree.clear();selectedTreeNode=null;selectedModel='';syncSelectionBar();renderTree();renderDetail(null);
+    document.getElementById('viewCount').textContent=`${products.length} 모델`;
+  }
+
+  function searchProducts(q){
+    const low=q.trim().toLowerCase();
+    if(!low)return [];
+    return products.filter(p=>[
+      p.model,p.series,CAT_NAME[cat(p)],METHOD[p.classification?.detectionMethod],
+      p.classification?.shapeNameKo,p.classification?.shapeCode,p.classification?.sizeLabel,
+      p.classification?.shieldNameKo,distanceText(p),normalizedSetting(p),typeDisplay(p),
+      p.specs?.outputType,operationNodeLabel(p),connTypeLabel(p)
+    ].filter(Boolean).join(' ').toLowerCase().includes(low));
+  }
+
+  function renderSearch(q){
+    query=q.trim();
+    if(!query){
+      renderDetail(selectedTreeNode?treeNodes.get(selectedTreeNode):null);
+      if(selectedTreeNode){
+        const sn=treeNodes.get(selectedTreeNode);
+        document.getElementById('viewCount').textContent=sn?.kind==='accessory'?`조합 선택 · ${sn.product.model} + ${sn.accessory?.part||''}`:(sn?.kind==='model'?`센서 선택 · ${sn.product.model}`:`${sn?.list?.length||0} 모델`);
+      }else document.getElementById('viewCount').textContent=`${products.length} 모델`;
+      return;
+    }
+
+    const exact=products.find(p=>p.model.toLowerCase()===query.toLowerCase());
+    if(exact){
+      const nodeId=modelNodeByModel.get(exact.model);
+      if(nodeId){
+        selectTreeNode(nodeId,true,false);
+        const input=document.getElementById('catalogSearch');if(input)input.value=query;
+        document.getElementById('viewCount').textContent=`정확히 일치 · ${exact.model}`;
+        return;
+      }
+    }
+
+    const found=searchProducts(query);
+    document.getElementById('treeDetail').innerHTML=`<div class="tree-search-note"><b>검색 “${esc(query)}”</b> · ${found.length}개 모델<br>형번을 정확히 입력하면 해당 모델의 트리 경로를 자동으로 끝까지 펼칩니다.</div>
+      <div class="tree-model-table-wrap"><table class="tree-model-table model-table"><thead><tr><th class="model-select-cell">선택</th><th>형번</th><th>시리즈</th><th>거리/홈</th><th>타입</th><th>출력</th><th>동작</th><th>접속</th><th>보호</th></tr></thead><tbody>${found.length?found.map(row).join(''):'<tr><td colspan="9">검색 결과가 없습니다.</td></tr>'}</tbody></table></div>`;
+    document.getElementById('viewCount').textContent=`검색 ${found.length} 모델`;
+
+    if(found.length===1){
+      const nodeId=modelNodeByModel.get(found[0].model);
+      const node=treeNodes.get(nodeId);
+      if(node){ancestors(node).forEach(a=>expandedTree.add(a.id));selectedTreeNode=node.id;renderTree()}
+    }
+  }
+
+  function initialRender(){
+    renderTree();renderDetail(null);
+    document.getElementById('viewCount').textContent=`${products.length} 모델`;
   }
   function syncSelectionBar(){
     const bar=document.getElementById('selectionBar');
@@ -627,6 +1267,7 @@ button,input,select{font:inherit}
             <div class="part-spec"><b>동작</b><span>${esc(operationText(p))}</span></div>
             <div class="part-spec"><b>형상</b><span>${esc(shapeText(p))}</span></div>
             <div class="part-spec"><b>접속</b><span>${esc(connectionText(p))}</span></div>
+            <div class="part-spec"><b>추가 접속 부품</b><span>${esc(window.SensorConnection.requirementText(p,window.SensorConnection.choices(p)[0]))}</span></div>
           </div>
         </div>
       </div>
@@ -647,6 +1288,8 @@ button,input,select{font:inherit}
   window.openPartDetail=function(model){
     const p=productByModel(model);if(!p)return;
     const s=p.specs||{}, category=cat(p);
+    const ctx=(window.__catalogConnectionContext?.model===model)?window.__catalogConnectionContext.choice:null;
+    const activeChoice=ctx||window.SensorConnection.choices(p)[0];
     const detailRows=[
       ['센서 종류',CAT_NAME[category]||'센서'],
       ['시리즈',p.series],
@@ -663,7 +1306,9 @@ button,input,select{font:inherit}
       ['응답',responseText(p)],
       ['광원',lightText(p)],
       ['보호 구조',s.ipRating||'—'],
-      ['접속',connectionText(p)]
+      ['선택 접속 사양',activeChoice?.label||connectionText(p)],
+      ['주문 조합',window.SensorConnection.orderText(p,activeChoice)],
+      ['추가 접속 부품',window.SensorConnection.requirementText(p,activeChoice)]
     ];
     const visuals=[];
     const cv=p.catalogVisuals||{};
@@ -771,14 +1416,8 @@ button,input,select{font:inherit}
 
   let imagePopHideTimer=null;
   const imagePop=document.getElementById('catalogImagePop');
-  function hideImagePop(){
-    clearTimeout(imagePopHideTimer);
-    imagePop?.classList.remove('show','expanded');
-  }
-  function scheduleImagePopHide(ms=160){
-    clearTimeout(imagePopHideTimer);
-    imagePopHideTimer=setTimeout(hideImagePop,ms);
-  }
+  function hideImagePop(){clearTimeout(imagePopHideTimer);imagePop?.classList.remove('show','expanded','click-expanded')}
+  function scheduleImagePopHide(ms=160){clearTimeout(imagePopHideTimer);imagePopHideTimer=setTimeout(hideImagePop,ms)}
   function showImagePop(el){
     const src=el.dataset.hoverImage;if(!src)return;
     clearTimeout(imagePopHideTimer);
@@ -786,41 +1425,97 @@ button,input,select{font:inherit}
     document.getElementById('catalogImagePopImg').src=src;
     document.getElementById('catalogImagePopText').textContent=el.dataset.hoverText||'';
     const r=el.getBoundingClientRect(),vw=document.documentElement.clientWidth,vh=document.documentElement.clientHeight;
-    const w=Math.min(380,vw-24);
-    let left=r.right+10;
-    if(left+w>vw-12)left=Math.max(12,r.left-w-10);
-    let top=Math.max(12,Math.min(r.top,vh-390));
-    imagePop.style.left=left+'px';
-    imagePop.style.top=top+'px';
-    imagePop.classList.add('show');
+    const w=Math.min(380,vw-24);let left=r.right+10;if(left+w>vw-12)left=Math.max(12,r.left-w-10);
+    let top=Math.max(12,Math.min(r.top,vh-390));imagePop.style.left=left+'px';imagePop.style.top=top+'px';imagePop.classList.add('show');
   }
-  document.getElementById('catalogRoot').addEventListener('mouseover',e=>{
-    if(!window.matchMedia('(hover:hover)').matches)return;
-    const el=e.target.closest('.type-image[data-hover-image]');
-    if(el)showImagePop(el);
-  });
-  document.getElementById('catalogRoot').addEventListener('mouseout',e=>{
-    if(!window.matchMedia('(hover:hover)').matches)return;
-    const el=e.target.closest('.type-image[data-hover-image]');
-    if(el&&!el.contains(e.relatedTarget))scheduleImagePopHide(220);
-  });
-  imagePop?.addEventListener('mouseenter',()=>{clearTimeout(imagePopHideTimer);imagePop.classList.add('expanded')});
-  imagePop?.addEventListener('mouseleave',()=>scheduleImagePopHide(100));
+
+  let treeHelpTimer=null;
+  const treeHelp=document.getElementById('treeHelpPop');
+  function hideTreeHelp(){clearTimeout(treeHelpTimer);treeHelp?.classList.remove('show','expanded','click-expanded')}
+  function scheduleTreeHelp(ms=180){clearTimeout(treeHelpTimer);treeHelpTimer=setTimeout(hideTreeHelp,ms)}
+  function showTreeHelp(el,id){
+    const node=treeNodes.get(id);if(!node)return;
+    const h=helpData(node);clearTimeout(treeHelpTimer);
+    document.getElementById('treeHelpTitle').textContent=h.title||node.label;
+    const img=document.getElementById('treeHelpImage');img.src=h.img||'';img.style.display=h.img?'block':'none';
+    document.getElementById('treeHelpText').textContent=h.text||'';
+    document.getElementById('treeHelpKey').innerHTML=h.key?`<b>초보자 선택 포인트</b><br>${esc(h.key)}`:'';
+    document.getElementById('treeHelpKey').style.display=h.key?'block':'none';
+    document.getElementById('treeHelpFoot').textContent=h.foot||'';
+    const r=el.getBoundingClientRect(),vw=document.documentElement.clientWidth,vh=document.documentElement.clientHeight;
+    const w=Math.min(320,vw-24);let left=r.right+8;if(left+w>vw-12)left=Math.max(12,r.left-w-8);
+    treeHelp.classList.add('show');
+    const ph=treeHelp.offsetHeight||330;let top=Math.max(12,Math.min(r.top-16,vh-ph-12));
+    treeHelp.style.left=left+'px';treeHelp.style.top=top+'px';
+  }
+
   document.getElementById('catalogRoot').addEventListener('click',e=>{
+    const compare=e.target.closest('[data-compare-key]');
+    if(compare){e.preventDefault();e.stopPropagation();toggleGroupCompare(compare.dataset.compareKey);return}
+
+    const help=e.target.closest('[data-tree-help]');
+    if(help){
+      e.preventDefault();e.stopPropagation();
+      showTreeHelp(help,help.dataset.treeHelp);
+      if(window.matchMedia('(hover:hover)').matches)treeHelp.classList.add('click-expanded');
+      return;
+    }
+
+    const toggle=e.target.closest('[data-tree-toggle]');
+    if(toggle){e.preventDefault();const id=toggle.dataset.treeToggle;if(expandedTree.has(id))expandedTree.delete(id);else expandedTree.add(id);renderTree();return}
+
+    const select=e.target.closest('[data-tree-select]');
+    if(select){e.preventDefault();selectTreeNode(select.dataset.treeSelect);return}
+
     if(!window.matchMedia('(hover:hover)').matches){
       const image=e.target.closest('.type-image[data-hover-image]');
       if(image){e.preventDefault();showImagePop(image);return}
     }
+
     const row=e.target.closest('tr[data-select-model]');
     if(!row)return;
     const model=row.dataset.selectModel;
-    if(selectedModel===model)openPartInfo(model);
-    else selectCatalogModel(model);
+    if(selectedModel===model)openPartInfo(model);else selectCatalogModel(model);
   });
+
   document.getElementById('catalogRoot').addEventListener('keydown',e=>{
     const row=e.target.closest('tr[data-select-model]');
     if(!row)return;
-    if(e.key==='Enter'||e.key===' '){e.preventDefault();const model=row.dataset.selectModel;if(selectedModel===model)openPartInfo(model);else selectCatalogModel(model);}
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();const model=row.dataset.selectModel;if(selectedModel===model)openPartInfo(model);else selectCatalogModel(model)}
+  });
+
+  document.getElementById('catalogRoot').addEventListener('mouseover',e=>{
+    if(!window.matchMedia('(hover:hover)').matches)return;
+    const help=e.target.closest('[data-tree-help]');if(help){showTreeHelp(help,help.dataset.treeHelp);return}
+    const image=e.target.closest('.type-image[data-hover-image]');if(image)showImagePop(image);
+  });
+  document.getElementById('catalogRoot').addEventListener('mouseout',e=>{
+    if(!window.matchMedia('(hover:hover)').matches)return;
+    const help=e.target.closest('[data-tree-help]');if(help&&!help.contains(e.relatedTarget))scheduleTreeHelp(220);
+    const image=e.target.closest('.type-image[data-hover-image]');if(image&&!image.contains(e.relatedTarget))scheduleImagePopHide(220);
+  });
+  treeHelp?.addEventListener('mouseenter',()=>{clearTimeout(treeHelpTimer);treeHelp.classList.add('expanded')});
+  treeHelp?.addEventListener('mouseleave',()=>{if(!treeHelp.classList.contains('click-expanded'))scheduleTreeHelp(100)});
+  treeHelp?.addEventListener('click',e=>{
+    e.stopPropagation();
+    const on=treeHelp.classList.toggle('click-expanded');
+    treeHelp.classList.toggle('expanded',!on);
+    document.querySelector('#treeHelpPop .tree-help-hint').textContent=on?'클릭하면 원래 크기로 돌아갑니다.':'팝업 안으로 마우스를 옮기면 확대되고, 팝업을 클릭하면 더 크게 고정 확대됩니다.';
+  });
+  imagePop?.addEventListener('mouseenter',()=>{clearTimeout(imagePopHideTimer);imagePop.classList.add('expanded')});
+  imagePop?.addEventListener('mouseleave',()=>{if(!imagePop.classList.contains('click-expanded'))scheduleImagePopHide(100)});
+  imagePop?.addEventListener('click',e=>{
+    e.stopPropagation();
+    const on=imagePop.classList.toggle('click-expanded');
+    imagePop.classList.toggle('expanded',!on);
+    imagePop.querySelector('.hint').textContent=on?'클릭하면 원래 크기로 돌아갑니다.':'팝업 안으로 마우스를 옮기면 확대되고, 클릭하면 더 크게 고정 확대됩니다.';
+  });
+
+  document.getElementById('catalogSearch').addEventListener('input',e=>renderSearch(e.target.value));
+  document.getElementById('treeCollapseAll').addEventListener('click',collapseAll);
+  document.getElementById('treeClearSearch').addEventListener('click',()=>{
+    const input=document.getElementById('catalogSearch');input.value='';query='';renderDetail(selectedTreeNode?treeNodes.get(selectedTreeNode):null);
+    document.getElementById('viewCount').textContent=selectedTreeNode?`${treeNodes.get(selectedTreeNode)?.list?.length||0} 모델`:`${products.length} 모델`;
   });
 
   document.getElementById('groupCompareBack')?.addEventListener('click',e=>{if(e.target.id==='groupCompareBack')closeGroupCompare()});
@@ -833,18 +1528,9 @@ button,input,select{font:inherit}
       if(id==='partZoomBack')closePartZoom();
     });
   });
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeGroupCompare();hideImagePop();closePartZoom();closePartEvidence();closePartDetail();closePartInfo();}});
-
-  document.getElementById('catalogSearch').addEventListener('input',e=>{query=e.target.value.trim();render()});
-  document.getElementById('categoryFilters').addEventListener('click',e=>{
-    const b=e.target.closest('button[data-cat]');if(!b)return;
-    category=b.dataset.cat;
-    document.querySelectorAll('#categoryFilters button').forEach(x=>x.classList.toggle('active',x===b));
-    render();
-  });
-
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeGroupCompare();hideImagePop();hideTreeHelp();closePartZoom();closePartEvidence();closePartDetail();closePartInfo()}});
   if(location.hash!=='#type')history.replaceState(null,'','#type');
-  render();
+  initialRender();
 })();
 </script>
 </body>

@@ -223,7 +223,7 @@ button,input{font:inherit} button{cursor:pointer}
 
 /* v1.6 · hover popup enlarges when pointer enters */
 .popover{width:min(520px,calc(100vw - 24px));max-width:calc(100vw - 24px);max-height:84vh;overflow:auto;pointer-events:auto;transition:width .12s ease}
-.popover.expanded{width:min(760px,calc(100vw - 24px))}
+.popover.expanded{width:min(760px,calc(100vw - 24px))}.popover.click-expanded{width:min(920px,calc(100vw - 24px));max-height:92vh;overflow:auto}.popover.click-expanded .pop-img{max-height:72vh}
 .popover .pop-img{max-height:52vh;transition:max-height .12s ease}
 .popover.expanded .pop-img{max-height:70vh}
 .pop-hover-guide{margin-top:6px;font-size:10px;color:#667085}
@@ -532,6 +532,31 @@ button,input{font:inherit} button{cursor:pointer}
   .catalog-mobile-link{display:flex;margin:10px 12px 0;border:1px solid #b8c7ff;background:#f7f9ff;color:#244fc4;text-decoration:none;border-radius:10px;padding:9px 11px;font-size:11px;font-weight:900;align-items:center;justify-content:center}
 }
 
+
+/* v20 route hotfix · explicit three-route behavior */
+.sensor-type-card.proximity .sensor-type-icon{background:#fff7e8;color:#b54708}
+.sensor-type-card.proximity.selected{border:2px solid #d97706;background:#fffbeb}
+.sensor-type-card.proximity .sensor-type-next{color:#b54708}
+.sensor-route-badge.proximity{background:#fff7e8!important;border-color:#fed7aa!important;color:#b54708!important}
+
+
+/* v20 · all-series connector/accessory completion */
+.connection-beginner-note{margin-top:8px;padding:8px 9px;border:1px solid #d7e4ff;background:#f7f9ff;border-radius:8px;color:#475467;font-size:10px;line-height:1.55}
+.conn-accessory-summary{margin-top:8px;border:1px solid #d7e4ff;background:#f8faff;border-radius:9px;padding:8px 9px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.conn-accessory-summary strong{display:block;color:#173a91;font-size:9.5px}.conn-accessory-summary span{display:block;color:#667085;font-size:9px;line-height:1.45;margin-top:2px}.conn-accessory-summary button{border:1px solid #9db4ff;background:#eef3ff;color:#244fc4;border-radius:8px;padding:7px 8px;font-size:9.5px;font-weight:900;cursor:pointer}
+.conn-accessory-summary.required{border-color:#f5c66a;background:#fffaf0}.conn-accessory-summary.required strong{color:#8a4b08}.conn-accessory-summary.unknown{border-color:#f0b3b3;background:#fff8f8}.conn-accessory-summary.unknown strong{color:#b42318}.conn-accessory-summary.none{border-color:#a7dfc2;background:#f3fff8}.conn-accessory-summary.none strong{color:#067647}
+.conn-accessory-modal{width:min(1100px,97vw);max-height:94vh}.conn-intro{border:1px solid #dbe5f3;background:#f8fbff;border-radius:10px;padding:9px 10px;color:#475467;font-size:10px;line-height:1.55;margin-bottom:10px}
+.conn-choice-card{border:1px solid #dfe5ef;border-radius:12px;padding:10px;margin-bottom:9px;background:#fff}.conn-choice-card.selected-choice{border:2px solid #3157d5}
+.conn-choice-head{display:flex;gap:8px;align-items:flex-start}.conn-choice-head>div{flex:1}.conn-choice-head strong{display:block;color:#173a91;font-size:12px}.conn-choice-head small{display:block;color:#667085;font-size:9px;margin-top:2px}.conn-status{border-radius:999px;padding:3px 7px;font-size:8.5px;font-weight:900;white-space:nowrap}.conn-status.required{background:#fff0d5;color:#8a4b08}.conn-status.none{background:#eafbf2;color:#067647}.conn-status.unknown{background:#fff0f0;color:#b42318}
+.conn-choice-help{margin-top:7px;color:#475467;font-size:9.5px;line-height:1.55}.conn-choice-key{margin-top:6px;background:#f7f9fc;border-radius:8px;padding:7px 8px;color:#344054;font-size:9.5px;line-height:1.5}
+.conn-source-image{margin-top:8px;width:100%;height:120px;object-fit:contain;border:1px solid #edf0f5;border-radius:8px;background:#fff;cursor:zoom-in;transition:height .12s}.conn-source-image:hover,.conn-source-image.clicked{height:300px}
+.conn-group{margin-top:9px;border-top:1px solid #edf0f5;padding-top:8px}.conn-group-title{font-size:10px;font-weight:950;color:#173a91}.conn-group-sub{font-size:8.5px;color:#667085;margin-top:2px}.conn-group-help{font-size:9px;color:#475467;line-height:1.5;margin-top:5px}
+.conn-part-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:7px}.conn-part{border:1px solid #dfe5ef;border-radius:9px;padding:8px;background:#fff;text-align:left;cursor:pointer}.conn-part:hover{border-color:#9db4ff;background:#f7f9ff}.conn-part.selected{border:2px solid #3157d5;background:#eef3ff}.conn-part b{display:block;color:#173a91;font-size:10.5px}.conn-part span{display:block;color:#475467;font-size:9px;margin-top:2px}.conn-part small{display:block;color:#667085;font-size:8.5px;line-height:1.4;margin-top:4px}
+.conn-unknown{margin-top:8px;border:1px solid #efb0b0;background:#fff7f7;border-radius:8px;padding:8px 9px;color:#8e1b15;font-size:9.5px;line-height:1.55}.conn-none{margin-top:8px;border:1px solid #a7dfc2;background:#f3fff8;border-radius:8px;padding:8px 9px;color:#067647;font-size:9.5px;line-height:1.55}
+.conn-combo{position:sticky;bottom:-1px;margin-top:10px;border:1px solid #9db4ff;background:#f5f8ff;border-radius:10px;padding:9px 10px;color:#344054;font-size:10px;line-height:1.55}.conn-combo b{color:#173a91}
+.detail-connection-completion{margin-top:14px;border:1px solid #d7e4ff;border-radius:10px;padding:10px;background:#f8faff}.detail-connection-completion h4{margin:0 0 5px;color:#173a91}.detail-connection-completion p{margin:0 0 8px;color:#667085;font-size:10px;line-height:1.55}.detail-connection-completion button{border:1px solid #9db4ff;background:#eef3ff;color:#244fc4;border-radius:8px;padding:8px 10px;font-weight:900;cursor:pointer}
+@media(max-width:720px){.conn-part-grid{grid-template-columns:1fr}.conn-accessory-summary{grid-template-columns:1fr}.conn-accessory-summary button{width:100%}}
+
 </style>
 
 <meta name="jcalculator-module" content="sensor-selection">
@@ -550,8 +575,17 @@ button,input{font:inherit} button{cursor:pointer}
   <aside class="sidebar">
     <div class="side-head"><h3>상세 필터 · 실무자용</h3><button onclick="resetAll()">초기화</button></div><div class="sidebar-count" id="sidebarCount">OMRON 센서 데이터 로딩...</div>
     <div class="filter-section"><div class="filter-title">제조사</div><label class="check"><input type="checkbox" checked disabled> OMRON</label></div>
-    <div class="filter-section"><div class="filter-title">센서 종류 <span class="info term" data-term="photo">?</span></div><label class="check"><input type="checkbox" data-filter="category" value="photoelectric" checked> 광전센서</label><label class="check"><input type="checkbox" data-filter="category" value="proximity"> 근접센서 <span class="info term" data-term="proximity">?</span></label><label class="check"><input type="checkbox" data-filter="category" value="photo_microsensor"> 포토마이크로센서</label></div>
-    <div class="filter-section"><div class="filter-title">OMRON 시리즈</div><label class="check"><input type="checkbox" data-filter="series" value="E3T" checked> E3T · 초소형/박형</label><label class="check"><input type="checkbox" data-filter="series" value="E3Z" checked> E3Z · 소형/장거리</label><label class="check"><input type="checkbox" data-filter="series" value="E2E Small New" checked> E2E Small New · 소경 근접</label><label class="check"><input type="checkbox" data-filter="series" value="EE-SX47/67" checked> EE-SX47/67 · 말굽형</label></div>
+    <div class="filter-section"><div class="filter-title">센서 종류</div>
+      <label class="check"><input type="checkbox" data-filter="category" value="photoelectric"> 광전센서 <span class="info term" data-term="photo" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="category" value="proximity"> 근접센서 <span class="info term" data-term="proximity" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="category" value="photo_microsensor"> 포토마이크로센서 <span class="info term" data-term="photomicro" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
+    </div>
+    <div class="filter-section"><div class="filter-title">OMRON 시리즈</div>
+      <label class="check"><input type="checkbox" data-filter="series" value="E3T"> E3T · 초소형/박형</label>
+      <label class="check"><input type="checkbox" data-filter="series" value="E3Z"> E3Z · 소형/장거리</label>
+      <label class="check"><input type="checkbox" data-filter="series" value="E2E Small New"> E2E Small New · 소경 근접</label>
+      <label class="check"><input type="checkbox" data-filter="series" value="EE-SX47/67"> EE-SX47/67 · 말굽형</label>
+    </div>
     <div class="filter-section"><div class="filter-title">검출 방식</div><label class="check"><input type="checkbox" data-filter="method" value="inductive_proximity"> 고주파 발진형 근접 <span class="info term" data-term="proximity">?</span></label>
       <label class="check"><input type="checkbox" data-filter="method" value="through_beam"> 투과형 <span class="info term" data-term="through">?</span></label>
       <label class="check"><input type="checkbox" data-filter="method" value="retro_reflective"> 회귀 반사형 <span class="info term" data-term="retro">?</span></label>
@@ -577,9 +611,15 @@ button,input{font:inherit} button{cursor:pointer}
     <div class="filter-section"><div class="filter-title">형상</div><label class="check"><input type="checkbox" data-filter="shape" value="flat"> 플랫</label><label class="check"><input type="checkbox" data-filter="shape" value="side_view"> 사이드 뷰</label></div><div class="filter-section"><div class="filter-title">말굽형 형상 <span class="info term" data-term="photomicro">?</span></div><details class="advanced"><summary>8가지 형상 선택</summary><div style="margin-top:8px"><label class="check"><input type="checkbox" data-filter="forkShape" value="standard"> 표준형</label><label class="check"><input type="checkbox" data-filter="forkShape" value="l_shape"> L형</label><label class="check"><input type="checkbox" data-filter="forkShape" value="t_center_7"> T형 · 홈 중심 7mm</label><label class="check"><input type="checkbox" data-filter="forkShape" value="close_mount_3"> 밀착 설치형 · 형상 3</label><label class="check"><input type="checkbox" data-filter="forkShape" value="close_mount_4"> 밀착 설치형 · 형상 4</label><label class="check"><input type="checkbox" data-filter="forkShape" value="t_center_10"> T형 · 홈 중심 10mm</label><label class="check"><input type="checkbox" data-filter="forkShape" value="f_shape"> F형</label><label class="check"><input type="checkbox" data-filter="forkShape" value="r_shape"> R형</label></div></details></div>
     <div class="filter-section"><div class="filter-title">출력</div><label class="check"><input type="checkbox" data-filter="output" value="NPN"> NPN <span class="info term" data-term="npn">?</span></label><label class="check"><input type="checkbox" data-filter="output" value="PNP"> PNP <span class="info term" data-term="pnp">?</span></label></div>
     <div class="filter-section"><div class="filter-title">동작 방식</div><label class="check"><input type="checkbox" data-filter="operation" value="light_on"> 입광 시 ON <span class="info term" data-term="lighton">?</span></label><label class="check"><input type="checkbox" data-filter="operation" value="dark_on"> 차광 시 ON <span class="info term" data-term="darkon">?</span></label><label class="check"><input type="checkbox" data-filter="operation" value="normally_open"> NO <span class="info term" data-term="prox_no">?</span></label><label class="check"><input type="checkbox" data-filter="operation" value="normally_closed"> NC <span class="info term" data-term="prox_nc">?</span></label></div>
-    <div class="filter-section"><div class="filter-title">접속</div><label class="check"><input type="checkbox" data-filter="connection" value="cable"> 코드 인출</label><label class="check"><input type="checkbox" data-filter="connection" value="m8"> M8 / M8 중계</label><label class="check"><input type="checkbox" data-filter="connection" value="m12"> M12 <span class="info term" data-term="m12">?</span></label><label class="check"><input type="checkbox" data-filter="connection" value="econ"> e-CON <span class="info term" data-term="econ">?</span></label><label class="check"><input type="checkbox" data-filter="connection" value="robot"> 로봇 코드</label><label class="check"><input type="checkbox" data-filter="connection" value="fork_connector"> 말굽형 4극 커넥터</label>
-<label class="check"><input type="checkbox" data-filter="connection" value="fork_cable"> 말굽형 코드 인출 1m</label>
-<label class="check"><input type="checkbox" data-filter="connection" value="fork_relay"> 말굽형 커넥터 중계 0.1m</label></div>
+    <div class="filter-section"><div class="filter-title">접속 <span class="info term" data-term="conn_general">?</span></div>
+<label class="check"><input type="checkbox" data-filter="connection" value="cable"> 코드 인출 <span class="info term" data-term="conn_cable">?</span></label>
+<label class="check"><input type="checkbox" data-filter="connection" value="m8"> M8 / M8 중계 <span class="info term" data-term="conn_m8">?</span></label>
+<label class="check"><input type="checkbox" data-filter="connection" value="m12"> M12 <span class="info term" data-term="m12">?</span></label>
+<label class="check"><input type="checkbox" data-filter="connection" value="econ"> e-CON <span class="info term" data-term="econ">?</span></label>
+<label class="check"><input type="checkbox" data-filter="connection" value="robot"> 로봇 코드 <span class="info term" data-term="conn_robot">?</span></label>
+<label class="check"><input type="checkbox" data-filter="connection" value="fork_connector"> 말굽형 4극 커넥터 <span class="info term" data-term="fork_connector_help">?</span></label>
+<label class="check"><input type="checkbox" data-filter="connection" value="fork_cable"> 말굽형 코드 인출 1m <span class="info term" data-term="fork_cable_help">?</span></label>
+<label class="check"><input type="checkbox" data-filter="connection" value="fork_relay"> 말굽형 커넥터 중계 0.1m <span class="info term" data-term="fork_relay_help">?</span></label></div>
     <div class="filter-section"><div class="filter-title">환경 / 상세 사양</div>
 <label class="check"><input type="checkbox" data-filter="environment" value="ip67"> IP67 필요 <span class="info term" data-term="ip67">?</span></label>
 <div class="sync-note">최소 검출 물체·응답 성능은 모델 상세보기의 공식 사양에서 확인합니다.</div></div>
@@ -745,6 +785,7 @@ button,input{font:inherit} button{cursor:pointer}
 }
 </script>
 <script src="data/omron-sensor-selection-data-v10.js"></script>
+<script src="data/connection-accessory-engine-v01.js"></script>
 <script>
 const state={step:1,sensorType:null,photoMethod:null,proxSize:null,proxShield:null,purpose:null,target:null,targetDetails:[],through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null,connection:[],ip67Required:false,compareSelected:['E3T-FL11','E3T-SR41'],compareMode:'same'};
 const labels=['센서 종류','검출 대상','검출 방식','거리·형상','전기 조건','결과'];
@@ -762,12 +803,16 @@ const terms={
  bgs:{title:'BGS 반사형',diagram:'bgs',img:'assets/model_images/e3t/E3T-FL.png',text:'Background Suppression. 원하는 검출 대상 뒤쪽의 배경 물체 영향을 줄이도록 만든 반사형 방식입니다. 배경이 가까운 경우 우선 검토합니다.',foot:'제품 이미지: OMRON E3T 한글 공식 카탈로그 2010'},
  limited:{title:'한정 반사형',diagram:'limited',img:'assets/model_images/e3t/E3T-SL.png',text:'정해진 거리 영역의 물체를 검출하도록 설계된 반사형 방식입니다. 실제 적용 거리와 검출 영역은 제품 공식 사양으로 확인합니다.',foot:'제품 이미지: OMRON E3T 한글 공식 카탈로그 2010'},
  distance:{title:'검출 거리',text:'센서가 안정적으로 검출할 수 있도록 제조사가 제시한 거리 범위입니다. 선정에서는 실제 설치 거리와 공식 검출 거리 범위가 맞는지 우선 확인합니다.'},
- npn:{title:'NPN 출력',text:'PLC/제어기 입력 방식과 맞아야 하는 출력 형식입니다. 사용자가 NPN을 지정하면 선정에서는 Must 조건으로 처리하는 방향입니다.'},
- pnp:{title:'PNP 출력',text:'PLC/제어기 입력 방식과 맞아야 하는 출력 형식입니다. 사용자가 PNP를 지정하면 선정에서는 Must 조건으로 처리하는 방향입니다.'},
- lighton:{title:'입광 시 ON',text:'수광부에 빛이 들어오는 상태에서 출력이 ON되는 동작 모드입니다. 검출 방식에 따라 실제 “물체 있음/없음”과의 관계가 달라질 수 있어 최종 로직에서 정확히 매핑합니다.'},
- darkon:{title:'차광 시 ON',text:'수광부의 빛이 차단된 상태에서 출력이 ON되는 동작 모드입니다. 초보자 화면에서는 상황 중심 문구와 함께 표시합니다.'},
- m12:{title:'M12 접속',text:'M12 계열 커넥터를 이용하는 접속 방식입니다. E3T 카탈로그에는 M12 스마트 클릭 커넥터 중계 타입이 별도 접속 사양으로 제시됩니다.'},
- econ:{title:'e-CON',text:'OMRON E3T 카탈로그에 별도 접속 사양으로 기재된 커넥터 중계 방식입니다. 적용 가능 모델과 케이블 사양은 공식 선정표로 확인합니다.'},
+ npn:{title:'NPN 출력',text:'센서가 ON되면 출력선이 0V 쪽으로 동작하는 방식으로 이해하면 쉽습니다. NPN이 더 좋은 것이 아니라 PLC 입력 회로와 맞아야 합니다. PLC 입력 공통(COM) 사양을 모르면 임의 선택하지 말고 PLC 입력 매뉴얼을 확인하세요.'},
+ pnp:{title:'PNP 출력',text:'센서가 ON되면 출력선이 +전원 쪽으로 동작하는 방식으로 이해하면 쉽습니다. PNP가 더 좋은 것이 아니라 PLC 입력 회로와 맞아야 합니다. PLC 입력 공통(COM) 사양을 모르면 임의 선택하지 말고 PLC 입력 매뉴얼을 확인하세요.'},
+ lighton:{title:'입광 시 ON',text:'수광부에 빛이 들어올 때 출력이 ON됩니다. 주의: “빛이 들어온다”와 “물체가 있다”는 검출 방식에 따라 같은 뜻이 아닙니다. 투과형에서는 물체가 없을 때 빛이 통하는 경우가 많으므로 실제 기계에서 원하는 ON 상태를 기준으로 고르세요.'},
+ darkon:{title:'차광 시 ON',text:'수광부로 들어오던 빛이 물체에 의해 끊길 때 출력이 ON됩니다. 투과형이나 말굽형에서 “물체가 들어오면 ON”으로 쓰기 직관적인 경우가 많지만, 반사형은 검출 원리가 다르므로 실제 ON 조건을 같이 확인하세요.'},
+ conn_general:{title:'접속 방식 · 초보자 판단 순서',img:'assets/e2e/connectors-p61.jpg',text:'접속 방식은 센서가 제어반과 어떻게 이어지는지를 정하는 항목입니다. 초보자는 ① 센서에 케이블이 이미 붙어 있는지 ② 센서 바로 뒤에 커넥터를 꽂을 공간이 있는지 ③ 센서를 자주 교체할지 ④ 케이블이 반복해서 움직이는지 순서로 판단하면 쉽습니다.',foot:'OMRON 공식 한글 카탈로그 · 센서별 접속 사양'},
+ conn_cable:{title:'코드 인출 · 케이블 일체형',img:'assets/evidence/connection-p288.png',text:'센서 본체에서 케이블이 바로 붙어서 나옵니다. 센서 바로 뒤에 별도 커넥터를 꽂을 공간이 필요 없어 구조가 단순합니다. 대신 센서 교체 시 붙어 있는 케이블도 함께 빼거나 다시 배선해야 할 수 있습니다.',foot:'E3T/E3Z/E2E/EE-SX 시리즈별 공식 접속 사양'},
+ conn_m8:{title:'M8 커넥터 / M8 중계',img:'assets/e2e/connectors-p61.jpg',text:'M8은 소형 원형 커넥터 계열입니다. 직접형은 센서 본체에 꽂고, 중계형은 센서에서 짧은 케이블이 나온 뒤 M8로 연결합니다. 둘 다 보통 제어반까지 이어 줄 별도 센서 I/O 코드 형번을 함께 확인해야 합니다. 스트레이트/L형은 센서 뒤 공간과 케이블 진행 방향으로 선택합니다.',foot:'E2E Small New 2014 p.61 · E3Z 2010 p.180'},
+ m12:{title:'M12 커넥터 / 중계',img:'assets/catalog_detail/acc-table-p289.png',text:'M12 원형 커넥터를 이용합니다. 유지보수 시 분리하기 쉽지만 제어반까지 이어 줄 별도 M12 센서 I/O 코드가 필요한 경우가 있습니다. E3T Smart Click은 XS5F 2m/5m가 확인되고, E3Z -M1J는 XS2F가 확인됩니다. E3Z -M1TJ Smart Click의 정확한 접속 코드 형번은 현재 한글 기본 카탈로그에서 확인 불가입니다.',foot:'OMRON E3T 2010 p.289 · E3Z 2010 p.180'},
+ econ:{title:'e-CON 커넥터 중계',img:'assets/catalog_detail/acc-table-p289.png',text:'작은 e-CON 커넥터를 이용해 배선 공간을 줄이는 방식입니다. 센서의 e-CON 중계 끝에서 제어반으로 이어 줄 E39-ECON 계열 접속 코드를 추가로 선택합니다. 공식 표에는 2m, 5m 및 0.5~2m 지정 길이 코드가 있습니다.',foot:'OMRON E3T/E3Z 한글 공식 카탈로그 · 센서 I/O 커넥터'},
+ conn_robot:{title:'로봇 코드 / 반복 굽힘용',img:'assets/evidence/connection-p288.png',text:'케이블이 장비 동작에 따라 반복해서 굽혀지거나 움직이는 위치를 고려한 코드입니다. 케이블이 고정되어 움직이지 않는다면 일반 코드를 먼저 검토하고, 반복 이동·굽힘이 있다면 로봇 코드를 검토합니다.',foot:'OMRON 공식 한글 카탈로그 · 로봇 코드 접속 사양'},
  ip67:{title:'IP67',text:'보호 구조를 나타내는 등급입니다. 최종 제품 선정에서는 공식 카탈로그에 기재된 보호 구조를 근거로 사용 환경 적합성을 확인합니다.'},
  spec_method:{title:'검출 방식',text:'센서가 물체를 알아내는 기본 원리입니다. 예: 투과형은 빛을 가리면 검출하고, 반사형은 물체에서 돌아오는 빛을 이용합니다.'},
  standard_object:{title:'표준 검출 물체',text:'카탈로그의 검출 성능을 확인할 때 기준으로 사용한 물체입니다. 쉽게 말해 “이 크기·재질의 물체를 기준으로 성능을 표시했다”는 뜻이며, 최소 검출 크기와는 다릅니다.'},
@@ -783,8 +828,8 @@ const terms={
  response_time_term:{title:'응답 시간',text:'물체 상태가 바뀐 뒤 센서 출력이 바뀌기까지 걸리는 시간입니다. 값이 작을수록 빠르게 움직이는 물체를 검출하는 데 유리합니다.'},
  ambient_light_term:{title:'사용 주위 조도',text:'센서 주변의 조명이 얼마나 밝아도 정상 사용 가능한지를 나타냅니다. 아주 강한 조명이나 직사광은 광전센서에 영향을 줄 수 있어 설치 환경에서 확인합니다.'},
  ip_term:{title:'보호 구조(IP 등급)',text:'먼지와 물에 대한 외함 보호 정도입니다. 예: IP67은 높은 방진·방수 등급이고, IP50은 물·기름이 묻는 환경에 적합한 방수 구조가 아닙니다.'},
- operation_term:{title:'동작 모드',text:'빛이 들어올 때 출력이 ON되는지, 빛이 가려질 때 ON되는지를 정하는 방식입니다. 입광 ON / 차광 ON으로 표시됩니다.'},
- output_term:{title:'NPN / PNP 출력',text:'PLC 입력과 맞춰야 하는 센서 출력 배선 방식입니다. 어떤 쪽이 더 좋은 것이 아니라, 사용 중인 PLC 입력 규격과 맞는 형식을 선택해야 합니다.'},
+ operation_term:{title:'동작 모드 · 입광 ON / 차광 ON',text:'센서가 어느 빛 상태에서 출력 ON이 되는지를 정합니다. 입광 ON은 수광부에 빛이 들어올 때 ON, 차광 ON은 빛이 끊길 때 ON입니다. 중요한 점은 “물체 있음=ON”이 항상 같은 것은 아니라는 것입니다. 투과형/회귀형/반사형 구조를 보고 실제 기계에서 원하는 ON 상태를 선택하세요.'},
+ output_term:{title:'NPN / PNP 출력',text:'센서가 ON일 때 출력 전류가 어느 쪽으로 흐르는지를 정하는 배선 방식입니다. 쉽게 말해 NPN은 출력이 0V 쪽으로, PNP는 +전원 쪽으로 동작합니다. 어느 쪽이 더 좋은 것이 아니라 PLC 입력 회로와 맞아야 합니다. PLC 입력 공통(COM) 사양을 모르면 “잘 모르겠음”으로 두고 PLC 매뉴얼을 먼저 확인하세요.'},
  response_frequency_term:{title:'응답 주파수',text:'센서가 1초에 얼마나 빠르게 반복 검출할 수 있는지를 나타내는 지표입니다. 값이 높을수록 고속으로 지나가는 작은 물체 검출에 유리합니다.'},
  slot_width_term:{title:'검출 홈 폭',text:'말굽형 포토마이크로센서의 송광부와 수광부 사이 간격입니다. EE-SX47/67의 5mm는 일반적인 “센서와 물체 사이 검출 거리”가 아니라, 워크가 지나가는 홈의 폭입니다.'},
  micro_output:{title:'출력 방식 · NPN / PNP',img:'assets/ee_sx47_67/io-npn-p1173.png',text:'센서의 출력선을 PLC 입력과 어떤 전기 방식으로 연결할지 정하는 항목입니다. NPN과 PNP 중 어느 것이 더 좋은 것이 아니라, 사용 중인 PLC 입력 방식과 맞아야 합니다. PLC 규격을 모르면 “잘 모르겠음”으로 두고 후보 형번에서 다시 확인하면 됩니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 입출력 회로'},
@@ -793,10 +838,10 @@ const terms={
  micro_operation:{title:'입광 ON / 차광 ON',img:'assets/ee_sx47_67/selection-p1170.png',text:'5mm 홈 안의 빛 상태에 따라 언제 출력이 ON될지를 정합니다. 입광 ON은 홈 사이로 빛이 통할 때 ON, 차광 ON은 워크나 도그가 홈을 막아 빛이 끊길 때 ON입니다. 실제 기계에서 “물체가 들어왔을 때 ON”을 원하면 보통 차광 ON이 직관적입니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 동작 모드 선정표'},
  micro_lighton:{title:'입광 시 ON',img:'assets/ee_sx47_67/selection-p1170.png',text:'투광부의 빛이 수광부까지 도달할 때 출력이 ON됩니다. 말굽형 센서에서는 보통 홈이 비어 있어 빛이 통하는 상태를 뜻합니다. EE-SX47 계열은 입광 시 ON 고정 형식이 있습니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010'},
  micro_darkon:{title:'차광 시 ON',img:'assets/ee_sx47_67/selection-p1170.png',text:'워크·도그·플래그가 5mm 홈에 들어와 빛을 가릴 때 출력이 ON됩니다. “물체가 들어오면 ON”으로 사용하려는 경우 이해하기 쉬운 방식입니다. EE-SX67 계열에는 입광/차광 ON 전환 가능한 형식이 있습니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010'},
- micro_connection:{title:'접속 방식',img:'assets/ee_sx47_67/connections-p1171.png',text:'센서 본체에서 제어반까지 어떻게 배선할지를 고르는 항목입니다. 4극 커넥터, 1m 코드 인출, 0.1m 커넥터 중계 타입이 있으며 설치 공간과 유지보수 방법에 맞춰 선택합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 접속 사양'},
- fork_connector_help:{title:'4극 커넥터',img:'assets/ee_sx47_67/connections-p1171.png',text:'센서 본체에 커넥터가 직접 있는 형식입니다. 센서 교체가 편하고 배선을 분리하기 쉽지만, 별도 접속 케이블과 커넥터 공간을 고려해야 합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 커넥터 타입'},
- fork_cable_help:{title:'코드 인출 1m',img:'assets/ee_sx47_67/connections-p1171.png',text:'센서 본체에서 약 1m 코드가 바로 나오는 형식입니다. 중간 커넥터 없이 배선하기 쉬운 방식이며, 케이블이 움직이거나 반복 굽힘이 있는 장치에서는 카탈로그의 코드 사양을 함께 확인합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 코드 인출 타입'},
- fork_relay_help:{title:'커넥터 중계 0.1m',img:'assets/ee_sx47_67/accessory-relay-p1179.png',text:'센서에서 짧은 0.1m 코드가 나온 뒤 커넥터로 이어지는 형식입니다. 센서 바로 옆에 큰 커넥터를 두기 어렵거나, 짧은 리드선 뒤에서 배선을 분리하고 싶을 때 검토합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 커넥터 중계 / 접속 부품'}
+ micro_connection:{title:'접속 방식',img:'assets/ee_sx47_67/connections-p1171.png',text:'EE-SX47/67은 ① 센서에 4극 커넥터를 직접 꽂는 타입 ② 1m 코드가 센서에 붙은 타입 ③ 0.1m 짧은 코드 뒤에 커넥터가 있는 타입이 있습니다. 초보자는 센서 뒤 공간과 교체 편의성을 먼저 보세요. 커넥터형/중계형은 센서 본체 외에 접속 부품 형번도 함께 필요합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · p.1170~1171'},
+ fork_connector_help:{title:'4극 커넥터',img:'assets/ee_sx47_67/connections-p1171.png',text:'센서 본체에 4극 커넥터를 직접 꽂습니다. 고장 시 커넥터를 빼고 본체만 교체하기 쉽습니다. 단, 센서 뒤에 커넥터 공간이 필요하고 EE-1001/EE-1001-1/EE-1009 또는 코드 부착형 같은 별매 접속 부품을 추가로 선택해야 합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · p.1171 액세서리(별매)'},
+ fork_cable_help:{title:'코드 인출 1m',img:'assets/ee_sx47_67/connections-p1171.png',text:'센서 본체에서 1m 로봇 코드가 바로 붙어서 나옵니다. 센서 뒤에 별도 커넥터가 없어 좁은 곳에 단순하게 배선할 수 있습니다. 대신 센서 교체 시 케이블도 같이 처리합니다. 센서측 추가 EE 커넥터는 선택하지 않습니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 코드 인출 타입'},
+ fork_relay_help:{title:'커넥터 중계 0.1m',img:'assets/ee_sx47_67/accessory-relay-p1179.png',text:'센서에서 0.1m 짧은 로봇 코드가 나온 뒤 커넥터가 달립니다. 센서 바로 뒤는 좁지만 조금 떨어진 곳에는 커넥터 공간이 있을 때 유리합니다. EE-SX67□-C1J-R에는 전용 접속 부품 EE-1016-R-1 2m가 필요합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · p.1179 EE-1016-R-1'}
 };
 function diagram(type){
  if(type==='through')return `<div class="diagram"><span class="d-unit">투광기</span><span class="arrow">→</span><span class="d-obj">물체</span><span class="arrow">→</span><span class="d-unit">수광기</span></div><div class="caption">개념도 · 이해용</div>`;
@@ -850,7 +895,7 @@ let popHideTimer=null;
 function hidePopover(){
   clearTimeout(popHideTimer);
   const p=document.getElementById('popover');
-  p.classList.remove('show','expanded');
+  p.classList.remove('show','expanded','click-expanded');
 }
 function schedulePopoverHide(ms=180){
   clearTimeout(popHideTimer);
@@ -878,8 +923,17 @@ hoverPop.addEventListener('mouseenter',()=>{
 });
 hoverPop.addEventListener('mouseleave',()=>{
   if(!window.matchMedia('(hover:hover)').matches)return;
+  if(hoverPop.classList.contains('click-expanded'))return;
   hoverPop.classList.remove('expanded');
   schedulePopoverHide(120);
+});
+hoverPop.addEventListener('click',e=>{
+  if(!window.matchMedia('(hover:hover)').matches)return;
+  e.stopPropagation();
+  const on=hoverPop.classList.toggle('click-expanded');
+  hoverPop.classList.toggle('expanded',!on);
+  const g=hoverPop.querySelector('.pop-hover-guide');
+  if(g)g.textContent=on?'클릭하면 원래 크기로 돌아갑니다.':'팝업 안으로 마우스를 옮기면 확대되고, 클릭하면 더 크게 고정 확대됩니다.';
 });
 document.addEventListener('click',e=>{
   const el=e.target.closest('.term');
@@ -919,28 +973,37 @@ function purposeCard(icon,title,desc,value,meta,info='photo'){
 }
 function render(){renderStepper();chips();const p=document.getElementById('panel');let html='';
  if(state.step===1){html=`<div class="panel-grid sensor-type-first"><div class="question"><h2>어떤 종류의 센서를 선정하시겠습니까?</h2><div class="sub">먼저 센서 종류를 고른 뒤, 해당 센서에 필요한 사양만 순서대로 결정합니다.</div>
-<div class="sensor-type-cards">
+<div class="sensor-type-cards three">
   <button class="sensor-type-card ${state.sensorType==='photoelectric'?'selected':''}" onclick="selectSensorType('photoelectric')">
     <div class="sensor-type-icon">◉</div>
     <div class="sensor-type-copy">
       <div class="sensor-type-title">광전센서 <span class="info term" data-term="photo" onclick="event.stopPropagation()">?</span></div>
       <p>빛을 이용해 물체의 유무·위치를 검출합니다.</p>
       <div class="sensor-type-series">대상 시리즈 · E3T / E3Z</div>
-      <div class="sensor-type-next">선택 후 → 검출 방식 · 거리 · 출력 · 접속 조건 결정</div>
+      <div class="sensor-type-next">검출 방식 → 거리 → 전기·접속 조건</div>
+    </div>
+  </button>
+  <button class="sensor-type-card proximity ${state.sensorType==='proximity'?'selected':''}" onclick="selectSensorType('proximity')">
+    <div class="sensor-type-icon">◎</div>
+    <div class="sensor-type-copy">
+      <div class="sensor-type-title">근접센서 <span class="info term" data-term="proximity" onclick="event.stopPropagation()">?</span></div>
+      <p>금속 물체가 가까워지면 비접촉으로 검출합니다.</p>
+      <div class="sensor-type-series">대상 시리즈 · E2E Small New</div>
+      <div class="sensor-type-next">사이즈·실드 → 설정 거리 → NPN/PNP · NO/NC · 접속</div>
     </div>
   </button>
   <button class="sensor-type-card micro ${state.sensorType==='photo_microsensor'?'selected':''}" onclick="selectSensorType('photo_microsensor')">
     <div class="sensor-type-icon">⊓</div>
     <div class="sensor-type-copy">
       <div class="sensor-type-title">포토마이크로센서 <span class="info term" data-term="photomicro" onclick="event.stopPropagation()">?</span></div>
-      <p>워크·도그가 센서의 홈 사이를 지나가며 위치·유무를 검출합니다.</p>
+      <p>워크·도그가 5mm 홈 사이를 지나가며 위치·유무를 검출합니다.</p>
       <div class="sensor-type-series">대상 시리즈 · EE-SX47/67</div>
-      <div class="sensor-type-next">선택 후 → 홈 구조 · 본체 형상 · 출력 · 접속 조건 결정</div>
+      <div class="sensor-type-next">5mm 홈 → 8가지 형상 → 출력 · 동작 · 접속</div>
     </div>
   </button>
 </div>
 <div class="sensor-type-help"><strong>? 사용법</strong><span>마우스를 올리면 OMRON 공식 카탈로그 이미지와 쉬운 설명이 열립니다. 팝업 안으로 마우스를 옮기면 크게 볼 수 있습니다.</span></div>
-</div><aside class="guide"><h4>선정 시작 방법</h4><p><b>광전센서</b>는 센서와 물체 사이에 거리를 두고 검출하는 일반적인 광센서입니다.</p><p><b>포토마이크로센서</b>는 워크가 말굽형 센서의 좁은 홈 사이를 직접 지나가는 구조입니다.</p><div class="mini"><strong>처음에는 이것만 판단</strong><ul><li>일반 거리 검출 → 광전센서</li><li>홈 사이 통과 검출 → 포토마이크로센서</li></ul></div></aside></div>`}
+</div><aside class="guide"><h4>선정 시작 방법</h4><p><b>광전센서</b>: 빛을 이용한 일반 거리/광학 검출.</p><p><b>근접센서</b>: 금속을 수 mm 근거리에서 비접촉 검출.</p><p><b>포토마이크로센서</b>: 워크가 센서의 5mm 홈 사이를 직접 통과.</p><div class="mini"><strong>빠른 판단</strong><ul><li>일반 거리/광학 검출 → 광전센서</li><li>금속 근거리 검출 → 근접센서</li><li>도그·플래그 홈 통과 → 포토마이크로센서</li></ul></div></aside></div>`}
  if(state.step===2){html=`<div class="panel-grid"><div class="question"><h2>어떤 물체를 검출합니까?</h2><div class="sub">필요한 특성만 묻고, 모르는 항목은 건너뛸 수 있습니다. 아래 예시는 판단을 돕는 대표 사례입니다.</div><div class="cards">${[
  ['금속 부품','◆','볼트·브라켓·가공 금속·도금 부품 등'],
  ['플라스틱 / 일반 부품','■','사출품·캡·커넥터·일반 조립 부품 등'],
@@ -1005,7 +1068,7 @@ function goStep(n){
 document.getElementById('nextBtn').onclick=()=>state.step===6?goStep(1):goStep(state.step+1);document.getElementById('prevBtn').onclick=()=>goStep(state.step-1);
 function resetAll(){Object.assign(state,{step:1,sensorType:null,photoMethod:null,purpose:null,target:null,targetDetails:[],through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null,connection:[],ip67Required:false});document.querySelectorAll('.sidebar input[type=checkbox]').forEach((x,i)=>{if(i>0)x.checked=false});render()}
 function openPolicy(){document.getElementById('policyBack').classList.add('show')}function closePolicy(){document.getElementById('policyBack').classList.remove('show')}
-function showHelp(){alert('미리보기 사용법\n\n1) 첫 화면에서 광전센서 또는 포토마이크로센서를 선택\n2) ?에 Hover/Tap하여 공식 이미지와 쉬운 설명 확인\n3) 마지막 결과 카드의 📖 근거보기를 눌러 공식 카탈로그 Crop 확인\n4) 왼쪽은 실무자용 Dynamic Filter 배치 예시\n5) 결과 카드의 비교 담기 → 같은 제조사/제조사 간 그룹 비교 확인\n6) 상단 ‘데이터 기준’에서 공식자료/최신 한글판 업데이트 원칙 확인')}
+function showHelp(){alert('미리보기 사용법\n\n1) 첫 화면에서 광전센서 / 근접센서 / 포토마이크로센서 중 하나를 선택\n2) ?에 Hover/Tap하여 공식 이미지와 쉬운 설명 확인\n3) 마지막 결과 카드의 📖 근거보기를 눌러 공식 카탈로그 Crop 확인\n4) 왼쪽은 실무자용 Dynamic Filter 배치 예시\n5) 결과 카드의 비교 담기 → 같은 제조사/제조사 간 그룹 비교 확인\n6) 상단 ‘데이터 기준’에서 공식자료/최신 한글판 업데이트 원칙 확인')}
 document.getElementById('globalSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){state.step=6;render()}});
 render();
 </script>
@@ -1028,7 +1091,7 @@ render();
   }
   function distanceEnvelope(p){
     const d=p.specs?.sensingDistance||{};
-    if(d.type==='fixed')return {min:0,max:+d.value,label:`${d.value}mm`,semantic:isProximity(p)?'정격 검출 거리':'광학 설치 최대거리'};
+    if(d.type==='fixed')return {min:0,max:+d.value,label:`${d.value}mm`,semantic:p.sensorCategory?.code==='proximity'?'정격 검출 거리':'광학 설치 최대거리'};
     if(d.type==='range')return {min:+d.min,max:+d.max,label:`${d.min}~${d.max}mm`,semantic:'센서↔검출물체'};
     if(d.type==='reflector_dependent'){
       const opts=d.options||[]; if(!opts.length)return {min:null,max:null,label:'반사판별 확인',semantic:'센서↔반사판'};
@@ -1253,6 +1316,8 @@ render();
     else if(state.output==='잘 모르겠음')setChecks('output',[]);
     if(state.operation==='입광 시 ON')setChecks('operation',['light_on']);
     else if(state.operation==='차광 시 ON')setChecks('operation',['dark_on']);
+    else if(state.operation==='NO')setChecks('operation',['normally_open']);
+    else if(state.operation==='NC')setChecks('operation',['normally_closed']);
     else if(state.operation==='잘 모르겠음')setChecks('operation',[]);
     setChecks('connection',state.connection||[]);
     const d=parseFloat(state.distance);
@@ -1281,7 +1346,10 @@ render();
       state.shape=vals.length===1?(vals[0]==='flat'?'플랫 선호':'사이드 뷰 선호'):(vals.length===0?'상관없음':null);
     }
     if(group==='output')state.output=vals.length===1?vals[0]:(vals.length===0?'잘 모르겠음':null);
-    if(group==='operation')state.operation=vals.length===1?(vals[0]==='light_on'?'입광 시 ON':'차광 시 ON'):(vals.length===0?'잘 모르겠음':null);
+    if(group==='operation'){
+      const opMap={light_on:'입광 시 ON',dark_on:'차광 시 ON',normally_open:'NO',normally_closed:'NC'};
+      state.operation=vals.length===1?(opMap[vals[0]]||null):(vals.length===0?'잘 모르겠음':null);
+    }
     if(group==='connection')state.connection=vals.slice();
   }
   function syncDistanceFromSidebar(){
@@ -1307,8 +1375,10 @@ render();
   chips=function(){
     const vals=[];
     const add=(txt,cls='wizard-chip')=>vals.push({txt,cls});
-    if(state.sensorType)add(state.sensorType==='photoelectric'?'광전센서':'포토마이크로센서');else if(state.purpose)add(state.purpose==='presence'?'제품 유무 확인':state.purpose);
+    if(state.sensorType)add(state.sensorType==='photoelectric'?'광전센서':state.sensorType==='proximity'?'근접센서':'포토마이크로센서');else if(state.purpose)add(state.purpose==='presence'?'제품 유무 확인':state.purpose);
     if(state.target)add(state.target);
+    if(state.proxSize)add(({phi3:'φ3',phi4:'φ4',phi65:'φ6.5',m4:'M4',m5:'M5'}[state.proxSize]||state.proxSize));
+    if(state.proxShield)add(state.proxShield==='shield'?'실드':'비실드');
     if(state.through==='yes')add('양쪽 설치 가능');
     if(state.through==='no')add('양쪽 설치 불가');
     if(state.reflector==='yes')add('반사판 가능');
@@ -1790,6 +1860,15 @@ render();
     if(state.sensorType==='photo_microsensor')return 'photo_microsensor';
     if(state.sensorType==='proximity')return 'proximity';
     if(state.sensorType==='photoelectric')return 'photoelectric';
+
+    const cats=checked('category');
+    if(cats.length===1)return cats[0];
+
+    const series=checked('series');
+    if(series.length && series.every(x=>x==='E2E Small New'))return 'proximity';
+    if(series.length && series.every(x=>x==='EE-SX47/67'))return 'photo_microsensor';
+    if(series.length && series.every(x=>x==='E3T'||x==='E3Z'))return 'photoelectric';
+
     if(state.slotPass==='yes')return 'photo_microsensor';
     if(state.slotPass==='no')return 'photoelectric';
     return null;
@@ -1822,7 +1901,7 @@ render();
       let fail=false,score=40;const reasons=[];
       const cat=productCategory(p),method=p.classification?.detectionMethod,d=distanceInfo(p);
       if(route&&cat!==route)fail=true;
-      if(f.cats.length&&!f.cats.includes(cat))fail=true;
+      if(!route&&f.cats.length&&!f.cats.includes(cat))fail=true;
       if(f.series.length&&!f.series.includes(p.series))fail=true;
       if(f.methods.length&&!f.methods.includes(method))fail=true;
       if(f.outputs.length&&!f.outputs.includes(p.specs?.outputType))fail=true;
@@ -2093,7 +2172,7 @@ render();
     const on=state.compareSelected.includes(p.model);
     const charCount=(p.catalogVisuals?.characteristics||[]).length;
     const shape=micro?(p.classification?.shapeNameKo||FORK_SHAPE[p.classification?.shapeCode]):(p.classification?.shapeNameKo||SHAPE_KO[p.classification?.shape]);
-    return `<article class="product-card ${index===0?'best':''}">
+    return `<article class="product-card ${index===0?'best':''}" data-model="${p.model}">
       ${index===0?'<span class="best-badge">★ 조건상 최상위</span>':''}
       <button class="compare-add ${on?'on':''}" onclick="toggleCompare('${p.model}')">${on?'✓ 비교함':'＋ 비교 담기'}</button>
       <img class="product-img" src="${p.productImage}" alt="${p.model} 공식 카탈로그 형상 이미지">
@@ -2135,8 +2214,9 @@ render();
     }else{
       body=`<div class="result-grid">${rows.slice(0,12).map(card).join('')}</div>`;
     }
+    const resultTitle=route==='proximity'?'E2E Small New 근접센서 선정 결과':route==='photo_microsensor'?'EE-SX47/67 포토마이크로센서 선정 결과':route==='photoelectric'?'E3T / E3Z 광전센서 선정 결과':'OMRON 센서 통합 검색 결과';
     p.innerHTML=`<div class="question">
-      <div class="result-top"><div><h2>OMRON 센서 선정 결과</h2>
+      <div class="result-top"><div><h2>${resultTitle}</h2>
       <div class="result-count">등록 ${db.length}개 레코드 중 <b>${rows.length}개</b> 일치 · E3T ${e3t}개 / E3Z ${e3z}개 / E2E Small New ${e2e}개 / EE-SX47/67 ${micro}개${rows.length>12?' · 상위 12개 표시':''}</div></div>
       <div style="display:flex;gap:8px"><button class="ghost" onclick="openCompare('same')">그룹 비교</button><button class="ghost" onclick="openPolicy()">데이터 기준</button></div></div>
       <div class="engine-status"><span class="engine-badge live">E3T + E3Z + E2E Small New + EE-SX47/67 통합 엔진</span><span class="engine-badge">${route==='photo_microsensor'?'말굽형 포토마이크로 경로':route==='proximity'?'소경 근접센서 경로':route==='photoelectric'?'일반 광전센서 경로':'통합 검색'}</span><span class="engine-badge source">${route==='proximity'?'E2E 한글 공식 카탈로그 2014':'한글 공식 카탈로그 기준'}</span></div>
@@ -2333,8 +2413,8 @@ render();
       <h2>근접센서의 전기·접속 조건을 선택합니다.</h2>
       <div class="sub">E2E Small New는 NPN/PNP, NO/NC, 3가지 접속 방식 조합으로 형번이 나뉩니다.</div>
       <div class="qa"><div class="qa-title">출력 방식 <span class="info term" data-term="output_term">?</span></div><div class="seg">
-        <button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN</button>
-        <button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP</button>
+        <button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN <span class="info term" data-term="npn" onclick="event.stopPropagation()">?</span></button>
+        <button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP <span class="info term" data-term="pnp" onclick="event.stopPropagation()">?</span></button>
         <button class="${state.output==='잘 모르겠음'?'active':''}" onclick="setVal('output','잘 모르겠음')">잘 모르겠음</button>
       </div></div>
       <div class="qa"><div class="qa-title">동작 모드</div><div class="seg">
@@ -2342,12 +2422,12 @@ render();
         <button class="${state.operation==='NC'?'active':''}" onclick="setVal('operation','NC')">NC <span class="info term" data-term="prox_nc" onclick="event.stopPropagation()">?</span></button>
         <button class="${state.operation==='잘 모르겠음'?'active':''}" onclick="setVal('operation','잘 모르겠음')">잘 모르겠음</button>
       </div></div>
-      <div class="qa"><div class="qa-title">접속 방식</div><div class="seg">
-        <button class="${c==='cable'?'active':''}" onclick="setProxConnection('cable')">코드 인출 2m</button>
-        <button class="${c==='m8_relay'?'active':''}" onclick="setProxConnection('m8_relay')">M8 커넥터 중계 0.3m</button>
-        <button class="${c==='m8_connector'?'active':''}" onclick="setProxConnection('m8_connector')">M8 커넥터</button>
+      <div class="qa"><div class="qa-title">접속 방식 <span class="info term" data-term="conn_general">?</span></div><div class="seg">
+        <button class="${c==='cable'?'active':''}" onclick="setProxConnection('cable')">코드 인출 2m <span class="info term" data-term="conn_cable" onclick="event.stopPropagation()">?</span></button>
+        <button class="${c==='m8_relay'?'active':''}" onclick="setProxConnection('m8_relay')">M8 커넥터 중계 0.3m <span class="info term" data-term="conn_m8" onclick="event.stopPropagation()">?</span></button>
+        <button class="${c==='m8_connector'?'active':''}" onclick="setProxConnection('m8_connector')">M8 직접 커넥터 <span class="info term" data-term="conn_m8" onclick="event.stopPropagation()">?</span></button>
         <button class="${!c?'active':''}" onclick="setProxConnection(null)">상관없음</button>
-      </div><div class="micro-help-inline">M8 커넥터 타입은 φ4 · φ6.5 · M5에만 준비되어 있습니다.</div></div>
+      </div><div class="micro-help-inline">M8 직접 커넥터는 φ4 · φ6.5 · M5에만 준비되어 있습니다. <b>M8 직접/중계 타입을 선택하면 공식 p.61의 XS3F-M32□ 계열 센서 I/O 코드도 별도 선택해야 합니다.</b></div></div>
       <div class="qa"><div class="qa-title">환경 조건</div><div class="seg"><button class="active">IP67 <span class="info term" data-term="ip67" onclick="event.stopPropagation()">?</span></button></div></div>
     </div><aside class="guide"><h4>NO / NC</h4><p><b>NO</b>: 금속이 오면 ON.<br><b>NC</b>: 평소 ON, 금속이 오면 OFF.</p><p>PLC 입력 규격에 맞춰 NPN/PNP를 선택합니다.</p></aside></div>`;
   }
@@ -2417,20 +2497,21 @@ render();
     document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question"><h2>광전센서의 전기·접속 조건을 확인합니다.</h2>
       <div class="sub">PLC 입력 방식과 배선/커넥터 조건을 알면 강한 필터로 적용합니다. 모르는 항목은 건너뛰어도 됩니다.</div>
       <div class="qa"><div class="qa-title">출력 방식 <span class="info term" data-term="output_term">?</span></div><div class="seg">
-        <button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN</button>
-        <button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP</button>
+        <button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN <span class="info term" data-term="npn" onclick="event.stopPropagation()">?</span></button>
+        <button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP <span class="info term" data-term="pnp" onclick="event.stopPropagation()">?</span></button>
         <button class="${state.output==='잘 모르겠음'?'active':''}" onclick="setVal('output','잘 모르겠음')">잘 모르겠음</button></div></div>
       <div class="qa"><div class="qa-title">출력이 언제 ON되어야 합니까? <span class="info term" data-term="operation_term">?</span></div><div class="seg">
-        <button class="${state.operation==='입광 시 ON'?'active':''}" onclick="setVal('operation','입광 시 ON')">입광 시 ON</button>
-        <button class="${state.operation==='차광 시 ON'?'active':''}" onclick="setVal('operation','차광 시 ON')">차광 시 ON</button>
+        <button class="${state.operation==='입광 시 ON'?'active':''}" onclick="setVal('operation','입광 시 ON')">입광 시 ON <span class="info term" data-term="lighton" onclick="event.stopPropagation()">?</span></button>
+        <button class="${state.operation==='차광 시 ON'?'active':''}" onclick="setVal('operation','차광 시 ON')">차광 시 ON <span class="info term" data-term="darkon" onclick="event.stopPropagation()">?</span></button>
         <button class="${state.operation==='잘 모르겠음'?'active':''}" onclick="setVal('operation','잘 모르겠음')">잘 모르겠음</button></div></div>
       <div class="qa"><div class="qa-title">접속 방식</div><div class="seg">
-        <button class="${c==='cable'?'active':''}" onclick="setPhotoConnection('cable')">코드 인출</button>
-        <button class="${c==='m8'?'active':''}" onclick="setPhotoConnection('m8')">M8 <span class="info term" data-term="m8" onclick="event.stopPropagation()">?</span></button>
+        <button class="${c==='cable'?'active':''}" onclick="setPhotoConnection('cable')">코드 인출 <span class="info term" data-term="conn_cable" onclick="event.stopPropagation()">?</span></button>
+        <button class="${c==='m8'?'active':''}" onclick="setPhotoConnection('m8')">M8 <span class="info term" data-term="conn_m8" onclick="event.stopPropagation()">?</span></button>
         <button class="${c==='m12'?'active':''}" onclick="setPhotoConnection('m12')">M12 <span class="info term" data-term="m12" onclick="event.stopPropagation()">?</span></button>
         <button class="${c==='econ'?'active':''}" onclick="setPhotoConnection('econ')">e-CON <span class="info term" data-term="econ" onclick="event.stopPropagation()">?</span></button>
+        <button class="${c==='robot'?'active':''}" onclick="setPhotoConnection('robot')">로봇 코드 <span class="info term" data-term="conn_robot" onclick="event.stopPropagation()">?</span></button>
         <button class="${!c?'active':''}" onclick="setPhotoConnection(null)">상관없음</button>
-      </div></div>
+      </div><div class="connection-beginner-note"><b>초보자 판단:</b> 케이블이 센서에 붙어 있어도 괜찮으면 코드 인출 → 교체를 쉽게 하려면 M8/M12 → 배선 공간이 작으면 e-CON → 케이블이 반복해서 움직이면 로봇 코드를 검토합니다. <b>커넥터형/중계형은 최종 결과에서 접속 코드 형번까지 확인합니다.</b></div></div>
       <div class="qa"><div class="qa-title">환경 조건</div><div class="seg"><button class="${state.ip67Required?'active':''}" onclick="togglePhotoIp67()">IP67 필요 <span class="info term" data-term="ip67" onclick="event.stopPropagation()">?</span></button></div></div>
     </div><aside class="guide"><h4>모르면 건너뛰기</h4><p>NPN/PNP는 PLC 입력과 맞아야 합니다. 확실하지 않다면 “잘 모르겠음”으로 두고 최종 후보에서 확인하세요.</p><p>접속 방식은 설치 배선 계획이 정해진 경우에만 선택하면 됩니다.</p></aside></div>`;
   }
@@ -2594,7 +2675,7 @@ render();
           <button class="${c==='fork_relay'?'active':''}" onclick="setMicroConnection('fork_relay')">커넥터 중계 0.1m <span class="info term" data-term="fork_relay_help" onclick="event.stopPropagation()">?</span></button>
           <button class="${!c?'active':''}" onclick="state.connection=[];setChecks('connection',[]);render()">잘 모르겠음</button>
         </div>
-        <div class="micro-help-inline">센서 교체 편의성·배선 공간·케이블 이동 여부를 기준으로 접속 방식을 선택합니다.</div>
+        <div class="micro-help-inline"><b>초보자 판단:</b> 센서 뒤 공간이 있고 교체를 쉽게 하고 싶으면 4극 커넥터 → 센서 주변을 단순하게 하고 싶으면 코드 인출 1m → 센서 바로 뒤는 좁지만 조금 떨어진 곳에서 분리하려면 0.1m 중계. <b>4극 커넥터와 중계 타입은 접속 부품 형번까지 이어서 선정합니다.</b></div>
       </div>
 
       <div class="micro-caution"><strong>환경 주의:</strong> EE-SX47/67은 IP50입니다. 공식 카탈로그는 방수·방진 구조가 아니며 물이나 기름이 부착되는 용도에는 사용하지 않도록 안내합니다.</div>
@@ -2860,13 +2941,73 @@ render();
     box.classList.add('show');
   });
 
-  // Category/fork-shape synchronization.
+  // Category/series/fork-shape synchronization.
+  function clearRouteSpecificState(nextType){
+    state.photoMethod=null;
+    state.through=null;state.reflector=null;state.background=null;
+    state.distance='';state.shape=null;state.output=null;state.operation=null;state.connection=[];
+    state.targetDetails=[];
+    const mn=document.getElementById('filterDistanceMin'),mx=document.getElementById('filterDistanceMax');
+    if(mn)mn.value='';if(mx)mx.value='';
+    setChecks('output',[]);setChecks('operation',[]);setChecks('connection',[]);
+    setChecks('shape',[]);setChecks('forkShape',[]);setChecks('proxSize',[]);setChecks('proxShield',[]);
+    state.forkShape=null;state.proxSize=null;state.proxShield=null;
+    if(nextType==='proximity')state.target='금속 부품';
+    else state.target=null;
+  }
+
+  function applySidebarSensorType(type,seriesHint=null){
+    if(!type){state.sensorType=null;state.slotPass='unknown';return}
+    const changed=state.sensorType!==type;
+    if(changed)clearRouteSpecificState(type);
+
+    state.sensorType=type;
+    state.purpose='presence';
+
+    if(type==='proximity'){
+      state.slotPass=null;
+      setChecks('category',['proximity']);
+      setChecks('series',['E2E Small New']);
+      setChecks('method',['inductive_proximity']);
+    }else if(type==='photo_microsensor'){
+      state.slotPass='yes';
+      setChecks('category',['photo_microsensor']);
+      setChecks('series',['EE-SX47/67']);
+      setChecks('method',[]);
+    }else{
+      state.slotPass='no';
+      setChecks('category',['photoelectric']);
+      const current=checked('series').filter(x=>x==='E3T'||x==='E3Z');
+      const wanted=seriesHint ? [seriesHint] : (current.length?current:['E3T','E3Z']);
+      setChecks('series',wanted);
+      const photoMethods=checked('method').filter(x=>x!=='inductive_proximity'&&x!=='slot_through_beam');
+      setChecks('method',photoMethods);
+    }
+  }
+
   document.querySelectorAll('[data-filter="category"]').forEach(el=>el.addEventListener('change',()=>{
-    const cats=checked('category');
-    if(cats.length===1&&cats[0]==='photo_microsensor'){state.sensorType='photo_microsensor';state.slotPass='yes';}
-    else if(cats.length===1&&cats[0]==='proximity'){state.sensorType='proximity';state.slotPass=null;}
-    else if(cats.length===1&&cats[0]==='photoelectric'){state.sensorType='photoelectric';state.slotPass='no';}
-    else{state.sensorType=null;state.slotPass='unknown';}
+    if(el.checked){
+      applySidebarSensorType(el.value);
+    }else{
+      const cats=checked('category');
+      if(!cats.length){state.sensorType=null;state.slotPass='unknown';}
+      else if(cats.length===1)applySidebarSensorType(cats[0]);
+    }
+  },true));
+
+  document.querySelectorAll('[data-filter="series"]').forEach(el=>el.addEventListener('change',()=>{
+    if(!el.checked)return;
+    if(el.value==='E2E Small New'){
+      applySidebarSensorType('proximity','E2E Small New');
+      return;
+    }
+    if(el.value==='EE-SX47/67'){
+      applySidebarSensorType('photo_microsensor','EE-SX47/67');
+      return;
+    }
+    if(el.value==='E3T'||el.value==='E3Z'){
+      applySidebarSensorType('photoelectric',el.value);
+    }
   },true));
   document.querySelectorAll('[data-filter="forkShape"]').forEach(el=>el.addEventListener('change',()=>{
     const a=checked('forkShape');state.forkShape=a.length===1?a[0]:null;
@@ -2883,8 +3024,8 @@ render();
   resetAll=function(){
     state.sensorType=null;state.photoMethod=null;state.proxSize=null;state.proxShield=null;state.slotPass=null;state.forkShape=null;state.ip67Required=false;
     prevReset();
-    setChecks('category',['photoelectric','proximity','photo_microsensor']);
-    setChecks('series',['E3T','E3Z','E2E Small New','EE-SX47/67']);
+    setChecks('category',[]);
+    setChecks('series',[]);
     setChecks('forkShape',[]);
     setChecks('proxSize',[]);
     setChecks('proxShield',[]);
@@ -3236,6 +3377,103 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElement
       window.openFieldEvidence?.(model,'model');
     }
   }, true);
+})();
+</script>
+
+
+<div class="modal-back conn-accessory-back" id="connAccessoryBack">
+  <div class="modal conn-accessory-modal">
+    <div class="modal-head"><strong id="connAccessoryTitle">접속 부품 선정</strong><button class="ghost" onclick="closeConnectionAccessory()">닫기</button></div>
+    <div class="modal-body" id="connAccessoryBody"></div>
+  </div>
+</div>
+
+
+<script>
+/* v20 · all-series connection/accessory completion in sensor-selection mode */
+(() => {
+  const db=(window.E3T_DATA?.products||[]),SC=window.SensorConnection;
+  if(!SC)return;
+  const picked={};
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const product=m=>db.find(p=>p.model===m);
+  function tokens(){try{return Array.isArray(state?.connection)?state.connection.filter(Boolean):[]}catch(e){return []}}
+  const currentChoices=p=>SC.selectedChoices(p,tokens());
+
+  function overallStatus(p){
+    const infos=currentChoices(p).map(c=>SC.accessoryInfo(p,c));
+    if(infos.some(x=>x.requirement==='required'))return {kind:'required',title:'별도 접속 부품 확인',text:'선택 가능한 접속 사양 중 센서 I/O 코드/커넥터를 추가로 골라야 하는 형식이 있습니다.'};
+    if(infos.some(x=>x.requirement==='unknown'))return {kind:'unknown',title:'접속 부품 형번 확인 필요',text:'현재 공식 기본 카탈로그에서 정확한 접속 코드 형번을 확정하지 못한 접속 사양이 있습니다.'};
+    return {kind:'none',title:'센서측 추가 커넥터 없음',text:'현재 선택 접속 사양은 센서에 코드가 직접 붙어 있어 센서측 별도 I/O 커넥터를 추가하지 않습니다.'};
+  }
+
+  function injectCards(){
+    document.querySelectorAll('.product-card').forEach(card=>{
+      const model=(card.dataset.model||card.querySelector('.model')?.textContent||'').trim(),p=product(model);
+      if(!p)return;
+      const st=overallStatus(p),target=card.querySelector('.card-actions');
+      if(!target)return;
+      const sig=`${tokens().join('|')}|${st.kind}|${st.title}`;
+      const existing=card.querySelector('.conn-accessory-summary');
+      if(existing?.dataset.sig===sig)return;
+      existing?.remove();
+      const box=document.createElement('div');
+      box.className=`conn-accessory-summary ${st.kind}`;
+      box.dataset.sig=sig;
+      box.innerHTML=`<div><strong>접속 부품 · ${st.title}</strong><span>${st.text}</span></div><button type="button" onclick="openConnectionAccessory('${esc(model)}')">커넥터/코드 형번 보기</button>`;
+      target.parentNode.insertBefore(box,target);
+    });
+  }
+
+  window.pickConnectionPart=function(model,choiceKey,part,length){
+    picked[model]={choiceKey,part,length};
+    document.querySelectorAll('#connAccessoryBody .conn-part').forEach(el=>el.classList.toggle('selected',el.dataset.pick===`${choiceKey}|${part}|${length||''}`));
+    updateCombo(model);
+  };
+  function updateCombo(model){
+    const p=product(model),box=document.getElementById('connCombo');if(!p||!box)return;
+    const x=picked[model];if(!x){box.innerHTML=`<b>최종 조합</b> · 센서 ${esc(model)} + 접속 부품을 선택하세요.`;return}
+    const c=SC.choices(p).find(v=>v.key===x.choiceKey);
+    box.innerHTML=`<b>최종 조합</b> · ${esc(SC.orderText(p,c))} + <b>${esc(x.part)}</b>${x.length&&x.length!=='—'?` · ${esc(x.length)}`:''}`;
+  }
+
+  window.openConnectionAccessory=function(model){
+    const p=product(model);if(!p)return;
+    const cs=currentChoices(p),noToken=!tokens().length;
+    document.getElementById('connAccessoryTitle').textContent=`${model} · 접속 방식 / 커넥터 형번`;
+    const sections=cs.map(c=>{
+      const info=SC.accessoryInfo(p,c),h=SC.choiceHelp(p,c),sel=picked[model]?.choiceKey===c.key;
+      let inner='';
+      if(info.requirement==='required'){
+        inner=(info.groups||[]).map(g=>`<div class="conn-group"><div class="conn-group-title">${esc(g.label)}</div><div class="conn-group-sub">${esc(g.sub||'')}</div>${g.help?`<div class="conn-group-help">${esc(g.help)}</div>`:''}<div class="conn-part-grid">${(g.items||[]).map(a=>{
+          const key=`${c.key}|${a.part}|${a.length||''}`,on=picked[model]&&picked[model].choiceKey===c.key&&picked[model].part===a.part&&String(picked[model].length||'')===String(a.length||'');
+          return `<button type="button" class="conn-part ${on?'selected':''}" data-pick="${esc(key)}" onclick="pickConnectionPart('${esc(model)}','${esc(c.key)}','${esc(a.part)}','${esc(a.length||'')}')"><b>${esc(a.part)}${a.length&&a.length!=='—'?` · ${esc(a.length)}`:''}</b><span>${esc(a.kind||'')}</span><small>${esc(a.note||'')}${a.optional?` · 옵션: ${esc(a.optional)}`:''}${a.warning?` · ${esc(a.warning)}`:''}</small></button>`;
+        }).join('')}</div></div>`).join('');
+      }else if(info.requirement==='unknown'){
+        inner=`<div class="conn-unknown"><b>확인 불가</b><br>${esc(info.beginner||info.summary)}<br>다른 시리즈의 유사 커넥터 형번을 임의 적용하지 않습니다.</div>`;
+      }else inner=`<div class="conn-none"><b>추가 센서측 커넥터 없음</b><br>${esc(info.beginner||info.summary)}</div>`;
+      return `<section class="conn-choice-card ${sel?'selected-choice':''}"><div class="conn-choice-head"><div><strong>${esc(c.label)}</strong><small>${c.source==='variant'?`접속 사양 조합: ${esc(SC.orderText(p,c))}`:'센서 기본 접속 사양'}</small></div><span class="conn-status ${info.requirement}">${info.requirement==='required'?'별도 부품 필요':info.requirement==='unknown'?'형번 확인 필요':'추가 없음'}</span></div><div class="conn-choice-help">${esc(h.text)}</div><div class="conn-choice-key"><b>초보자 선택 포인트</b><br>${esc(h.key)}</div>${info.image?`<img class="conn-source-image" src="${esc(info.image)}" alt="${esc(c.label)} 공식 접속 자료" onclick="this.classList.toggle('clicked')">`:''}${inner}</section>`;
+    }).join('');
+    document.getElementById('connAccessoryBody').innerHTML=`${noToken?'<div class="conn-intro"><b>접속 방식을 아직 지정하지 않았습니다.</b><br>이 모델에서 공식적으로 확인된 접속 사양을 모두 보여줍니다. 실제 설치에 맞는 접속 방식을 먼저 고른 뒤 필요한 커넥터/코드 형번을 확인하세요.</div>':''}${sections}<div class="conn-combo" id="connCombo"></div>`;
+    updateCombo(model);
+    document.getElementById('connAccessoryBack').classList.add('show');
+  };
+  window.closeConnectionAccessory=function(){document.getElementById('connAccessoryBack')?.classList.remove('show')};
+
+  const prevShow=window.showDetail;
+  window.showDetail=function(model){
+    prevShow?.(model);
+    setTimeout(()=>{
+      const p=product(model),body=document.getElementById('detailBody');if(!p||!body||body.querySelector('.detail-connection-completion'))return;
+      const s=overallStatus(p);
+      body.insertAdjacentHTML('beforeend',`<section class="detail-connection-completion"><h4>접속 부품까지 마무리</h4><p><b>${esc(s.title)}</b> · ${esc(s.text)}<br>센서 형번에서 끝내지 않고, 커넥터/중계형이면 실제 접속 코드 형번까지 확인합니다.</p><button type="button" onclick="openConnectionAccessory('${esc(model)}')">커넥터 / 센서 I/O 코드 형번 확인</button></section>`);
+    },0);
+  };
+
+  const obs=new MutationObserver(()=>queueMicrotask(injectCards));
+  obs.observe(document.body,{childList:true,subtree:true});
+  setTimeout(injectCards,0);
+  document.getElementById('connAccessoryBack')?.addEventListener('click',e=>{if(e.target.id==='connAccessoryBack')closeConnectionAccessory()});
 })();
 </script>
 

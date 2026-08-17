@@ -365,3 +365,22 @@ STEP 12 최종 검증 전에 이번 EE-SX47/67 분기 UX를 미리보기에서 �
 - 제품 이미지는 p.62 외형도에서 같은 사이즈의 대표 외형을 사용하며, 정확한 접속 타입 사진으로 오인하지 않도록 `대표 외형`이라고 표시.
 - 현재 판매 여부는 `확인 불가`; 2014 카탈로그 수록 사실과 현행 판매 상태를 분리.
 - 전체 데이터: E3T 40 + E3Z 72 + E2E Small New 104 + EE-SX47/67 68 = 284.
+
+
+## v20 sensor route hotfix
+- Root cause: old STEP11 v0.1 renderer used `isProximity()` before its later-IIFE declaration.
+  The old E3T sample screen was painted first, then render aborted, so the final E2E/EE route override did not execute.
+- Early cross-scope reference replaced by direct `p.sensorCategory?.code==='proximity'`.
+- Sidebar sensor category is now single-route synchronized.
+- Selecting E2E series forces proximity route; selecting EE-SX47/67 forces photo-microsensor route.
+- NO/NC bidirectional sync added.
+- Initial screen is defensively three-card in both base and final render paths.
+
+
+## v20 all-series connection/accessory audit
+- Shared engine: `data/connection-accessory-engine-v01.js`.
+- Applied to `catalog.html` and `index.html`.
+- Exact connector/cable part numbers are exposed only where Korean official baseline catalogs support them.
+- E3Z -M1TJ Smart Click mating cable remains `확인 불가`; E3T XS5F is not inferred across series.
+- E2E p.61 connector page is included as `assets/e2e/connectors-p61.jpg`.
+- Result cards and details include `접속 부품까지 마무리`.
