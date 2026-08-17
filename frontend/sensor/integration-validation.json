@@ -1,41 +1,16 @@
 {
-  "build": "1.0-integration-candidate",
+  "build": "v16-e3z-integration-candidate",
+  "status": "PASS_STATIC",
   "parentIndexModified": false,
-  "totalRecords": 108,
-  "htmlLocalReferenceCount": 4,
-  "missingHtmlReferences": [],
-  "jsonImageReferenceCount": 30,
-  "missingJsonImageAssets": [],
-  "shapeHoverImagesPresent": 8,
-  "nodeSyntaxChecks": {
-    "combinedDataJs": "PASS",
-    "inlineScripts": [
-      {
-        "index": 0,
-        "status": "PASS",
-        "error": ""
-      },
-      {
-        "index": 1,
-        "status": "PASS",
-        "error": ""
-      },
-      {
-        "index": 2,
-        "status": "PASS",
-        "error": ""
-      },
-      {
-        "index": 3,
-        "status": "PASS",
-        "error": ""
-      },
-      {
-        "index": 4,
-        "status": "PASS",
-        "error": ""
-      }
-    ]
+  "totalRecords": 180,
+  "seriesCounts": {
+    "E3T": 40,
+    "EE-SX47/67": 68,
+    "E3Z": 72
   },
-  "status": "PASS"
+  "fileCount": 88,
+  "missingReferences": 0,
+  "nodeSyntax": "PASS",
+  "mountPath": "frontend/sensor/",
+  "entry": "frontend/sensor/index.html"
 }

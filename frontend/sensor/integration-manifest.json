@@ -1,6 +1,6 @@
 {
   "module": "sensor-selection",
-  "version": "1.0-sensor-only",
+  "version": "1.6-e3z-integrated",
   "mountPath": "frontend/sensor/",
   "entry": "frontend/sensor/index.html",
   "parentIndexModified": false,
@@ -9,13 +9,15 @@
   ],
   "currentSeries": [
     "E3T",
+    "E3Z",
     "EE-SX47/67"
   ],
-  "recordCount": 108,
+  "recordCount": 180,
   "sourcePolicy": {
     "OMRON": "OMRON Korea official site + Korean-language OMRON official catalogs only",
     "catalogBaselines": [
       "E3T Korean General Catalog 2010",
+      "E3Z Korean official catalog 2010",
       "EE-SX47/67 Korean official catalog 2010"
     ],
     "newerKoreanCatalogPolicy": "Compare versions, preserve prior evidence, then update model/spec/lifecycle data."
@@ -29,8 +31,9 @@
   ],
   "packageScope": "sensor-only",
   "notes": [
-    "Cylinder/actuator index.html is NOT included.",
-    "catalog.html is NOT included.",
-    "This folder is intended to be copied into the existing project's frontend/sensor/ path."
+    "Sensor-only package; main frontend/index.html is not modified by this package.",
+    "E3Z adds 72 records: 48 full-rated and 24 partial selection-table records.",
+    "Package is kept below 100 files for GitHub web upload.",
+    "E3Z-LS/G/B unknown detailed ratings are displayed as 확인 불가 rather than inferred."
   ]
 }

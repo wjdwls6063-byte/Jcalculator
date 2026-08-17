@@ -15,7 +15,7 @@ button,input{font:inherit} button{cursor:pointer}
 .topbar{position:sticky;top:0;z-index:50;height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 24px}
 .brand{display:flex;align-items:center;gap:12px;min-width:260px}.brand-mark{width:36px;height:36px;border-radius:10px;background:#20293a;color:#fff;display:grid;place-items:center;font-weight:800}.brand strong{display:block;font-size:16px}.brand small{color:var(--muted)}
 .search{flex:1;max-width:760px;position:relative}.search input{width:100%;height:42px;border:1px solid var(--line);border-radius:12px;padding:0 42px 0 42px;background:#fafbfc;outline:none}.search .ico{position:absolute;left:14px;top:11px;color:#7d8799}.search .key{position:absolute;right:10px;top:9px;border:1px solid var(--line);border-radius:7px;padding:3px 7px;color:#7d8799;background:#fff;font-size:12px}
-.top-actions{display:flex;gap:8px;align-items:center}.pill{border:1px solid #b8c6ff;background:#f2f5ff;color:#2742a6;border-radius:999px;padding:7px 10px;font-weight:700;font-size:12px}.ghost{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;color:#475467}
+.top-actions{display:flex;gap:8px;align-items:center}.top-actions a.ghost{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.catalog-nav{font-weight:850;color:#244fc4!important;border-color:#b8c7ff!important;background:#f7f9ff!important}.pill{border:1px solid #b8c6ff;background:#f2f5ff;color:#2742a6;border-radius:999px;padding:7px 10px;font-weight:700;font-size:12px}.ghost{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;color:#475467}
 .layout{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:calc(100vh - 68px)}
 .sidebar{border-right:1px solid var(--line);background:#fbfcfe;padding:18px 16px;position:sticky;top:68px;height:calc(100vh - 68px);overflow:auto}
 .side-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.side-head h3{margin:0;font-size:15px}.side-head button{border:none;background:none;color:var(--primary);font-size:12px}
@@ -388,6 +388,150 @@ button,input{font:inherit} button{cursor:pointer}
 .zoom-highlight{border-width:5px;background:rgba(37,99,235,.12)}
 .github-opt-note{margin-top:6px;font-size:10px;color:#667085;line-height:1.45}
 
+
+/* v2.4 · E3Z catalog integration */
+.series-e3z{background:#f3efff!important;border-color:#c7b8ff!important;color:#5c3bb4!important}
+.characteristic-btn:disabled{opacity:.48;cursor:not-allowed;background:#667085!important;border-color:#667085!important}
+.e3z-data-note{margin-top:8px;border:1px solid #d9ccff;background:#faf8ff;border-radius:9px;padding:8px 10px;color:#5c3bb4;font-size:10.5px;line-height:1.5}
+
+
+/* v2.4 · sensor-type-first workflow */
+.sensor-type-first .question{min-width:0}
+.sensor-type-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.sensor-type-card{display:grid;grid-template-columns:76px minmax(0,1fr);gap:14px;align-items:center;min-height:180px;text-align:left;border:1.5px solid #d7e0ee;background:#fff;border-radius:16px;padding:18px;cursor:pointer;transition:.15s ease}
+.sensor-type-card:hover{border-color:#7895f4;box-shadow:0 6px 20px rgba(49,87,213,.10);transform:translateY(-1px)}
+.sensor-type-card.selected{border:2px solid #3157d5;background:#f5f8ff}
+.sensor-type-card.micro.selected{border-color:#16a34a;background:#f3fff6}
+.sensor-type-icon{width:66px;height:66px;display:grid;place-items:center;border-radius:15px;background:#eef4ff;color:#173a91;font-size:30px;font-weight:900}
+.sensor-type-card.micro .sensor-type-icon{background:#ecfdf3;color:#087443}
+.sensor-type-title{display:flex;align-items:center;gap:6px;font-size:20px;font-weight:900;color:#13254a}
+.sensor-type-copy p{margin:8px 0 10px;color:#475467;font-size:13px;line-height:1.6}
+.sensor-type-series{display:inline-flex;border-radius:999px;background:#f2f4f7;color:#475467;padding:4px 8px;font-size:10px;font-weight:800}
+.sensor-type-next{margin-top:9px;color:#3157d5;font-size:11px;font-weight:800}
+.sensor-type-card.micro .sensor-type-next{color:#087443}
+.sensor-type-help{display:flex;gap:8px;margin-top:12px;padding:10px 12px;border:1px solid #dbe5f3;background:#f8fbff;border-radius:10px;font-size:11px;color:#667085;line-height:1.5}
+.sensor-type-help strong{color:#1d3f91;white-space:nowrap}
+
+.photo-method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:16px}
+.photo-method-card{min-height:132px;text-align:left;border:1px solid #dbe3ef;background:#fff;border-radius:12px;padding:11px;cursor:pointer}
+.photo-method-card:hover{border-color:#7b97ed;background:#f8faff}
+.photo-method-card.selected{border:2px solid #3157d5;background:#f4f7ff;box-shadow:0 0 0 2px #e5ebff inset}
+.photo-method-head{display:flex;align-items:center;gap:6px}
+.photo-method-head strong{font-size:12px;color:#173a91}
+.photo-method-icon{display:grid;place-items:center;width:28px;height:28px;border-radius:7px;background:#eef4ff;color:#2449b8;font-size:15px;font-weight:900}
+.photo-method-card p{margin:8px 0 5px;font-size:10.5px;color:#344054;line-height:1.5}
+.photo-method-card small{display:block;color:#667085;font-size:9.5px;line-height:1.45}
+.method-unknown{margin-top:10px}
+.method-unknown button{width:100%;border:1px dashed #b8c5dc;border-radius:10px;background:#fff;color:#475467;padding:10px;font-size:11px;font-weight:800;cursor:pointer}
+.method-unknown button.active{border-color:#3157d5;background:#f5f8ff;color:#2449b8}
+.micro-fixed-method{display:grid;grid-template-columns:210px minmax(0,1fr);gap:14px;align-items:center;border:1.5px solid #89d7a9;background:#f5fff8;border-radius:13px;padding:12px;margin:15px 0}
+.micro-fixed-image img{width:100%;height:130px;object-fit:contain;background:#fff;border:1px solid #e5ebe8;border-radius:9px}
+.micro-fixed-method h3{margin:7px 0;font-size:14px;color:#0b5f39}
+.micro-fixed-method p{font-size:11px;line-height:1.6;color:#475467}
+.distance-quick button{min-width:72px}
+@media(max-width:980px){
+  .photo-method-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .sensor-type-cards{grid-template-columns:1fr}
+  .sensor-type-card{grid-template-columns:58px minmax(0,1fr);min-height:145px;padding:14px}
+  .sensor-type-icon{width:54px;height:54px;font-size:24px}
+  .sensor-type-title{font-size:17px}
+  .photo-method-grid{grid-template-columns:1fr}
+  .micro-fixed-method{grid-template-columns:1fr}
+}
+
+
+/* v2.5 · EE-SX47/67 electrical-condition help */
+.qa-title .info{margin-left:4px;vertical-align:1px}
+.seg button .info{margin-left:4px}
+.micro-help-inline{margin-top:7px;padding:7px 9px;border-radius:8px;background:#f8fbff;border:1px solid #dbe5f3;color:#667085;font-size:10.5px;line-height:1.5}
+
+
+/* v2.6 · compact help popup for left expert sidebar */
+.popover.sidebar-popover{
+  width:min(340px,calc(100vw - 24px));
+  max-width:calc(100vw - 24px);
+  max-height:76vh;
+  padding:10px 11px;
+  overflow:auto;
+}
+.popover.sidebar-popover.expanded{
+  width:min(430px,calc(100vw - 24px));
+  max-height:82vh;
+}
+.popover.sidebar-popover .pop-title{
+  font-size:12px;
+  margin-bottom:4px;
+}
+.popover.sidebar-popover .pop-text{
+  font-size:11px;
+  line-height:1.5;
+}
+.popover.sidebar-popover .pop-label{
+  font-size:9.5px;
+  margin-top:5px;
+}
+.popover.sidebar-popover .pop-hover-guide{
+  font-size:9px;
+  margin-top:4px;
+}
+.popover.sidebar-popover .pop-img{
+  max-height:180px;
+  margin-top:6px;
+  margin-bottom:7px;
+}
+.popover.sidebar-popover.expanded .pop-img{
+  max-height:260px;
+}
+.popover.sidebar-popover .diagram{
+  height:82px;
+  padding:7px;
+  gap:7px;
+}
+.popover.sidebar-popover .d-unit,
+.popover.sidebar-popover .d-obj,
+.popover.sidebar-popover .d-bg,
+.popover.sidebar-popover .reflect{
+  font-size:9.5px;
+  padding:6px 7px;
+}
+.popover.sidebar-popover .arrow{
+  font-size:16px;
+}
+.popover.sidebar-popover .caption{
+  font-size:8.5px;
+}
+
+
+/* v2.7 · E2E Small New proximity sensor */
+.sensor-type-cards.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.sensor-type-card.proximity.selected{border-color:#d97706;background:#fffaf0}
+.sensor-type-card.proximity .sensor-type-icon{background:#fff4e5;color:#9a5200}
+.sensor-type-card.proximity .sensor-type-next{color:#9a5200}
+.sensor-route-badge.proximity{background:#fff4e5;border-color:#f1c27d;color:#8a4b08}
+.prox-target-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+.prox-size-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:15px 0}
+.prox-size-card{display:flex;flex-direction:column;align-items:center;gap:5px;border:1px solid #dbe3ef;background:#fff;border-radius:11px;padding:8px;cursor:pointer;min-width:0}
+.prox-size-card:hover{border-color:#d69a45;background:#fffaf3}
+.prox-size-card.selected{border:2px solid #d97706;background:#fff8ed;box-shadow:0 0 0 2px #ffedd5 inset}
+.prox-size-card img{width:100%;height:95px;object-fit:contain;background:#fff;border-radius:7px}
+.prox-size-card strong{font-size:12px;color:#7a4310}
+.prox-size-card small{font-size:9.5px;color:#667085}
+.prox-compare-note{margin-top:10px;padding:9px 10px;border:1px solid #f0d2a3;background:#fffaf1;border-radius:9px;color:#694119;font-size:10.5px;line-height:1.55}
+.prox-distance-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.prox-distance-summary>div{border:1px solid #ead5b7;background:#fffaf3;border-radius:10px;padding:10px}
+.prox-distance-summary span{display:block;color:#667085;font-size:9.5px}
+.prox-distance-summary b{display:block;color:#7a4310;font-size:12px;margin-top:3px}
+@media(max-width:1180px){.sensor-type-cards.three{grid-template-columns:repeat(2,minmax(0,1fr))}.sensor-type-cards.three .sensor-type-card:last-child{grid-column:1/-1}.prox-size-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.sensor-type-cards.three{grid-template-columns:1fr}.sensor-type-cards.three .sensor-type-card:last-child{grid-column:auto}.prox-size-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.prox-target-cards{grid-template-columns:1fr}.prox-distance-summary{grid-template-columns:1fr}}
+
+
+.catalog-mobile-link{display:none}
+@media(max-width:780px){
+  .catalog-mobile-link{display:flex;margin:10px 12px 0;border:1px solid #b8c7ff;background:#f7f9ff;color:#244fc4;text-decoration:none;border-radius:10px;padding:9px 11px;font-size:11px;font-weight:900;align-items:center;justify-content:center}
+}
+
 </style>
 
 <meta name="jcalculator-module" content="sensor-selection">
@@ -397,27 +541,43 @@ button,input{font:inherit} button{cursor:pointer}
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><div class="brand-mark">J</div><div><strong>Jcalculator · 센서 선정</strong><small>Sensor Selection v2.3 · GitHub Optimized Evidence</small></div></div>
-  <div class="search"><span class="ico">⌕</span><input id="globalSearch" autocomplete="off" placeholder="모델명 / 품번 / 시리즈 / 키워드 검색 (예: E3T-FL11, BGS, NPN)"/><span class="key">Enter</span><div class="search-suggest" id="searchSuggest"></div></div>
-  <div class="top-actions"><span class="pill">OMRON 한국 공식자료 전용</span><button class="ghost" onclick="openPolicy()">데이터 기준</button><button class="ghost" onclick="openCompare('same')">그룹 비교</button><button class="ghost" onclick="showHelp()">사용법</button></div>
+  <div class="brand"><div class="brand-mark">J</div><div><strong>Jcalculator · 센서 선정</strong><small>Sensor Selection v2.4 · E3Z + TYPE Catalog</small></div></div>
+  <div class="search"><span class="ico">⌕</span><input id="globalSearch" autocomplete="off" placeholder="모델명 / 품번 / 시리즈 / 키워드 검색 (예: E3Z-T61, E3T-FL11, BGS, NPN)"/><span class="key">Enter</span><div class="search-suggest" id="searchSuggest"></div></div>
+  <div class="top-actions"><span class="pill">OMRON 한국 공식자료 전용</span><a class="ghost catalog-nav" href="catalog.html#type">TYPE 카탈로그</a><button class="ghost" onclick="openPolicy()">데이터 기준</button><button class="ghost" onclick="openCompare('same')">그룹 비교</button><button class="ghost" onclick="showHelp()">사용법</button></div>
 </header>
+<a class="catalog-mobile-link" href="catalog.html#type">TYPE 카탈로그 전체 보기</a>
 <div class="layout">
   <aside class="sidebar">
     <div class="side-head"><h3>상세 필터 · 실무자용</h3><button onclick="resetAll()">초기화</button></div><div class="sidebar-count" id="sidebarCount">OMRON 센서 데이터 로딩...</div>
     <div class="filter-section"><div class="filter-title">제조사</div><label class="check"><input type="checkbox" checked disabled> OMRON</label></div>
-    <div class="filter-section"><div class="filter-title">센서 종류 <span class="info term" data-term="photo">?</span></div><label class="check"><input type="checkbox" data-filter="category" value="photoelectric" checked> 광전센서</label><label class="check"><input type="checkbox" data-filter="category" value="proximity" disabled> 근접센서</label><label class="check"><input type="checkbox" data-filter="category" value="photo_microsensor"> 포토마이크로센서</label></div>
-    <div class="filter-section"><div class="filter-title">검출 방식</div>
+    <div class="filter-section"><div class="filter-title">센서 종류 <span class="info term" data-term="photo">?</span></div><label class="check"><input type="checkbox" data-filter="category" value="photoelectric" checked> 광전센서</label><label class="check"><input type="checkbox" data-filter="category" value="proximity"> 근접센서 <span class="info term" data-term="proximity">?</span></label><label class="check"><input type="checkbox" data-filter="category" value="photo_microsensor"> 포토마이크로센서</label></div>
+    <div class="filter-section"><div class="filter-title">OMRON 시리즈</div><label class="check"><input type="checkbox" data-filter="series" value="E3T" checked> E3T · 초소형/박형</label><label class="check"><input type="checkbox" data-filter="series" value="E3Z" checked> E3Z · 소형/장거리</label><label class="check"><input type="checkbox" data-filter="series" value="E2E Small New" checked> E2E Small New · 소경 근접</label><label class="check"><input type="checkbox" data-filter="series" value="EE-SX47/67" checked> EE-SX47/67 · 말굽형</label></div>
+    <div class="filter-section"><div class="filter-title">검출 방식</div><label class="check"><input type="checkbox" data-filter="method" value="inductive_proximity"> 고주파 발진형 근접 <span class="info term" data-term="proximity">?</span></label>
       <label class="check"><input type="checkbox" data-filter="method" value="through_beam"> 투과형 <span class="info term" data-term="through">?</span></label>
       <label class="check"><input type="checkbox" data-filter="method" value="retro_reflective"> 회귀 반사형 <span class="info term" data-term="retro">?</span></label>
       <label class="check"><input type="checkbox" data-filter="method" value="diffuse"> 확산 반사형 <span class="info term" data-term="diffuse">?</span></label>
       <label class="check"><input type="checkbox" data-filter="method" value="bgs"> BGS 반사형 <span class="info term" data-term="bgs">?</span></label>
       <label class="check"><input type="checkbox" data-filter="method" value="limited_reflective"> 한정 반사형 <span class="info term" data-term="limited">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="method" value="fine_beam_reflective"> 가는 빔 반사형 <span class="info term" data-term="finebeam">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="method" value="distance_setting"> 거리 설정형 <span class="info term" data-term="distance_setting">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="method" value="transparent_retro"> 투명 PET 병용 회귀 반사형 <span class="info term" data-term="transparentpet">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="method" value="fork_through_beam"> 말굽형 투과형(E3Z-G 25mm) <span class="info term" data-term="fork25">?</span></label>
     </div>
-    <div class="filter-section"><div class="filter-title">검출 거리 <span class="info term" data-term="distance">?</span></div><div class="range"><input id="filterDistanceMin" type="number" placeholder="최소 mm"><span>~</span><input id="filterDistanceMax" type="number" placeholder="최대 mm"></div></div>
+    <div class="filter-section proximity-only-filter"><div class="filter-title">근접센서 본체 / 설치 <span class="info term" data-term="proximity">?</span></div>
+<details class="advanced"><summary>사이즈 · 실드 선택</summary><div style="margin-top:8px">
+<label class="check"><input type="checkbox" data-filter="proxSize" value="phi3"> φ3</label>
+<label class="check"><input type="checkbox" data-filter="proxSize" value="phi4"> φ4</label>
+<label class="check"><input type="checkbox" data-filter="proxSize" value="phi65"> φ6.5</label>
+<label class="check"><input type="checkbox" data-filter="proxSize" value="m4"> M4</label>
+<label class="check"><input type="checkbox" data-filter="proxSize" value="m5"> M5</label>
+<label class="check"><input type="checkbox" data-filter="proxShield" value="shield"> 실드 <span class="info term" data-term="prox_shield">?</span></label>
+<label class="check"><input type="checkbox" data-filter="proxShield" value="unshield"> 비실드 <span class="info term" data-term="prox_unshield">?</span></label>
+</div></details></div>
+<div class="filter-section"><div class="filter-title">검출 거리 <span class="info term" data-term="distance">?</span></div><div class="range"><input id="filterDistanceMin" type="number" placeholder="최소 mm"><span>~</span><input id="filterDistanceMax" type="number" placeholder="최대 mm"></div></div>
     <div class="filter-section"><div class="filter-title">형상</div><label class="check"><input type="checkbox" data-filter="shape" value="flat"> 플랫</label><label class="check"><input type="checkbox" data-filter="shape" value="side_view"> 사이드 뷰</label></div><div class="filter-section"><div class="filter-title">말굽형 형상 <span class="info term" data-term="photomicro">?</span></div><details class="advanced"><summary>8가지 형상 선택</summary><div style="margin-top:8px"><label class="check"><input type="checkbox" data-filter="forkShape" value="standard"> 표준형</label><label class="check"><input type="checkbox" data-filter="forkShape" value="l_shape"> L형</label><label class="check"><input type="checkbox" data-filter="forkShape" value="t_center_7"> T형 · 홈 중심 7mm</label><label class="check"><input type="checkbox" data-filter="forkShape" value="close_mount_3"> 밀착 설치형 · 형상 3</label><label class="check"><input type="checkbox" data-filter="forkShape" value="close_mount_4"> 밀착 설치형 · 형상 4</label><label class="check"><input type="checkbox" data-filter="forkShape" value="t_center_10"> T형 · 홈 중심 10mm</label><label class="check"><input type="checkbox" data-filter="forkShape" value="f_shape"> F형</label><label class="check"><input type="checkbox" data-filter="forkShape" value="r_shape"> R형</label></div></details></div>
     <div class="filter-section"><div class="filter-title">출력</div><label class="check"><input type="checkbox" data-filter="output" value="NPN"> NPN <span class="info term" data-term="npn">?</span></label><label class="check"><input type="checkbox" data-filter="output" value="PNP"> PNP <span class="info term" data-term="pnp">?</span></label></div>
-    <div class="filter-section"><div class="filter-title">동작 방식</div><label class="check"><input type="checkbox" data-filter="operation" value="light_on"> 입광 시 ON <span class="info term" data-term="lighton">?</span></label><label class="check"><input type="checkbox" data-filter="operation" value="dark_on"> 차광 시 ON <span class="info term" data-term="darkon">?</span></label></div>
-    <div class="filter-section"><div class="filter-title">접속</div><label class="check"><input type="checkbox" data-filter="connection" value="cable"> 코드 인출</label><label class="check"><input type="checkbox" data-filter="connection" value="m12"> M12 <span class="info term" data-term="m12">?</span></label><label class="check"><input type="checkbox" data-filter="connection" value="econ"> e-CON <span class="info term" data-term="econ">?</span></label><label class="check"><input type="checkbox" data-filter="connection" value="robot"> 로봇 코드</label><label class="check"><input type="checkbox" data-filter="connection" value="fork_connector"> 말굽형 4극 커넥터</label>
+    <div class="filter-section"><div class="filter-title">동작 방식</div><label class="check"><input type="checkbox" data-filter="operation" value="light_on"> 입광 시 ON <span class="info term" data-term="lighton">?</span></label><label class="check"><input type="checkbox" data-filter="operation" value="dark_on"> 차광 시 ON <span class="info term" data-term="darkon">?</span></label><label class="check"><input type="checkbox" data-filter="operation" value="normally_open"> NO <span class="info term" data-term="prox_no">?</span></label><label class="check"><input type="checkbox" data-filter="operation" value="normally_closed"> NC <span class="info term" data-term="prox_nc">?</span></label></div>
+    <div class="filter-section"><div class="filter-title">접속</div><label class="check"><input type="checkbox" data-filter="connection" value="cable"> 코드 인출</label><label class="check"><input type="checkbox" data-filter="connection" value="m8"> M8 / M8 중계</label><label class="check"><input type="checkbox" data-filter="connection" value="m12"> M12 <span class="info term" data-term="m12">?</span></label><label class="check"><input type="checkbox" data-filter="connection" value="econ"> e-CON <span class="info term" data-term="econ">?</span></label><label class="check"><input type="checkbox" data-filter="connection" value="robot"> 로봇 코드</label><label class="check"><input type="checkbox" data-filter="connection" value="fork_connector"> 말굽형 4극 커넥터</label>
 <label class="check"><input type="checkbox" data-filter="connection" value="fork_cable"> 말굽형 코드 인출 1m</label>
 <label class="check"><input type="checkbox" data-filter="connection" value="fork_relay"> 말굽형 커넥터 중계 0.1m</label></div>
     <div class="filter-section"><div class="filter-title">환경 / 상세 사양</div>
@@ -425,14 +585,14 @@ button,input{font:inherit} button{cursor:pointer}
 <div class="sync-note">최소 검출 물체·응답 성능은 모델 상세보기의 공식 사양에서 확인합니다.</div></div>
   </aside>
   <main class="main">
-    <div class="notice"><span class="dot"></span><strong>통합 후보본:</strong> OMRON E3T + EE-SX47/67 통합 선정 엔진입니다. 현재 등록 데이터는 한글 공식 카탈로그 2010 기준이며, 현행 판매 여부와는 구분하여 표시합니다.</div>
+    <div class="notice"><span class="dot"></span><strong>통합 후보본:</strong> OMRON E3T + E3Z + E2E Small New + EE-SX47/67 통합 선정 엔진입니다. E2E Small New는 사용자 제공 OMRON 한글 공식 카탈로그 2014 기준이며, 나머지 기존 데이터는 각 등록 공식 카탈로그 기준입니다. 현행 판매 여부와는 구분하여 표시합니다.</div>
     <div class="source-policy">
       <div class="source-policy-icon">i</div>
       <div class="source-policy-copy">
         <strong>데이터 기준 / 업데이트 원칙</strong>
-        현재 등록 범위는 <b>광전센서 E3T + 포토마이크로센서 EE-SX47/67</b>이며, OMRON 한국 공식자료와 한글 공식 카탈로그 2010을 기준으로 정리합니다.
+        현재 등록 범위는 <b>광전센서 E3T + E3Z + 근접센서 E2E Small New + 포토마이크로센서 EE-SX47/67</b> (총 284개 레코드)입니다. E2E Small New는 사용자 제공 OMRON 한글 공식 카탈로그 2014, 기존 시리즈는 등록된 각 공식 한글 카탈로그를 기준으로 정리합니다.
         이후 더 최신의 <b>한글 공식 카탈로그</b>가 확보되면 기존 근거를 삭제하지 않고 버전 비교 후 제품·사양·수명주기 정보를 업데이트합니다.
-        2010 카탈로그 모델은 선정 미리보기에는 사용하되, 현행 판매 여부로 표현하지 않습니다. 최신 한글 공식 카탈로그 확보 시 재검증합니다.
+        현재 등록된 2010/2014 카탈로그 모델은 선정 미리보기에는 사용하되, 현행 판매 여부로 표현하지 않습니다. 최신 한글 공식 카탈로그 확보 시 재검증합니다.
       </div>
       <button onclick="openPolicy()">정책 보기</button>
     </div>
@@ -547,13 +707,14 @@ button,input{font:inherit} button{cursor:pointer}
     <div class="modal-body">
       <div class="official-note"><strong>프로젝트 고정 원칙:</strong> OMRON 데이터는 OMRON 한국 공식 사이트와 OMRON 한글 공식 카탈로그만 제품·사양의 근거로 사용합니다. 대리점, 쇼핑몰, 블로그, 타사 데이터베이스 등은 제품 사양 근거에서 제외합니다.</div>
       <div class="policy-grid">
-        <div class="k">현재 OMRON 기준</div><div class="v">OMRON 한국 공식 사이트 + E3T 한글 종합 카탈로그 2010 + EE-SX47/67 한글 공식 카탈로그 2010</div>
+        <div class="k">현재 OMRON 기준</div><div class="v">OMRON 한국 공식 사이트 + E3T 한글 종합 카탈로그 2010 + E3Z 한글 공식 카탈로그 2010 + E2E Small New 한글 공식 카탈로그 2014 + EE-SX47/67 한글 공식 카탈로그 2010</div>
         <div class="k">최신 한글판 확보 시</div><div class="v">기존 데이터를 즉시 덮어쓰지 않고 문서 버전별 차이를 대조한 뒤 모델, 사양, 액세서리, 수명주기 상태를 업데이트합니다.</div>
         <div class="k">현행 여부 미확인</div><div class="v">검색/이력 조회는 가능하게 보존할 수 있지만 기본 추천 후보에서는 제외합니다.</div>
         <div class="k">공식 근거</div><div class="v">중요 사양에는 📖 근거를 연결하고, 가능하면 해당 표·그래프·도면 영역을 Crop하여 표시합니다.</div>
         <div class="k">타 제조사 추가</div><div class="v">해당 제조사 단계에서 별도의 공식자료 정책을 정하고, 공통 비교 스키마로 연결합니다. OMRON 자료로 타 제조사 사양을 추정하지 않습니다.</div>
         <div class="k last">작업 인수인계</div><div class="v last">이 정책은 프로젝트 파일의 PROJECT_HANDOFF.md와 data/source-policy.json에도 기록되어 있습니다. 다른 채팅/AI가 이어서 작업할 때 이 파일을 우선 확인합니다.</div>
       </div>
+      <div class="official-note" style="margin-top:10px"><strong>E3Z 2010 추가:</strong> E3Z 카탈로그의 표준/방유 타입은 정격·성능표까지 구조화했습니다. 거리 설정형(E3Z-LS), 말굽형(E3Z-G), 투명 PET 병용(E3Z-B)은 이 PDF에서 확인 가능한 선정표 항목을 등록하되, 정격/성능 상세가 확인되지 않는 값은 <b>확인 불가</b>로 표시합니다.</div>
       <div class="policy-warning"><strong>주의:</strong> 더 최신의 영문/일문 자료가 있더라도 사용자가 별도로 허용하지 않는 한 OMRON 제품 데이터의 기준 문서는 한글 공식자료를 우선합니다.</div>
     </div>
   </div>
@@ -576,16 +737,17 @@ button,input{font:inherit} button{cursor:pointer}
       "non-OMRON mirrors"
     ],
     "currentE3TBaseline": "OMRON Korea official website + E3T Korean General Catalog 2010",
+    "currentE3ZBaseline": "User-supplied OMRON Korean official E3Z Catalog 2010",
     "updateRule": "When a newer Korean official catalog is provided, compare document versions first; preserve prior evidence and update model/spec/lifecycle fields with source-version history.",
     "recommendationRule": "Models whose current lifecycle is not verified must not be default recommendations."
   },
   "handoffRule": "Any future chat/AI continuing this project should read PROJECT_HANDOFF.md and data/source-policy.json before modifying product data or recommendation logic."
 }
 </script>
-<script src="data/omron-sensor-selection-data-v08.js"></script>
+<script src="data/omron-sensor-selection-data-v10.js"></script>
 <script>
-const state={step:1,purpose:null,target:null,targetDetails:[],through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null,compareSelected:['E3T-FL11','E3T-SR41'],compareMode:'same'};
-const labels=['용도','검출 대상','설치 환경','거리·형상','전기 조건','결과'];
+const state={step:1,sensorType:null,photoMethod:null,proxSize:null,proxShield:null,purpose:null,target:null,targetDetails:[],through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null,connection:[],ip67Required:false,compareSelected:['E3T-FL11','E3T-SR41'],compareMode:'same'};
+const labels=['센서 종류','검출 대상','검출 방식','거리·형상','전기 조건','결과'];
 const sampleProducts={
  'E3T-FL11':{maker:'OMRON',series:'E3T',model:'E3T-FL11',method:'BGS 반사형',distance:'1~15mm',output:'NPN',op:'입광 시 ON',shape:'플랫',reason:'배경 영향 억제가 필요한 근거리 검출 조건에서 우선 비교'},
  'E3T-SR41':{maker:'OMRON',series:'E3T',model:'E3T-SR41',method:'회귀 반사형',distance:'200mm*',output:'NPN',op:'입광 시 ON',shape:'사이드 뷰',reason:'센서 한쪽 설치 + 반사판 사용이 가능한 조건에서 비교'},
@@ -593,7 +755,7 @@ const sampleProducts={
 };
 
 const terms={
- photo:{title:'광전센서',img:'assets/model_images/e3t/E3T-ST.png',text:'빛을 이용해 물체의 유무나 상태 변화를 검출하는 센서입니다. 이 미리보기에서는 OMRON E3T 공식 카탈로그 이미지를 사용했습니다.',foot:'제품 사진: OMRON E3T 공식 카탈로그'},
+ photo:{title:'광전센서',img:'assets/model_images/e3z/E3Z-DL-cable.png',text:'센서가 빛을 보내고, 빛이 가려지거나 물체에서 반사되어 돌아오는 변화를 이용해 물체의 유무·위치를 검출합니다. 물체와 센서 사이에 일정한 설치 거리를 두고 사용하는 일반적인 광센서입니다.',foot:'제품 이미지: OMRON E3Z 한글 공식 카탈로그 2010'},
  through:{title:'투과형',diagram:'through',img:'assets/model_images/e3t/E3T-ST.png',text:'투광기와 수광기를 물체 양쪽에 설치합니다. 물체가 빛을 가리면 검출합니다. 양쪽 설치 공간이 확보될 때 우선 검토하기 쉽습니다.',foot:'제품 이미지: OMRON E3T 한글 공식 카탈로그 2010'},
  retro:{title:'회귀 반사형',diagram:'retro',img:'assets/model_images/e3t/E3T-SR.png',text:'센서는 한쪽에 두고 반대편에 반사판을 설치합니다. 별도 수광기를 반대편에 두기 어려울 때 검토할 수 있습니다.',foot:'제품 이미지: OMRON E3T 한글 공식 카탈로그 2010'},
  diffuse:{title:'확산 반사형',diagram:'diffuse',img:'assets/model_images/e3t/E3T-FD.png',text:'센서가 보낸 빛이 물체에서 반사되어 돌아오는 빛을 이용합니다. 반대편 센서나 반사판이 필요하지 않습니다.',foot:'제품 이미지: OMRON E3T 한글 공식 카탈로그 2010'},
@@ -624,7 +786,17 @@ const terms={
  operation_term:{title:'동작 모드',text:'빛이 들어올 때 출력이 ON되는지, 빛이 가려질 때 ON되는지를 정하는 방식입니다. 입광 ON / 차광 ON으로 표시됩니다.'},
  output_term:{title:'NPN / PNP 출력',text:'PLC 입력과 맞춰야 하는 센서 출력 배선 방식입니다. 어떤 쪽이 더 좋은 것이 아니라, 사용 중인 PLC 입력 규격과 맞는 형식을 선택해야 합니다.'},
  response_frequency_term:{title:'응답 주파수',text:'센서가 1초에 얼마나 빠르게 반복 검출할 수 있는지를 나타내는 지표입니다. 값이 높을수록 고속으로 지나가는 작은 물체 검출에 유리합니다.'},
- slot_width_term:{title:'검출 홈 폭',text:'말굽형 포토마이크로센서의 송광부와 수광부 사이 간격입니다. EE-SX47/67의 5mm는 일반적인 “센서와 물체 사이 검출 거리”가 아니라, 워크가 지나가는 홈의 폭입니다.'}
+ slot_width_term:{title:'검출 홈 폭',text:'말굽형 포토마이크로센서의 송광부와 수광부 사이 간격입니다. EE-SX47/67의 5mm는 일반적인 “센서와 물체 사이 검출 거리”가 아니라, 워크가 지나가는 홈의 폭입니다.'},
+ micro_output:{title:'출력 방식 · NPN / PNP',img:'assets/ee_sx47_67/io-npn-p1173.png',text:'센서의 출력선을 PLC 입력과 어떤 전기 방식으로 연결할지 정하는 항목입니다. NPN과 PNP 중 어느 것이 더 좋은 것이 아니라, 사용 중인 PLC 입력 방식과 맞아야 합니다. PLC 규격을 모르면 “잘 모르겠음”으로 두고 후보 형번에서 다시 확인하면 됩니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 입출력 회로'},
+ micro_npn:{title:'NPN 출력',img:'assets/ee_sx47_67/io-npn-p1173.png',text:'센서가 ON되면 출력이 0V 쪽으로 동작하는 방식으로 이해하면 쉽습니다. PLC의 입력 공통(COM) 방식과 맞아야 하므로, 기존 설비의 PLC 입력 사양이 NPN용인지 먼저 확인하세요.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · NPN 입출력 회로'},
+ micro_pnp:{title:'PNP 출력',img:'assets/ee_sx47_67/io-pnp-caution-p1174.png',text:'센서가 ON되면 출력이 +전원 쪽으로 동작하는 방식으로 이해하면 쉽습니다. PLC의 입력 공통(COM) 방식과 맞아야 하므로, 기존 설비의 PLC 입력 사양이 PNP용인지 먼저 확인하세요.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · PNP 입출력 회로'},
+ micro_operation:{title:'입광 ON / 차광 ON',img:'assets/ee_sx47_67/selection-p1170.png',text:'5mm 홈 안의 빛 상태에 따라 언제 출력이 ON될지를 정합니다. 입광 ON은 홈 사이로 빛이 통할 때 ON, 차광 ON은 워크나 도그가 홈을 막아 빛이 끊길 때 ON입니다. 실제 기계에서 “물체가 들어왔을 때 ON”을 원하면 보통 차광 ON이 직관적입니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 동작 모드 선정표'},
+ micro_lighton:{title:'입광 시 ON',img:'assets/ee_sx47_67/selection-p1170.png',text:'투광부의 빛이 수광부까지 도달할 때 출력이 ON됩니다. 말굽형 센서에서는 보통 홈이 비어 있어 빛이 통하는 상태를 뜻합니다. EE-SX47 계열은 입광 시 ON 고정 형식이 있습니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010'},
+ micro_darkon:{title:'차광 시 ON',img:'assets/ee_sx47_67/selection-p1170.png',text:'워크·도그·플래그가 5mm 홈에 들어와 빛을 가릴 때 출력이 ON됩니다. “물체가 들어오면 ON”으로 사용하려는 경우 이해하기 쉬운 방식입니다. EE-SX67 계열에는 입광/차광 ON 전환 가능한 형식이 있습니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010'},
+ micro_connection:{title:'접속 방식',img:'assets/ee_sx47_67/connections-p1171.png',text:'센서 본체에서 제어반까지 어떻게 배선할지를 고르는 항목입니다. 4극 커넥터, 1m 코드 인출, 0.1m 커넥터 중계 타입이 있으며 설치 공간과 유지보수 방법에 맞춰 선택합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 접속 사양'},
+ fork_connector_help:{title:'4극 커넥터',img:'assets/ee_sx47_67/connections-p1171.png',text:'센서 본체에 커넥터가 직접 있는 형식입니다. 센서 교체가 편하고 배선을 분리하기 쉽지만, 별도 접속 케이블과 커넥터 공간을 고려해야 합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 커넥터 타입'},
+ fork_cable_help:{title:'코드 인출 1m',img:'assets/ee_sx47_67/connections-p1171.png',text:'센서 본체에서 약 1m 코드가 바로 나오는 형식입니다. 중간 커넥터 없이 배선하기 쉬운 방식이며, 케이블이 움직이거나 반복 굽힘이 있는 장치에서는 카탈로그의 코드 사양을 함께 확인합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 코드 인출 타입'},
+ fork_relay_help:{title:'커넥터 중계 0.1m',img:'assets/ee_sx47_67/accessory-relay-p1179.png',text:'센서에서 짧은 0.1m 코드가 나온 뒤 커넥터로 이어지는 형식입니다. 센서 바로 옆에 큰 커넥터를 두기 어렵거나, 짧은 리드선 뒤에서 배선을 분리하고 싶을 때 검토합니다.',foot:'OMRON EE-SX47/67 한글 공식 카탈로그 2010 · 커넥터 중계 / 접속 부품'}
 };
 function diagram(type){
  if(type==='through')return `<div class="diagram"><span class="d-unit">투광기</span><span class="arrow">→</span><span class="d-obj">물체</span><span class="arrow">→</span><span class="d-unit">수광기</span></div><div class="caption">개념도 · 이해용</div>`;
@@ -637,24 +809,41 @@ let touchTermEl=null;
 function showTerm(key,el){
   const t=terms[key];if(!t)return;
   const p=document.getElementById('popover');
-  p.innerHTML=`<div class="pop-title"><span>${t.title}</span></div>${t.diagram?diagram(t.diagram):''}${t.img?`<img class="pop-img ${t.shapeImage?'shape-pop-img':''}" src="${t.img}" alt="${t.title}">`:''}<div class="pop-text">${t.text}</div>${t.foot?`<div class="pop-label">${t.foot}</div>`:''}<div class="pop-hover-guide">팝업 안으로 마우스를 옮기면 더 크게 볼 수 있습니다.</div>`;
+  const inSidebar=!!el.closest('.sidebar');
+  p.classList.toggle('sidebar-popover',inSidebar);
+  p.innerHTML=`<div class="pop-title"><span>${t.title}</span></div>${t.diagram?diagram(t.diagram):''}${t.img?`<img class="pop-img ${t.shapeImage?'shape-pop-img':''}" src="${t.img}" alt="${t.title}">`:''}<div class="pop-text">${t.text}</div>${t.foot?`<div class="pop-label">${t.foot}</div>`:''}<div class="pop-hover-guide">${inSidebar?'팝업 안으로 이동하면 조금 더 크게 볼 수 있습니다.':'팝업 안으로 마우스를 옮기면 더 크게 볼 수 있습니다.'}</div>`;
   const r=el.getBoundingClientRect();
   const vw=document.documentElement.clientWidth;
   const vh=document.documentElement.clientHeight;
-  const w=Math.min(520,vw-24);
+  const w=Math.min(inSidebar?340:520,vw-24);
+
+  p.style.left='';
   p.style.right='';
-  let left=r.left;
-  if(r.left>vw*.62){
+  p.style.top='';
+
+  if(inSidebar){
+    const sb=el.closest('.sidebar');
+    const sr=sb.getBoundingClientRect();
+    let left=sr.right+10;
+    if(left+w>vw-12)left=Math.max(12,vw-w-12);
+    p.style.left=left+'px';
+  }else if(r.left>vw*.62){
     p.style.left='auto';
     p.style.right='12px';
   }else{
+    let left=r.left;
     if(left+w>vw-12)left=vw-w-12;
     p.style.left=Math.max(12,left)+'px';
   }
-  let top=r.bottom+7;
+
   p.classList.add('show');
-  const ph=p.offsetHeight||280;
-  if(top+ph>vh-12)top=Math.max(12,r.top-ph-7);
+  const ph=p.offsetHeight||(inSidebar?360:280);
+  let top=inSidebar ? r.top-20 : r.bottom+7;
+  if(inSidebar){
+    top=Math.max(12,Math.min(top,vh-ph-12));
+  }else if(top+ph>vh-12){
+    top=Math.max(12,r.top-ph-7);
+  }
   p.style.top=top+'px';
 }
 let popHideTimer=null;
@@ -707,7 +896,7 @@ document.addEventListener('click',e=>{
 });
 window.addEventListener('scroll',()=>{if(window.matchMedia('(hover:hover)').matches)schedulePopoverHide(80)},{passive:true});
 window.addEventListener('resize',hidePopover);
-function chips(){const vals=[];if(state.purpose)vals.push(state.purpose==='presence'?'제품 유무 확인':state.purpose);if(state.target)vals.push(state.target);(state.targetDetails||[]).forEach(v=>vals.push(v));if(state.through==='yes')vals.push('양쪽 설치 가능');if(state.through==='no')vals.push('양쪽 설치 불가');if(state.background==='yes')vals.push('배경 가까움');if(state.distance)vals.push(state.distance+'mm');if(state.shape)vals.push(state.shape);if(state.output)vals.push(state.output);if(state.operation)vals.push(state.operation);const bar=document.getElementById('conditionBar');bar.querySelectorAll('.chip.dynamic').forEach(x=>x.remove());const empty=document.getElementById('emptyCond');empty.style.display=vals.length?'none':'inline';vals.forEach(v=>{const c=document.createElement('span');c.className='chip dynamic';c.textContent=v;bar.insertBefore(c,bar.querySelector('.clear'))})}
+function chips(){const vals=[];if(state.sensorType)vals.push(state.sensorType==='photoelectric'?'광전센서':state.sensorType==='proximity'?'근접센서':'포토마이크로센서');else if(state.purpose)vals.push(state.purpose==='presence'?'제품 유무 확인':state.purpose);if(state.target)vals.push(state.target);if(state.proxSize)vals.push(({phi3:'φ3',phi4:'φ4',phi65:'φ6.5',m4:'M4',m5:'M5'}[state.proxSize]));if(state.proxShield)vals.push(state.proxShield==='shield'?'실드':'비실드');(state.targetDetails||[]).forEach(v=>vals.push(v));if(state.through==='yes')vals.push('양쪽 설치 가능');if(state.through==='no')vals.push('양쪽 설치 불가');if(state.background==='yes')vals.push('배경 가까움');if(state.distance)vals.push(state.distance+'mm');if(state.shape)vals.push(state.shape);if(state.output)vals.push(state.output);if(state.operation)vals.push(state.operation);const bar=document.getElementById('conditionBar');bar.querySelectorAll('.chip.dynamic').forEach(x=>x.remove());const empty=document.getElementById('emptyCond');empty.style.display=vals.length?'none':'inline';vals.forEach(v=>{const c=document.createElement('span');c.className='chip dynamic';c.textContent=v;bar.insertBefore(c,bar.querySelector('.clear'))})}
 function setVal(k,v){state[k]=v;chips();render()}
 function toggleTargetDetail(v,btn){
   state.targetDetails=state.targetDetails||[];
@@ -729,7 +918,29 @@ function purposeCard(icon,title,desc,value,meta,info='photo'){
   </button>`;
 }
 function render(){renderStepper();chips();const p=document.getElementById('panel');let html='';
- if(state.step===1){html=`<div class="panel-grid"><div class="question"><h2>무엇을 확인하려고 합니까?</h2><div class="sub">센서 이름을 몰라도 됩니다. 실제 작업 목적에서 시작합니다.</div><div class="cards">${purposeCard('●','제품·부품이 있는지 확인','컨베이어 통과, 부품 유무, 위치 확인 등','presence','광전 · 근접 · 포토마이크로 후보','photo')}${purposeCard('↔','거리·높이 측정','대상까지 거리를 숫자로 측정','distance','변위센서 후보',null)}${purposeCard('↕','폭·두께·치수 측정','폭, 두께, 치수를 판별·측정','dimension','측장센서 후보',null)}${purposeCard('▣','형상·외관 검사','형상, 방향, 외관 상태 등을 확인','vision','비전센서 후보',null)}</div></div><aside class="guide"><h4>가시성 원칙</h4><p>쉬운 작업 목적을 크게 표시하고, 관련 센서 종류는 보조 정보로 제공합니다.</p><div class="mini"><strong>Hover/Tap 설명</strong><ul><li>센서 공식 이미지</li><li>한 줄 정의</li><li>어디에 쓰는지</li><li>용어는 짧게</li></ul></div></aside></div>`}
+ if(state.step===1){html=`<div class="panel-grid sensor-type-first"><div class="question"><h2>어떤 종류의 센서를 선정하시겠습니까?</h2><div class="sub">먼저 센서 종류를 고른 뒤, 해당 센서에 필요한 사양만 순서대로 결정합니다.</div>
+<div class="sensor-type-cards">
+  <button class="sensor-type-card ${state.sensorType==='photoelectric'?'selected':''}" onclick="selectSensorType('photoelectric')">
+    <div class="sensor-type-icon">◉</div>
+    <div class="sensor-type-copy">
+      <div class="sensor-type-title">광전센서 <span class="info term" data-term="photo" onclick="event.stopPropagation()">?</span></div>
+      <p>빛을 이용해 물체의 유무·위치를 검출합니다.</p>
+      <div class="sensor-type-series">대상 시리즈 · E3T / E3Z</div>
+      <div class="sensor-type-next">선택 후 → 검출 방식 · 거리 · 출력 · 접속 조건 결정</div>
+    </div>
+  </button>
+  <button class="sensor-type-card micro ${state.sensorType==='photo_microsensor'?'selected':''}" onclick="selectSensorType('photo_microsensor')">
+    <div class="sensor-type-icon">⊓</div>
+    <div class="sensor-type-copy">
+      <div class="sensor-type-title">포토마이크로센서 <span class="info term" data-term="photomicro" onclick="event.stopPropagation()">?</span></div>
+      <p>워크·도그가 센서의 홈 사이를 지나가며 위치·유무를 검출합니다.</p>
+      <div class="sensor-type-series">대상 시리즈 · EE-SX47/67</div>
+      <div class="sensor-type-next">선택 후 → 홈 구조 · 본체 형상 · 출력 · 접속 조건 결정</div>
+    </div>
+  </button>
+</div>
+<div class="sensor-type-help"><strong>? 사용법</strong><span>마우스를 올리면 OMRON 공식 카탈로그 이미지와 쉬운 설명이 열립니다. 팝업 안으로 마우스를 옮기면 크게 볼 수 있습니다.</span></div>
+</div><aside class="guide"><h4>선정 시작 방법</h4><p><b>광전센서</b>는 센서와 물체 사이에 거리를 두고 검출하는 일반적인 광센서입니다.</p><p><b>포토마이크로센서</b>는 워크가 말굽형 센서의 좁은 홈 사이를 직접 지나가는 구조입니다.</p><div class="mini"><strong>처음에는 이것만 판단</strong><ul><li>일반 거리 검출 → 광전센서</li><li>홈 사이 통과 검출 → 포토마이크로센서</li></ul></div></aside></div>`}
  if(state.step===2){html=`<div class="panel-grid"><div class="question"><h2>어떤 물체를 검출합니까?</h2><div class="sub">필요한 특성만 묻고, 모르는 항목은 건너뛸 수 있습니다. 아래 예시는 판단을 돕는 대표 사례입니다.</div><div class="cards">${[
  ['금속 부품','◆','볼트·브라켓·가공 금속·도금 부품 등'],
  ['플라스틱 / 일반 부품','■','사출품·캡·커넥터·일반 조립 부품 등'],
@@ -782,11 +993,15 @@ function renderCompare(mode){
 }
 document.getElementById('compareBack').addEventListener('click',e=>{if(e.target.id==='compareBack')closeCompare()});
 
-function goStep(n){state.step=Math.min(6,Math.max(1,n));render();window.scrollTo({top:0,behavior:'smooth'})}
+function goStep(n){
+  n=Math.min(6,Math.max(1,n));
+  if(n>1&&!state.sensorType){state.step=1;render();return}
+  state.step=n;render();window.scrollTo({top:0,behavior:'smooth'})
+}
 document.getElementById('nextBtn').onclick=()=>state.step===6?goStep(1):goStep(state.step+1);document.getElementById('prevBtn').onclick=()=>goStep(state.step-1);
-function resetAll(){Object.assign(state,{step:1,purpose:null,target:null,through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null});document.querySelectorAll('.sidebar input[type=checkbox]').forEach((x,i)=>{if(i>0)x.checked=false});render()}
+function resetAll(){Object.assign(state,{step:1,sensorType:null,photoMethod:null,purpose:null,target:null,targetDetails:[],through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null,connection:[],ip67Required:false});document.querySelectorAll('.sidebar input[type=checkbox]').forEach((x,i)=>{if(i>0)x.checked=false});render()}
 function openPolicy(){document.getElementById('policyBack').classList.add('show')}function closePolicy(){document.getElementById('policyBack').classList.remove('show')}
-function showHelp(){alert('미리보기 사용법\n\n1) 상단 Step을 눌러 원하는 화면으로 이동\n2) ⓘ에 Hover/Tap하여 용어·이미지 설명 확인\n3) 마지막 결과 카드의 📖 근거보기를 눌러 공식 카탈로그 Crop 확인\n4) 왼쪽은 실무자용 Dynamic Filter 배치 예시\n5) 결과 카드의 비교 담기 → 같은 제조사/제조사 간 그룹 비교 확인\n6) 상단 ‘데이터 기준’에서 공식자료/최신 한글판 업데이트 원칙 확인')}
+function showHelp(){alert('미리보기 사용법\n\n1) 첫 화면에서 광전센서 또는 포토마이크로센서를 선택\n2) ?에 Hover/Tap하여 공식 이미지와 쉬운 설명 확인\n3) 마지막 결과 카드의 📖 근거보기를 눌러 공식 카탈로그 Crop 확인\n4) 왼쪽은 실무자용 Dynamic Filter 배치 예시\n5) 결과 카드의 비교 담기 → 같은 제조사/제조사 간 그룹 비교 확인\n6) 상단 ‘데이터 기준’에서 공식자료/최신 한글판 업데이트 원칙 확인')}
 document.getElementById('globalSearch').addEventListener('keydown',e=>{if(e.key==='Enter'){state.step=6;render()}});
 render();
 </script>
@@ -809,7 +1024,7 @@ render();
   }
   function distanceEnvelope(p){
     const d=p.specs?.sensingDistance||{};
-    if(d.type==='fixed')return {min:0,max:+d.value,label:`${d.value}mm`,semantic:'광학 설치 최대거리'};
+    if(d.type==='fixed')return {min:0,max:+d.value,label:`${d.value}mm`,semantic:isProximity(p)?'정격 검출 거리':'광학 설치 최대거리'};
     if(d.type==='range')return {min:+d.min,max:+d.max,label:`${d.min}~${d.max}mm`,semantic:'센서↔검출물체'};
     if(d.type==='reflector_dependent'){
       const opts=d.options||[]; if(!opts.length)return {min:null,max:null,label:'반사판별 확인',semantic:'센서↔반사판'};
@@ -1088,7 +1303,7 @@ render();
   chips=function(){
     const vals=[];
     const add=(txt,cls='wizard-chip')=>vals.push({txt,cls});
-    if(state.purpose)add(state.purpose==='presence'?'제품 유무 확인':state.purpose);
+    if(state.sensorType)add(state.sensorType==='photoelectric'?'광전센서':'포토마이크로센서');else if(state.purpose)add(state.purpose==='presence'?'제품 유무 확인':state.purpose);
     if(state.target)add(state.target);
     if(state.through==='yes')add('양쪽 설치 가능');
     if(state.through==='no')add('양쪽 설치 불가');
@@ -1234,7 +1449,7 @@ render();
     const mev=p.modelEvidence||p.fieldEvidence?.model||ev;
     document.getElementById('evidenceTitle').textContent=`📖 ${model} · 공식 근거`;
     document.getElementById('evidenceMeta').innerHTML=
-      `<span class="evidence-badge">OMRON 공식</span><span class="evidence-badge">한글 카탈로그 2010</span>`+
+      `<span class="evidence-badge">OMRON 공식</span><span class="evidence-badge">${p.series==='E2E Small New'?'E2E Small New 한글 카탈로그 2014':'한글 카탈로그 2010'}</span>`+
       `<span class="evidence-badge">해당 형번: ${model}</span><br>`+
       `형번 확인 p.<b>${mev.catalogPage||ev.catalogPage}</b>${key!=='model'?` · 사양 근거 p.<b>${ev.catalogPage}</b>`:''}`;
 
@@ -1389,8 +1604,9 @@ render();
 (() => {
   const db=(window.E3T_DATA&&window.E3T_DATA.products)||[];
   const E3T_METHOD={through_beam:'투과형',retro_reflective:'회귀 반사형',diffuse:'확산 반사형',limited_reflective:'한정 반사형',bgs:'BGS 반사형'};
-  const ALL_METHOD={...E3T_METHOD,slot_through_beam:'투과형(말굽형)'};
-  const OP_KO={light_on:'입광 시 ON',dark_on:'차광 시 ON',switchable:'입광/차광 전환 가능'};
+  const E3Z_METHOD={fine_beam_reflective:'가는 빔 반사형',distance_setting:'거리 설정형',fork_through_beam:'말굽형 투과형(25mm)',transparent_retro:'투명 PET 병용 회귀 반사형'};
+  const ALL_METHOD={...E3T_METHOD,...E3Z_METHOD,slot_through_beam:'투과형(말굽형 5mm)',inductive_proximity:'고주파 발진형 근접'};
+  const OP_KO={light_on:'입광 시 ON',dark_on:'차광 시 ON',switchable:'입광/차광 전환 가능',normally_open:'NO',normally_closed:'NC'};
   const SHAPE_KO={flat:'플랫',side_view:'사이드 뷰',fork:'말굽형'};
   const FORK_SHAPE={
     standard:'표준형',l_shape:'L형',t_center_7:'T형 · 홈 중심 7mm',
@@ -1405,7 +1621,7 @@ render();
       title:`${p.model} · 공식 형상 이미지`,
       img:p.productImage,
       text:`${p.productImageNote||''} ${method}${shape?' · '+shape:''}.`,
-      foot:`OMRON 한글 공식 카탈로그 2010 · ${p.productImageScope||p.productImageEvidence?.label||'공식 제품 이미지'}`,
+      foot:`${p.series==='E2E Small New'?'OMRON E2E Small New 한글 공식 카탈로그 2014':p.series==='E3Z'?'OMRON E3Z 한글 공식 카탈로그 2010':p.series==='EE-SX47/67'?'OMRON EE-SX47/67 한글 공식 카탈로그 2010':'OMRON E3T 한글 공식 카탈로그 2010'} · ${p.productImageScope||p.productImageEvidence?.label||'공식 제품 이미지'}`,
       shapeImage:true
     };
   });
@@ -1419,12 +1635,61 @@ render();
     text:'투광부와 수광부가 한 몸의 말굽(홈) 형상에 들어 있는 투과형 센서입니다. 워크·도그·플래그가 홈 사이를 지나며 빛을 가리면 위치/유무를 검출하기 좋습니다.',
     foot:'이미지: OMRON EE-SX47/67 한글 공식 카탈로그 2010'
   };
+  terms.proximity={
+    title:'근접센서 · E2E Small New',
+    img:'assets/e2e/intro-p58.jpg',
+    text:'금속 물체가 센서 앞에 가까워지면 비접촉으로 검출하는 고주파 발진형 근접센서입니다. 빛을 쓰지 않으므로 광전센서처럼 반사판이나 광축 정렬이 필요하지 않습니다. 이번 등록 범위는 소경 E2E Small New입니다.',
+    foot:'OMRON 한글 공식 카탈로그 2014 · E2E Small New p.58'
+  };
+  terms.prox_shield={
+    title:'실드 타입',
+    img:'assets/e2e/selection-p59.jpg',
+    text:'센서 검출면 주변이 금속으로 둘러싸인 구조로 설치할 수 있는 타입입니다. 같은 외형의 비실드 타입보다 검출 거리는 짧지만, 주변 금속의 영향을 받기 쉬운 좁은 설치 공간에서 사용하기 편합니다.',
+    foot:'OMRON E2E Small New 한글 공식 카탈로그 2014 · p.59~60'
+  };
+  terms.prox_unshield={
+    title:'비실드 타입',
+    img:'assets/e2e/selection-p59.jpg',
+    text:'검출면 주변의 금속 영향을 줄이기 위해 센서 앞부분을 금속에서 더 떨어뜨려 설치해야 하는 타입입니다. 같은 사이즈 실드 타입보다 검출 거리가 더 깁니다.',
+    foot:'OMRON E2E Small New 한글 공식 카탈로그 2014 · p.59~60'
+  };
+  terms.prox_setting={
+    title:'설정 거리',
+    img:'assets/e2e/specs-p60.jpg',
+    text:'센서를 실제 설비에 설치할 때 권장하는 물체와 센서 사이 거리입니다. 카탈로그는 검출 거리의 약 70% 범위를 설정 거리로 제시합니다. 최대 검출 거리 끝에 딱 맞추기보다 이 범위 안에서 사용하는 것이 안정적입니다.',
+    foot:'OMRON E2E Small New 한글 공식 카탈로그 2014 · p.60'
+  };
+  terms.prox_no={
+    title:'NO · Normally Open',
+    img:'assets/e2e/selection-p59.jpg',
+    text:'평소에는 출력이 OFF이고, 금속 물체가 검출되면 출력이 ON되는 방식입니다. “물체가 오면 ON”으로 사용하려면 가장 직관적인 선택입니다.',
+    foot:'OMRON E2E Small New 한글 공식 카탈로그 2014 · p.59~60'
+  };
+  terms.prox_nc={
+    title:'NC · Normally Closed',
+    img:'assets/e2e/selection-p59.jpg',
+    text:'평소에는 출력이 ON이고, 금속 물체가 검출되면 출력이 OFF되는 방식입니다. 배선 단선 감시 등 설비 논리에 따라 NC가 필요한 경우 선택합니다.',
+    foot:'OMRON E2E Small New 한글 공식 카탈로그 2014 · p.59~60'
+  };
+  terms.prox_metal={
+    title:'검출 대상 · 금속',
+    img:'assets/e2e/intro-p58.jpg',
+    text:'E2E Small New는 금속 검출용 근접센서입니다. 카탈로그는 자성 금속을 기준으로 성능을 표시하며, 비자성 금속은 검출 거리가 줄어들 수 있다고 명시합니다.',
+    foot:'OMRON E2E Small New 한글 공식 카탈로그 2014 · p.60'
+  };
   terms.slot={
     title:'5mm 홈 폭',
     img:'assets/ee_sx47_67/selection-p1170.png',
     text:'EE-SX47/67은 카탈로그상 검출 거리가 5mm(홈 폭)로 정의됩니다. 일반 광전센서처럼 수십~수백 mm 거리로 설치하는 방식이 아니라, 검출 물체가 센서의 홈 사이를 통과하는 방식입니다.',
     foot:'OMRON 공식 카탈로그 p.1170~1172'
   };
+  terms.e3z={title:'E3Z · 소형 광전센서',img:'assets/e3z/intro-p176.png',text:'E3Z는 소형 본체에 장거리 검출과 IP67 보호 구조를 갖춘 앰프 내장형 광전센서 계열입니다. 이 도구에서는 사용자 제공 한글 공식 카탈로그 2010을 기준으로 사용합니다.',foot:'OMRON E3Z 한글 공식 카탈로그 2010 · p.176'};
+  terms.finebeam={title:'가는 빔 반사형',img:'assets/model_images/e3z/E3Z-DL-cable.png',text:'일반 확산 반사형보다 작은 광 스폿을 사용하는 반사형입니다. E3Z-L 계열은 90±30mm 검출 거리와 Φ2.5mm 대표 스폿 지름이 공식 성능표에 제시됩니다.',foot:'OMRON E3Z 한글 공식 카탈로그 2010 · p.181'};
+  terms.distance_setting={title:'거리 설정형',img:'assets/model_images/e3z/E3Z-LS.png',text:'배경과 검출 물체를 거리 차이로 구분하기 위한 E3Z-LS 계열입니다. 이 카탈로그의 선정표에는 BGS/FGS 설정 거리 범위가 제시되지만, 본 PDF에서 상세 정격/성능표는 확인되지 않아 확인 가능한 값만 사용합니다.',foot:'OMRON E3Z 한글 공식 카탈로그 2010 · p.177~178'};
+  terms.transparentpet={title:'투명 PET 병용 회귀 반사형',img:'assets/model_images/e3z/E3Z-B.png',text:'투명 PET 병 검출용으로 별도 분류된 회귀 반사형 E3Z-B 계열입니다. 카탈로그 선정표에 500mm/2m 형식이 제시되며 M.S.R 기능 없음으로 표시됩니다.',foot:'OMRON E3Z 한글 공식 카탈로그 2010 · p.177~178'};
+  terms.fork25={title:'E3Z-G 말굽형 · 25mm',img:'assets/model_images/e3z/E3Z-G.png',text:'투광부와 수광부가 마주보는 말굽형 E3Z-G 계열입니다. 카탈로그 선정표의 검출 거리는 25mm이며 1광축/2광축 형식이 있습니다. EE-SX47/67의 5mm 홈과는 다른 계열입니다.',foot:'OMRON E3Z 한글 공식 카탈로그 2010 · p.177~178'};
+  terms.oil_e3z={title:'E3Z 방유 타입',img:'assets/e3z/oil-selection-p179.png',text:'E3Z-□□□K 방유 타입입니다. 카탈로그는 IP67(사내 규격 방유)을 표기하지만 코드부/커넥터부는 제외하며, 실제 사용하는 기름의 종류와 시험 조건을 확인하도록 안내합니다.',foot:'OMRON E3Z 한글 공식 카탈로그 2010 · p.179, 182, 188'};
+  terms.m8={title:'M8 접속',text:'E3Z에는 M8 커넥터 타입 또는 M8 커넥터 중계 타입이 준비되어 있습니다. 정확한 접속 사양은 형번과 공식 접속표를 함께 확인합니다.'};
 
   const forkShapeTermData={
     standard:['표준형','standard'],
@@ -1454,7 +1719,11 @@ render();
   function nval(id){const x=parseFloat(document.getElementById(id)?.value);return Number.isFinite(x)?x:null}
 
   function isMicro(p){return p.sensorCategory?.code==='photo_microsensor'}
+  function isProximity(p){return p.sensorCategory?.code==='proximity'}
+  function isE3Z(p){return p.series==='E3Z'}
   function productCategory(p){return p.sensorCategory?.code||'photoelectric'}
+  function catalogBaselineLabel(p){if(p.series==='E3Z')return 'E3Z 한글 공식 카탈로그 2010';if(isProximity(p))return 'E2E Small New 한글 공식 카탈로그 2014';if(isMicro(p))return 'EE-SX47/67 한글 공식 카탈로그 2010';return 'E3T 한글 공식 카탈로그 2010'}
+  function inferredMethodMatches(method,list){if(!list.length)return true;if(list.includes(method))return true;if(method==='fine_beam_reflective'&&list.includes('diffuse'))return true;if(method==='distance_setting'&&(list.includes('bgs')||list.includes('limited_reflective')))return true;if(method==='transparent_retro'&&list.includes('retro_reflective'))return true;return false}
   function recordSupportsOp(p,op){
     if(!op)return true;
     const a=p.specs?.supportedOperationModes;
@@ -1481,16 +1750,24 @@ render();
       if(t==='connector_relay_0_1m')a.push('fork_relay','robot');
       return a;
     }
-    const a=['cable'];
+    const a=[];
+    const bt=(p.connection?.base?.type||'').toLowerCase();
+    if(bt.includes('cable'))a.push('cable');
+    if(bt.includes('m8'))a.push('m8');
+    if(bt.includes('m12'))a.push('m12');
+    if(bt.includes('e-con'))a.push('econ');
     (p.connection?.variants||[]).forEach(v=>{
-      const t=v.type||'';
-      if(t.includes('M12'))a.push('m12');
-      if(t.includes('e-CON'))a.push('econ');
+      const t=(v.type||'').toLowerCase();
+      if(t.includes('cable'))a.push('cable');
+      if(t.includes('m8'))a.push('m8');
+      if(t.includes('m12'))a.push('m12');
+      if(t.includes('e-con'))a.push('econ');
       if(t.includes('robot'))a.push('robot');
     });
     return [...new Set(a)];
   }
   function inferredE3TMethods(){
+    if(state.photoMethod)return [state.photoMethod];
     if(state.through==='yes')return ['through_beam'];
     if(state.through==='no'&&state.reflector==='yes')return ['retro_reflective'];
     if(state.through==='no'&&state.reflector==='no'&&state.background==='yes')return ['bgs','limited_reflective'];
@@ -1499,12 +1776,16 @@ render();
   }
   function sidebarFilters(){
     return {
-      cats:checked('category'),methods:checked('method'),shapes:checked('shape'),forkShapes:checked('forkShape'),
+      cats:checked('category'),series:checked('series'),methods:checked('method'),shapes:checked('shape'),forkShapes:checked('forkShape'),
+      proxSizes:checked('proxSize'),proxShields:checked('proxShield'),
       outputs:checked('output'),ops:checked('operation'),connections:checked('connection'),envs:checked('environment'),
       min:nval('filterDistanceMin'),max:nval('filterDistanceMax')
     };
   }
   function routeCategory(){
+    if(state.sensorType==='photo_microsensor')return 'photo_microsensor';
+    if(state.sensorType==='proximity')return 'proximity';
+    if(state.sensorType==='photoelectric')return 'photoelectric';
     if(state.slotPass==='yes')return 'photo_microsensor';
     if(state.slotPass==='no')return 'photoelectric';
     return null;
@@ -1512,9 +1793,10 @@ render();
   function searchText(p){
     const d=distanceInfo(p);
     return [
-      p.model,p.series,p.subSeries,p.classification?.family,
+      p.model,p.orderCode,p.series,p.subSeries,p.classification?.family,p.catalogFeatureNote,
       p.sensorCategory?.nameKo,ALL_METHOD[p.classification?.detectionMethod],
       p.classification?.shapeNameKo,FORK_SHAPE[p.classification?.shapeCode],
+      p.classification?.sizeLabel,p.classification?.shieldNameKo,
       p.specs?.outputType,OP_KO[p.specs?.operationMode],d.label,
       p.specs?.standardDetectableObject,p.specs?.ipRating
     ].filter(Boolean).join(' ').toLowerCase();
@@ -1525,7 +1807,11 @@ render();
     const q=(document.getElementById('globalSearch')?.value||'').trim().toLowerCase();
     const wd=parseFloat(state.distance),hasWD=Number.isFinite(wd);
     const outReq=['NPN','PNP'].includes(state.output)?state.output:null;
-    const opReq=state.operation==='입광 시 ON'?'light_on':state.operation==='차광 시 ON'?'dark_on':null;
+    const opReq=state.operation==='입광 시 ON'?'light_on'
+      :state.operation==='차광 시 ON'?'dark_on'
+      :state.operation==='NO'?'normally_open'
+      :state.operation==='NC'?'normally_closed'
+      :null;
     const shapePref=state.shape==='플랫 선호'?'flat':state.shape==='사이드 뷰 선호'?'side_view':null;
     const rows=[];
     for(const p of db){
@@ -1533,6 +1819,7 @@ render();
       const cat=productCategory(p),method=p.classification?.detectionMethod,d=distanceInfo(p);
       if(route&&cat!==route)fail=true;
       if(f.cats.length&&!f.cats.includes(cat))fail=true;
+      if(f.series.length&&!f.series.includes(p.series))fail=true;
       if(f.methods.length&&!f.methods.includes(method))fail=true;
       if(f.outputs.length&&!f.outputs.includes(p.specs?.outputType))fail=true;
       if(f.ops.length&&!f.ops.some(x=>recordSupportsOp(p,x)))fail=true;
@@ -1541,9 +1828,9 @@ render();
       if(q&&!searchText(p).includes(q))fail=true;
 
       if(isMicro(p)){
-        if(state.target==='투명 물체')fail=true; // catalog standard target is opaque.
-        if(e3m.length&&state.slotPass!=='yes'){} // E3T method state is irrelevant to a confirmed slot route.
-        if(f.shapes.length)fail=true; // flat/side-view filter is not a fork-shape filter.
+        if(state.target==='투명 물체')fail=true;
+        if(f.shapes.length)fail=true;
+        if(f.proxSizes.length||f.proxShields.length)fail=true;
         if(f.forkShapes.length&&!f.forkShapes.includes(p.classification?.shapeCode))fail=true;
         if(state.forkShape&&p.classification?.shapeCode!==state.forkShape)fail=true;
         if(outReq&&p.specs?.outputType!==outReq)fail=true;
@@ -1557,10 +1844,41 @@ render();
         if(opReq){score+=10;reasons.push(`${opReq==='light_on'?'입광':'차광'} 시 ON 사용 가능`)}
         if((state.connection||[]).some(x=>connTokens(p).includes(x))){score+=12;reasons.push('선택한 접속 방식과 일치')}
         if(!reasons.length)reasons.push('말굽형 포토마이크로센서 기본 조건에 해당');
+
+      }else if(isProximity(p)){
+        if(f.forkShapes.length||f.shapes.length)fail=true;
+        if(e3m.length&&route!=='proximity')fail=true;
+        if(f.proxSizes.length&&!f.proxSizes.includes(p.classification?.sizeCode))fail=true;
+        if(f.proxShields.length&&!f.proxShields.includes(p.classification?.shieldType))fail=true;
+        if(state.proxSize&&p.classification?.sizeCode!==state.proxSize)fail=true;
+        if(state.proxShield&&p.classification?.shieldType!==state.proxShield)fail=true;
+        if(outReq&&p.specs?.outputType!==outReq)fail=true;
+        if(opReq&&!recordSupportsOp(p,opReq))fail=true;
+        if((state.connection||[]).length){
+          const req=state.connection[0];
+          if(req==='cable'&&p.connection?.base?.type!=='cable')fail=true;
+          if(req==='m8_relay'&&p.connection?.base?.type!=='m8_relay')fail=true;
+          if(req==='m8_connector'&&p.connection?.base?.type!=='m8_connector')fail=true;
+        }
+        const setMax=+p.specs?.settingDistance?.max;
+        if(hasWD&&Number.isFinite(setMax)&&wd>setMax)fail=true;
+        if(f.min!=null&&Number.isFinite(setMax)&&setMax<f.min)fail=true;
+        if(f.max!=null&&d.min!=null&&d.min>f.max)fail=true;
+        if(fail)continue;
+
+        if(state.proxSize){score+=16;reasons.push(`선택 사이즈 ${p.classification?.sizeLabel} 일치`)}
+        if(state.proxShield){score+=14;reasons.push(`${p.classification?.shieldNameKo} 설치 조건 일치`)}
+        if(hasWD){score+=24;reasons.push(`실제 간격 ${wd}mm가 설정 거리 0~${p.specs?.settingDistance?.max}mm 안에 있음`)}
+        if(outReq){score+=10;reasons.push(`${outReq} 출력 조건 만족`)}
+        if(opReq){score+=10;reasons.push(`${operationLabel(p)} 동작 조건 만족`)}
+        if((state.connection||[]).length){score+=10;reasons.push('선택한 접속 방식과 일치')}
+        if(state.target==='비자성 금속'){score-=4;reasons.push('비자성 금속은 카탈로그상 검출 거리 저하 가능')}
+        if(!reasons.length)reasons.push('E2E Small New 근접센서 기본 조건에 해당');
+
       }else{
-        if(f.forkShapes.length)fail=true;
-        if(route==='photo_microsensor')fail=true;
-        if(e3m.length&&!e3m.includes(method))fail=true;
+        if(f.forkShapes.length||f.proxSizes.length||f.proxShields.length)fail=true;
+        if(route==='photo_microsensor'||route==='proximity')fail=true;
+        if(e3m.length&&!inferredMethodMatches(method,e3m))fail=true;
         if(f.shapes.length&&!f.shapes.includes(p.classification?.shape))fail=true;
         if(outReq&&p.specs?.outputType!==outReq)fail=true;
         if(opReq&&!recordSupportsOp(p,opReq))fail=true;
@@ -1568,8 +1886,9 @@ render();
         if(f.max!=null&&d.min!=null&&d.min>f.max)fail=true;
         if(hasWD&&d.min!=null&&d.max!=null&&!(wd>=d.min&&wd<=d.max))fail=true;
         if(fail)continue;
-        if(e3m.includes(method)){score+=25;reasons.push('설치 조건에서 추천되는 광전 검출 방식과 일치')}
+        if(inferredMethodMatches(method,e3m)&&e3m.length){score+=25;reasons.push('설치 조건에서 추천되는 광전 검출 방식과 일치')}
         if(hasWD){score+=20;reasons.push(`입력 거리 ${wd}mm 조건 만족`)}
+        if(isE3Z(p)){reasons.push('E3Z 소형/장거리 계열 후보');if(p.selection?.dataCompleteness==='partial'){score-=10;reasons.push('일부 정격/성능은 이 카탈로그에서 확인 불가')}if(state.target==='투명 물체'&&method==='transparent_retro'){score+=24;reasons.push('투명 PET 병용 전용 계열과 대상 조건 일치')}if(state.background==='yes'&&method==='distance_setting'){score+=14;reasons.push('배경 구분용 거리 설정형 후보')}}
         if(shapePref&&p.classification?.shape===shapePref){score+=10;reasons.push('선호 형상 일치')}
         if(outReq){score+=10;reasons.push(`${outReq} 출력 조건 만족`)}
         if(opReq){score+=8;reasons.push(`${opReq==='light_on'?'입광':'차광'} 시 ON 조건 만족`)}
@@ -1607,22 +1926,19 @@ render();
     ta.remove();
   }
   function officialLinksHTML(p,compact=false){
-    const e3t=p.series==='E3T';
+    const e3t=p.series==='E3T',e3z=p.series==='E3Z',e2e=p.series==='E2E Small New';
+    const cadLabel=e3t?'E3T 2D/3D CAD 목록 ↗':'OMRON CAD 검색 ↗';
+    const note=e3t
+      ?'OMRON Korea E3T CAD 페이지에서 제공되는 DWG · DXF · 3D 항목을 확인해 직접 다운로드하세요.'
+      :e3z
+        ?'E3Z 2010 카탈로그는 CAD 데이터 준비 형식을 표시하고 OMRON Korea 사이트에서 다운로드하도록 안내합니다. 현재 등록 여부는 공식 CAD 검색에서 형번별 확인하세요.'
+        :e2e
+          ?'E2E Small New 2014 카탈로그에는 일부 형식에 CAD 데이터 표시가 있습니다. 현재 OMRON Korea CAD 검색에서 최종 형번의 2D/3D 등록 여부를 직접 확인하세요.'
+          :'EE-SX47/67의 개별 CAD 등록 여부는 현재 공식 한국 사이트에서 형번별 확인이 필요합니다. 형번을 복사한 뒤 OMRON CAD 검색 페이지에서 확인하세요.';
     return `<div class="official-cad-box ${compact?'compact':''}">
-      <div class="official-cad-head">
-        <div><strong>OMRON 공식 제품 · 2D/3D CAD</strong>
-        <small>형번 <b>${p.model}</b> · 다운로드는 OMRON 공식 사이트에서 사용자가 직접 진행</small></div>
-        <span class="official-only">공식 사이트</span>
-      </div>
-      <div class="official-cad-actions">
-        <a href="${officialProductUrl(p)}" target="_blank" rel="noopener">제품/형번 공식 검색 ↗</a>
-        <a class="cad-primary" href="${officialCadUrl(p)}" target="_blank" rel="noopener">${e3t?'E3T 2D/3D CAD 목록 ↗':'OMRON CAD 검색 ↗'}</a>
-        <button type="button" onclick="copyModelCode('${p.model}',this)">형번 복사</button>
-      </div>
-      <div class="official-cad-note">${e3t
-        ?'OMRON Korea E3T CAD 페이지에서 제공되는 DWG · DXF · 3D 항목을 확인해 직접 다운로드하세요.'
-        :'EE-SX47/67의 개별 CAD 등록 여부는 현재 공식 한국 사이트에서 형번별 확인이 필요합니다. 형번을 복사한 뒤 OMRON CAD 검색 페이지에서 확인하세요.'}</div>
-    </div>`;
+      <div class="official-cad-head"><div><strong>OMRON 공식 제품 · 2D/3D CAD</strong><small>형번 <b>${p.model}</b> · 다운로드는 OMRON 공식 사이트에서 사용자가 직접 진행</small></div><span class="official-only">공식 사이트</span></div>
+      <div class="official-cad-actions"><a href="${officialProductUrl(p)}" target="_blank" rel="noopener">제품/형번 공식 검색 ↗</a><a class="cad-primary" href="${officialCadUrl(p)}" target="_blank" rel="noopener">${cadLabel}</a><button type="button" onclick="copyModelCode('${p.model}',this)">형번 복사</button></div>
+      <div class="official-cad-note">${note}</div></div>`;
   }
 
   function characteristicGuide(item,p){
@@ -1691,6 +2007,15 @@ render();
         design:'설계 체크: 실제 워크의 가장 작은 부분도 그 거리에서 검출 가능한 크기보다 충분히 큰지 확인합니다.'
       };
     }
+    if(label.includes('스폿 지름')){
+      return {...common,title:'스폿 지름-거리 특성 — 빛 점의 크기가 거리마다 어떻게 바뀌는지 보는 그래프',one:'센서에서 멀어질수록 검출에 사용하는 빛 점(스폿)의 크기가 어떻게 변하는지 보여줍니다.',x:'X축: 센서와 물체 사이 거리',y:'Y축: 스폿 지름',read:'실제 설치 거리를 X축에서 찾고 그 거리에서 빛 점의 크기를 확인합니다.',design:'설계 체크: 작은 부품을 검출할 때 스폿이 워크보다 지나치게 크지 않은지 확인합니다.'};
+    }
+    if(label.includes('응차-거리')){
+      return {...common,title:'응차-거리 특성 — ON/OFF가 바뀌는 위치 차이를 거리별로 보는 그래프',one:'물체가 들어올 때 ON되는 위치와 빠질 때 OFF되는 위치의 차이가 설치 거리에 따라 어떻게 변하는지 보여줍니다.',x:'X축: 센서와 물체 사이 거리',y:'Y축: 응차',read:'사용할 거리에서 응차가 어느 정도인지 확인합니다.',design:'설계 체크: 위치 검출 정확도가 중요한 경우 응차가 기계 허용 오차보다 충분히 작은지 확인합니다.'};
+    }
+    if(label.includes('검출 물체의 크기')||label.includes('검출 물체 크기')){
+      return {...common,title:'검출 물체 크기-거리 특성 — 작은 물체가 거리별로 어느 정도까지 보이는지 보는 그래프',one:'센서와 물체 사이 거리가 달라질 때 검출 가능한 물체 크기가 어떻게 달라지는지 보여줍니다.',x:'X축: 센서와 물체 사이 거리',y:'Y축: 검출 물체 크기',read:'사용할 거리를 X축에서 찾고 그 거리에서 필요한 물체 크기를 확인합니다.',design:'설계 체크: 실제 워크의 가장 작은 부분이 그래프에서 요구되는 크기보다 충분히 큰지 확인합니다.'};
+    }
     if(label.includes('검출 거리-재질')){
       return {...common,
         title:'검출 거리-재질 특성 — 물체 재질 때문에 검출 거리가 얼마나 달라지는지 보는 그래프',
@@ -1751,23 +2076,23 @@ render();
 
   function operationLabel(p){
     if(p.specs?.operationMode==='switchable')return '입광/차광 전환 가능';
-    return OP_KO[p.specs?.operationMode]||'—';
+    return OP_KO[p.specs?.operationMode]||'확인 불가';
   }
   function connectionLabel(p){
-    if(isMicro(p))return p.connection?.base?.label||'—';
-    return connTokens(p).map(x=>({cable:'2m 코드',m12:'M12',econ:'e-CON',robot:'로봇 코드'}[x])).filter(Boolean).join(' · ');
+    if(isMicro(p)||isProximity(p))return p.connection?.base?.label||'—';
+    return connTokens(p).map(x=>({cable:'코드 인출',m8:'M8',m12:'M12',econ:'e-CON',robot:'로봇 코드'}[x])).filter(Boolean).join(' · ')||p.connection?.base?.label||'—';
   }
   function card(row,index){
-    const p=row.p,micro=isMicro(p);
+    const p=row.p,micro=isMicro(p),e3z=isE3Z(p),prox=isProximity(p);
     const on=state.compareSelected.includes(p.model);
     const charCount=(p.catalogVisuals?.characteristics||[]).length;
-    const shape=micro?(p.classification?.shapeNameKo||FORK_SHAPE[p.classification?.shapeCode]):SHAPE_KO[p.classification?.shape];
+    const shape=micro?(p.classification?.shapeNameKo||FORK_SHAPE[p.classification?.shapeCode]):(p.classification?.shapeNameKo||SHAPE_KO[p.classification?.shape]);
     return `<article class="product-card ${index===0?'best':''}">
       ${index===0?'<span class="best-badge">★ 조건상 최상위</span>':''}
       <button class="compare-add ${on?'on':''}" onclick="toggleCompare('${p.model}')">${on?'✓ 비교함':'＋ 비교 담기'}</button>
       <img class="product-img" src="${p.productImage}" alt="${p.model} 공식 카탈로그 형상 이미지">
       <div class="category-line"><span class="sensor-route-badge ${micro?'micro':''}">${p.sensorCategory?.nameKo}</span><span class="sensor-route-badge">${p.series}</span></div>
-      <div class="maker">OMRON · ${micro?'EE-SX47/67 한글 공식 카탈로그 2010':'E3T 한글 공식 카탈로그 2010'} 기준</div>
+      <div class="maker">OMRON · ${catalogBaselineLabel(p)} 기준</div>
       <div class="model-line"><div class="model">${p.model}</div><span class="info term" data-term="${modelTermKey(p)}" onclick="event.stopPropagation()">?</span></div>
       <div class="visual-proof-note">${p.productImageScope} · ? Hover로 확대</div>
       <div class="scoreline">적합도 <b>${row.score}</b> · 현행 판매 여부 별도 확인</div>
@@ -1780,11 +2105,11 @@ render();
         <div class="spec"><strong>접속</strong>${connectionLabel(p)}</div>
       </div>
       <div class="reason">${row.reasons.slice(0,4).map(x=>`<div>${x}</div>`).join('')}</div>
-      ${micro?'<div class="micro-caution">IP50 · 방수/방진 구조가 아니며 물·기름 부착 환경에는 사용하지 않도록 카탈로그에 명시되어 있습니다.</div>':'<div class="cautionline">2010 한글 공식 카탈로그 기반. “현재 판매중”을 의미하지 않습니다.</div>'}
-      <div class="char-available"><span>📈 특성 데이터</span><b>${charCount}개</b><small>이 모델에 연결된 공식 특성 그래프</small></div>
+      ${micro?'<div class="micro-caution">IP50 · 방수/방진 구조가 아니며 물·기름 부착 환경에는 사용하지 않도록 카탈로그에 명시되어 있습니다.</div>':prox?'<div class="cautionline">E2E Small New 한글 공식 카탈로그 2014 기준 · 현재 판매 여부는 별도 확인이 필요합니다.</div>':e3z&&p.selection?.dataCompleteness==='partial'?'<div class="micro-caution"><strong>E3Z 부분 데이터:</strong> 이 카탈로그에서 형식/거리/출력 등 확인 가능한 항목만 구조화했습니다. 상세 정격은 확인 불가 항목이 있습니다.</div>':e3z&&p.specs?.oilResistant?'<div class="cautionline">E3Z 방유 타입 · 적용 기름과 코드/커넥터부 제외 조건은 공식 주의사항을 확인하세요.</div>':'<div class="cautionline">2010 한글 공식 카탈로그 기반. “현재 판매중”을 의미하지 않습니다.</div>'}
+      <div class="char-available"><span>📈 특성 데이터</span><b>${charCount}개</b><small>${charCount?'이 모델에 연결된 공식 특성 그래프':'이 카탈로그에서 연결 가능한 특성 그래프 확인 불가'}</small></div>
       <div class="card-actions card-actions-four">
         <button onclick="showDetail('${p.model}')">상세보기</button>
-        <button class="characteristic-btn" onclick="openCharacteristicList('${p.model}')">📈 특성 데이터 ${charCount}</button>
+        ${charCount?`<button class="characteristic-btn" onclick="openCharacteristicList('${p.model}')">📈 특성 데이터 ${charCount}</button>`:'<button class="characteristic-btn" disabled>📈 특성 데이터 0</button>'}
         <button class="primary" onclick="openFieldEvidence('${p.model}','model')">📖 근거보기</button>
         <a class="cad-card-link" href="${officialCadUrl(p)}" target="_blank" rel="noopener">2D/3D CAD ↗</a>
       </div>
@@ -1794,26 +2119,314 @@ render();
 
   function renderCombinedResults(){
     const rows=combinedResults(),p=document.getElementById('panel'),route=routeCategory();
-    const e3=rows.filter(x=>!isMicro(x.p)).length,micro=rows.filter(x=>isMicro(x.p)).length;
+    const e3t=rows.filter(x=>x.p.series==='E3T').length,e3z=rows.filter(x=>x.p.series==='E3Z').length,e2e=rows.filter(x=>isProximity(x.p)).length,micro=rows.filter(x=>isMicro(x.p)).length;
     const unsupported=state.purpose&&!['presence','position'].includes(state.purpose);
     let body='';
     if(unsupported){
-      body=`<div class="result-empty"><strong>현재 등록된 E3T / EE-SX47/67 범위의 용도가 아닙니다.</strong>거리 측정·측장·비전은 해당 센서 카탈로그가 추가되는 단계에서 연결합니다.</div>`;
+      body=`<div class="result-empty"><strong>현재 등록된 E3T / E3Z / E2E Small New / EE-SX47/67 범위의 용도가 아닙니다.</strong>거리 측정·측장·비전은 해당 센서 카탈로그가 추가되는 단계에서 연결합니다.</div>`;
     }else if(!rows.length){
-      body=`<div class="result-empty"><strong>현재 조건을 만족하는 등록 모델이 없습니다.</strong>${state.slotPass==='yes'?'말굽형 형상·출력·동작·접속 조건을 하나씩 완화해 확인하세요.':'설치 방식·거리·출력·동작 조건을 하나씩 완화해 확인하세요.'}</div>`;
+      body=`<div class="result-empty"><strong>현재 조건을 만족하는 등록 모델이 없습니다.</strong>${state.sensorType==='photo_microsensor'?'본체 형상·출력·동작·접속 조건을 하나씩 완화해 확인하세요.':state.sensorType==='proximity'?'사이즈·실드/비실드·설정 거리·출력·동작·접속 조건을 하나씩 완화해 확인하세요.':'검출 방식·거리·출력·동작·접속 조건을 하나씩 완화해 확인하세요.'}</div>`;
     }else{
       body=`<div class="result-grid">${rows.slice(0,12).map(card).join('')}</div>`;
     }
     p.innerHTML=`<div class="question">
       <div class="result-top"><div><h2>OMRON 센서 선정 결과</h2>
-      <div class="result-count">등록 ${db.length}개 레코드 중 <b>${rows.length}개</b> 일치 · E3T ${e3}개 / EE-SX47/67 ${micro}개${rows.length>12?' · 상위 12개 표시':''}</div></div>
+      <div class="result-count">등록 ${db.length}개 레코드 중 <b>${rows.length}개</b> 일치 · E3T ${e3t}개 / E3Z ${e3z}개 / E2E Small New ${e2e}개 / EE-SX47/67 ${micro}개${rows.length>12?' · 상위 12개 표시':''}</div></div>
       <div style="display:flex;gap:8px"><button class="ghost" onclick="openCompare('same')">그룹 비교</button><button class="ghost" onclick="openPolicy()">데이터 기준</button></div></div>
-      <div class="engine-status"><span class="engine-badge live">E3T + EE-SX47/67 통합 엔진</span><span class="engine-badge">${route==='photo_microsensor'?'말굽형 포토마이크로 경로':route==='photoelectric'?'일반 광전센서 경로':'통합 검색'}</span><span class="engine-badge source">한글 공식 카탈로그 2010 기준</span></div>
+      <div class="engine-status"><span class="engine-badge live">E3T + E3Z + E2E Small New + EE-SX47/67 통합 엔진</span><span class="engine-badge">${route==='photo_microsensor'?'말굽형 포토마이크로 경로':route==='proximity'?'소경 근접센서 경로':route==='photoelectric'?'일반 광전센서 경로':'통합 검색'}</span><span class="engine-badge source">${route==='proximity'?'E2E 한글 공식 카탈로그 2014':'한글 공식 카탈로그 기준'}</span></div>
       ${body}
-      <div class="official-note" style="margin-top:14px"><strong>센서 선정 분기:</strong> 워크·도그가 센서의 5mm 홈 사이를 지나갈 수 있으면 EE-SX47/67 같은 말굽형 포토마이크로센서를 별도 후보군으로 선정합니다. 그렇지 않으면 E3T의 투과/회귀/확산/BGS 등 일반 광전센서 경로를 사용합니다.</div>
+      <div class="official-note" style="margin-top:14px"><strong>선정 경로:</strong> 광전센서는 E3T/E3Z에서 검출 방식·거리·전기 조건으로, 근접센서는 E2E Small New에서 사이즈·실드/비실드·설정 거리·NPN/PNP·NO/NC·접속 방식으로, 포토마이크로센서는 EE-SX47/67에서 5mm 홈 구조·본체 형상·전기/접속 조건으로 좁힙니다.</div>
     </div>`;
     updateCompareTray();
     const sc=document.getElementById('sidebarCount');if(sc)sc.innerHTML=`현재 조건 <b>${rows.length}개</b> / OMRON 등록 ${db.length}개`;
+  }
+
+  const PHOTO_METHOD_OPTIONS=[
+    {code:'through_beam',name:'투과형',term:'through',icon:'↔',desc:'투광기와 수광기를 물체 양쪽에 설치',fit:'긴 거리 · 물체 색 영향이 적은 검출'},
+    {code:'retro_reflective',name:'회귀 반사형',term:'retro',icon:'⇆',desc:'센서 한쪽 + 반대편 반사판',fit:'반대편에 수광기는 어렵고 반사판은 설치 가능'},
+    {code:'diffuse',name:'확산 반사형',term:'diffuse',icon:'↗',desc:'물체 자체에서 돌아오는 반사광을 사용',fit:'반사판 없이 한쪽 설치'},
+    {code:'bgs',name:'BGS 반사형',term:'bgs',icon:'▣',desc:'검출 물체 뒤쪽 배경 영향을 줄이는 방식',fit:'배경 벽·프레임이 가까운 근거리'},
+    {code:'limited_reflective',name:'한정 반사형',term:'limited',icon:'⌁',desc:'정해진 근거리 영역의 물체를 검출',fit:'검출 영역을 좁혀 사용'},
+    {code:'fine_beam_reflective',name:'가는 빔 반사형',term:'finebeam',icon:'•',desc:'작은 광 스폿으로 물체를 검출',fit:'작은 부분 · 위치를 더 좁게 보고 싶을 때'},
+    {code:'distance_setting',name:'거리 설정형',term:'distance_setting',icon:'⌖',desc:'거리 차이로 물체와 배경을 구분',fit:'E3Z-LS · 배경 억제/거리 설정'},
+    {code:'fork_through_beam',name:'말굽형 투과형 25mm',term:'fork25',icon:'⊔',desc:'E3Z-G의 25mm 말굽 구조',fit:'워크가 25mm 홈 사이를 통과'},
+    {code:'transparent_retro',name:'투명 PET 병용',term:'transparentpet',icon:'◇',desc:'투명 PET 병용 회귀 반사형',fit:'투명 PET 병 검출 전용 후보'}
+  ];
+
+  window.selectSensorType=function(type){
+    state.sensorType=type;
+    state.purpose='presence';
+    state.photoMethod=null;
+    state.proxSize=null;state.proxShield=null;
+    state.target=null;
+    state.targetDetails=[];
+    state.distance='';
+    state.shape=null;
+    state.output=null;
+    state.operation=null;
+    state.connection=[];
+    state.ip67Required=false;
+    state.forkShape=null;
+    state.through=null;state.reflector=null;state.background=null;
+    setChecks('method',[]);
+    setChecks('forkShape',[]);
+    setChecks('proxSize',[]);
+    setChecks('proxShield',[]);
+    setChecks('output',[]);
+    setChecks('operation',[]);
+    setChecks('connection',[]);
+    setChecks('environment',[]);
+    const min=document.getElementById('filterDistanceMin'),max=document.getElementById('filterDistanceMax');
+    if(min)min.value='';if(max)max.value='';
+    if(type==='photo_microsensor'){
+      state.slotPass='yes';
+      setChecks('category',['photo_microsensor']);
+      setChecks('series',['EE-SX47/67']);
+      setChecks('method',['slot_through_beam']);
+    }else if(type==='proximity'){
+      state.slotPass=null;
+      state.target='금속 부품';
+      setChecks('category',['proximity']);
+      setChecks('series',['E2E Small New']);
+      setChecks('method',['inductive_proximity']);
+    }else{
+      state.slotPass='no';
+      setChecks('category',['photoelectric']);
+      setChecks('series',['E3T','E3Z']);
+    }
+    state.step=2;
+    render();
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+
+  window.setPhotoMethod=function(code){
+    state.photoMethod=code||null;
+    state.through=null;state.reflector=null;state.background=null;
+    setChecks('method',code?[code]:[]);
+    if(code==='fork_through_beam'){
+      state.distance='25';
+      const min=document.getElementById('filterDistanceMin'),max=document.getElementById('filterDistanceMax');
+      if(min)min.value='25';if(max)max.value='25';
+    }else{
+      state.distance='';
+      const min=document.getElementById('filterDistanceMin'),max=document.getElementById('filterDistanceMax');
+      if(min)min.value='';if(max)max.value='';
+    }
+    render();
+  };
+
+  window.setPhotoConnection=function(code){
+    state.connection=code?[code]:[];
+    setChecks('connection',code?[code]:[]);
+    render();
+  };
+
+  window.togglePhotoIp67=function(){
+    state.ip67Required=!state.ip67Required;
+    setChecks('environment',state.ip67Required?['ip67']:[]);
+    render();
+  };
+
+  function renderSensorTypeStep1(){
+    document.getElementById('panel').innerHTML=`<div class="panel-grid sensor-type-first"><div class="question"><h2>어떤 종류의 센서를 선정하시겠습니까?</h2><div class="sub">먼저 센서 종류를 고른 뒤, 해당 센서에 필요한 사양만 순서대로 결정합니다.</div>
+      <div class="sensor-type-cards three">
+        <button class="sensor-type-card ${state.sensorType==='photoelectric'?'selected':''}" onclick="selectSensorType('photoelectric')">
+          <div class="sensor-type-icon">◉</div><div class="sensor-type-copy"><div class="sensor-type-title">광전센서 <span class="info term" data-term="photo" onclick="event.stopPropagation()">?</span></div>
+          <p>빛을 이용해 물체의 유무·위치를 검출합니다.</p><div class="sensor-type-series">E3T / E3Z</div><div class="sensor-type-next">검출 방식 → 거리 → 전기·접속 조건</div></div>
+        </button>
+        <button class="sensor-type-card proximity ${state.sensorType==='proximity'?'selected':''}" onclick="selectSensorType('proximity')">
+          <div class="sensor-type-icon">◎</div><div class="sensor-type-copy"><div class="sensor-type-title">근접센서 <span class="info term" data-term="proximity" onclick="event.stopPropagation()">?</span></div>
+          <p>금속 물체가 가까워지면 비접촉으로 검출합니다.</p><div class="sensor-type-series">E2E Small New</div><div class="sensor-type-next">사이즈·실드 → 검출 거리 → 출력·접속 조건</div></div>
+        </button>
+        <button class="sensor-type-card micro ${state.sensorType==='photo_microsensor'?'selected':''}" onclick="selectSensorType('photo_microsensor')">
+          <div class="sensor-type-icon">⊓</div><div class="sensor-type-copy"><div class="sensor-type-title">포토마이크로센서 <span class="info term" data-term="photomicro" onclick="event.stopPropagation()">?</span></div>
+          <p>워크·도그가 말굽형 센서의 홈 사이를 지나가며 검출됩니다.</p><div class="sensor-type-series">EE-SX47/67</div><div class="sensor-type-next">홈 구조 → 형상 → 전기·접속 조건</div></div>
+        </button>
+      </div>
+      <div class="sensor-type-help"><strong>? Hover</strong><span>공식 카탈로그 이미지와 쉬운 설명을 확인할 수 있습니다.</span></div>
+      </div><aside class="guide"><h4>세 종류의 가장 큰 차이</h4><p><b>광전센서</b>: 빛으로 물체를 검출.</p><p><b>근접센서</b>: 금속이 가까워지면 비접촉 검출.</p><p><b>포토마이크로센서</b>: 물체가 센서 홈 사이를 직접 통과.</p><div class="mini"><strong>빠른 판단</strong><ul><li>일반 거리/광학 검출 → 광전센서</li><li>금속 근거리 검출 → 근접센서</li><li>도그·플래그 홈 통과 → 포토마이크로센서</li></ul></div></aside></div>`;
+    document.getElementById('prevBtn').style.visibility='hidden';
+    document.getElementById('nextBtn').style.visibility='hidden';
+  }
+
+  const PROX_SIZE_LABEL={phi3:'φ3',phi4:'φ4',phi65:'φ6.5',m4:'M4',m5:'M5'};
+  const PROX_SIZE_IMG={phi3:'assets/model_images/e2e/phi3.jpg',phi4:'assets/model_images/e2e/phi4.jpg',phi65:'assets/model_images/e2e/phi65.jpg',m4:'assets/model_images/e2e/m4.jpg',m5:'assets/model_images/e2e/m5.jpg'};
+  const PROX_DIST={
+    phi3:{shield:{rated:.8,set:.56},unshield:{rated:2,set:1.4}},
+    phi4:{shield:{rated:1.2,set:.84},unshield:{rated:3,set:2.1}},
+    phi65:{shield:{rated:2,set:1.4},unshield:{rated:4,set:2.8}},
+    m4:{shield:{rated:.8,set:.56},unshield:{rated:2,set:1.4}},
+    m5:{shield:{rated:1.2,set:.84},unshield:{rated:3,set:2.1}}
+  };
+
+  window.setProxSize=function(code){
+    state.proxSize=code||null;
+    setChecks('proxSize',code?[code]:[]);
+    state.distance='';
+    const min=document.getElementById('filterDistanceMin'),max=document.getElementById('filterDistanceMax');
+    if(min)min.value='';if(max)max.value='';
+    chips();render();
+  };
+  window.setProxShield=function(code){
+    state.proxShield=code||null;
+    setChecks('proxShield',code?[code]:[]);
+    state.distance='';
+    const min=document.getElementById('filterDistanceMin'),max=document.getElementById('filterDistanceMax');
+    if(min)min.value='';if(max)max.value='';
+    chips();render();
+  };
+  window.setProxConnection=function(code){
+    state.connection=code?[code]:[];
+    setChecks('connection',code?[code]:[]);
+    chips();render();
+  };
+
+  function renderProximityStep2(){
+    document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question">
+      <h2>근접센서로 어떤 금속을 검출합니까?</h2>
+      <div class="sub">E2E Small New는 금속 검출용 고주파 발진형 근접센서입니다. 물체 재질에 따라 실제 검출 거리가 달라질 수 있습니다.</div>
+      <div class="cards prox-target-cards">
+        <button class="option-card ${state.target==='자성 금속'?'selected':''}" onclick="setVal('target','자성 금속')"><div class="iconbox">Fe</div><div class="option-title">자성 금속 <span class="info term" data-term="prox_metal" onclick="event.stopPropagation()">?</span></div><div class="option-desc">철·탄소강 등 · 카탈로그 표준 검출 거리의 기준</div></button>
+        <button class="option-card ${state.target==='비자성 금속'?'selected':''}" onclick="setVal('target','비자성 금속')"><div class="iconbox">Al</div><div class="option-title">비자성 금속</div><div class="option-desc">알루미늄·일부 스테인리스 등 · 검출 거리 감소 가능</div></button>
+        <button class="option-card ${state.target==='잘 모르겠음'?'selected':''}" onclick="setVal('target','잘 모르겠음')"><div class="iconbox">?</div><div class="option-title">잘 모르겠음</div><div class="option-desc">재질은 후보에서 제외하지 않고 나중에 실제 워크로 확인</div></button>
+      </div>
+      <div class="official-note"><strong>중요:</strong> p.60 정격/성능은 자성 금속 기준입니다. 비자성 금속은 검출 거리가 저하될 수 있으므로 결과를 최대 거리 끝에 맞추지 않습니다.</div>
+    </div><aside class="guide"><h4>광전센서와 차이</h4><p>근접센서는 빛을 사용하지 않습니다. 검출 대상이 <b>금속</b>이고 설치 거리가 수 mm 수준일 때 우선 검토합니다.</p></aside></div>`;
+  }
+
+  function renderProximityStep3(){
+    document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question">
+      <h2>본체 사이즈와 실드/비실드를 선택합니다.</h2>
+      <div class="sub">설치 공간에 맞는 외형을 먼저 고르고, 주변 금속 매립 조건에 따라 실드/비실드를 선택합니다.</div>
+      <div class="prox-size-grid">${Object.keys(PROX_SIZE_LABEL).map(k=>`<button class="prox-size-card ${state.proxSize===k?'selected':''}" onclick="setProxSize('${k}')"><img src="${PROX_SIZE_IMG[k]}" alt="${PROX_SIZE_LABEL[k]} 공식 외형"><strong>${PROX_SIZE_LABEL[k]}</strong><small>${k.startsWith('m')?'나사형':'원주형'}</small></button>`).join('')}</div>
+      <div class="qa"><div class="qa-title">설치 타입 <span class="info term" data-term="prox_shield">?</span></div><div class="seg">
+        <button class="${state.proxShield==='shield'?'active':''}" onclick="setProxShield('shield')">실드 <span class="info term" data-term="prox_shield" onclick="event.stopPropagation()">?</span></button>
+        <button class="${state.proxShield==='unshield'?'active':''}" onclick="setProxShield('unshield')">비실드 <span class="info term" data-term="prox_unshield" onclick="event.stopPropagation()">?</span></button>
+        <button class="${!state.proxShield?'active':''}" onclick="setProxShield(null)">잘 모르겠음</button>
+      </div></div>
+      <div class="prox-compare-note"><b>쉽게:</b> 주변 금속 안에 센서 앞면을 가깝게 묻어 설치해야 하면 실드를 우선 검토합니다. 더 긴 검출 거리가 필요하고 센서 앞부분 주변에 금속 여유 공간을 확보할 수 있으면 비실드를 검토합니다.</div>
+    </div><aside class="guide"><h4>카탈로그 등록 사이즈</h4><p>φ3 · φ4 · φ6.5 · M4 · M5의 5종입니다.</p><p>같은 사이즈라도 비실드 타입이 실드 타입보다 검출 거리가 깁니다.</p></aside></div>`;
+  }
+
+  function renderProximityStep4(){
+    const cfg=state.proxSize&&state.proxShield?PROX_DIST[state.proxSize]?.[state.proxShield]:null;
+    document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question">
+      <h2>실제 설치할 검출 거리를 확인합니다.</h2>
+      <div class="sub">근접센서는 정격 검출 거리 끝에 딱 맞추기보다 <b>설정 거리</b> 안에서 사용하는 것이 안정적입니다.</div>
+      ${cfg?`<div class="prox-distance-summary"><div><span>선택 외형</span><b>${PROX_SIZE_LABEL[state.proxSize]} · ${state.proxShield==='shield'?'실드':'비실드'}</b></div><div><span>정격 검출 거리</span><b>${cfg.rated}mm</b></div><div><span>권장 설정 거리</span><b>0~${cfg.set}mm <span class="info term" data-term="prox_setting">?</span></b></div></div>`:
+      `<div class="official-note">사이즈 또는 실드/비실드를 아직 정하지 않았다면 원하는 실제 설치 거리만 입력해도 후보를 좁힐 수 있습니다.</div>`}
+      <div class="field" style="margin-top:14px"><label>센서 검출면 ↔ 금속 물체의 실제 간격 <span class="info term" data-term="prox_setting">?</span></label><div style="display:flex;gap:8px"><input type="number" min="0" step="0.1" value="${state.distance}" placeholder="예: 0.5" oninput="state.distance=this.value;chips()"><span style="align-self:center">mm</span></div></div>
+      <div class="qa"><div class="qa-title">빠른 입력</div><div class="seg distance-quick"><button onclick="setVal('distance','0.5')">0.5mm</button><button onclick="setVal('distance','1')">1mm</button><button onclick="setVal('distance','1.5')">1.5mm</button><button onclick="setVal('distance','2')">2mm</button><button onclick="setVal('distance','')">잘 모르겠음</button></div></div>
+      <div class="official-note"><strong>선정 로직:</strong> 입력한 실제 간격이 각 형번의 p.60 설정 거리 범위 안에 들어오는 형번을 우선 남깁니다.</div>
+    </div><aside class="guide"><h4>정격 거리 vs 설정 거리</h4><p><b>정격 검출 거리</b>는 센서 성능의 기준값이고, <b>설정 거리</b>는 실제 설치에서 권장하는 안정 범위입니다.</p></aside></div>`;
+  }
+
+  function renderProximityStep5(){
+    const c=(state.connection||[])[0]||'';
+    document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question">
+      <h2>근접센서의 전기·접속 조건을 선택합니다.</h2>
+      <div class="sub">E2E Small New는 NPN/PNP, NO/NC, 3가지 접속 방식 조합으로 형번이 나뉩니다.</div>
+      <div class="qa"><div class="qa-title">출력 방식 <span class="info term" data-term="output_term">?</span></div><div class="seg">
+        <button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN</button>
+        <button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP</button>
+        <button class="${state.output==='잘 모르겠음'?'active':''}" onclick="setVal('output','잘 모르겠음')">잘 모르겠음</button>
+      </div></div>
+      <div class="qa"><div class="qa-title">동작 모드</div><div class="seg">
+        <button class="${state.operation==='NO'?'active':''}" onclick="setVal('operation','NO')">NO <span class="info term" data-term="prox_no" onclick="event.stopPropagation()">?</span></button>
+        <button class="${state.operation==='NC'?'active':''}" onclick="setVal('operation','NC')">NC <span class="info term" data-term="prox_nc" onclick="event.stopPropagation()">?</span></button>
+        <button class="${state.operation==='잘 모르겠음'?'active':''}" onclick="setVal('operation','잘 모르겠음')">잘 모르겠음</button>
+      </div></div>
+      <div class="qa"><div class="qa-title">접속 방식</div><div class="seg">
+        <button class="${c==='cable'?'active':''}" onclick="setProxConnection('cable')">코드 인출 2m</button>
+        <button class="${c==='m8_relay'?'active':''}" onclick="setProxConnection('m8_relay')">M8 커넥터 중계 0.3m</button>
+        <button class="${c==='m8_connector'?'active':''}" onclick="setProxConnection('m8_connector')">M8 커넥터</button>
+        <button class="${!c?'active':''}" onclick="setProxConnection(null)">상관없음</button>
+      </div><div class="micro-help-inline">M8 커넥터 타입은 φ4 · φ6.5 · M5에만 준비되어 있습니다.</div></div>
+      <div class="qa"><div class="qa-title">환경 조건</div><div class="seg"><button class="active">IP67 <span class="info term" data-term="ip67" onclick="event.stopPropagation()">?</span></button></div></div>
+    </div><aside class="guide"><h4>NO / NC</h4><p><b>NO</b>: 금속이 오면 ON.<br><b>NC</b>: 평소 ON, 금속이 오면 OFF.</p><p>PLC 입력 규격에 맞춰 NPN/PNP를 선택합니다.</p></aside></div>`;
+  }
+
+  function renderSensorMethodStep3(){
+    const panel=document.getElementById('panel');
+    if(state.sensorType==='proximity'){renderProximityStep3();return;}
+    if(state.sensorType==='photo_microsensor'){
+      panel.innerHTML=`<div class="panel-grid"><div class="question"><h2>포토마이크로센서의 검출 구조를 확인합니다.</h2>
+        <div class="sub">EE-SX47/67은 검출 방식이 말굽형 투과 방식으로 정해져 있습니다. 여기서는 실제 기구에 적용 가능한지만 확인합니다.</div>
+        <div class="micro-fixed-method">
+          <div class="micro-fixed-image"><img src="assets/ee_sx47_67/product-group.png" alt="EE-SX47/67 공식 카탈로그 이미지"></div>
+          <div><span class="sensor-route-badge micro">포토마이크로센서</span><h3>투과형(말굽형) · 홈 폭 5mm <span class="info term" data-term="slot">?</span></h3>
+          <p>투광부와 수광부가 한 몸에 들어 있고, 워크·도그·플래그가 <b>5mm 홈 사이를 지나가며</b> 빛을 가리는 방식입니다.</p></div>
+        </div>
+        <div class="qa"><div class="qa-title">실제 워크가 5mm 홈 사이를 통과할 수 있습니까?</div>
+          <div class="seg"><button class="active">가능 · 이 방식으로 진행</button><button onclick="selectSensorType('photoelectric');state.step=3;render()">불가능 · 광전센서로 변경</button></div>
+        </div>
+        <div class="official-note"><strong>다음 단계:</strong> 8가지 본체 형상 중 설치 공간에 맞는 형상을 선택합니다.</div>
+      </div><aside class="guide"><h4>5mm의 의미</h4><p>여기서 5mm는 일반 광전센서의 “검출 거리”가 아닙니다. 센서 안쪽의 <b>홈 폭</b>입니다.</p><p>워크가 홈 안으로 들어갈 수 없는 구조라면 광전센서 경로가 더 적합합니다.</p></aside></div>`;
+      return;
+    }
+
+    panel.innerHTML=`<div class="question"><h2>광전센서의 검출 방식을 선택합니다.</h2>
+      <div class="sub">설치 구조와 물체 특성에 가장 가까운 방식을 고르세요. 잘 모르겠으면 선택하지 않고 다음 단계에서 거리부터 좁혀도 됩니다.</div>
+      <div class="photo-method-grid">${PHOTO_METHOD_OPTIONS.map(x=>`<button class="photo-method-card ${state.photoMethod===x.code?'selected':''}" onclick="setPhotoMethod('${x.code}')">
+        <div class="photo-method-head"><span class="photo-method-icon">${x.icon}</span><strong>${x.name}</strong><span class="info term" data-term="${x.term}" onclick="event.stopPropagation()">?</span></div>
+        <p>${x.desc}</p><small>${x.fit}</small>
+      </button>`).join('')}</div>
+      <div class="method-unknown"><button class="${!state.photoMethod?'active':''}" onclick="setPhotoMethod(null)">잘 모르겠음 · 모든 광전 방식 후보 유지</button></div>
+      <div class="official-note"><strong>선택 원칙:</strong> 검출 방식은 강한 조건입니다. 방식을 확실히 아는 경우에만 선택하고, 모르면 전체 후보를 유지한 상태에서 거리·전기 조건으로 좁힙니다.</div>
+    </div>`;
+  }
+
+  function photoDistanceLabel(){
+    const m=state.photoMethod;
+    if(m==='retro_reflective'||m==='transparent_retro')return '센서 ↔ 반사판 거리';
+    if(m==='through_beam')return '투광기 ↔ 수광기 설치 거리';
+    if(m==='fork_through_beam')return '말굽형 홈 폭';
+    return '센서 ↔ 검출 물체 거리';
+  }
+
+  function renderPhotoelectricStep4(){
+    if(state.photoMethod==='fork_through_beam'){
+      document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question"><h2>E3Z-G 말굽형의 거리 조건입니다.</h2>
+        <div class="sub">E3Z-G 선정표의 검출 거리는 25mm이며, 말굽형 구조의 홈 폭으로 봅니다.</div>
+        <div class="route-card"><strong>홈 폭 25mm <span class="info term" data-term="fork25">?</span></strong><p>일반 광전센서처럼 센서와 물체 사이 거리를 입력하는 단계가 아닙니다.</p></div>
+        <div class="official-note"><strong>다음 단계:</strong> NPN/PNP, 동작 방식, 접속 조건을 확인합니다.</div>
+      </div><aside class="guide"><h4>EE-SX와 구분</h4><p>E3Z-G는 광전센서 계열의 25mm 말굽형이고, EE-SX47/67은 포토마이크로센서의 5mm 홈입니다.</p></aside></div>`;
+      return;
+    }
+    document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question"><h2>필요한 검출 거리를 입력합니다.</h2>
+      <div class="sub">선택한 검출 방식에 맞는 실제 설치 거리를 mm 단위로 입력합니다. E3T 근거리부터 E3Z 장거리까지 함께 비교합니다.</div>
+      <div class="fields"><div class="field"><label>${photoDistanceLabel()} <span class="info term" data-term="distance">?</span></label>
+        <div style="display:flex;gap:8px"><input type="number" min="0" value="${state.distance}" placeholder="예: 500" oninput="state.distance=this.value;document.getElementById('filterDistanceMin').value=this.value;document.getElementById('filterDistanceMax').value=this.value;chips()"><span style="align-self:center">mm</span></div></div>
+        <div class="field"><label>본체 형상 선호</label><select onchange="setVal('shape',this.value)"><option value="">상관없음</option><option ${state.shape==='플랫 선호'?'selected':''}>플랫 선호</option><option ${state.shape==='사이드 뷰 선호'?'selected':''}>사이드 뷰 선호</option></select></div></div>
+      <div class="qa" style="margin-top:12px"><div class="qa-title">빠른 거리 선택</div><div class="seg distance-quick">
+        <button onclick="setVal('distance','20')">20mm</button><button onclick="setVal('distance','100')">100mm</button><button onclick="setVal('distance','500')">500mm</button>
+        <button onclick="setVal('distance','1000')">1m</button><button onclick="setVal('distance','3000')">3m</button><button onclick="setVal('distance','10000')">10m</button><button onclick="setVal('distance','')">잘 모르겠음</button>
+      </div></div>
+      <div class="official-note"><strong>거리 입력 팁:</strong> 회귀 반사형은 센서↔반사판 거리, 투과형은 투광기↔수광기 거리로 판단합니다. 확산/BGS/한정/가는 빔/거리 설정형은 센서↔물체 거리로 봅니다.</div>
+    </div><aside class="guide"><h4>거리 단위</h4><p>입력은 모두 <b>mm</b>입니다.</p><p>예: 1m = 1000mm · 10m = 10000mm</p></aside></div>`;
+  }
+
+  function renderPhotoelectricStep5(){
+    const c=(state.connection||[])[0]||'';
+    document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question"><h2>광전센서의 전기·접속 조건을 확인합니다.</h2>
+      <div class="sub">PLC 입력 방식과 배선/커넥터 조건을 알면 강한 필터로 적용합니다. 모르는 항목은 건너뛰어도 됩니다.</div>
+      <div class="qa"><div class="qa-title">출력 방식 <span class="info term" data-term="output_term">?</span></div><div class="seg">
+        <button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN</button>
+        <button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP</button>
+        <button class="${state.output==='잘 모르겠음'?'active':''}" onclick="setVal('output','잘 모르겠음')">잘 모르겠음</button></div></div>
+      <div class="qa"><div class="qa-title">출력이 언제 ON되어야 합니까? <span class="info term" data-term="operation_term">?</span></div><div class="seg">
+        <button class="${state.operation==='입광 시 ON'?'active':''}" onclick="setVal('operation','입광 시 ON')">입광 시 ON</button>
+        <button class="${state.operation==='차광 시 ON'?'active':''}" onclick="setVal('operation','차광 시 ON')">차광 시 ON</button>
+        <button class="${state.operation==='잘 모르겠음'?'active':''}" onclick="setVal('operation','잘 모르겠음')">잘 모르겠음</button></div></div>
+      <div class="qa"><div class="qa-title">접속 방식</div><div class="seg">
+        <button class="${c==='cable'?'active':''}" onclick="setPhotoConnection('cable')">코드 인출</button>
+        <button class="${c==='m8'?'active':''}" onclick="setPhotoConnection('m8')">M8 <span class="info term" data-term="m8" onclick="event.stopPropagation()">?</span></button>
+        <button class="${c==='m12'?'active':''}" onclick="setPhotoConnection('m12')">M12 <span class="info term" data-term="m12" onclick="event.stopPropagation()">?</span></button>
+        <button class="${c==='econ'?'active':''}" onclick="setPhotoConnection('econ')">e-CON <span class="info term" data-term="econ" onclick="event.stopPropagation()">?</span></button>
+        <button class="${!c?'active':''}" onclick="setPhotoConnection(null)">상관없음</button>
+      </div></div>
+      <div class="qa"><div class="qa-title">환경 조건</div><div class="seg"><button class="${state.ip67Required?'active':''}" onclick="togglePhotoIp67()">IP67 필요 <span class="info term" data-term="ip67" onclick="event.stopPropagation()">?</span></button></div></div>
+    </div><aside class="guide"><h4>모르면 건너뛰기</h4><p>NPN/PNP는 PLC 입력과 맞아야 합니다. 확실하지 않다면 “잘 모르겠음”으로 두고 최종 후보에서 확인하세요.</p><p>접속 방식은 설치 배선 계획이 정해진 경우에만 선택하면 됩니다.</p></aside></div>`;
   }
 
   window.setSlotPass=function(v){
@@ -1846,21 +2459,21 @@ render();
       name:'투과형',term:'through',img:'assets/model_images/e3t/E3T-ST.png',
       install:'투광기 + 수광기를 물체 양쪽에 설치',
       detect:'물체가 광축을 차단하면 검출',
-      range:'E3T: 300~1000mm 계열',
+      range:'E3T: 300~1000mm · E3Z: 10~30m 계열',
       best:'양쪽 설치 가능 · 긴 거리 · 물체 색 영향이 적은 쪽을 우선 검토'
     },
     retro_reflective:{
       name:'회귀 반사형',term:'retro',img:'assets/model_images/e3t/E3T-SR.png',
       install:'센서 한쪽 + 반대편 반사판',
       detect:'반사판으로 돌아오는 빛이 끊기면 검출',
-      range:'E3T-SR4: 100/200mm',
+      range:'E3T-SR4: 100/200mm · E3Z-R: 최대 4m',
       best:'반대편에 수광기는 어렵지만 반사판 설치는 가능한 경우'
     },
     diffuse:{
       name:'확산 반사형',term:'diffuse',img:'assets/model_images/e3t/E3T-FD.png',
       install:'센서 한쪽만 설치',
       detect:'물체 자체에서 반사되는 빛으로 검출',
-      range:'E3T-FD: 5~30mm',
+      range:'E3T-FD: 5~30mm · E3Z-D: 100mm/1m',
       best:'반사판 없이 근거리에서 단순하게 설치할 때'
     },
     limited_reflective:{
@@ -1889,7 +2502,7 @@ render();
     const preferred=preferredMethods();
     const keys=['through_beam','retro_reflective','diffuse','limited_reflective','bgs'];
     return `<div class="method-compare">
-      <div class="method-compare-head"><div><strong>검출 방식 차이 한눈에 비교</strong><small>공식 E3T 형상 이미지 + 설치 방식 + 검출 원리로 비교합니다.</small></div>
+      <div class="method-compare-head"><div><strong>검출 방식 차이 한눈에 비교</strong><small>공식 E3T/E3Z 카탈로그 기준으로 설치 방식 + 검출 원리를 비교합니다.</small></div>
       <span class="compare-legend"><i></i> 현재 조건 우선 후보</span></div>
       <div class="method-compare-grid">${keys.map(k=>{const x=METHOD_COMPARE[k],on=preferred.includes(k);return `
         <article class="method-compare-card ${on?'preferred':''}">
@@ -1902,7 +2515,7 @@ render();
             <div><dt>언제 유리?</dt><dd>${x.best}</dd></div>
           </dl>
         </article>`}).join('')}</div>
-      <div class="method-compare-note">※ 거리값은 현재 등록된 E3T 2010 한글 공식 카탈로그 범위입니다. 최종 형번 선정에서는 각 모델 사양을 다시 확인합니다.</div>
+      <div class="method-compare-note">※ 거리값은 현재 등록된 E3T/E3Z 2010 한글 공식 카탈로그 범위입니다. 최종 형번 선정에서는 각 모델 사양을 다시 확인합니다.</div>
     </div>`;
   }
 
@@ -1911,9 +2524,9 @@ render();
     let lower='';
     if(!micro){
       let method='광전 방식 후보 유지';
-      if(state.through==='yes')method='E3T 투과형 우선';
-      else if(state.through==='no'&&state.reflector==='yes')method='E3T 회귀 반사형 우선';
-      else if(state.through==='no'&&state.reflector==='no'&&state.background==='yes')method='E3T BGS / 한정 반사형 우선';
+      if(state.through==='yes')method='E3T/E3Z 투과형 우선';
+      else if(state.through==='no'&&state.reflector==='yes')method='E3T/E3Z 회귀 반사형 우선';
+      else if(state.through==='no'&&state.reflector==='no'&&state.background==='yes')method='E3T BGS/한정 반사형 + E3Z 거리 설정형 검토';
       lower=`<div class="qa"><div class="qa-title">② 물체 양쪽에 센서를 설치할 수 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.through===v?'active':''}" onclick="setVal('through','${v}')">${['가능','불가능','잘 모르겠음'][i]}</button>`).join('')}</div></div>
       <div class="qa"><div class="qa-title">③ 반대편에 작은 반사판은 설치할 수 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.reflector===v?'active':''}" onclick="setVal('reflector','${v}')">${['가능','불가능','잘 모르겠음'][i]}</button>`).join('')}</div></div>
       <div class="qa"><div class="qa-title">④ 검출 물체 뒤쪽에 벽·프레임이 가까이 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.background===v?'active':''}" onclick="setVal('background','${v}')">${['있음','없음','잘 모르겠음'][i]}</button>`).join('')}</div></div>
@@ -1948,12 +2561,38 @@ render();
     if(state.slotPass!=='yes')return;
     const c=(state.connection||[])[0]||'';
     document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question"><h2>말굽형 센서의 전기·접속 조건을 확인합니다.</h2>
-      <div class="sub">EE-SX47/67의 NPN/PNP, 동작 방식, 접속 형식을 이용해 실제 형식을 좁힙니다.</div>
-      <div class="qa"><div class="qa-title">출력 방식</div><div class="seg"><button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN</button><button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP</button><button class="${state.output==='잘 모르겠음'?'active':''}" onclick="setVal('output','잘 모르겠음')">잘 모르겠음</button></div></div>
-      <div class="qa"><div class="qa-title">출력이 언제 ON되어야 합니까?</div><div class="seg"><button class="${state.operation==='입광 시 ON'?'active':''}" onclick="setVal('operation','입광 시 ON')">입광 시 ON</button><button class="${state.operation==='차광 시 ON'?'active':''}" onclick="setVal('operation','차광 시 ON')">차광 시 ON</button><button class="${state.operation==='잘 모르겠음'?'active':''}" onclick="setVal('operation','잘 모르겠음')">잘 모르겠음</button></div><div class="sync-note">EE-SX67은 입광/차광 ON 전환 가능 형식이 있고, EE-SX47은 입광 시 ON 고정 형식입니다.</div></div>
-      <div class="qa"><div class="qa-title">접속 방식</div><div class="seg"><button class="${c==='fork_connector'?'active':''}" onclick="setMicroConnection('fork_connector')">4극 커넥터</button><button class="${c==='fork_cable'?'active':''}" onclick="setMicroConnection('fork_cable')">코드 인출 1m</button><button class="${c==='fork_relay'?'active':''}" onclick="setMicroConnection('fork_relay')">커넥터 중계 0.1m</button><button class="${!c?'active':''}" onclick="state.connection=[];setChecks('connection',[]);render()">잘 모르겠음</button></div></div>
+      <div class="sub">EE-SX47/67의 NPN/PNP, 동작 방식, 접속 형식을 이용해 실제 형식을 좁힙니다. 각 <b>?</b>에 마우스를 올리면 공식 이미지와 쉬운 설명을 확인할 수 있습니다.</div>
+
+      <div class="qa"><div class="qa-title">출력 방식 <span class="info term" data-term="micro_output">?</span></div>
+        <div class="seg">
+          <button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN <span class="info term" data-term="micro_npn" onclick="event.stopPropagation()">?</span></button>
+          <button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP <span class="info term" data-term="micro_pnp" onclick="event.stopPropagation()">?</span></button>
+          <button class="${state.output==='잘 모르겠음'?'active':''}" onclick="setVal('output','잘 모르겠음')">잘 모르겠음</button>
+        </div>
+        <div class="micro-help-inline">PLC 입력 규격을 알고 있으면 NPN/PNP를 선택하고, 모르면 후보를 남겨둔 뒤 최종 형번에서 확인합니다.</div>
+      </div>
+
+      <div class="qa"><div class="qa-title">출력이 언제 ON되어야 합니까? <span class="info term" data-term="micro_operation">?</span></div>
+        <div class="seg">
+          <button class="${state.operation==='입광 시 ON'?'active':''}" onclick="setVal('operation','입광 시 ON')">입광 시 ON <span class="info term" data-term="micro_lighton" onclick="event.stopPropagation()">?</span></button>
+          <button class="${state.operation==='차광 시 ON'?'active':''}" onclick="setVal('operation','차광 시 ON')">차광 시 ON <span class="info term" data-term="micro_darkon" onclick="event.stopPropagation()">?</span></button>
+          <button class="${state.operation==='잘 모르겠음'?'active':''}" onclick="setVal('operation','잘 모르겠음')">잘 모르겠음</button>
+        </div>
+        <div class="sync-note"><b>쉽게:</b> 홈이 비어 있을 때 ON → 입광 ON · 워크가 홈을 막았을 때 ON → 차광 ON.<br>EE-SX67은 입광/차광 ON 전환 가능 형식이 있고, EE-SX47은 입광 시 ON 고정 형식입니다.</div>
+      </div>
+
+      <div class="qa"><div class="qa-title">접속 방식 <span class="info term" data-term="micro_connection">?</span></div>
+        <div class="seg">
+          <button class="${c==='fork_connector'?'active':''}" onclick="setMicroConnection('fork_connector')">4극 커넥터 <span class="info term" data-term="fork_connector_help" onclick="event.stopPropagation()">?</span></button>
+          <button class="${c==='fork_cable'?'active':''}" onclick="setMicroConnection('fork_cable')">코드 인출 1m <span class="info term" data-term="fork_cable_help" onclick="event.stopPropagation()">?</span></button>
+          <button class="${c==='fork_relay'?'active':''}" onclick="setMicroConnection('fork_relay')">커넥터 중계 0.1m <span class="info term" data-term="fork_relay_help" onclick="event.stopPropagation()">?</span></button>
+          <button class="${!c?'active':''}" onclick="state.connection=[];setChecks('connection',[]);render()">잘 모르겠음</button>
+        </div>
+        <div class="micro-help-inline">센서 교체 편의성·배선 공간·케이블 이동 여부를 기준으로 접속 방식을 선택합니다.</div>
+      </div>
+
       <div class="micro-caution"><strong>환경 주의:</strong> EE-SX47/67은 IP50입니다. 공식 카탈로그는 방수·방진 구조가 아니며 물이나 기름이 부착되는 용도에는 사용하지 않도록 안내합니다.</div>
-      </div><aside class="guide"><h4>형식 차이</h4><p><b>EE-SX47</b>: 커넥터 타입, 입광 시 ON 고정 형식.<br><b>EE-SX67</b>: 입광/차광 ON 전환 가능 형식과 코드 인출/커넥터 중계 타입을 포함합니다.</p></aside></div>`;
+      </div><aside class="guide"><h4>? 설명 사용법</h4><p>항목명 또는 선택지 옆의 <b>?</b>에 마우스를 올리면 공식 카탈로그 이미지와 초보자용 설명이 열립니다.</p><p><b>EE-SX47</b>: 커넥터 타입, 입광 시 ON 고정 형식.<br><b>EE-SX67</b>: 입광/차광 ON 전환 가능 형식과 코드 인출/커넥터 중계 타입을 포함합니다.</p></aside></div>`;
   }
   window.openMicroSelectionTable=function(){
     document.getElementById('catalogTitle').textContent='📖 EE-SX47/67 · 종류 / 형상 선정표';
@@ -1961,6 +2600,61 @@ render();
     document.getElementById('catalogImage').src='assets/ee_sx47_67/selection-p1170.png';
     const explain=document.getElementById('catalogExplain');if(explain){explain.innerHTML='';explain.style.display='none'}
     document.getElementById('catalogBack').classList.add('show');
+  };
+
+  // E3Z-specific detail view. Unknown values are never inferred.
+  function e3zSpecValue(v){return (v===null||v===undefined||v==='')?'확인 불가':v}
+  function e3zSupply(v){return v?`DC ${v.min}~${v.max}V ${v.tolerance||''} · 리플 ${v.rippleMax||''}`:'확인 불가'}
+  function e3zLight(v){if(!v)return '확인 불가';return `${v.type==='red_LED'?'적색 LED':v.type==='infrared_LED'?'적외 LED':v.type} · λ=${v.wavelength}nm`}
+  function e3zHys(v){if(!v)return '확인 불가';return typeof v==='string'?v:(v.max!=null?`${v.max}${v.unit||''} 이하`:'확인 불가')}
+  function e3zGlossary(){return `<section class="detail-section beginner-glossary"><h4>초보자용 용어 설명 <span>E3Z 선정에서 자주 보는 항목</span></h4><div class="beginner-glossary-grid">
+    <div class="beginner-term-card"><div class="beginner-term-title">지향각 <span class="info term" data-term="directivity">?</span></div><div class="beginner-term-desc">투광기/수광기 또는 센서/반사판을 얼마나 정확히 마주보게 설치해야 하는지 판단하는 각도 여유입니다.</div></div>
+    <div class="beginner-term-card"><div class="beginner-term-title">수광 출력</div><div class="beginner-term-desc">센서가 받는 빛의 여유입니다. 최대 검출거리 끝보다 여유가 있는 위치에서 쓰는 것이 안정적입니다.</div></div>
+    <div class="beginner-term-card"><div class="beginner-term-title">가는 빔</div><div class="beginner-term-desc">빛 점을 작게 만들어 작은 부분이나 위치 차이를 보기 쉽게 한 반사형 방식입니다.</div></div>
+    <div class="beginner-term-card"><div class="beginner-term-title">방유 타입 <span class="info term" data-term="oil_e3z">?</span></div><div class="beginner-term-desc">기름이 있는 설비를 고려한 E3Z-□□□K 계열입니다. 실제 기름 종류와 코드/커넥터부 조건을 공식 주의사항에서 확인합니다.</div></div>
+    <div class="beginner-term-card"><div class="beginner-term-title">투광 정지 입력</div><div class="beginner-term-desc">E3Z-T□2-G0 계열에서 투광기의 빛을 외부 입력으로 끌 수 있는 기능입니다. 카탈로그의 0.5ms는 이 입력 기능의 응답 시간이며, 물체 검출 출력 응답 시간과 구분해서 봅니다.</div></div>
+  </div></section>`}
+  function e3zDocCards(p){const docs=p.catalogVisuals?.documents||[];return docs.length?`<div class="doc-grid">${docs.map((x,i)=>`<button type="button" class="doc-card" onclick="openCatalogVisual('${p.model}','document',${i})"><img src="${x.image}"><strong>공식 자료 · p.${x.catalogPage}</strong><small>${x.label}</small></button>`).join('')}</div>`:'<div class="official-note">연결된 공식 문서 이미지가 없습니다.</div>'}
+  function e3zCharCards(p){const chars=p.catalogVisuals?.characteristics||[];if(!chars.length)return '<div class="official-note">이 형번에 직접 연결할 수 있는 특성 데이터 그래프는 이 E3Z 2010 카탈로그에서 확인 불가입니다.</div>';return `<div class="doc-grid">${chars.map((x,i)=>`<button type="button" class="doc-card graph-doc-card detail-char-card" data-detail-model="${p.model}" data-detail-char="${i}"><img src="${x.image}"><strong>특성 데이터 · p.${x.catalogPage}</strong><small>${x.label}</small><div class="graph-card-explain"><b>그래프 뜻</b>${window.__graphQuickText?window.__graphQuickText(x,p):x.label}</div><span class="graph-card-open">클릭 → 큰 그래프 + 해설</span></button>`).join('')}</div>`}
+
+  const preE3ZShowDetail=window.showDetail;
+  window.showDetail=function(model){
+    const p=db.find(x=>x.model===model);
+    if(!p||p.series!=='E3Z')return preE3ZShowDetail(model);
+    const s=p.specs||{}, ev=(key)=>p.fieldEvidence?.[key]?`<button class="ev-btn" onclick="openFieldEvidence('${p.model}','${key}')">📖 p.${p.fieldEvidence[key].catalogPage}</button>`:'';
+    const d=distanceInfo(p), partial=p.selection?.dataCompleteness==='partial';
+    const rows=[
+      ['시리즈/형식',`${p.subSeries||'E3Z'} · ${p.catalogFeatureNote||''}`,'model'],
+      ['검출 방식',ALL_METHOD[p.classification?.detectionMethod]||'확인 불가','detectionMethod'],
+      ['검출 거리',d.label,'sensingDistance'],
+      ['표준 검출 물체',e3zSpecValue(s.standardDetectableObject),'standardDetectableObject'],
+      ['최소 검출 물체',e3zSpecValue(s.minimumDetectableObject),'minimumDetectableObject'],
+      ['투광 스폿 지름',e3zSpecValue(s.spotDiameter),null],
+      ['응차',e3zHys(s.hysteresis),'hysteresis'],
+      ['지향각',e3zSpecValue(s.directivity),'directivity'],
+      ['출력',e3zSpecValue(s.outputType),'outputType'],
+      ['동작 모드',operationLabel(p),'operationMode'],
+      ['광원(발광 파장)',e3zLight(s.lightSource),null],
+      ['전원',e3zSupply(s.supplyVoltage),'supplyVoltage'],
+      ['소비 전류',s.consumptionCurrent?`${s.consumptionCurrent.max}mA 이하${s.consumptionCurrent.note?` · ${s.consumptionCurrent.note}`:''}`:'확인 불가',null],
+      ['응답 시간',s.responseTime?`동작·복귀 각 ${s.responseTime.operateMax}ms 이하`:'확인 불가','responseTime'],
+      ...(s.emitterStopInput?[['투광 정지 입력',`있음 · 입력 응답 ${s.emitterStopInput.responseTimeMax}${s.emitterStopInput.unit} 이하`,'emitterStopInput']]:[]),
+      ['보호 구조',e3zSpecValue(s.ipRating),'ipRating'],
+      ['접속',connectionLabel(p),'connection'],
+      ['카탈로그 주문 표기',p.orderCode||p.model,'model']
+    ];
+    const dim=p.catalogVisuals?.dimensions, acc=p.accessories||[];
+    document.getElementById('detailTitle').textContent=`${p.model} · E3Z 상세 사양`;
+    document.getElementById('detailBody').innerHTML=`<div class="detail-layout"><aside class="detail-summary"><img src="${p.productImage}" alt="${p.model} 공식 카탈로그 형상 이미지"><div class="dmodel">${p.model}</div><div class="dmeta">OMRON · E3Z<br>${ALL_METHOD[p.classification?.detectionMethod]||'—'} · ${p.classification?.shapeNameKo||'소형'}<br>${p.specs?.outputType||'—'} · ${operationLabel(p)}</div><div class="detail-source"><strong>자료 기준</strong><br>사용자 제공 OMRON E3Z 한글 공식 카탈로그 2010.<br><b>현재 판매 여부를 의미하지 않습니다.</b></div></aside>
+      <div>${partial?'<div class="micro-caution"><strong>부분 데이터:</strong> 이 특수형은 본 E3Z PDF에서 종류/형식 선정표 수준의 항목은 확인되지만 상세 정격/성능표가 확인되지 않는 값이 있습니다. 확인 불가 항목은 추정하지 않았습니다.</div>':''}
+      <section class="detail-section"><h4>핵심 선정 사양</h4><table class="detail-table"><tbody>${rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]} ${r[2]?ev(r[2]):''}</td></tr>`).join('')}</tbody></table></section>
+      ${e3zGlossary()}
+      <section class="detail-section detail-characteristic-section"><h4>📈 특성 데이터 <span class="section-count">${(p.catalogVisuals?.characteristics||[]).length}개</span></h4><div class="graph-reading-intro"><strong>그래프는 이렇게 봅니다</strong><span>실제 사용할 거리 → 파란선/영역 → 설치 오차와 워크 편차가 안쪽에 들어오는지 확인합니다.</span></div>${e3zCharCards(p)}</section>
+      <section class="detail-section"><h4>외형 치수</h4>${dim?`<div class="doc-grid"><button type="button" class="doc-card" onclick="openCatalogVisual('${p.model}','dimension',0)"><img src="${dim.image}"><strong>외형 치수 · p.${dim.catalogPage}</strong><small>${dim.label}</small></button></div>`:'<div class="official-note">이 형번의 외형 치수 도면은 현재 첨부된 E3Z 2010 PDF에서 확인 불가입니다.</div>'}</section>
+      <section class="detail-section"><h4>공식 자료 바로보기</h4>${e3zDocCards(p)}</section>
+      <section class="detail-section"><h4>액세서리 / 연결 부품</h4>${acc.length?`<div class="acc-list">${acc.map((a,i)=>`<div class="acc-card"><div class="acc-top"><span class="acc-code">${a.code}</span><span class="acc-role connection">공식표</span></div><div class="note">${a.name}${a.note?` · ${a.note}`:''}</div><div class="acc-actions"><button onclick="openCatalogVisual('${p.model}','accessory',${i})">📖 p.${a.catalogPage}</button></div></div>`).join('')}</div>`:'<div class="official-note">자동 액세서리 후보 없음.</div>'}</section>
+      <section class="detail-section"><h4>사용 주의</h4><div class="micro-caution">${(p.usageCautions||[]).join('<br>')}</div></section></div></div>`;
+    document.getElementById('detailBack').classList.add('show');
   };
 
   // EE-specific detail view. E3T keeps the previous detail implementation.
@@ -2011,9 +2705,113 @@ render();
 
   // Generic official visual opener for both families.
   const oldOpenCatalogVisual=window.openCatalogVisual;
+
+  // E2E Small New proximity-sensor detail view.
+  const preProximityShowDetail=window.showDetail;
+  window.showDetail=function(model){
+    const p=db.find(x=>x.model===model);
+    if(!p||!isProximity(p))return preProximityShowDetail(model);
+
+    const sp=p.specs||{};
+    const ev=(key)=>p.fieldEvidence?.[key]?`<button class="ev-btn" onclick="openFieldEvidence('${p.model}','${key}')">📖 p.${p.fieldEvidence[key].catalogPage}</button>`:'';
+    const sd=sp.sensingDistance||{},setd=sp.settingDistance||{},out=sp.output||{},conn=p.connection?.base||{};
+    const size=p.classification?.sizeLabel||p.classification?.shapeNameKo||'—';
+    const shield=p.classification?.shieldNameKo||'—';
+    const op=sp.operationMode==='normally_open'?'NO · 금속 검출 시 ON':sp.operationMode==='normally_closed'?'NC · 평소 ON / 금속 검출 시 OFF':'확인 불가';
+    const rows=[
+      ['센서 종류','근접센서 · 고주파 발진형','model',null],
+      ['본체 사이즈',`${size} · ${p.classification?.shapeNameKo||''}`,'model',null],
+      ['설치 타입',shield,'model',p.classification?.shieldType==='shield'?'prox_shield':'prox_unshield'],
+      ['정격 검출 거리',sd.value!=null?`${sd.value}${sd.unit||'mm'} ${sd.tolerance||''}`:'확인 불가','sensingDistance','distance'],
+      ['설정 거리',setd.max!=null?`${setd.min||0}~${setd.max}${setd.unit||'mm'}`:'확인 불가','sensingDistance','prox_setting'],
+      ['검출 대상',sp.detectableObject||'확인 불가','standardDetectableObject','prox_metal'],
+      ['표준 검출 물체',sp.standardDetectableObject||'확인 불가','standardDetectableObject','standard_object'],
+      ['응차',sp.hysteresis?.label||'확인 불가','sensingDistance','hysteresis_term'],
+      ['응답 주파수',sp.responseFrequency?.value!=null?`${sp.responseFrequency.value}${sp.responseFrequency.unit||'kHz'}`:'확인 불가','responseFrequency','response_frequency_term'],
+      ['출력',`${sp.outputType||'확인 불가'} 오픈 컬렉터 · 부하 ${out.loadCurrentMax??'확인 불가'}${out.unit||'mA'} 이하 · 잔류전압 ${out.residualVoltageMax??'확인 불가'}${out.residualVoltageUnit||'V'} 이하`,'outputType','output_term'],
+      ['동작 모드',op,'operationMode',sp.operationMode==='normally_open'?'prox_no':'prox_nc'],
+      ['전원',sp.supplyVoltage?`DC ${sp.supplyVoltage.min}~${sp.supplyVoltage.max}V · ${sp.supplyVoltage.tolerance||''}`:'확인 불가','supplyVoltage','supply_voltage'],
+      ['소비 전류',sp.consumptionCurrent?`${sp.consumptionCurrent.max}${sp.consumptionCurrent.unit||'mA'} 이하`:'확인 불가',null,'consumption_current'],
+      ['표시등',sp.indicatorMode==='output_on_yellow'?'황색 · 출력 ON 시 점등':'확인 불가',null,null],
+      ['보호 구조',sp.ipRating||'확인 불가','ipRating','ip_term'],
+      ['접속',conn.label||'확인 불가','connection',null],
+      ['주문 형식',p.orderCode||p.model,'model',null]
+    ];
+
+    document.getElementById('detailTitle').textContent=`📋 ${p.model} · 상세보기`;
+    document.getElementById('detailBody').innerHTML=`
+      <div class="detail-layout">
+        <div class="detail-visual">
+          <img src="${p.productImage}" alt="${p.model} 대표 외형">
+          <div class="detail-image-note"><strong>${p.productImageScope||'E2E Small New 대표 외형'}</strong><span>공식 카탈로그 외형도에서 같은 사이즈의 대표 외형을 사용합니다.</span></div>
+          <button class="detail-proof-btn" onclick="openFieldEvidence('${p.model}','model')">📖 이 형번 공식 근거 보기</button>
+        </div>
+        <div>
+          <section class="detail-section">
+            <h4>선정 모델</h4>
+            <div class="detail-model-head"><span class="sensor-route-badge proximity">근접센서</span><span class="sensor-route-badge">E2E Small New</span><strong>${p.model}</strong></div>
+            <div class="detail-current-note">2014 OMRON 한글 공식 카탈로그 기준 · 현행 판매 여부는 <b>확인 불가</b></div>
+          </section>
+          <section class="detail-section"><h4>주요 사양</h4>
+            <table class="detail-table"><tbody>${rows.map(r=>`<tr><th>${r[0]} ${r[3]?`<span class="info term" data-term="${r[3]}">?</span>`:''}</th><td>${r[1]} ${r[2]?ev(r[2]):''}</td></tr>`).join('')}</tbody></table>
+          </section>
+          <section class="detail-section beginner-glossary">
+            <h4>초보자용 핵심 설명</h4>
+            <div class="beginner-glossary-grid">
+              <div class="beginner-term-card"><div class="beginner-term-title">실드 / 비실드 <span class="info term" data-term="prox_shield">?</span></div><div class="beginner-term-desc">실드는 주변 금속 가까이에 설치하기 쉽고, 비실드는 더 긴 검출 거리를 얻는 대신 센서 앞부분 주변에 금속 여유 공간이 필요합니다.</div></div>
+              <div class="beginner-term-card"><div class="beginner-term-title">설정 거리 <span class="info term" data-term="prox_setting">?</span></div><div class="beginner-term-desc">정격 검출 거리 끝까지 쓰기보다 실제 장비에서는 이 범위 안쪽으로 설치해 검출 여유를 확보하는 값입니다.</div></div>
+              <div class="beginner-term-card"><div class="beginner-term-title">NO / NC <span class="info term" data-term="prox_no">?</span></div><div class="beginner-term-desc">NO는 금속이 오면 ON, NC는 평소 ON 상태에서 금속이 오면 OFF되는 방식입니다.</div></div>
+              <div class="beginner-term-card"><div class="beginner-term-title">비자성 금속 주의 <span class="info term" data-term="prox_metal">?</span></div><div class="beginner-term-desc">카탈로그 검출 거리 기준은 자성 금속입니다. 알루미늄 등 비자성 금속은 실제 검출 거리가 줄어들 수 있어 실제 워크 확인이 필요합니다.</div></div>
+            </div>
+          </section>
+          <section class="detail-section detail-characteristic-section">
+            <h4>📈 특성 데이터</h4>
+            <div class="official-note">이번 E2E Small New 2014 카탈로그에서 현재 형번과 직접 연결할 별도 특성 그래프는 확인하지 않았습니다. 근거 없이 다른 E2E 시리즈의 그래프를 연결하지 않습니다.</div>
+          </section>
+          <section class="detail-section"><h4>외형 치수</h4>
+            ${p.catalogVisuals?.dimensions?`<div class="doc-grid"><button type="button" class="doc-card" onclick="openCatalogVisual('${p.model}','dimension',0)"><img src="${p.catalogVisuals.dimensions.image}" alt=""><strong>외형 치수 · p.${p.catalogVisuals.dimensions.catalogPage}</strong><small>${p.catalogVisuals.dimensions.label}</small></button></div>`:'<div class="official-note">확인 불가</div>'}
+          </section>
+          <section class="detail-section"><h4>공식 카탈로그 자료</h4>
+            <div class="doc-grid">${(p.catalogVisuals?.documents||[]).map((x,i)=>`<button type="button" class="doc-card" onclick="openCatalogVisual('${p.model}','document',${i})"><img src="${x.image}" alt=""><strong>p.${x.catalogPage}</strong><small>${x.label}</small></button>`).join('')}</div>
+          </section>
+          <section class="detail-section"><h4>데이터 기준</h4>
+            <div class="official-note">사용자 제공 <b>OMRON E2E Small New 한글 공식 카탈로그 2014</b>를 기준으로 형식·정격·외형을 구조화했습니다. 비실드 주문 형식은 p.60의 공식 기본 형식과 p.59의 동일 라인업/접속·출력·동작 조합표를 결합해 구성했으며, 현재 판매 여부는 의미하지 않습니다.</div>
+          </section>
+        </div>
+      </div>`;
+    document.getElementById('detailBack').classList.add('show');
+  };
+
   window.openCatalogVisual=function(model,type,index=0){
     const p=db.find(x=>x.model===model);
-    if(!p||!isMicro(p))return oldOpenCatalogVisual(model,type,index);
+    if(!p)return;
+    if(isProximity(p)){
+      let item=null;
+      if(type==='dimension')item=p.catalogVisuals?.dimensions;
+      if(type==='characteristic')item=p.catalogVisuals?.characteristics?.[index];
+      if(type==='document')item=p.catalogVisuals?.documents?.[index];
+      if(type==='accessory')item=p.accessories?.[index];
+      if(!item)return;
+      document.getElementById('catalogTitle').textContent=`📖 ${model} · ${item.label||item.code||item.name||'공식 카탈로그'}`;
+      document.getElementById('catalogMeta').innerHTML=`<span class="evidence-badge">OMRON 공식</span><span class="evidence-badge">E2E Small New 한글 카탈로그 2014</span><br>Catalog Page <b>${item.catalogPage}</b>${item.note?`<br>${item.note}`:''}`;
+      document.getElementById('catalogImage').src=item.image;
+      const explain=document.getElementById('catalogExplain');if(explain){explain.innerHTML='';explain.style.display='none'}
+      document.getElementById('catalogBack').classList.add('show');return;
+    }
+    if(p.series==='E3Z'){
+      let item=null;
+      if(type==='dimension')item=p.catalogVisuals?.dimensions;
+      if(type==='characteristic')item=p.catalogVisuals?.characteristics?.[index];
+      if(type==='accessory')item=p.accessories?.[index];
+      if(type==='document')item=p.catalogVisuals?.documents?.[index];
+      if(!item)return;
+      document.getElementById('catalogTitle').textContent=`📖 ${model} · ${item.label||item.code||item.name}`;
+      document.getElementById('catalogMeta').innerHTML=`<span class="evidence-badge">OMRON 공식</span><span class="evidence-badge">E3Z 한글 카탈로그 2010</span><br>Catalog Page <b>${item.catalogPage}</b>${item.note?`<br>${item.note}`:''}`;
+      document.getElementById('catalogImage').src=item.image;
+      const explain=document.getElementById('catalogExplain');if(explain){if(type==='characteristic'){explain.innerHTML=window.__graphExplainHTML?window.__graphExplainHTML(item,p):'';explain.style.display='block'}else{explain.innerHTML='';explain.style.display='none'}}
+      document.getElementById('catalogBack').classList.add('show');return;
+    }
+    if(!isMicro(p))return oldOpenCatalogVisual(model,type,index);
     let item=null;
     if(type==='dimension')item=p.catalogVisuals?.dimensions;
     if(type==='characteristic')item=p.catalogVisuals?.characteristics?.[index];
@@ -2023,10 +2821,7 @@ render();
     document.getElementById('catalogMeta').innerHTML=`<span class="evidence-badge">OMRON 공식</span><span class="evidence-badge">한글 카탈로그 2010</span><br>Catalog Page <b>${item.catalogPage}</b>${item.note?`<br>${item.note}`:''}`;
     document.getElementById('catalogImage').src=item.image;
     const explain=document.getElementById('catalogExplain');
-    if(explain){
-      if(type==='characteristic'){explain.innerHTML=window.__graphExplainHTML?window.__graphExplainHTML(item,p):'';explain.style.display='block'}
-      else{explain.innerHTML='';explain.style.display='none'}
-    }
+    if(explain){if(type==='characteristic'){explain.innerHTML=window.__graphExplainHTML?window.__graphExplainHTML(item,p):'';explain.style.display='block'}else{explain.innerHTML='';explain.style.display='none'}}
     document.getElementById('catalogBack').classList.add('show');
   };
 
@@ -2040,9 +2835,9 @@ render();
     if(mode==='same'){
       const mixed=new Set(selected.map(productCategory)).size>1;
       const rows=selected.length?selected.map(p=>`<tr><td><div class="compare-product"><img class="compare-thumb" src="${p.productImage}" alt="${p.model}"><div><span class="compare-model">${p.model}</span><span class="info term" data-term="${modelTermKey(p)}">?</span><br><span style="color:#667085">${p.series}</span></div></div></td>
-        <td>${p.sensorCategory?.nameKo}</td><td>${ALL_METHOD[p.classification?.detectionMethod]||'—'}</td><td>${distanceInfo(p).label}</td><td>${p.specs?.outputType||'—'}</td><td>${operationLabel(p)}</td><td>${isMicro(p)?p.classification.shapeNameKo:(SHAPE_KO[p.classification?.shape]||'—')}</td></tr>`).join(''):`<tr><td colspan="7">결과 카드에서 비교할 모델을 담아주세요.</td></tr>`;
+        <td>${p.sensorCategory?.nameKo}</td><td>${ALL_METHOD[p.classification?.detectionMethod]||'—'}</td><td>${distanceInfo(p).label}</td><td>${p.specs?.outputType||'—'}</td><td>${operationLabel(p)}</td><td>${(isMicro(p)||isProximity(p))?(p.classification?.shapeNameKo||'—'):(SHAPE_KO[p.classification?.shape]||p.classification?.shapeNameKo||'—')}</td></tr>`).join(''):`<tr><td colspan="7">결과 카드에서 비교할 모델을 담아주세요.</td></tr>`;
       body.innerHTML=`<p class="compare-note">OMRON 내부 비교입니다. 같은 기술군은 대체 후보 비교로, 서로 다른 기술군은 설치 방식 차이를 확인하는 용도로 봅니다.</p>
-      ${mixed?'<div class="micro-caution"><strong>비교 주의:</strong> 광전센서(E3T)와 포토마이크로센서(EE-SX47/67)가 함께 선택되어 있습니다. 직접 대체품 비교가 아니라 설치 방식/검출 원리 비교입니다.</div>':''}
+      ${mixed?'<div class="micro-caution"><strong>비교 주의:</strong> 서로 다른 OMRON 센서 기술군(E3T/E3Z/E2E Small New/EE-SX47/67)이 함께 선택되어 있습니다. 직접 대체품 비교가 아니라 설치 방식/검출 원리 비교입니다.</div>':''}
       <section class="compare-group"><div class="compare-group-title"><span class="g-badge">OMRON</span> 선택 센서 비교 <span style="color:#667085;font-size:11px">${selected.length}개</span></div>
       <table class="compare-table"><thead><tr><th>제품</th><th>센서 종류</th><th>검출 방식</th><th>거리/홈 폭</th><th>출력</th><th>동작</th><th>형상</th></tr></thead><tbody>${rows}</tbody></table></section>`;
     }else{
@@ -2062,22 +2857,34 @@ render();
   // Category/fork-shape synchronization.
   document.querySelectorAll('[data-filter="category"]').forEach(el=>el.addEventListener('change',()=>{
     const cats=checked('category');
-    if(cats.length===1&&cats[0]==='photo_microsensor')state.slotPass='yes';
-    else if(cats.length===1&&cats[0]==='photoelectric')state.slotPass='no';
-    else state.slotPass='unknown';
+    if(cats.length===1&&cats[0]==='photo_microsensor'){state.sensorType='photo_microsensor';state.slotPass='yes';}
+    else if(cats.length===1&&cats[0]==='proximity'){state.sensorType='proximity';state.slotPass=null;}
+    else if(cats.length===1&&cats[0]==='photoelectric'){state.sensorType='photoelectric';state.slotPass='no';}
+    else{state.sensorType=null;state.slotPass='unknown';}
   },true));
   document.querySelectorAll('[data-filter="forkShape"]').forEach(el=>el.addEventListener('change',()=>{
     const a=checked('forkShape');state.forkShape=a.length===1?a[0]:null;
+  },true));
+  document.querySelectorAll('[data-filter="proxSize"]').forEach(el=>el.addEventListener('change',()=>{
+    const a=checked('proxSize');state.proxSize=a.length===1?a[0]:null;
+  },true));
+  document.querySelectorAll('[data-filter="proxShield"]').forEach(el=>el.addEventListener('change',()=>{
+    const a=checked('proxShield');state.proxShield=a.length===1?a[0]:null;
   },true));
 
   // Reset must include the new route state.
   const prevReset=resetAll;
   resetAll=function(){
-    state.slotPass=null;state.forkShape=null;
+    state.sensorType=null;state.photoMethod=null;state.proxSize=null;state.proxShield=null;state.slotPass=null;state.forkShape=null;state.ip67Required=false;
     prevReset();
-    setChecks('category',['photoelectric']);
+    setChecks('category',['photoelectric','proximity','photo_microsensor']);
+    setChecks('series',['E3T','E3Z','E2E Small New','EE-SX47/67']);
     setChecks('forkShape',[]);
+    setChecks('proxSize',[]);
+    setChecks('proxShield',[]);
     setChecks('method',[]);
+    setChecks('connection',[]);
+    setChecks('environment',[]);
     render();
   };
 
@@ -2085,10 +2892,18 @@ render();
   const prevRender=render;
   render=function(){
     prevRender();
-    if(state.step===3&&state.purpose==='presence')renderStep3();
-    if(state.step===4&&state.purpose==='presence'&&state.slotPass==='yes')renderStep4();
-    if(state.step===5&&state.purpose==='presence'&&state.slotPass==='yes')renderStep5();
+    if(state.step===1)renderSensorTypeStep1();
+    if(state.step===2&&state.sensorType==='proximity')renderProximityStep2();
+    if(state.step===3&&state.sensorType)renderSensorMethodStep3();
+    if(state.step===4&&state.sensorType==='photo_microsensor')renderStep4();
+    if(state.step===4&&state.sensorType==='photoelectric')renderPhotoelectricStep4();
+    if(state.step===4&&state.sensorType==='proximity')renderProximityStep4();
+    if(state.step===5&&state.sensorType==='photo_microsensor')renderStep5();
+    if(state.step===5&&state.sensorType==='photoelectric')renderPhotoelectricStep5();
+    if(state.step===5&&state.sensorType==='proximity')renderProximityStep5();
     if(state.step===6)renderCombinedResults();
+    const next=document.getElementById('nextBtn');
+    if(next)next.style.visibility=state.step===1?'hidden':'visible';
   };
   render();
 })();
@@ -2188,7 +3003,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElement
     const label=(item?.label||'').trim();
     if(label.includes('평행 이동'))return '센서가 좌우·상하로 얼마나 어긋나도 검출 가능한지 보는 정렬 여유 그래프';
     if(label.includes('수광 출력-거리'))return '거리에 따라 센서가 받아들이는 빛의 여유가 어떻게 변하는지 보는 그래프';
-    if(label.includes('검출물체 크기-거리'))return '검출 거리와 필요한 물체 크기의 관계를 보는 그래프';
+    if(label.includes('검출물체 크기-거리')||label.includes('검출 물체의 크기')||label.includes('검출 물체 크기'))return '검출 거리와 필요한 물체 크기의 관계를 보는 그래프';
+    if(label.includes('스폿 지름'))return '설치 거리에 따라 빛 점의 크기가 어떻게 달라지는지 보는 그래프';
+    if(label.includes('응차-거리'))return '설치 거리에 따라 ON/OFF 위치 차이가 어떻게 달라지는지 보는 그래프';
     if(label.includes('검출 거리-재질'))return '물체 재질에 따라 실제 검출 거리가 얼마나 달라지는지 보는 그래프';
     if(label.includes('동작 영역') && label.includes('각도'))return '물체 위치와 기울기에 따라 검출 가능한 영역을 보는 그래프';
     if(label.includes('동작 영역'))return '센서 앞에서 물체가 어느 위치에 있을 때 검출되는지 보는 영역 그래프';
@@ -2282,9 +3099,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElement
   const db=(window.E3T_DATA&&window.E3T_DATA.products)||[];
   const methodKo={
     through_beam:'투과형',retro_reflective:'회귀 반사형',diffuse:'확산 반사형',
-    limited_reflective:'한정 반사형',bgs:'BGS 반사형',slot_through_beam:'투과형(말굽형)'
+    limited_reflective:'한정 반사형',bgs:'BGS 반사형',fine_beam_reflective:'가는 빔 반사형',distance_setting:'거리 설정형',fork_through_beam:'말굽형 투과형(25mm)',transparent_retro:'투명 PET 병용 회귀 반사형',slot_through_beam:'투과형(말굽형 5mm)',inductive_proximity:'고주파 발진형 근접'
   };
-  const opKo={light_on:'입광 시 ON',dark_on:'차광 시 ON',switchable:'입광/차광 전환 가능'};
+  const opKo={light_on:'입광 시 ON',dark_on:'차광 시 ON',switchable:'입광/차광 전환 가능',normally_open:'NO',normally_closed:'NC'};
 
   function distanceLabel(p){
     const d=p.specs?.sensingDistance||{};
@@ -2296,9 +3113,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElement
   }
   function searchable(p){
     return [
-      p.model,p.series,p.subSeries,p.classification?.family,
+      p.model,p.orderCode,p.series,p.subSeries,p.classification?.family,p.catalogFeatureNote,
       p.sensorCategory?.nameKo,methodKo[p.classification?.detectionMethod],
-      p.classification?.shapeNameKo,p.classification?.shapeCode,
+      p.classification?.shapeNameKo,p.classification?.shapeCode,p.classification?.sizeLabel,p.classification?.shieldNameKo,
       p.specs?.outputType,opKo[p.specs?.operationMode],
       p.specs?.standardDetectableObject,p.specs?.ipRating,distanceLabel(p)
     ].filter(Boolean).join(' ').toLowerCase();
@@ -2329,7 +3146,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElement
   }
   function clearSelectionConstraints(){
     if(typeof state!=='undefined'){
-      state.purpose=null; state.target=null; state.slotPass=null; state.forkShape=null;
+      state.sensorType=null; state.photoMethod=null; state.proxSize=null; state.proxShield=null; state.purpose=null; state.target=null; state.slotPass=null; state.forkShape=null;
       state.through=null; state.reflector=null; state.background=null;
       state.distance=''; state.distanceRange=null; state.shape=null;
       state.output='잘 모르겠음'; state.operation='잘 모르겠음'; state.connection=[]; state.step=6;
@@ -2365,6 +3182,23 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElement
   });
 
   window.__sensorGlobalSearch={matches,runGlobalSearch};
+})();
+</script>
+
+
+<script>
+/* v20 TYPE catalog → selected model handoff */
+(() => {
+  const model=new URLSearchParams(location.search).get('model');
+  if(!model)return;
+  const run=()=> {
+    if(window.__sensorGlobalSearch?.runGlobalSearch){
+      window.__sensorGlobalSearch.runGlobalSearch(model);
+      return true;
+    }
+    return false;
+  };
+  if(!run())setTimeout(run,0);
 })();
 </script>
 
