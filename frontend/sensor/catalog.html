@@ -97,6 +97,50 @@ button,input,select{font:inherit}
   .group-compare-bar{left:12px;right:12px;width:auto;bottom:12px}
 }
 
+
+/* v20 TYPE catalog · in-catalog part information */
+.type-actions{grid-template-columns:1fr 1fr!important}
+.type-actions .compare-type-btn{border-left:1px solid #edf0f5}
+.selection-actions .primary-selection{background:#3157d5!important;border-color:#3157d5!important;color:#fff!important}
+.selection-actions .primary-selection:hover{background:#2449c1!important}
+@media(max-width:760px){.type-actions{grid-template-columns:1fr 1fr!important}}
+
+.part-back,.part-detail-back,.part-evidence-back,.part-zoom-back{
+  position:fixed;inset:0;z-index:130;background:rgba(15,23,42,.52);display:none;
+  align-items:center;justify-content:center;padding:16px
+}
+.part-back.show,.part-detail-back.show,.part-evidence-back.show,.part-zoom-back.show{display:flex}
+.part-modal{width:min(760px,96vw);max-height:92vh;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.24);display:flex;flex-direction:column}
+.part-modal.wide{width:min(1080px,97vw)}
+.part-modal.evidence-wide{width:min(1320px,98vw)}
+.part-head{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid #dfe5ef;background:#fff}
+.part-head strong{font-size:14px;color:#173a91}
+.part-head small{color:#667085;font-size:10px}
+.part-head button{margin-left:auto;border:1px solid #d9e1ec;background:#fff;border-radius:8px;padding:7px 9px;cursor:pointer}
+.part-body{padding:14px;overflow:auto}
+.part-card{border:1.5px solid #b9c8ff;border-radius:14px;padding:12px;background:#fff}
+.part-card-top{position:relative;display:grid;grid-template-columns:210px minmax(0,1fr);gap:13px}
+.part-image{height:150px;border:1px solid #e7ebf1;border-radius:10px;background:#fff;display:grid;place-items:center;overflow:hidden}
+.part-image img{width:100%;height:100%;object-fit:contain}
+.part-maker{font-size:9.5px;color:#667085}.part-model{font-size:20px;font-weight:950;color:#132e69;margin-top:4px}
+.part-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.part-badge{border:1px solid #d7e1ee;background:#f8fafc;border-radius:999px;padding:3px 7px;font-size:9px;font-weight:850;color:#475467}
+.part-specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:11px}
+.part-spec{background:#f6f8fb;border-radius:8px;padding:7px 8px;min-width:0}.part-spec b{display:block;color:#475467;font-size:9px}.part-spec span{display:block;color:#1f2937;font-size:10.5px;margin-top:2px;line-height:1.45}
+.part-note{margin-top:10px;padding-top:9px;border-top:1px solid #e5e9f0;color:#667085;font-size:10px;line-height:1.55}
+.part-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.part-actions button{border:1px solid #cfd9e8;background:#fff;border-radius:9px;padding:9px 10px;font-weight:900;font-size:11px;cursor:pointer}.part-actions .primary{background:#eef3ff;border-color:#9db4ff;color:#244fc4}
+.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.detail-box{border:1px solid #dfe6f0;border-radius:10px;padding:10px;background:#fff}.detail-box b{display:block;color:#173a91;font-size:10px}.detail-box span{display:block;color:#475467;font-size:10.5px;line-height:1.55;margin-top:4px}
+.detail-section-title{font-size:12px;font-weight:950;color:#173a91;margin:16px 0 8px}
+.detail-visuals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.detail-visual{border:1px solid #dfe6f0;border-radius:10px;background:#fff;padding:7px;cursor:zoom-in;text-align:left}.detail-visual img{width:100%;height:120px;object-fit:contain;background:#fff}.detail-visual b{display:block;font-size:9.5px;color:#173a91;margin-top:5px}.detail-visual small{display:block;color:#667085;font-size:8.5px;margin-top:2px}
+.evidence-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}.evidence-meta span{border:1px solid #b8c7ff;background:#f5f8ff;color:#3157d5;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900}
+.evidence-stage-wrap{max-height:70vh;overflow:auto;border:1px solid #dfe6f0;border-radius:10px;background:#fff}
+.evidence-stage{position:relative;line-height:0;margin:0 auto;width:100%}.evidence-stage img{display:block;width:100%;height:auto}.evidence-highlight{position:absolute;display:none;border:4px solid #2563eb;background:rgba(37,99,235,.10);box-shadow:0 0 0 2px rgba(255,255,255,.75) inset;pointer-events:none}
+.evidence-tools{display:flex;gap:6px;align-items:center;margin-top:9px;flex-wrap:wrap}.evidence-tools button,.evidence-tools a{border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:7px 9px;font-size:10px;font-weight:900;color:#3157d5;text-decoration:none;cursor:pointer}.evidence-tools span{font-size:9.5px;color:#667085}
+.zoom-canvas{width:100%;height:calc(92vh - 58px);overflow:auto;background:#eef1f5;padding:18px}.zoom-stage{position:relative;line-height:0;margin:0 auto;width:900px}.zoom-stage img{display:block;width:100%;height:auto;background:#fff}.zoom-stage .evidence-highlight{z-index:2}
+.zoom-controls{display:flex;gap:5px;margin-left:auto}.zoom-controls button{margin-left:0!important}
+@media(max-width:760px){
+  .part-card-top{grid-template-columns:1fr}.part-image{height:180px}.part-specs,.detail-grid{grid-template-columns:1fr}.detail-visuals{grid-template-columns:1fr 1fr}
+}
+
 </style>
 </head>
 <body>
@@ -131,13 +175,13 @@ button,input,select{font:inherit}
   <div class="source-note">
     <strong>자료 기준</strong><br>
     OMRON E3T 한글 공식 카탈로그 2010 · E3Z 한글 공식 카탈로그 2010 · E2E Small New 한글 공식 카탈로그 2014 · EE-SX47/67 한글 공식 카탈로그 2010을 기준으로 표시합니다.
-    현재 카탈로그 등록 모델이 곧 현행 판매 모델이라는 의미는 아닙니다. 선정 결과의 상세 근거는 기존 <b>센서 선정</b> 화면에서 확인합니다.
+    현재 카탈로그 등록 모델이 곧 현행 판매 모델이라는 의미는 아닙니다. 형번을 선택하면 이 화면에서 바로 <b>부품정보 · 상세보기 · 공식 근거</b>를 확인할 수 있습니다.
   </div>
 </main>
 <div class="selection-bar" id="selectionBar">
   <div class="selection-info"><small>선택한 형번</small><strong id="selectionModel">-</strong></div>
   <div class="selection-actions">
-    <a id="selectionOpen" href="index.html">선정툴에서 보기 →</a>
+    <button class="primary-selection" id="selectionOpen" type="button" onclick="openSelectedPartInfo()">부품정보 보기 →</button>
     <button type="button" onclick="clearModelSelection()">선택 해제</button>
   </div>
 </div>
@@ -167,6 +211,60 @@ button,input,select{font:inherit}
   <img id="catalogImagePopImg" alt="센서 타입 대표 이미지 확대">
   <p id="catalogImagePopText"></p>
   <div class="hint">팝업 안으로 마우스를 옮기면 더 크게 표시됩니다.</div>
+</div>
+
+<div class="part-back" id="partInfoBack">
+  <div class="part-modal">
+    <div class="part-head"><strong id="partInfoTitle">부품 정보</strong><button type="button" onclick="closePartInfo()">닫기</button></div>
+    <div class="part-body" id="partInfoBody"></div>
+  </div>
+</div>
+
+<div class="part-detail-back" id="partDetailBack">
+  <div class="part-modal wide">
+    <div class="part-head"><strong id="partDetailTitle">상세보기</strong><button type="button" onclick="closePartDetail()">닫기</button></div>
+    <div class="part-body" id="partDetailBody"></div>
+  </div>
+</div>
+
+<div class="part-evidence-back" id="partEvidenceBack">
+  <div class="part-modal evidence-wide">
+    <div class="part-head"><strong id="partEvidenceTitle">공식 근거</strong><button type="button" onclick="closePartEvidence()">닫기</button></div>
+    <div class="part-body">
+      <div class="evidence-meta" id="partEvidenceMeta"></div>
+      <div class="evidence-stage-wrap" id="partEvidenceScroll">
+        <div class="evidence-stage" id="partEvidenceStage">
+          <img id="partEvidenceImage" alt="공식 카탈로그 형번 근거">
+          <div class="evidence-highlight" id="partEvidenceHighlight"></div>
+        </div>
+      </div>
+      <div class="evidence-tools">
+        <button type="button" onclick="openPartEvidenceZoom()">🔍 크게 보기 / 확대</button>
+        <a id="partEvidencePdf" href="#" target="_blank" rel="noopener" style="display:none">원본 카탈로그 PDF ↗</a>
+        <span id="partEvidenceNote"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="part-zoom-back" id="partZoomBack">
+  <div class="part-modal evidence-wide">
+    <div class="part-head">
+      <strong id="partZoomTitle">크게 보기</strong>
+      <div class="zoom-controls">
+        <button type="button" onclick="changePartZoom(-0.25)">－</button>
+        <button type="button" onclick="resetPartZoom()">100%</button>
+        <button type="button" onclick="changePartZoom(0.25)">＋</button>
+      </div>
+      <button type="button" onclick="closePartZoom()">닫기</button>
+    </div>
+    <div class="zoom-canvas" id="partZoomCanvas">
+      <div class="zoom-stage" id="partZoomStage">
+        <img id="partZoomImage" alt="확대 이미지">
+        <div class="evidence-highlight" id="partZoomHighlight"></div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="footer">Jcalculator · Sensor TYPE Catalog</div>
 
@@ -328,7 +426,6 @@ button,input,select{font:inherit}
       <div class="type-actions">
         <button type="button" onclick="toggleType(this)">형번 전체 보기 ${list.length}</button>
         <button type="button" class="compare-type-btn ${compareGroups.includes(g.key)?'active':''}" data-compare-key="${esc(g.key)}" onclick="toggleGroupCompare('${esc(g.key)}')">${compareGroups.includes(g.key)?'✓ 비교 선택':'＋ 그룹 비교'}</button>
-        <a href="index.html">선정툴 →</a>
       </div>
       <div class="models">
         <div class="model-table-wrap"><table class="model-table"><thead><tr><th class="model-select-cell">선택</th><th>형번</th><th>시리즈</th><th>거리/홈</th><th>출력</th><th>동작</th><th>접속</th><th>보호</th></tr></thead><tbody>${list.map(row).join('')}</tbody></table></div>
@@ -425,15 +522,12 @@ button,input,select{font:inherit}
   function syncSelectionBar(){
     const bar=document.getElementById('selectionBar');
     const label=document.getElementById('selectionModel');
-    const open=document.getElementById('selectionOpen');
-    if(!bar||!label||!open)return;
+    if(!bar||!label)return;
     if(selectedModel){
       label.textContent=selectedModel;
-      open.href='index.html?model='+encodeURIComponent(selectedModel);
       bar.classList.add('show');
     }else{
       label.textContent='-';
-      open.href='index.html';
       bar.classList.remove('show');
     }
   }
@@ -451,6 +545,212 @@ button,input,select{font:inherit}
   window.clearModelSelection=function(){
     selectedModel='';
     window.selectCatalogModel('');
+  };
+
+  function productByModel(model){return products.find(p=>p.model===model)}
+  function methodName(p){return METHOD[p.classification?.detectionMethod]||p.classification?.detectionMethod||'—'}
+  function shapeText(p){
+    const c=p.classification||{};
+    return c.shapeNameKo||({flat:'플랫',side_view:'사이드 뷰',fork:'말굽형',cylindrical:'원주형'}[c.shape]||c.shape||'—');
+  }
+  function operationText(p){
+    const s=p.specs||{};
+    if(s.operationMode==='switchable')return '입광/차광 전환';
+    return OP[s.operationMode]||s.operationMode||'—';
+  }
+  function supplyText(p){
+    const v=p.specs?.supplyVoltage;if(!v)return '확인 불가';
+    return `DC ${v.min}~${v.max}V${v.tolerance?' '+v.tolerance:''}`;
+  }
+  function responseText(p){
+    const s=p.specs||{};
+    if(s.responseTime)return `동작 ${s.responseTime.operateMax}${s.responseTime.unit||'ms'} 이하`;
+    if(s.responseFrequency)return `${s.responseFrequency.value??s.responseFrequency.min}${s.responseFrequency.unit||'kHz'}${s.responseFrequency.average?` (평균 ${s.responseFrequency.average}${s.responseFrequency.unit||'kHz'})`:''}`;
+    return '확인 불가';
+  }
+  function lightText(p){
+    const l=p.specs?.lightSource;if(!l)return '확인 불가';
+    return `${l.type||'LED'}${l.wavelength?` · ${l.wavelength}${l.unit||'nm'}`:''}`;
+  }
+  function settingDistanceText(p){
+    const d=p.specs?.settingDistance;if(!d)return '—';
+    return `${d.min??0}~${d.max}${d.unit||'mm'}`;
+  }
+  function minimumObjectText(p){
+    const m=p.specs?.minimumDetectableObject;
+    if(!m)return '—';
+    return typeof m==='string'?m:(m.value||'—');
+  }
+  function connectionText(p){
+    const vals=[];
+    const b=p.connection?.base;
+    if(b)vals.push(b.label||CONN[b.type]||b.type);
+    (p.connection?.variants||[]).forEach(v=>vals.push(CONN[v.type]||v.type));
+    return uniq(vals).join(' · ')||'확인 불가';
+  }
+  function catalogYear(p){return p.series==='E2E Small New'?'2014':'2010'}
+  function sourcePdfFor(p){
+    if(p.series==='E3Z')return 'sources/OMRON_E3Z_2010_KOR.pdf';
+    if(p.series==='EE-SX47/67')return 'sources/OMRON_EE-SX47_67_2010_KOR.pdf';
+    if(p.series==='E2E Small New')return 'sources/OMRON_E2E_SMALL_NEW_2014_KOR.pdf';
+    return '';
+  }
+  function cardReason(p){
+    if(cat(p)==='proximity')return '금속 검출용 소경 근접센서입니다. 실제 설치 간격은 정격 검출거리뿐 아니라 설정거리를 함께 확인하세요.';
+    if(cat(p)==='photo_microsensor')return '5mm 홈 사이로 워크·도그가 통과하는 포토마이크로센서입니다.';
+    return '검출 방식·거리·출력·동작·접속 조건을 확인할 수 있는 광전센서입니다.';
+  }
+
+  window.openSelectedPartInfo=function(){
+    if(!selectedModel)return;
+    openPartInfo(selectedModel);
+  };
+  window.openPartInfo=function(model){
+    const p=productByModel(model);if(!p)return;
+    selectedModel=model;syncSelectionBar();
+    document.getElementById('partInfoTitle').textContent=`${model} · 부품 정보`;
+    document.getElementById('partInfoBody').innerHTML=`<div class="part-card">
+      <div class="part-card-top">
+        <div class="part-image"><img src="${esc(p.productImage||'')}" alt="${esc(model)} 제품/형상 이미지"></div>
+        <div>
+          <div class="part-maker">OMRON · ${esc(p.series)} · 한글 공식 카탈로그 ${catalogYear(p)} 기준</div>
+          <div class="part-model">${esc(model)}</div>
+          <div class="part-badges">
+            <span class="part-badge">${esc(CAT_NAME[cat(p)]||'센서')}</span>
+            <span class="part-badge">${esc(methodName(p))}</span>
+            <span class="part-badge">${esc(p.specs?.ipRating||'보호등급 확인 불가')}</span>
+          </div>
+          <div class="part-specs">
+            <div class="part-spec"><b>검출 방식</b><span>${esc(methodName(p))}</span></div>
+            <div class="part-spec"><b>검출 거리 / 홈</b><span>${esc(distanceText(p))}</span></div>
+            <div class="part-spec"><b>출력</b><span>${esc(p.specs?.outputType||'확인 불가')}</span></div>
+            <div class="part-spec"><b>동작</b><span>${esc(operationText(p))}</span></div>
+            <div class="part-spec"><b>형상</b><span>${esc(shapeText(p))}</span></div>
+            <div class="part-spec"><b>접속</b><span>${esc(connectionText(p))}</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="part-note">✓ ${esc(cardReason(p))}<br>✓ 공식 카탈로그의 해당 형번 위치를 근거보기에서 확인할 수 있습니다.</div>
+      <div class="part-actions">
+        <button type="button" onclick="openPartDetail('${esc(model)}')">상세보기</button>
+        <button type="button" class="primary" onclick="openPartEvidence('${esc(model)}')">▣ 근거보기</button>
+      </div>
+    </div>`;
+    document.getElementById('partInfoBack').classList.add('show');
+    document.documentElement.style.overflow='hidden';
+  };
+  window.closePartInfo=function(){
+    document.getElementById('partInfoBack')?.classList.remove('show');
+    if(!document.querySelector('.part-detail-back.show,.part-evidence-back.show,.part-zoom-back.show'))document.documentElement.style.overflow='';
+  };
+
+  window.openPartDetail=function(model){
+    const p=productByModel(model);if(!p)return;
+    const s=p.specs||{}, category=cat(p);
+    const detailRows=[
+      ['센서 종류',CAT_NAME[category]||'센서'],
+      ['시리즈',p.series],
+      ['검출 방식',methodName(p)],
+      ['형상',shapeText(p)],
+      ['검출 거리 / 홈',distanceText(p)],
+      ['설정 거리',settingDistanceText(p)],
+      ['표준 검출 물체',s.standardDetectableObject||s.detectableObject||'—'],
+      ['최소 검출 물체',minimumObjectText(p)],
+      ['지향각',s.directivity||'—'],
+      ['출력',s.outputType||'—'],
+      ['동작',operationText(p)],
+      ['전원',supplyText(p)],
+      ['응답',responseText(p)],
+      ['광원',lightText(p)],
+      ['보호 구조',s.ipRating||'—'],
+      ['접속',connectionText(p)]
+    ];
+    const visuals=[];
+    const cv=p.catalogVisuals||{};
+    (cv.characteristics||[]).forEach(x=>visuals.push({...x,kind:'특성 데이터'}));
+    if(cv.dimensions)visuals.push({...cv.dimensions,kind:'외형 치수'});
+    (cv.documents||[]).slice(0,4).forEach(x=>visuals.push({...x,kind:'공식 자료'}));
+    document.getElementById('partDetailTitle').textContent=`${model} · 상세보기`;
+    document.getElementById('partDetailBody').innerHTML=`
+      <div class="detail-grid">${detailRows.map(([k,v])=>`<div class="detail-box"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('')}</div>
+      ${visuals.length?`<div class="detail-section-title">공식 특성 / 외형 / 자료</div><div class="detail-visuals">${visuals.map(x=>`<button type="button" class="detail-visual" onclick="openPartImageZoom('${esc(x.image||'')}','${esc(model+' · '+x.kind+' · p.'+x.catalogPage)}')"><img src="${esc(x.image||'')}" alt=""><b>${esc(x.kind)} · p.${esc(x.catalogPage)}</b><small>${esc(x.label||'')}</small></button>`).join('')}</div>`:''}
+      <div class="part-actions"><button type="button" onclick="openPartEvidence('${esc(model)}')">▣ 공식 근거보기</button><button type="button" onclick="closePartDetail()">닫기</button></div>`;
+    document.getElementById('partDetailBack').classList.add('show');
+    document.documentElement.style.overflow='hidden';
+  };
+  window.closePartDetail=function(){
+    document.getElementById('partDetailBack')?.classList.remove('show');
+    if(!document.querySelector('.part-info-back.show,.part-evidence-back.show,.part-zoom-back.show'))document.documentElement.style.overflow='';
+  };
+
+  let currentEvidence=null;
+  function positionHighlight(box,h){
+    if(!box)return;
+    if(!h){box.style.display='none';return}
+    box.style.display='block';
+    box.style.left=h.xPct+'%';box.style.top=h.yPct+'%';box.style.width=h.wPct+'%';box.style.height=h.hPct+'%';
+  }
+  window.openPartEvidence=function(model){
+    const p=productByModel(model);if(!p)return;
+    const ev=p.modelEvidence||p.fieldEvidence?.model;if(!ev)return;
+    currentEvidence={p,ev};
+    document.getElementById('partEvidenceTitle').textContent=`${model} · 공식 근거`;
+    document.getElementById('partEvidenceMeta').innerHTML=`<span>OMRON 공식</span><span>한글 카탈로그 ${catalogYear(p)}</span><span>해당 형번: ${esc(model)}</span><span>p.${esc(ev.catalogPage)}</span>`;
+    const img=document.getElementById('partEvidenceImage');
+    const stage=document.getElementById('partEvidenceStage');
+    const scroll=document.getElementById('partEvidenceScroll');
+    img.onload=()=>{
+      positionHighlight(document.getElementById('partEvidenceHighlight'),ev.highlight);
+      if(ev.highlight){
+        requestAnimationFrame(()=>{
+          const center=(ev.highlight.yPct+ev.highlight.hPct/2)/100*stage.scrollHeight;
+          scroll.scrollTop=Math.max(0,center-scroll.clientHeight/2);
+        });
+      }
+    };
+    img.src=ev.image;
+    positionHighlight(document.getElementById('partEvidenceHighlight'),ev.highlight);
+    document.getElementById('partEvidenceNote').textContent=ev.highlightNote||'공식 카탈로그 전체 페이지에서 선택된 형번 위치를 파란색 박스로 강조합니다.';
+    const pdf=document.getElementById('partEvidencePdf');
+    const pdfSrc=sourcePdfFor(p);
+    if(pdfSrc){pdf.href=pdfSrc;pdf.style.display='inline-flex'}else{pdf.style.display='none';pdf.removeAttribute('href')}
+    document.getElementById('partEvidenceBack').classList.add('show');
+    document.documentElement.style.overflow='hidden';
+  };
+  window.closePartEvidence=function(){
+    document.getElementById('partEvidenceBack')?.classList.remove('show');
+    if(!document.querySelector('.part-detail-back.show,.part-zoom-back.show'))document.documentElement.style.overflow='';
+  };
+
+  let zoomScale=1;
+  let zoomHighlight=null;
+  function applyPartZoom(){
+    const stage=document.getElementById('partZoomStage');
+    if(!stage)return;
+    stage.style.width=Math.round(900*zoomScale)+'px';
+    positionHighlight(document.getElementById('partZoomHighlight'),zoomHighlight);
+  }
+  window.changePartZoom=function(delta){zoomScale=Math.max(.5,Math.min(3.5,zoomScale+delta));applyPartZoom()};
+  window.resetPartZoom=function(){zoomScale=1;applyPartZoom()};
+  function openZoom(src,title,highlight=null){
+    if(!src)return;
+    zoomScale=1;zoomHighlight=highlight;
+    document.getElementById('partZoomTitle').textContent=title||'크게 보기';
+    const img=document.getElementById('partZoomImage');
+    img.onload=()=>{applyPartZoom();document.getElementById('partZoomCanvas').scrollTo(0,0)};
+    img.src=src;
+    positionHighlight(document.getElementById('partZoomHighlight'),highlight);
+    document.getElementById('partZoomBack').classList.add('show');
+    document.documentElement.style.overflow='hidden';
+  }
+  window.openPartEvidenceZoom=function(){
+    if(!currentEvidence)return;
+    openZoom(currentEvidence.ev.image,currentEvidence.p.model+' · 공식 근거',currentEvidence.ev.highlight||null);
+  };
+  window.openPartImageZoom=function(src,title){openZoom(src,title,null)};
+  window.closePartZoom=function(){
+    document.getElementById('partZoomBack')?.classList.remove('show');
+    if(!document.querySelector('.part-detail-back.show,.part-evidence-back.show'))document.documentElement.style.overflow='';
   };
 
   window.toggleType=function(btn){
@@ -513,16 +813,27 @@ button,input,select{font:inherit}
     }
     const row=e.target.closest('tr[data-select-model]');
     if(!row)return;
-    selectCatalogModel(row.dataset.selectModel);
+    const model=row.dataset.selectModel;
+    if(selectedModel===model)openPartInfo(model);
+    else selectCatalogModel(model);
   });
   document.getElementById('catalogRoot').addEventListener('keydown',e=>{
     const row=e.target.closest('tr[data-select-model]');
     if(!row)return;
-    if(e.key==='Enter'||e.key===' '){e.preventDefault();selectCatalogModel(row.dataset.selectModel);}
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();const model=row.dataset.selectModel;if(selectedModel===model)openPartInfo(model);else selectCatalogModel(model);}
   });
 
   document.getElementById('groupCompareBack')?.addEventListener('click',e=>{if(e.target.id==='groupCompareBack')closeGroupCompare()});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeGroupCompare();hideImagePop();}});
+  ['partInfoBack','partDetailBack','partEvidenceBack','partZoomBack'].forEach(id=>{
+    document.getElementById(id)?.addEventListener('click',e=>{
+      if(e.target.id!==id)return;
+      if(id==='partInfoBack')closePartInfo();
+      if(id==='partDetailBack')closePartDetail();
+      if(id==='partEvidenceBack')closePartEvidence();
+      if(id==='partZoomBack')closePartZoom();
+    });
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeGroupCompare();hideImagePop();closePartZoom();closePartEvidence();closePartDetail();closePartInfo();}});
 
   document.getElementById('catalogSearch').addEventListener('input',e=>{query=e.target.value.trim();render()});
   document.getElementById('categoryFilters').addEventListener('click',e=>{

@@ -1,0 +1,142 @@
+{
+  "build": "Jcalculator-sensor-only-v20-catalog-parts",
+  "status": "PASS_STATIC",
+  "registeredProducts": 284,
+  "checks": {
+    "reducedE3ZReplaced": true,
+    "reducedEEReplaced": true,
+    "reducedE2EReplaced": true,
+    "noCatalogSelectionToolLink": true,
+    "partInfoButton": true,
+    "partInfoModal": true,
+    "partDetailModal": true,
+    "partEvidenceModal": true,
+    "evidenceHighlight": true,
+    "evidenceZoom": true,
+    "sourcePdfLinks": true,
+    "groupCompareRetained": true,
+    "imageHoverRetained": true,
+    "modelSelectionRetained": true,
+    "allJsSyntax": true,
+    "dataJsSyntax": true,
+    "fileCountUnder100": true
+  },
+  "pdfReplacement": {
+    "files": [
+      {
+        "name": "OMRON_E3Z_2010_KOR.pdf",
+        "oldBytes": 12614832,
+        "newBytes": 7608680,
+        "sha256": "f975d3712ac057ea6b14908bc9f5332ab16f8fa3b8a456a863df6f88f6beb71c"
+      },
+      {
+        "name": "OMRON_EE-SX47_67_2010_KOR.pdf",
+        "oldBytes": 8979267,
+        "newBytes": 4883193,
+        "sha256": "63a71c991802500f94a5cd969ad09fcb20eba1b5e8b6d9815c8de9516cecbdea"
+      },
+      {
+        "name": "OMRON_E2E_SMALL_NEW_2014_KOR.pdf",
+        "oldBytes": 20996862,
+        "newBytes": 3595940,
+        "sha256": "f38f3d7050bacfb1d3960794137b0a4037c2ffb9d2d19eb16143e155ea35ac86"
+      }
+    ],
+    "oldTotalBytes": 42590961,
+    "newTotalBytes": 16087813,
+    "savedBytes": 26503148,
+    "pageCountsVerified": {
+      "E3Z": 16,
+      "EE-SX47/67": 10,
+      "E2E Small New": 68
+    }
+  },
+  "catalogBehavior": {
+    "rowClick": "First click selects a model. Clicking the selected row again opens part information.",
+    "selectionBar": "부품정보 보기 opens the selected model inside catalog.html.",
+    "partInfo": "Card-style model summary with 상세보기 and 근거보기.",
+    "detail": "Detailed specifications plus catalog visual thumbnails.",
+    "evidence": "Full official evidence page with per-model blue highlight and zoom controls.",
+    "navigation": "No model-selection action sends the user to index.html."
+  },
+  "javascriptSyntax": [
+    {
+      "file": "catalog",
+      "script": 0,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 0,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 1,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 2,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 3,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 4,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 5,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 6,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 7,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 8,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 9,
+      "status": "PASS",
+      "error": ""
+    },
+    {
+      "file": "index",
+      "script": 10,
+      "status": "PASS",
+      "error": ""
+    }
+  ],
+  "dataJs": "PASS",
+  "browserAutomation": {
+    "status": "NOT_RUN",
+    "note": "Static JS/data/path validation completed. Visual click review is recommended after deployment."
+  },
+  "fileCount": 98
+}
