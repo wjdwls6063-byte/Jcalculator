@@ -274,11 +274,17 @@ button,input,select{font:inherit}
   .accessory-final-grid{grid-template-columns:1fr}.accessory-plus{min-height:28px}
 }
 
+
+/* v03 · Fiber Sensor TYPE Catalog */
+.fiber-combo-grid{display:grid;grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);gap:12px;align-items:stretch;margin:14px 0}
+.fiber-combo-box{border:1px solid #d8d2ee;background:#fbfaff;border-radius:12px;padding:12px;min-width:0}
+.fiber-combo-box.amp{border-color:#cdd9f5;background:#f8fbff}
+.fiber-combo-box small{display:block;color:#667085;font-size:10px;font-weight:800;margin-bottom:7px}.fiber-combo-box img{width:100%;height:130px;object-fit:contain;background:#fff;border:1px solid #eceff4;border-radius:9px}.fiber-combo-box b{display:block;font-size:15px;color:#182230;margin-top:8px}.fiber-combo-box span{display:block;color:#667085;font-size:10.5px;line-height:1.5;margin-top:4px}.fiber-combo-plus{display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#7a52c7}.fiber-required-note{border:1px solid #d9cff7;background:#faf8ff;color:#523493;border-radius:10px;padding:9px 10px;font-size:11px;line-height:1.55;margin:10px 0}.fiber-amp-badge{display:inline-flex;border-radius:999px;background:#eef4ff;color:#3157d5;padding:4px 8px;font-size:10px;font-weight:900;margin-right:5px}.fiber-unit-card .tree-final-kicker{color:#6236b5}.tree-node-row[data-fiber="true"] .tree-node-label{color:#4e2f91}.tree-node-row[data-fiber="true"] .tree-count{background:#f4f0ff;color:#6236b5}.fiber-search-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.fiber-search-card{border:1px solid #d8d2ee;background:#fff;border-radius:10px;padding:10px;text-align:left;cursor:pointer}.fiber-search-card b{display:block;color:#3d2478}.fiber-search-card small{display:block;color:#667085;margin-top:4px;line-height:1.4}@media(max-width:760px){.fiber-combo-grid{grid-template-columns:1fr}.fiber-combo-plus{height:22px}.fiber-search-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><div class="brand-mark">J</div><div><strong>Jcalculator · 센서 카탈로그</strong><small>v20 데이터 · TYPE Catalog</small></div></div>
+  <div class="brand"><div class="brand-mark">J</div><div><strong>Jcalculator · 센서 카탈로그</strong><small>v03 · TYPE Catalog + E32 Fiber</small></div></div>
   <nav class="nav"><a href="index.html">센서 선정</a><a class="active" href="#type">TYPE 카탈로그</a></nav>
 </header>
 
@@ -286,7 +292,7 @@ button,input,select{font:inherit}
   <div class="hero-inner">
     <span class="eyebrow">TYPE CATALOG · TREE VIEW</span>
     <h1>센서 종류를 아는 사용자를 위한 TYPE 카탈로그</h1>
-    <p>처음부터 모든 TYPE을 펼치지 않습니다. <b>센서 종류 → 구조/방식 → 거리·사이즈·형상 → 출력 → 동작 → 접속 → 센서 형번 → 필요 시 접속 부품</b> 순서로 트리를 내려가며 직접 선정합니다. 잘 모르는 항목은 선택하기 전에 <b>?</b>에 마우스를 올려 공식 이미지와 쉬운 설명을 먼저 확인하세요.</p>
+    <p>처음부터 모든 TYPE을 펼치지 않습니다. <b>센서 종류 → 구조/방식 → 거리·사이즈·형상 → 출력/앰프 → 동작/접속 → 센서 형번 → 필요 시 접속 부품 또는 화이버 앰프</b> 순서로 트리를 내려가며 직접 선정합니다. 잘 모르는 항목은 선택하기 전에 <b>?</b>에 마우스를 올려 공식 이미지와 쉬운 설명을 먼저 확인하세요.</p>
     <div class="summary" id="summary"></div>
   </div>
 </section>
@@ -314,7 +320,7 @@ button,input,select{font:inherit}
 
   <div class="source-note">
     <strong>자료 기준</strong><br>
-    OMRON E3T 한글 공식 카탈로그 2010 · E3Z 한글 공식 카탈로그 2010 · E2E Small New 한글 공식 카탈로그 2014 · EE-SX47/67 한글 공식 카탈로그 2010을 기준으로 표시합니다.
+    OMRON E3T 한글 공식 카탈로그 2010 · E3Z 한글 공식 카탈로그 2010 · E2E Small New 한글 공식 카탈로그 2014 · EE-SX47/67 한글 공식 카탈로그 2010 · Fiber Sensor Best Selection 2017을 기준으로 표시합니다.
     현재 카탈로그 등록 모델이 곧 현행 판매 모델이라는 의미는 아닙니다. 형번을 선택하면 이 화면에서 바로 <b>부품정보 · 상세보기 · 공식 근거</b>를 확인할 수 있습니다.
   </div>
 </main>
@@ -415,19 +421,25 @@ button,input,select{font:inherit}
     </div>
   </div>
 </div>
-<div class="footer">Jcalculator · Sensor TYPE Catalog</div>
+<div class="footer">Jcalculator · Sensor TYPE Catalog · E32 Fiber integrated</div>
 
 <script src="data/omron-sensor-selection-data-v10.js"></script>
+<script src="data/fiber-assets-inline-v01.js"></script>
+<script src="data/omron-fiber-sensor-data-v01.js"></script>
 <script src="data/connection-accessory-engine-v01.js"></script>
 <script>
 (() => {
   const products=(window.E3T_DATA?.products||[]);
-  const CAT_ORDER=['photoelectric','proximity','photo_microsensor'];
-  const CAT_NAME={photoelectric:'광전센서',proximity:'근접센서',photo_microsensor:'포토마이크로센서'};
+  const fiberData=(window.OMRON_FIBER_DATA||{});
+  const fiberProducts=(fiberData.products||[]);
+  const fiberAmps=(fiberData.amplifiers||[]);
+  const CAT_ORDER=['photoelectric','proximity','photo_microsensor','fiber_sensor'];
+  const CAT_NAME={photoelectric:'광전센서',proximity:'근접센서',photo_microsensor:'포토마이크로센서',fiber_sensor:'화이버센서'};
   const CAT_DESC={
     photoelectric:'빛을 이용한 검출 방식 기준',
     proximity:'본체 크기와 실드 구조 기준',
-    photo_microsensor:'5mm 홈형 본체 형상 기준'
+    photo_microsensor:'5mm 홈형 본체 형상 기준',
+    fiber_sensor:'E32 화이버 유니트 + 화이버 앰프 조합 기준'
   };
   const METHOD={
     through_beam:'투과형',
@@ -446,7 +458,7 @@ button,input,select{font:inherit}
     'M12 Smart Click relay':'M12 Smart Click','M12 standard relay':'M12 중계','M8 4-pole relay':'M8 중계',
     'e-CON relay':'e-CON','robot_cable':'로봇 코드',connector_relay:'커넥터 중계'
   };
-  let category='all', query='', selectedModel='', compareGroups=[];
+  let category='all', query='', selectedModel='', selectedFiberCombo=null, compareGroups=[];
 
   function uniq(arr){return [...new Set(arr.filter(Boolean))]}
   function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -591,6 +603,7 @@ button,input,select{font:inherit}
 
   const treeNodes=new Map();
   const modelNodeByModel=new Map();
+  const fiberModelNodeByModel=new Map();
   function makeNode(o){treeNodes.set(o.id,o);return o}
   function uniqMap(list,keyFn){
     const map=new Map();
@@ -724,8 +737,48 @@ button,input,select{font:inherit}
     });
   }
 
+  function fiberSafe(s){return String(s||'').replace(/[^a-zA-Z0-9가-힣_-]+/g,'_')}
+  function fiberAmpComboNode(unit,amp,parentId){
+    return makeNode({
+      id:`fibercombo|${fiberSafe(unit.model)}|${fiberSafe(amp.model)}`,
+      label:`${unit.model} + ${amp.model}`,sub:`최종 조합 · ${amp.outputType} · ${amp.connection}`,
+      kind:'fiber_combo',category:'fiber_sensor',list:[unit],parentId,product:unit,amplifier:amp,
+      helpKind:'fiber_combo',helpImage:amp.sourceImage||unit.productImage,children:[]
+    });
+  }
+  function fiberAmpBranches(parentId,unit){
+    const seriesOrder=['E3NX-FA','E3X-HD'];
+    return seriesOrder.map(series=>{
+      const seriesAmps=fiberAmps.filter(a=>a.series===series);if(!seriesAmps.length)return null;
+      const sid=`${parentId}|ampseries|${series}`;
+      const outMap=uniqMap(seriesAmps,a=>a.outputType||'출력 확인');
+      const outChildren=[...outMap.entries()].map(([output,outAmps],oi)=>{
+        const oid=`${sid}|out|${oi}`;
+        const connMap=uniqMap(outAmps,a=>a.connection||'접속 확인');
+        const connChildren=[...connMap.entries()].map(([conn,connAmps],ci)=>{
+          const cid=`${oid}|conn|${ci}`;
+          return makeNode({id:cid,label:conn,sub:'앰프 접속 방식',kind:'fiber_amp_connection',category:'fiber_sensor',list:[unit],parentId:oid,
+            helpKind:'fiber_amp_connection',helpImage:connAmps[0]?.sourceImage||unit.productImage,amplifiers:connAmps,product:unit,
+            children:connAmps.map(a=>fiberAmpComboNode(unit,a,cid))});
+        });
+        return makeNode({id:oid,label:output,sub:'앰프 출력',kind:'fiber_amp_output',category:'fiber_sensor',list:[unit],parentId:sid,
+          helpKind:'fiber_amp_output',helpImage:outAmps[0]?.ratingsImage||unit.productImage,amplifiers:outAmps,product:unit,children:connChildren});
+      });
+      const seriesMeta=fiberData.amplifierSeries?.[series]||{};
+      return makeNode({id:sid,label:series,sub:`${seriesMeta.name||'화이버 앰프'} · ${seriesAmps.length}형식`,kind:'fiber_amp_series',category:'fiber_sensor',list:[unit],parentId,
+        helpKind:'fiber_amp_series',helpImage:seriesAmps[0]?.sourceImage||unit.productImage,amplifiers:seriesAmps,product:unit,children:outChildren});
+    }).filter(Boolean);
+  }
+  function fiberUnitNode(unit,parentId){
+    const id=`fiberunit|${fiberSafe(unit.model)}`;
+    const n=makeNode({id,label:unit.model,sub:`E32 화이버 유니트 · ${unit.specs?.fiberLength||''} · ${unit.specs?.cutCapability||''}`,
+      kind:'fiber_unit_model',category:'fiber_sensor',list:[unit],parentId,product:unit,helpKind:'fiber_unit',helpImage:unit.productImage,
+      children:fiberAmpBranches(id,unit)});
+    fiberModelNodeByModel.set(unit.model,id);return n;
+  }
+
   function buildTree(){
-    treeNodes.clear();modelNodeByModel.clear();
+    treeNodes.clear();modelNodeByModel.clear();fiberModelNodeByModel.clear();
 
     // 광전센서: 검출 방식 → 검출 거리 → 출력 → 동작 → 접속 → 형번
     const photo=products.filter(p=>cat(p)==='photoelectric');
@@ -813,7 +866,38 @@ button,input,select{font:inherit}
       list:micro,children:[slot],parentId:null,helpKind:'photomicro',helpImage:'assets/ee_sx47_67/product-group.png'
     });
 
-    return [photoRoot,proxRoot,microRoot];
+    // 화이버센서: 용도 TYPE → 세부 형상 → 검출 방식 → 길이 → E32 → 앰프 시리즈 → 출력 → 접속 → 최종 조합
+    const fiberGroupOrder=(fiberData.groups||[]).map(g=>g.name);
+    const fiberGroupChildren=fiberGroupOrder.map(groupName=>{
+      const list=fiberProducts.filter(p=>p.classification?.group===groupName);if(!list.length)return null;
+      const gid=`fiber|group|${fiberSafe(groupName)}`;
+      const groupDef=(fiberData.groups||[]).find(g=>g.name===groupName);
+      const subOrder=(groupDef?.subs||uniq(list.map(p=>p.classification?.subcategory)));
+      const subChildren=subOrder.map(sub=>{
+        const subList=list.filter(p=>p.classification?.subcategory===sub);if(!subList.length)return null;
+        const sid=`${gid}|sub|${fiberSafe(sub)}`;
+        const methodMap=uniqMap(subList,p=>p.classification?.detectionMethod||'검출 방식 확인');
+        const methodChildren=[...methodMap.entries()].map(([method,mList],mi)=>{
+          const mid=`${sid}|method|${mi}`;
+          const lenMap=uniqMap(mList,p=>p.specs?.fiberLength||'길이 확인');
+          const lenChildren=[...lenMap.entries()].map(([len,lList],li)=>{
+            const lid=`${mid}|len|${li}`;
+            return makeNode({id:lid,label:len,sub:'화이버 길이',kind:'fiber_length',category:'fiber_sensor',list:lList,parentId:mid,
+              helpKind:'fiber_length',helpImage:lList[0]?.productImage,children:lList.map(u=>fiberUnitNode(u,lid))});
+          });
+          return makeNode({id:mid,label:method,sub:'검출 방식 / 특징',kind:'fiber_method',category:'fiber_sensor',list:mList,parentId:sid,
+            helpKind:'fiber_method',helpImage:mList[0]?.productImage,children:lenChildren});
+        });
+        return makeNode({id:sid,label:sub,sub:'세부 TYPE / 형상',kind:'fiber_sub',category:'fiber_sensor',list:subList,parentId:gid,
+          helpKind:'fiber_sub',helpImage:subList[0]?.productImage,children:methodChildren});
+      }).filter(Boolean);
+      return makeNode({id:gid,label:groupName,sub:'설치·검출 목적 TYPE',kind:'fiber_group',category:'fiber_sensor',list,parentId:'fiber_sensor',
+        helpKind:'fiber_group',helpImage:list[0]?.productImage,children:subChildren});
+    }).filter(Boolean);
+    const fiberRoot=makeNode({id:'fiber_sensor',label:'화이버센서',sub:'E32 검출 헤드 + 별도 화이버 앰프',kind:'category',category:'fiber_sensor',
+      list:fiberProducts,children:fiberGroupChildren,parentId:null,helpKind:'fiber_sensor',helpImage:'assets/fiber/evidence/p005.jpg'});
+
+    return [photoRoot,proxRoot,microRoot,fiberRoot];
   }
 
   const treeRoots=buildTree();
@@ -830,6 +914,28 @@ button,input,select{font:inherit}
   function helpData(node){
     const kind=node.helpKind;
     const base={title:node.label,img:node.helpImage||node.list?.[0]?.productImage||'',text:'이 항목을 선택하기 전에 구조와 사용 목적을 확인하세요.',key:'',foot:''};
+
+    if(kind==='fiber_sensor')return {...base,title:'화이버센서 · E32 + 앰프',img:'assets/fiber/evidence/p005.jpg',text:'검출 위치에는 작은 E32 화이버 유니트를 설치하고, 제어반 쪽에는 별도 화이버 앰프를 연결해 사용하는 센서입니다.',key:'초보자 판단: 일반 센서 본체가 들어가기 어려운 좁은 공간, 작은 물체, 고온·진공·약품 환경이면 화이버센서를 먼저 검토하세요. 최종 선정은 E32만 고르는 것이 아니라 앰프 형번까지 선택해야 끝납니다.',foot:'OMRON Fiber Sensor Best Selection 2017'};
+    if(kind==='fiber_group'){
+      const t={
+        '표준 설치':'일반적인 나사형·원주형 설치입니다. 특별한 공간/환경 제약이 없다면 여기부터 확인합니다.',
+        '공간 절감':'센서 헤드를 아주 작게 만들거나 물체 바로 가까이에 설치해야 할 때 사용하는 플랫형·슬리브형 계열입니다.',
+        '빔 강화':'작은 물체, 긴 거리, 좁은 시야, 배경 억제처럼 빛의 형태나 세기를 특별히 제어해야 할 때 선택합니다.',
+        '투명체 검출':'필름·유리·투명 용기처럼 일반 반사형에서 안정적으로 구분하기 어려운 물체를 검출할 때 선택합니다.',
+        '내환경':'오일·약품·반복 굴곡·고온처럼 일반 화이버가 손상되기 쉬운 환경용입니다.',
+        '전용 어플리케이션':'에어리어, 액면, 진공, FPD·반도체 등 특정 공정 전용 구조입니다.',
+        '신상품':'카탈로그에서 신규 항목으로 분류된 화이버 유니트입니다.'
+      };
+      return {...base,title:`화이버 TYPE · ${node.label}`,text:t[node.label]||'OMRON 카탈로그의 설치·용도 분류입니다.',key:'현재 장비에서 가장 큰 제약이 무엇인지 먼저 고르세요. 설치 공간 → 검출 대상 → 환경 순으로 생각하면 쉽습니다.',foot:'OMRON Fiber Sensor Best Selection 2017 · 선정 가이드'};
+    }
+    if(kind==='fiber_sub')return {...base,title:`세부 TYPE · ${node.label}`,text:`${node.label} 형상/용도에 해당하는 E32 화이버 유니트를 좁히는 단계입니다.`,key:'같은 화이버센서라도 헤드 형상과 빛의 방향이 다릅니다. 실제 브라켓 공간과 워크 접근 방향을 먼저 확인하세요.',foot:'OMRON Fiber Sensor Best Selection 2017'};
+    if(kind==='fiber_method')return {...base,title:`검출 방식 · ${node.label}`,text:'빛을 워크에 어떻게 보내고 받는지에 따른 구분입니다. 투과형은 양쪽 설치, 반사형은 한쪽 설치가 기본입니다.',key:'양쪽 설치가 가능하면 투과형이 안정적입니다. 한쪽만 설치할 수 있으면 반사형 계열을 확인하세요. 특수 방식은 해당 TYPE 설명을 우선합니다.',foot:'OMRON Fiber Sensor Best Selection 2017'};
+    if(kind==='fiber_length')return {...base,title:`화이버 길이 · ${node.label}`,text:'화이버 헤드에서 앰프까지 이어지는 케이블 길이입니다.',key:'실제 배선 경로에 여유를 더해 선택하세요. 프리 커트 가능/불가 여부는 E32 형번마다 다르므로 다음 단계에서 반드시 확인합니다.',foot:'OMRON Fiber Sensor Best Selection 2017 · 형번별 사양'};
+    if(kind==='fiber_unit')return {...base,title:`E32 화이버 유니트 · ${node.product?.model||node.label}`,text:`${node.product?.classification?.subcategory||''} · ${node.product?.classification?.detectionMethod||''} · ${node.product?.specs?.fiberLength||''}. 이 형번은 검출 헤드이며 단독으로 출력 신호를 만들지 않습니다.`,key:'이 E32를 선택한 뒤 반드시 E3NX-FA 또는 E3X-HD 앰프의 출력(NPN/PNP)과 접속 방식을 계속 선택하세요.',foot:`OMRON Fiber Sensor Best Selection 2017 · p.${node.product?.evidence?.catalogPage||''}`};
+    if(kind==='fiber_amp_series')return {...base,title:`화이버 앰프 · ${node.label}`,text:`E32에서 전달된 빛을 판정해 PLC용 출력으로 바꾸는 앰프입니다. ${node.label} 계열 안에서 출력과 접속 방식에 따라 정확한 형번이 갈립니다.`,key:'신규 설비는 특별한 호환 제약이 없으면 E3NX-FA를 우선 비교하고, 기존 E3X-HD 설비와의 호환이 필요하면 E3X-HD를 선택합니다.',foot:`OMRON Fiber Sensor Best Selection 2017 · 앰프 선정표`};
+    if(kind==='fiber_amp_output')return {...base,title:`앰프 출력 · ${node.label}`,text:'PLC 입력 방식에 맞추는 전기 출력 조건입니다.',key:'PLC 입력이 싱킹/소싱 중 무엇을 요구하는지 확인해 NPN 또는 PNP를 선택하세요. 모르면 전장 담당자의 PLC 입력 사양을 먼저 확인하는 것이 안전합니다.',foot:'OMRON Fiber Sensor Best Selection 2017 · 화이버 앰프 정격'};
+    if(kind==='fiber_amp_connection')return {...base,title:`앰프 접속 · ${node.label}`,text:'화이버 앰프를 제어반 배선에 연결하는 방식입니다.',key:'코드 인출은 단순하고, M8은 교체가 편하며, 배선 절감/통신 유니트용은 여러 센서를 묶는 설비에 유리합니다. 실제 제어반 배선 방식에 맞추세요.',foot:'OMRON Fiber Sensor Best Selection 2017 · 화이버 앰프 형식'};
+    if(kind==='fiber_combo')return {...base,title:'화이버센서 최종 조합',text:`${node.product?.model||''} 화이버 유니트와 ${node.amplifier?.model||''} 앰프를 함께 사용합니다.`,key:'발주/도면에는 두 형번을 함께 관리하세요. 검출 거리는 E32 + 앰프 시리즈 + 동작 모드(GIGA/HS/ST/SHS) 조합에 따라 달라지므로 공식표를 최종 확인합니다.',foot:'OMRON Fiber Sensor Best Selection 2017'};
 
     if(kind==='connection_choice'){
       const h=node.choiceHelp||{title:node.label,text:'접속 방식을 확인합니다.',key:'공식 접속 사양을 확인하세요.',image:node.helpImage,footer:'공식 한글 카탈로그'};
@@ -965,6 +1071,11 @@ button,input,select{font:inherit}
         ${has?`<div class="tree-node-children">${node.children.map(ch=>renderTreeNode(ch,level+1)).join('')}</div>`:''}
       </div>`;
     }
+    if(node.kind==='fiber_combo'){
+      return `<div class="tree-node" data-node="${esc(node.id)}"><div class="tree-node-row model-leaf ${selected?'selected':''}" data-level="${Math.min(level,4)}" data-fiber="true">
+        <span class="tree-model-mark" aria-hidden="true"></span><button type="button" class="tree-node-label" data-tree-select="${esc(node.id)}">${esc(node.label)}<small>${esc(node.sub||'')}</small></button><span></span>
+        <button type="button" class="tree-help-btn" data-tree-help="${esc(node.id)}" aria-label="${esc(node.label)} 설명">?</button><span></span></div></div>`;
+    }
     if(node.kind==='accessory'){
       return `<div class="tree-node" data-node="${esc(node.id)}">
         <div class="tree-node-row accessory-leaf ${selected?'selected':''}" data-level="${Math.min(level,4)}">
@@ -978,7 +1089,7 @@ button,input,select{font:inherit}
     }
     const compare=node.groupKey?`<button type="button" class="tree-compare-btn" data-compare-key="${esc(node.groupKey)}" title="그룹 비교">${compareGroups.includes(node.groupKey)?'✓ 비교':'＋ 비교'}</button>`:'<span></span>';
     return `<div class="tree-node ${expanded?'expanded':''}" data-node="${esc(node.id)}">
-      <div class="tree-node-row ${selected?'selected':''}" data-level="${Math.min(level,4)}">
+      <div class="tree-node-row ${selected?'selected':''}" data-level="${Math.min(level,4)}" data-fiber="${node.category==='fiber_sensor'}">
         <button type="button" class="tree-toggle ${has?'':'blank'}" data-tree-toggle="${esc(node.id)}">${has?(expanded?'▼':'▶'):'•'}</button>
         <button type="button" class="tree-node-label" data-tree-select="${esc(node.id)}">${esc(node.label)}<small>${esc(node.sub||'')}</small></button>
         <span class="tree-count">${node.list?.length||0}</span>
@@ -994,7 +1105,7 @@ button,input,select{font:inherit}
   function childCards(node){
     if(!node.children?.length)return '';
     return `<div class="tree-next-title">다음 선택</div><div class="tree-next-grid">${node.children.map(ch=>{
-      const model=ch.kind==='model';
+      const model=ch.kind==='model'||ch.kind==='fiber_combo';
       return `<button type="button" class="tree-next-card" data-tree-select="${esc(ch.id)}"><span><b>${esc(ch.label)}</b><small>${esc(ch.sub||'')}${model?'':` · ${ch.list?.length||0} 모델`}</small></span>${model?'<span>→</span>':`<span class="tree-help-btn" data-tree-help="${esc(ch.id)}">?</span>`}</button>`;
     }).join('')}</div>`;
   }
@@ -1053,14 +1164,40 @@ button,input,select{font:inherit}
   }
 
 
+  function fiberUnitCard(node){
+    const p=node.product;
+    return `<div class="tree-final-card fiber-unit-card"><div class="tree-final-top"><div class="tree-final-image type-image" data-hover-image="${esc(p.productImage||'')}" data-hover-title="${esc(p.model)}" data-hover-text="${esc(p.classification?.subcategory+' · '+p.classification?.detectionMethod)}"><img src="${esc(p.productImage||'')}" alt="${esc(p.model)}"></div><div>
+      <span class="tree-final-kicker">E32 화이버 유니트 선택 완료 · 앰프 선택이 남았습니다</span><div class="tree-final-model">${esc(p.model)}</div><div class="tree-final-series">OMRON · E32 · Fiber Sensor Best Selection 2017</div>
+      <div class="tree-final-specs"><div class="tree-final-spec"><b>설치/용도 TYPE</b><span>${esc(p.classification?.group||'—')} · ${esc(p.classification?.subcategory||'—')}</span></div><div class="tree-final-spec"><b>검출 방식</b><span>${esc(p.classification?.detectionMethod||'—')}</span></div><div class="tree-final-spec"><b>화이버 길이</b><span>${esc(p.specs?.fiberLength||'—')}</span></div><div class="tree-final-spec"><b>커트</b><span>${esc(p.specs?.cutCapability||'—')}</span></div></div></div></div>
+      <div class="fiber-required-note"><b>필수:</b> E32는 검출 헤드입니다. 아래에서 <b>화이버 앰프 시리즈 → NPN/PNP → 접속 방식 → 정확한 앰프 형번</b>까지 선택해야 최종 선정이 완료됩니다.</div>
+      <div class="tree-final-actions"><button type="button" class="primary" onclick="openFiberUnitEvidence('${esc(p.model)}')">▣ E32 공식 근거</button></div>${childCards(node)}</div>`;
+  }
+  function finalFiberComboCard(node){
+    const p=node.product,a=node.amplifier;
+    return `<div class="tree-final-card"><span class="tree-final-kicker">화이버센서 최종 조합 완료</span><div class="tree-final-model">${esc(p.model)} + ${esc(a.model)}</div>
+      <div class="fiber-combo-grid"><div class="fiber-combo-box"><small>① E32 화이버 유니트</small><img src="${esc(p.productImage||'')}" alt="${esc(p.model)}"><b>${esc(p.model)}</b><span>${esc(p.classification?.group||'')} · ${esc(p.classification?.subcategory||'')}<br>${esc(p.classification?.detectionMethod||'')} · ${esc(p.specs?.fiberLength||'')} · ${esc(p.specs?.cutCapability||'')}</span></div>
+      <div class="fiber-combo-plus">＋</div><div class="fiber-combo-box amp"><small>② 화이버 앰프</small><img src="${esc(a.sourceImage||'')}" alt="${esc(a.model)}"><b>${esc(a.model)}</b><span>${esc(a.series)} · ${esc(a.type||'')}<br>${esc(a.outputType)} · ${esc(a.connection)}</span></div></div>
+      <div class="tree-path-complete">최종 선정: <b>${esc(p.model)}</b> + <b>${esc(a.model)}</b></div>
+      <div class="fiber-required-note"><b>검출 거리 최종 확인:</b> E32 형번과 앰프 시리즈뿐 아니라 GIGA / HS / ST / SHS 동작 모드에 따라 검출 거리가 달라질 수 있습니다. 발주 전 해당 E32 공식 거리표를 확인하세요.</div>
+      <div class="tree-final-actions"><button type="button" onclick="openFiberUnitEvidence('${esc(p.model)}')">E32 근거보기</button><button type="button" onclick="openFiberAmpEvidence('${esc(a.model)}','selection')">앰프 형식 근거</button><button type="button" class="primary" onclick="openFiberAmpEvidence('${esc(a.model)}','ratings')">앰프 정격 근거</button></div></div>`;
+  }
+
   function renderDetail(node){
     const root=document.getElementById('treeDetail');
     if(!node){
-      root.innerHTML=`<div class="tree-detail-empty"><div><strong>센서 종류부터 선택하세요.</strong><p>왼쪽 트리에서 조건을 하나씩 내려가면 마지막에 정확한 형번까지 선택할 수 있습니다.<br>모르는 항목은 선택 전에 <b>?</b>에 마우스를 올려 설명을 확인하세요.</p><div class="guide-steps"><span>① 센서 종류</span><span>② 방식/사이즈/홈</span><span>③ 거리/형상</span><span>④ 출력/동작/접속</span><span>⑤ 센서 형번 → 접속 부품</span></div></div></div>`;
+      root.innerHTML=`<div class="tree-detail-empty"><div><strong>센서 종류부터 선택하세요.</strong><p>왼쪽 트리에서 조건을 하나씩 내려가면 마지막에 정확한 형번까지 선택할 수 있습니다.<br>모르는 항목은 선택 전에 <b>?</b>에 마우스를 올려 설명을 확인하세요.</p><div class="guide-steps"><span>① 센서 종류</span><span>② 방식/사이즈/홈</span><span>③ 거리/형상</span><span>④ 출력/동작/접속 또는 앰프</span><span>⑤ 센서 형번 → 접속 부품/화이버 앰프</span></div></div></div>`;
       return;
     }
 
     const bc=breadcrumb(node);
+    if(node.kind==='fiber_combo'){
+      root.innerHTML=`<div class="tree-breadcrumb">${bc.map((x,i)=>`${i?'<span>›</span>':''}<b>${esc(x)}</b>`).join('')}</div>${finalFiberComboCard(node)}`;
+      return;
+    }
+    if(node.kind==='fiber_unit_model'){
+      root.innerHTML=`<div class="tree-breadcrumb">${bc.map((x,i)=>`${i?'<span>›</span>':''}<b>${esc(x)}</b>`).join('')}</div>${fiberUnitCard(node)}`;
+      return;
+    }
     if(node.kind==='model'){
       const p=node.product;
       root.innerHTML=`<div class="tree-breadcrumb">${bc.map((x,i)=>`${i?'<span>›</span>':''}<b>${esc(x)}</b>`).join('')}</div>${finalModelCard(p,node)}`;
@@ -1079,7 +1216,7 @@ button,input,select{font:inherit}
       </div>
       ${h.key?`<div class="tree-search-note"><b>선택 포인트</b><br>${esc(h.key)}</div>`:''}
       ${childCards(node)}
-      <div class="tree-select-guide">트리의 다음 항목을 계속 선택하면 <b>출력 → 동작 → 접속 → 센서 형번 → 필요 시 접속 부품</b>까지 내려갑니다.</div>`;
+      <div class="tree-select-guide">트리의 다음 항목을 계속 선택하면 <b>출력/앰프 → 동작/접속 → 센서 형번 → 필요 시 접속 부품/화이버 앰프</b>까지 내려갑니다.</div>`;
   }
 
   function selectTreeNode(id,expand=true,clearSearch=true){
@@ -1088,12 +1225,14 @@ button,input,select{font:inherit}
     if(expand&&node.children?.length)expandedTree.add(id);
     ancestors(node).forEach(a=>expandedTree.add(a.id));
 
-    if(node.kind==='model'||node.kind==='accessory'){
-      selectedModel=node.product.model;
+    if(node.kind==='fiber_combo'){
+      selectedFiberCombo=node;selectedModel='';window.__catalogConnectionContext=null;syncSelectionBar();
+    }else if(node.kind==='model'||node.kind==='accessory'){
+      selectedFiberCombo=null;selectedModel=node.product.model;
       window.__catalogConnectionContext={model:node.product.model,choice:node.connectionChoice||null};
       syncSelectionBar();
     }else{
-      window.__catalogConnectionContext=null;
+      selectedFiberCombo=null;window.__catalogConnectionContext=null;syncSelectionBar();
     }
 
     if(clearSearch){
@@ -1102,12 +1241,12 @@ button,input,select{font:inherit}
     }
     renderTree();
     renderDetail(node);
-    document.getElementById('viewCount').textContent=node.kind==='accessory'?`조합 선택 · ${node.product.model} + ${node.accessory?.part||''}`:(node.kind==='model'?`센서 선택 · ${node.product.model}`:`${node.list?.length||0} 모델`);
+    document.getElementById('viewCount').textContent=node.kind==='fiber_combo'?`화이버 조합 · ${node.product.model} + ${node.amplifier.model}`:(node.kind==='accessory'?`조합 선택 · ${node.product.model} + ${node.accessory?.part||''}`:(node.kind==='model'||node.kind==='fiber_unit_model'?`센서 선택 · ${node.product.model}`:`${node.list?.length||0} 모델`));
   }
 
   function collapseAll(){
-    expandedTree.clear();selectedTreeNode=null;selectedModel='';syncSelectionBar();renderTree();renderDetail(null);
-    document.getElementById('viewCount').textContent=`${products.length} 모델`;
+    expandedTree.clear();selectedTreeNode=null;selectedModel='';selectedFiberCombo=null;syncSelectionBar();renderTree();renderDetail(null);
+    document.getElementById('viewCount').textContent=`${products.length+fiberProducts.length} 센서 형번`;
   }
 
   function searchProducts(q){
@@ -1121,6 +1260,11 @@ button,input,select{font:inherit}
     ].filter(Boolean).join(' ').toLowerCase().includes(low));
   }
 
+  function searchFiberProducts(q){
+    const low=q.trim().toLowerCase();if(!low)return [];
+    return fiberProducts.filter(p=>[p.model,p.series,CAT_NAME.fiber_sensor,p.classification?.group,p.classification?.subcategory,p.classification?.detectionMethod,p.specs?.fiberLength,p.specs?.cutCapability,...(p.applicationTags||[])].filter(Boolean).join(' ').toLowerCase().includes(low));
+  }
+
   function renderSearch(q){
     query=q.trim();
     if(!query){
@@ -1128,8 +1272,14 @@ button,input,select{font:inherit}
       if(selectedTreeNode){
         const sn=treeNodes.get(selectedTreeNode);
         document.getElementById('viewCount').textContent=sn?.kind==='accessory'?`조합 선택 · ${sn.product.model} + ${sn.accessory?.part||''}`:(sn?.kind==='model'?`센서 선택 · ${sn.product.model}`:`${sn?.list?.length||0} 모델`);
-      }else document.getElementById('viewCount').textContent=`${products.length} 모델`;
+      }else document.getElementById('viewCount').textContent=`${products.length+fiberProducts.length} 센서 형번`;
       return;
+    }
+
+    const exactFiber=fiberProducts.find(p=>p.model.toLowerCase()===query.toLowerCase());
+    if(exactFiber){
+      const nodeId=fiberModelNodeByModel.get(exactFiber.model);
+      if(nodeId){selectTreeNode(nodeId,true,false);const input=document.getElementById('catalogSearch');if(input)input.value=query;document.getElementById('viewCount').textContent=`정확히 일치 · ${exactFiber.model}`;return;}
     }
 
     const exact=products.find(p=>p.model.toLowerCase()===query.toLowerCase());
@@ -1143,13 +1293,15 @@ button,input,select{font:inherit}
       }
     }
 
-    const found=searchProducts(query);
-    document.getElementById('treeDetail').innerHTML=`<div class="tree-search-note"><b>검색 “${esc(query)}”</b> · ${found.length}개 모델<br>형번을 정확히 입력하면 해당 모델의 트리 경로를 자동으로 끝까지 펼칩니다.</div>
-      <div class="tree-model-table-wrap"><table class="tree-model-table model-table"><thead><tr><th class="model-select-cell">선택</th><th>형번</th><th>시리즈</th><th>거리/홈</th><th>타입</th><th>출력</th><th>동작</th><th>접속</th><th>보호</th></tr></thead><tbody>${found.length?found.map(row).join(''):'<tr><td colspan="9">검색 결과가 없습니다.</td></tr>'}</tbody></table></div>`;
-    document.getElementById('viewCount').textContent=`검색 ${found.length} 모델`;
+    const found=searchProducts(query), foundFiber=searchFiberProducts(query), totalFound=found.length+foundFiber.length;
+    document.getElementById('treeDetail').innerHTML=`<div class="tree-search-note"><b>검색 “${esc(query)}”</b> · ${totalFound}개 센서 형번<br>형번을 정확히 입력하면 해당 모델의 트리 경로를 자동으로 끝까지 펼칩니다.</div>
+      ${found.length?`<div class="tree-model-table-wrap"><table class="tree-model-table model-table"><thead><tr><th class="model-select-cell">선택</th><th>형번</th><th>시리즈</th><th>거리/홈</th><th>타입</th><th>출력</th><th>동작</th><th>접속</th><th>보호</th></tr></thead><tbody>${found.map(row).join('')}</tbody></table></div>`:''}
+      ${foundFiber.length?`<div class="tree-next-title">화이버센서 E32 검색 결과</div><div class="fiber-search-grid">${foundFiber.slice(0,40).map(p=>`<button class="fiber-search-card" type="button" data-tree-select="${esc(fiberModelNodeByModel.get(p.model)||'')}"><b>${esc(p.model)}</b><small>${esc(p.classification?.group||'')} · ${esc(p.classification?.subcategory||'')} · ${esc(p.classification?.detectionMethod||'')}<br>${esc(p.specs?.fiberLength||'')} · ${esc(p.specs?.cutCapability||'')}</small></button>`).join('')}</div>`:''}
+      ${!totalFound?'<div class="tree-search-note">검색 결과가 없습니다.</div>':''}`;
+    document.getElementById('viewCount').textContent=`검색 ${totalFound} 센서 형번`;
 
-    if(found.length===1){
-      const nodeId=modelNodeByModel.get(found[0].model);
+    if(totalFound===1){
+      const nodeId=foundFiber.length?fiberModelNodeByModel.get(foundFiber[0].model):modelNodeByModel.get(found[0].model);
       const node=treeNodes.get(nodeId);
       if(node){ancestors(node).forEach(a=>expandedTree.add(a.id));selectedTreeNode=node.id;renderTree()}
     }
@@ -1157,17 +1309,23 @@ button,input,select{font:inherit}
 
   function initialRender(){
     renderTree();renderDetail(null);
-    document.getElementById('viewCount').textContent=`${products.length} 모델`;
+    document.getElementById('viewCount').textContent=`${products.length+fiberProducts.length} 센서 형번`;
   }
   function syncSelectionBar(){
     const bar=document.getElementById('selectionBar');
     const label=document.getElementById('selectionModel');
     if(!bar||!label)return;
-    if(selectedModel){
+    if(selectedFiberCombo){
+      label.textContent=`${selectedFiberCombo.product.model} + ${selectedFiberCombo.amplifier.model}`;
+      const btn=document.getElementById('selectionOpen');if(btn)btn.textContent='화이버 조합 정보 보기 →';
+      bar.classList.add('show');
+    }else if(selectedModel){
       label.textContent=selectedModel;
+      const btn=document.getElementById('selectionOpen');if(btn)btn.textContent='부품정보 보기 →';
       bar.classList.add('show');
     }else{
       label.textContent='-';
+      const btn=document.getElementById('selectionOpen');if(btn)btn.textContent='부품정보 보기 →';
       bar.classList.remove('show');
     }
   }
@@ -1183,7 +1341,7 @@ button,input,select{font:inherit}
     syncSelectionBar();
   };
   window.clearModelSelection=function(){
-    selectedModel='';
+    selectedModel='';selectedFiberCombo=null;
     window.selectCatalogModel('');
   };
 
@@ -1241,7 +1399,15 @@ button,input,select{font:inherit}
     return '검출 방식·거리·출력·동작·접속 조건을 확인할 수 있는 광전센서입니다.';
   }
 
+  window.openFiberComboInfo=function(node){
+    if(!node)return;const p=node.product,a=node.amplifier;
+    document.getElementById('partInfoTitle').textContent='화이버센서 최종 조합';
+    document.getElementById('partInfoBody').innerHTML=`<div class="part-card"><div class="part-maker">OMRON · Fiber Sensor Best Selection 2017</div><div class="part-model">${esc(p.model)} + ${esc(a.model)}</div><div class="fiber-combo-grid"><div class="fiber-combo-box"><small>E32 화이버 유니트</small><img src="${esc(p.productImage||'')}"><b>${esc(p.model)}</b><span>${esc(p.classification?.subcategory||'')} · ${esc(p.classification?.detectionMethod||'')}</span></div><div class="fiber-combo-plus">＋</div><div class="fiber-combo-box amp"><small>화이버 앰프</small><img src="${esc(a.sourceImage||'')}"><b>${esc(a.model)}</b><span>${esc(a.outputType)} · ${esc(a.connection)}</span></div></div><div class="part-note">✓ 화이버센서는 두 형번을 함께 사용해야 합니다.<br>✓ E32별 검출 거리는 앰프 시리즈와 동작 모드 조합에 따라 공식표에서 최종 확인합니다.</div><div class="part-actions"><button type="button" onclick="openFiberUnitEvidence('${esc(p.model)}')">E32 근거</button><button type="button" class="primary" onclick="openFiberAmpEvidence('${esc(a.model)}','ratings')">앰프 근거</button></div></div>`;
+    document.getElementById('partInfoBack').classList.add('show');document.documentElement.style.overflow='hidden';
+  };
+
   window.openSelectedPartInfo=function(){
+    if(selectedFiberCombo){openFiberComboInfo(selectedFiberCombo);return;}
     if(!selectedModel)return;
     openPartInfo(selectedModel);
   };
@@ -1362,6 +1528,29 @@ button,input,select{font:inherit}
     document.getElementById('partEvidenceBack').classList.add('show');
     document.documentElement.style.overflow='hidden';
   };
+  window.openFiberUnitEvidence=function(model){
+    const p=fiberProducts.find(x=>x.model===model);if(!p)return;const ev=p.evidence||{};
+    currentEvidence={p:{model},ev:{image:ev.image,highlight:ev.highlight}};
+    document.getElementById('partEvidenceTitle').textContent=`${model} · E32 공식 근거`;
+    document.getElementById('partEvidenceMeta').innerHTML=`<span>OMRON 공식</span><span>Fiber Sensor Best Selection 2017</span><span>해당 형번: ${esc(model)}</span><span>p.${esc(ev.catalogPage||'')}</span>`;
+    const img=document.getElementById('partEvidenceImage'),stage=document.getElementById('partEvidenceStage'),scroll=document.getElementById('partEvidenceScroll');
+    img.onload=()=>{positionHighlight(document.getElementById('partEvidenceHighlight'),ev.highlight);if(ev.highlight)requestAnimationFrame(()=>{const center=(ev.highlight.yPct+ev.highlight.hPct/2)/100*stage.scrollHeight;scroll.scrollTop=Math.max(0,center-scroll.clientHeight/2);});};
+    img.src=ev.image||'';positionHighlight(document.getElementById('partEvidenceHighlight'),ev.highlight);
+    document.getElementById('partEvidenceNote').textContent='공식 카탈로그 전체 페이지에서 선택된 E32 형번 위치를 파란색 박스로 강조합니다.';
+    const pdf=document.getElementById('partEvidencePdf');pdf.href='sources/OMRON_FIBER_SENSOR_2017_KOR.pdf';pdf.style.display='inline-flex';
+    document.getElementById('partEvidenceBack').classList.add('show');document.documentElement.style.overflow='hidden';
+  };
+  window.openFiberAmpEvidence=function(model,mode='selection'){
+    const a=fiberAmps.find(x=>x.model===model);if(!a)return;const page=mode==='ratings'?a.ratingsPage:a.sourcePage;const image=mode==='ratings'?a.ratingsImage:a.sourceImage;
+    const ev={image,highlight:null};currentEvidence={p:{model},ev};
+    document.getElementById('partEvidenceTitle').textContent=`${model} · 화이버 앰프 ${mode==='ratings'?'정격':'형식'} 근거`;
+    document.getElementById('partEvidenceMeta').innerHTML=`<span>OMRON 공식</span><span>Fiber Sensor Best Selection 2017</span><span>${esc(a.series)}</span><span>p.${esc(page||'')}</span>`;
+    document.getElementById('partEvidenceImage').src=image||'';positionHighlight(document.getElementById('partEvidenceHighlight'),null);
+    document.getElementById('partEvidenceNote').textContent=mode==='ratings'?'선택한 앰프 시리즈의 정격/성능 표입니다.':'선택한 앰프 시리즈의 형식/선정 표입니다.';
+    const pdf=document.getElementById('partEvidencePdf');pdf.href='sources/OMRON_FIBER_SENSOR_2017_KOR.pdf';pdf.style.display='inline-flex';
+    document.getElementById('partEvidenceBack').classList.add('show');document.documentElement.style.overflow='hidden';
+  };
+
   window.closePartEvidence=function(){
     document.getElementById('partEvidenceBack')?.classList.remove('show');
     if(!document.querySelector('.part-detail-back.show,.part-zoom-back.show'))document.documentElement.style.overflow='';
@@ -1405,14 +1594,17 @@ button,input,select{font:inherit}
   };
 
   const counts={};
-  CAT_ORDER.forEach(c=>counts[c]=products.filter(p=>cat(p)===c).length);
+  ['photoelectric','proximity','photo_microsensor'].forEach(c=>counts[c]=products.filter(p=>cat(p)===c).length);
+  counts.fiber_sensor=fiberProducts.length;
+  const fiberTypeCount=(fiberData.groups||[]).filter(g=>fiberProducts.some(p=>p.classification?.group===g.name)).length;
   document.getElementById('summary').innerHTML=`
-    <span>전체 <b>${products.length}</b> 모델</span>
-    <span>TYPE <b>${allGroups.length}</b>개</span>
+    <span>센서 형번 <b>${products.length+fiberProducts.length}</b></span>
+    <span>TYPE <b>${allGroups.length+fiberTypeCount}</b>개</span>
     <span>광전센서 <b>${counts.photoelectric}</b></span>
     <span>근접센서 <b>${counts.proximity}</b></span>
     <span>포토마이크로센서 <b>${counts.photo_microsensor}</b></span>
-    <span>시리즈 <b>${uniq(products.map(p=>p.series)).length}</b>개</span>`;
+    <span>화이버센서 E32 <b>${counts.fiber_sensor}</b></span>
+    <span>화이버 앰프 <b>${fiberAmps.length}</b></span>`;
 
   let imagePopHideTimer=null;
   const imagePop=document.getElementById('catalogImagePop');
@@ -1515,7 +1707,7 @@ button,input,select{font:inherit}
   document.getElementById('treeCollapseAll').addEventListener('click',collapseAll);
   document.getElementById('treeClearSearch').addEventListener('click',()=>{
     const input=document.getElementById('catalogSearch');input.value='';query='';renderDetail(selectedTreeNode?treeNodes.get(selectedTreeNode):null);
-    document.getElementById('viewCount').textContent=selectedTreeNode?`${treeNodes.get(selectedTreeNode)?.list?.length||0} 모델`:`${products.length} 모델`;
+    document.getElementById('viewCount').textContent=selectedTreeNode?`${treeNodes.get(selectedTreeNode)?.list?.length||0} 모델`:`${products.length+fiberProducts.length} 센서 형번`;
   });
 
   document.getElementById('groupCompareBack')?.addEventListener('click',e=>{if(e.target.id==='groupCompareBack')closeGroupCompare()});

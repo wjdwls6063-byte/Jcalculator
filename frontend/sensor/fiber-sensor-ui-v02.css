@@ -1,0 +1,95 @@
+
+/* OMRON E32 Fiber Sensor integration v0.1 */
+.sensor-type-card.fiber{border-color:#c9b9ff}
+.sensor-type-card.fiber .sensor-type-icon{background:#f3efff;color:#6236b5}
+.sensor-type-card.fiber.selected{border:2px solid #7a52c7;background:#faf8ff}
+.sensor-type-card.fiber .sensor-type-next{color:#6236b5}
+.fiber-route-card{border:1px solid #d9cff7;background:#faf8ff;border-radius:14px;padding:12px 14px;margin:10px 0 14px}
+.fiber-route-card strong{color:#6236b5}
+.fiber-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.fiber-choice{border:1px solid #d7e0ee;background:#fff;border-radius:12px;padding:13px;text-align:left;cursor:pointer;min-height:104px}
+.fiber-choice:hover{border-color:#9f85db;box-shadow:0 5px 16px rgba(98,54,181,.08)}
+.fiber-choice.selected{border:2px solid #7a52c7;background:#faf8ff}
+.fiber-choice b{display:block;color:#27324a;font-size:13px;margin-bottom:5px}
+.fiber-choice small{display:block;color:#667085;line-height:1.5}
+.fiber-count{display:inline-flex;margin-top:8px;border-radius:999px;background:#f2f4f7;padding:3px 7px;font-size:10px;font-weight:800;color:#475467}
+.fiber-tree{margin-top:14px;border:1px solid #e4e7ec;border-radius:12px;background:#fff;padding:10px}
+.fiber-tree details{border-bottom:1px solid #f0f2f5;padding:6px 0}.fiber-tree details:last-child{border-bottom:none}
+.fiber-tree summary{cursor:pointer;font-weight:800;color:#344054}.fiber-tree button{border:0;background:transparent;color:#475467;cursor:pointer;padding:5px 8px;border-radius:6px}
+.fiber-tree button:hover{background:#f4f0ff;color:#6236b5}
+.fiber-field{margin-top:14px}.fiber-field label{display:block;font-size:11px;font-weight:800;color:#344054;margin-bottom:6px}
+.fiber-field input,.fiber-field select{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:9px 10px;background:#fff}
+.fiber-methods,.fiber-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.fiber-pill{border:1px solid #d0d5dd;border-radius:999px;background:#fff;padding:7px 10px;font-size:11px;cursor:pointer}
+.fiber-pill.selected{border-color:#7a52c7;background:#f4f0ff;color:#6236b5;font-weight:800}
+.fiber-amp-card{border:1px solid #d7e0ee;border-radius:13px;background:#fff;padding:14px;text-align:left;cursor:pointer}
+.fiber-amp-card.selected{border:2px solid #3157d5;background:#f5f8ff}
+.fiber-amp-card b{font-size:14px;color:#1d2939}.fiber-amp-card p{font-size:11px;color:#667085;line-height:1.55;margin:7px 0}
+.fiber-result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.fiber-product-card{position:relative;border:1px solid #d7e0ee;border-radius:14px;background:#fff;padding:12px;overflow:hidden}
+.fiber-product-card.best{border:2px solid #7a52c7}
+.fiber-product-card .fiber-best{position:absolute;right:8px;top:8px;border-radius:999px;background:#f4f0ff;color:#6236b5;padding:4px 7px;font-size:9px;font-weight:900}
+.fiber-product-card img{width:100%;height:124px;object-fit:contain;background:#f8fafc;border:1px solid #edf0f4;border-radius:9px}
+.fiber-product-card .maker{margin-top:9px;color:#667085;font-size:10px;font-weight:700}
+.fiber-product-card .model{font-size:16px;font-weight:900;color:#182230;margin:2px 0 7px}
+.fiber-spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.fiber-spec-grid div{border:1px solid #eef0f3;background:#fbfcfe;border-radius:8px;padding:7px}
+.fiber-spec-grid span{display:block;color:#98a2b3;font-size:9px}.fiber-spec-grid b{display:block;color:#344054;font-size:10.5px;margin-top:2px}
+.fiber-reason{margin:9px 0;border-radius:9px;background:#f6fef9;border:1px solid #d1fadf;padding:8px;color:#067647;font-size:10.5px;line-height:1.45}
+.fiber-actions{display:flex;gap:6px;margin-top:9px}.fiber-actions button{flex:1;border:1px solid #cfd7e5;background:#fff;border-radius:8px;padding:8px;font-size:10.5px;font-weight:800;cursor:pointer}
+.fiber-actions button.primary{background:#3157d5;border-color:#3157d5;color:#fff}
+.fiber-amp-summary{margin-top:8px;border:1px solid #dbe5f3;background:#f8fbff;border-radius:9px;padding:8px;font-size:10px;color:#475467;line-height:1.5}
+.fiber-source-note{margin-top:12px;border:1px solid #fedf89;background:#fffaeb;border-radius:10px;padding:9px 10px;color:#7a2e0e;font-size:10.5px;line-height:1.55}
+.fiber-expert{display:none}.fiber-expert.show{display:block}
+.fiber-modal-back{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:10050;display:none;align-items:center;justify-content:center;padding:20px}
+.fiber-modal-back.show{display:flex}
+.fiber-modal{width:min(1040px,96vw);max-height:92vh;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 24px 70px rgba(15,23,42,.3)}
+.fiber-modal-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid #e4e7ec}.fiber-modal-head strong{color:#1d2939}
+.fiber-modal-head button{border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:7px 10px;cursor:pointer}
+.fiber-modal-body{padding:16px;overflow:auto;max-height:calc(92vh - 55px)}
+.fiber-detail-layout{display:grid;grid-template-columns:260px 1fr;gap:16px}
+.fiber-detail-layout .summary{border:1px solid #e4e7ec;border-radius:12px;background:#fbfcfe;padding:12px}.fiber-detail-layout .summary img{width:100%;height:170px;object-fit:contain;background:#fff;border-radius:8px}
+.fiber-detail-table{width:100%;border-collapse:collapse;font-size:11px}.fiber-detail-table th,.fiber-detail-table td{border-bottom:1px solid #eef0f3;padding:8px;text-align:left;vertical-align:top}.fiber-detail-table th{width:150px;color:#667085;background:#fbfcfe}
+.fiber-evidence-wrap{position:relative;width:min(900px,100%);margin:auto}.fiber-evidence-wrap img{display:block;width:100%;height:auto}.fiber-evidence-highlight{position:absolute;border:3px solid #3157d5;background:rgba(49,87,213,.08);box-shadow:0 0 0 1px #fff inset;pointer-events:none}
+.fiber-evidence-meta{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 10px}.fiber-evidence-meta span{border:1px solid #d0d5dd;border-radius:999px;padding:4px 8px;font-size:10px;background:#fff}
+.fiber-evidence-tools{display:flex;gap:7px;margin-bottom:10px}.fiber-evidence-tools button{border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:7px 10px;cursor:pointer;font-weight:800;font-size:10.5px}
+.fiber-sidebar-count{font-size:11px;color:#667085;margin-bottom:8px}
+.fiber-source-added{margin-top:6px;color:#6236b5;font-size:11px;font-weight:800}
+@media(max-width:1000px){.fiber-grid,.fiber-result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.fiber-grid,.fiber-result-grid{grid-template-columns:1fr}.fiber-detail-layout{grid-template-columns:1fr}.sensor-type-cards.three{grid-template-columns:1fr}}
+
+/* OMRON E32 Fiber Sensor integration v0.2 · beginner help + required amplifier */
+.fiber-info{display:inline-flex!important;align-items:center;justify-content:center;vertical-align:middle;margin-left:4px;position:relative;z-index:3}
+.fiber-choice b .fiber-info,.fiber-amp-card b .fiber-info{transform:translateY(-1px)}
+.fiber-tree .fiber-info{margin-left:3px}
+.fiber-amp-select-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-top:16px;padding:12px 13px;border:1px solid #d7e0ee;background:#f8fbff;border-radius:11px}
+.fiber-amp-select-head strong{display:block;color:#1d2939;font-size:13px}.fiber-amp-select-head small{display:block;color:#667085;line-height:1.45;margin-top:3px}
+.fiber-selected-amp{padding:7px 10px;border-radius:999px;background:#edf4ff;color:#244fc4;font-size:10.5px;font-weight:900;white-space:nowrap}
+.fiber-amp-model-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+.fiber-amp-model{position:relative;border:1px solid #d7e0ee;background:#fff;border-radius:12px;padding:10px;text-align:left;cursor:pointer;min-height:176px;transition:border-color .15s,box-shadow .15s,background .15s}
+.fiber-amp-model:hover{border-color:#7892e9;box-shadow:0 6px 18px rgba(49,87,213,.08)}
+.fiber-amp-model.selected{border:2px solid #3157d5;background:#f5f8ff}
+.fiber-amp-model img{display:block;width:100%;height:92px;object-fit:contain;border:1px solid #edf0f4;background:#fff;border-radius:8px;margin-bottom:8px}
+.fiber-amp-model b{display:block;color:#1d2939;font-size:12.5px;padding-right:20px}.fiber-amp-model small{display:block;color:#667085;font-size:10px;line-height:1.45;margin-top:4px}
+.fiber-amp-model .fiber-info{position:absolute;top:8px;right:8px;margin:0}
+.fiber-amp-required{display:inline-flex;align-items:center;gap:4px;margin-top:7px;border-radius:999px;background:#ecfdf3;color:#067647;padding:4px 7px;font-size:9.5px;font-weight:900}
+.fiber-final-amp-banner{display:flex;align-items:center;gap:13px;margin:13px 0;padding:12px 14px;border:2px solid #3157d5;background:#f5f8ff;border-radius:13px}
+.fiber-final-amp-banner img{width:92px;height:62px;object-fit:contain;background:#fff;border:1px solid #e3e8ef;border-radius:8px;flex:none}
+.fiber-final-amp-banner .copy{min-width:0;flex:1}.fiber-final-amp-banner .eyebrow{font-size:9.5px;color:#3157d5;font-weight:900}.fiber-final-amp-banner b{display:block;font-size:15px;color:#182230;margin:2px 0}.fiber-final-amp-banner small{display:block;color:#667085;line-height:1.45}
+.fiber-combo-label{display:flex;align-items:center;justify-content:center;margin:8px 0 6px;border-radius:999px;background:#f2f4f7;color:#475467;padding:4px 8px;font-size:9.5px;font-weight:900}
+.fiber-final-plus{display:flex;justify-content:center;align-items:center;height:26px;font-size:21px;line-height:1;color:#3157d5;font-weight:900}
+.fiber-required-amp{border:1px solid #b8c7ff;background:#f7f9ff;border-radius:10px;padding:9px;display:grid;grid-template-columns:64px 1fr;gap:9px;align-items:center}
+.fiber-required-amp img{width:64px!important;height:48px!important;object-fit:contain!important;background:#fff!important;border:1px solid #e3e8ef!important;border-radius:7px!important}
+.fiber-required-amp .eyebrow{font-size:8.5px;font-weight:900;color:#3157d5}.fiber-required-amp b{display:block;font-size:11px;color:#1d2939;margin:2px 0}.fiber-required-amp small{display:block;font-size:9px;color:#667085;line-height:1.35}
+.fiber-combo-connector{text-align:center;font-size:9px;color:#98a2b3;margin:5px 0 2px;font-weight:800}
+.fiber-inline-btn{border:1px solid #c6d2f6;background:#fff;color:#244fc4;border-radius:7px;padding:5px 7px;font-size:9.5px;font-weight:800;cursor:pointer;margin-top:5px}
+.fiber-inline-btn:hover{background:#f3f6ff}
+.fiber-detail-required{border:2px solid #3157d5;background:#f5f8ff;border-radius:12px;padding:11px 12px;margin:0 0 12px;display:grid;grid-template-columns:84px 1fr;gap:12px;align-items:center}
+.fiber-detail-required img{width:84px;height:64px;object-fit:contain;background:#fff;border:1px solid #e3e8ef;border-radius:8px}.fiber-detail-required .eyebrow{font-size:9px;font-weight:900;color:#3157d5}.fiber-detail-required b{display:block;font-size:14px;color:#182230;margin:2px 0}.fiber-detail-required small{display:block;color:#667085;font-size:10px;line-height:1.45}
+.fiber-amp-warning{border:1px solid #fedf89;background:#fffaeb;color:#7a2e0e;border-radius:10px;padding:9px 10px;margin:10px 0;font-size:10.5px;line-height:1.5;font-weight:700}
+@media(max-width:1000px){.fiber-amp-model-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.fiber-amp-model-grid{grid-template-columns:1fr}.fiber-final-amp-banner{align-items:flex-start}.fiber-final-amp-banner img{width:78px;height:56px}.fiber-amp-select-head{display:block}.fiber-selected-amp{display:inline-flex;margin-top:8px}.fiber-detail-required{grid-template-columns:70px 1fr}.fiber-detail-required img{width:70px;height:56px}}
+.fiber-amp-model i{position:absolute;top:8px;left:8px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#3157d5;color:#fff;font-style:normal;font-size:12px;font-weight:900}
+.fiber-detail-table tr.fiber-detail-required-row th,.fiber-detail-table tr.fiber-detail-required-row td{background:#f5f8ff;border-top:2px solid #3157d5;border-bottom:2px solid #3157d5}
+.fiber-detail-table tr.fiber-detail-required-row th{border-left:2px solid #3157d5;color:#244fc4}.fiber-detail-table tr.fiber-detail-required-row td{border-right:2px solid #3157d5}
+.fiber-evidence-tools a{display:inline-flex;align-items:center;text-decoration:none;border:1px solid #d0d5dd;background:#fff;color:#344054;border-radius:8px;padding:7px 10px;cursor:pointer;font-weight:800;font-size:10.5px}.fiber-evidence-tools a:hover{border-color:#3157d5;color:#244fc4}

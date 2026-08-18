@@ -1,0 +1,12 @@
+{
+  "build": "Jcalculator_sensor_fiber_E32_v04_compact",
+  "previousFullPackageFileCount": 259,
+  "embeddedFiberImageCount": 154,
+  "scriptLoadedInIndex": true,
+  "scriptLoadedInCatalog": true,
+  "fiberDataPresent": true,
+  "fiberPdfPresent": true,
+  "note": "Patch-only package. Existing v20 sensor files stay in place.",
+  "packageFileCount": 9,
+  "githubWebUploadUnder100": true
+}

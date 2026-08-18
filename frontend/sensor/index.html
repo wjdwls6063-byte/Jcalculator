@@ -563,6 +563,7 @@ button,input{font:inherit} button{cursor:pointer}
 <meta name="jcalculator-module-version" content="1.0-sensor-only">
 <meta name="jcalculator-module-path" content="/frontend/sensor/">
 
+<link rel="stylesheet" href="fiber-sensor-ui-v02.css">
 </head>
 <body>
 <header class="topbar">
@@ -785,6 +786,8 @@ button,input{font:inherit} button{cursor:pointer}
 }
 </script>
 <script src="data/omron-sensor-selection-data-v10.js"></script>
+<script src="data/fiber-assets-inline-v01.js"></script>
+<script src="data/omron-fiber-sensor-data-v01.js"></script>
 <script src="data/connection-accessory-engine-v01.js"></script>
 <script>
 const state={step:1,sensorType:null,photoMethod:null,proxSize:null,proxShield:null,purpose:null,target:null,targetDetails:[],through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null,connection:[],ip67Required:false,compareSelected:['E3T-FL11','E3T-SR41'],compareMode:'same'};
@@ -3477,5 +3480,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElement
 })();
 </script>
 
+<script src="fiber-sensor-ui-v02.js"></script>
 </body>
 </html>
