@@ -557,8 +557,7 @@ function buildCandidates(){
   }else{
     add("MGP",30,"가이드 일체형 옵션 — 횡하중·모멘트가 생길 수 있으면 선택");
   }
-  if(ST.space==="length"||ST.space==="tight"){ add("CQS",85,"전장(길이) 제한 → 박형·콤팩트"); add("CQ2",80,"전장(길이) 제한 → 박형"); }
-  if(ST.space==="height") add("CJ2",70,"단면 높이·폭 제한 → 소형 환형");
+  /* 설치 공간은 추천 순위에 영향을 주지 않고 STEP 6 검증(치수 확인) 항목으로만 사용 — 구조 선호는 '실린더 형상'으로 지정 */
   if(Number(ST.moveDist)>=500) add("MY1",75,"장거리·전장 제한 → 로드리스");
   /* ② 표준형 — 필요 추력을 만족하는 최소 구경의 '적정 위치'로 순위 */
   [["CJ2","표준형(소형·환형)"],["CM2","표준형(환형)"],["CG1","표준형(환형·중대형)"],["MB","표준형(각형)"],["CA2","표준형(각형)"]].forEach(function(it){
@@ -1088,12 +1087,12 @@ function step1(){
   ["없음","약간","큼","모름"].forEach(function(v){h+=optBtn(ST.lateral===v,"set('lateral','"+v+"')",v);});
   h+='</div>';
   h+='<div class="row"><label class="f" style="width:130px">설치 공간 '+
-    tip("설치 공간 제약","실린더가 들어갈 자리의 제약입니다.<br>· <b>여유</b>: 표준형(환형·각형) 사용 가능<br>· <b>전장 제한</b>: 실린더 몸통 길이(축 방향)가 짧아야 함 → 박형(CQ2·CQS)<br>· <b>높이·폭 제한</b>: 단면이 작아야 함 → 소형(CJ2)·박형<br>· <b>매우 좁음</b>: 박형+가이드 일체형 등 복합 검토",null)+
+    tip("설치 공간 — '실린더 형상'과의 차이","<b>설치 공간은 추천 순위를 바꾸지 않습니다.</b> 선정 마지막 검증 단계(STEP 6)에서 “이 치수를 카탈로그에서 확인하라”는 체크 항목으로 사용됩니다.<br>· <b>전장 제한</b>: 본체 전장(수축 시 길이) 확인 안내<br>· <b>높이·폭 제한</b>: 단면 치수 확인 안내<br>· <b>매우 좁음</b>: 둘 다 확인<br><br>반면 구조 자체를 바꾸고 싶으면(박형·각형 등) 위의 <b>'실린더 형상'</b>을 선택하세요 — 그쪽이 추천 순위를 바꿉니다.",null)+
     '</label>'+
     optBtn(ST.space==="여유","set('space','여유')","여유 있음")+
-    optBtn(ST.space==="length","set('space','length')","전장(길이) 제한","몸통 길이가 짧아야 함 → 박형")+
-    optBtn(ST.space==="height","set('space','height')","높이·폭 제한","단면이 작아야 함 → 소형·박형")+
-    optBtn(ST.space==="tight","set('space','tight')","매우 좁음","박형+일체형 복합 검토")+
+    optBtn(ST.space==="length","set('space','length')","전장(길이) 제한","검증 단계에서 전장 치수 확인 안내")+
+    optBtn(ST.space==="height","set('space','height')","높이·폭 제한","검증 단계에서 단면 치수 확인 안내")+
+    optBtn(ST.space==="tight","set('space','tight')","매우 좁음","전장+단면 모두 확인 안내")+
     '</div>';
   h+=functionRequirementBlock();
   h+=environmentBlock("1-10");
@@ -1221,6 +1220,9 @@ function checks(){
   else c(true,false,"횡하중 없음 조건");
   if(s.speed) c(true,false,"사용 피스톤 속도 범위: "+s.speed+" (요구 속도와 대조)");
   if(ST.dir==="수직") c(true,true,"수직 사용 → 낙하 방지(록 부착·잔압 유지·체크밸브) 검토 필요");
+  /* 설치 공간 → 치수 확인 항목 (추천 순위에는 미반영) */
+  if(ST.space==="length"||ST.space==="tight") c(true,true,"설치 공간 '전장 제한' → 선정된 "+s.code+" Ø"+ST.bore+"×"+ST.stroke+"mm의 본체 전장(수축 시 길이)을 카탈로그 외형 치수도에서 확인하세요. 전장이 안 들어가면 STEP 1의 '실린더 형상'에서 박형(CQ2·CQS)을 선택해 재선정");
+  if(ST.space==="height"||ST.space==="tight") c(true,true,"설치 공간 '높이·폭 제한' → 선정된 "+s.code+" Ø"+ST.bore+"의 단면 치수(몸체 폭·높이)를 카탈로그에서 확인하세요. 단면이 크면 소형 환형(CJ2)·박형을 검토");
   if(ST.envMode==="special"&&ST.special.length) c(true,true,"특수환경 '"+ST.special.join(" · ")+"' → 계산 구경과 별도로 대응 시리즈·주문제작 형번 확인 필요");
   return out;
 }
