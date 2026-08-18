@@ -2162,7 +2162,17 @@ function renderSeriesTab(){
      '<tr><th>이 시리즈를 고르는 조건</th><td>'+term(s.pick)+'</td></tr>'+
      '<tr class="w"><th>한계 · 주의</th><td>'+term(s.limit)+'</td></tr>'+
      ((s.opts&&s.opts.length)?'<tr><th>파생 사양</th><td>'+esc(s.opts.join(" / "))+'</td></tr>':'')+'</table>';
-  h+=linkBar(s.code,"full")+'</div></div>';
+  h+=linkBar(s.code,"full");
+  /* 선정 도구 연계 — 지원 시리즈는 바로 최종 선정 화면(형번 구성·CAD)으로 */
+  var PICKABLE=["CJ2","CM2","CG1","MB","CA2","CQ2","CQS","MGP","CRB2","CRBU2","CRJ","CRQ2","CRA1","MSQ"];
+  if(PICKABLE.indexOf(s.code)>=0){
+    h+='<div style="margin-top:12px"><a href="index.html#pick='+esc(s.code)+'" style="display:inline-block;background:#2563eb;color:#fff;font-weight:700;font-size:14px;padding:11px 20px;border-radius:10px;text-decoration:none">⚙️ 이 시리즈로 최종 선정 화면 열기 — 형번 구성·SMC 공식 CAD →</a>'+
+      '<div style="font-size:11.5px;color:#64748b;margin-top:4px">구경·스트로크(또는 사이즈·요동각)를 고르고 주문 형번을 조합한 뒤 형번 그대로 SMC 공식 CAD 화면으로 이동할 수 있습니다.</div></div>';
+  }else{
+    h+='<div style="margin-top:12px"><a href="https://www.smckorea.co.kr/srch/cad_option.asp?query='+esc(s.code)+'" target="_blank" rel="noopener" style="display:inline-block;background:#1e3a8a;color:#fff;font-weight:700;font-size:14px;padding:11px 20px;border-radius:10px;text-decoration:none">🧊 SMC 공식 CAD에서 '+esc(s.code)+' 검색 →</a>'+
+      '<div style="font-size:11.5px;color:#64748b;margin-top:4px">이 시리즈는 아직 선정 도구(구경·스트로크·형번) 데이터 미수집 — SMC 공식 CAD 화면에서 시리즈로 검색해 형번·도면을 확인하세요. (선정 계산이 필요하면 위 카탈로그 PDF·제품 상세 링크 참조)</div></div>';
+  }
+  h+='</div></div>';
 
   if(g){
     h+='<div class="sec"><h3>같은 그룹의 비교 후보 <em>'+esc(s.group+' '+g.name)+'</em></h3>';

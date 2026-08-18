@@ -1,0 +1,175 @@
+{
+ "criteria": {
+  "defaultPressureMpa": 0.5,
+  "stableMargin": 1.5,
+  "staticLoadFactor": 0.7,
+  "positionRepeatMm": 0.1,
+  "source": {
+   "label": "SMC Korea CKQG-X2370/CKQP-X2371 카탈로그",
+   "url": "https://www.smckorea.co.kr/ppis/data/catalog/CKQG-X2370_CKQP-X2371.pdf"
+  }
+ },
+ "series": [
+  {
+   "code": "CKQG-X2370",
+   "displayCode": "CKQG-X2370",
+   "label": "고정도 위치결정 핀 시프트",
+   "profile": "precision",
+   "sizes": [
+    32,
+    40,
+    50
+   ],
+   "strokes": {
+    "32": [
+     25,
+     40
+    ],
+    "40": [
+     25,
+     40
+    ],
+    "50": [
+     30,
+     50
+    ]
+   },
+   "forceAt05": {
+    "32": {
+     "out": 402,
+     "in": 245
+    },
+    "40": {
+     "out": 628,
+     "in": 382
+    },
+    "50": {
+     "out": 982,
+     "in": 628
+    }
+   },
+   "pressure": [
+    0.2,
+    1
+   ],
+   "repeatMm": 0.1,
+   "image": "assets/motion/CKQG-X2370.jpg",
+   "notes": [
+    "핀으로 워크를 반복 위치결정하는 표준 후보",
+    "설치면-로드 중심 거리의 위치 재현성 약 ±0.1mm",
+    "횡하중과 핀 선단 흔들림은 카탈로그 표 확인"
+   ],
+   "source": {
+    "label": "SMC Korea CKQG-X2370/CKQP-X2371 카탈로그",
+    "pdf": "https://www.smckorea.co.kr/ppis/data/catalog/CKQG-X2370_CKQP-X2371.pdf"
+   }
+  },
+  {
+   "code": "CKQP-X2371",
+   "displayCode": "CKQP-X2371",
+   "label": "고정도 위치결정 핀 시프트 / 센서 대응",
+   "profile": "sensor",
+   "sizes": [
+    50
+   ],
+   "strokes": {
+    "50": [
+     30,
+     50
+    ]
+   },
+   "forceAt05": {
+    "50": {
+     "out": 982,
+     "in": 628
+    }
+   },
+   "pressure": [
+    0.2,
+    1
+   ],
+   "repeatMm": 0.1,
+   "image": "assets/motion/CKQG-X2370.jpg",
+   "notes": [
+    "ø50 단일 사이즈",
+    "전용 오토스위치 적용 범위는 형식표시방법 확인"
+   ],
+   "source": {
+    "label": "SMC Korea CKQG-X2370/CKQP-X2371 카탈로그",
+    "pdf": "https://www.smckorea.co.kr/ppis/data/catalog/CKQG-X2370_CKQP-X2371.pdf"
+   }
+  },
+  {
+   "code": "CKQ-CLKQ",
+   "displayCode": "CKQ/CLKQ",
+   "label": "핀 클램프 실린더",
+   "profile": "clamp",
+   "sizes": [
+    50
+   ],
+   "strokes": {
+    "50": [
+     30,
+     50
+    ]
+   },
+   "forceAt05": {
+    "50": {
+     "out": 982,
+     "in": 628
+    }
+   },
+   "pressure": [
+    0.2,
+    1
+   ],
+   "repeatMm": null,
+   "manualGeometry": true,
+   "image": "assets/motion/CKQ-CLKQ.jpg",
+   "notes": [
+    "위치결정 핀과 클램프 기능을 함께 검토할 때의 후보",
+    "핀 형상·클램프 위치·록 사양은 전용 카탈로그 도면으로 확정"
+   ],
+   "source": {
+    "label": "SMC Korea CKQ/CLKQ 핀 클램프 카탈로그",
+    "pdf": "https://www.smckorea.co.kr/ppis/data/catalog/CKQ-Z_CLKQ-Z.pdf"
+   }
+  },
+  {
+   "code": "CKQG32-CKU32",
+   "displayCode": "CKQG32/CKU32",
+   "label": "콤팩트 핀 클램프",
+   "profile": "compact",
+   "sizes": [
+    32
+   ],
+   "strokes": {
+    "32": [
+     25,
+     40
+    ]
+   },
+   "forceAt05": {
+    "32": {
+     "out": 402,
+     "in": 245
+    }
+   },
+   "pressure": [
+    0.2,
+    1
+   ],
+   "repeatMm": null,
+   "manualGeometry": true,
+   "image": "assets/motion/CKQG32-CKU32.jpg",
+   "notes": [
+    "ø32 콤팩트 핀 클램프 후보",
+    "가이드 핀 지름·높이와 클램프 위치를 전용 치수표로 확정"
+   ],
+   "source": {
+    "label": "SMC Korea CKQG32/CKU32 카탈로그",
+    "pdf": "https://www.smckorea.co.kr/ppis/data/catalog/CKQG32_CKU32.pdf"
+   }
+  }
+ ]
+}

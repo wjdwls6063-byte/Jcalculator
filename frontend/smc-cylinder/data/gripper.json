@@ -1,0 +1,207 @@
+{
+ "note": "집기 1차 선정 데이터 — 외경 파지력은 SMC Korea 기술자료의 0.5MPa 제품 일람값",
+ "criteria": {
+  "gravity": 9.80665,
+  "referencePressureMpa": 0.5,
+  "forceBasis": "외경 파지력(0.5MPa일 때)",
+  "safetyFactor": {
+   "verified": false,
+   "userInputRequired": true,
+   "note": "안전배수는 사용자 입력"
+  },
+  "source": {
+   "label": "SMC Korea 기술자료 「로터리 액추에이터 기본특성과 제품일람」 — 에어 척 제품 일람",
+   "url": "https://www.smckorea.co.kr/ppis/data/techword/%EB%A1%9C%ED%84%B0%EB%A6%AC%EC%95%A1%EC%B6%94%EC%97%90%EC%9D%B4%ED%84%B0%20%EA%B8%B0%EB%B3%B8%ED%8A%B9%EC%84%B1%EA%B3%BC%20%EC%A0%9C%ED%92%88%EC%9D%BC%EB%9E%8C_2023.pdf"
+  },
+  "guideSource": {
+   "label": "SMC Korea 기술자료 「액추에이터 기초지식과 제품가이드」 — 에어 척(파지)",
+   "url": "https://www.smckorea.co.kr/ppis/data/techword/31_actuators_guide_2023.pdf"
+  }
+ },
+ "category": {
+  "index": "https://www.smckorea.co.kr/homepage/ver3.5/product/catalogue_index.asp?msmacd=26",
+  "parallel": "https://www.smckorea.co.kr/homepage/ver3.5/product/catalogue_sub.asp?MSMACD=26&MSPMCD=003",
+  "pivot": "https://www.smckorea.co.kr/homepage/ver3.5/product/catalogue_sub.asp?MSMACD=26&MSPMCD=004",
+  "elastic": "https://www.smckorea.co.kr/homepage/ver3.5/product/catalogue_sub.asp?MSMACD=26&MSPMCD=008",
+  "magnetic": "https://www.smckorea.co.kr/homepage/ver3.5/product/catalogue_sub.asp?MSMACD=26&MSPMCD=009"
+ },
+ "series": [
+  {
+   "code": "MHZ2",
+   "label": "평행개폐형 에어 척 / 표준형",
+   "type": "평행개폐형",
+   "typeKey": "parallel",
+   "fingers": 2,
+   "sizes": [
+    6,
+    10,
+    16,
+    20,
+    25,
+    32,
+    40
+   ],
+   "externalAt05": {
+    "6": 3.3,
+    "10": 11,
+    "16": 34,
+    "20": 42,
+    "25": 65,
+    "32": 158,
+    "40": 254
+   },
+   "verified": true,
+   "notes": [
+    "일반적인 2조 평행 파지",
+    "내경 파지력과 파지점 거리별 값은 카탈로그 확인"
+   ],
+   "source": "parallel"
+  },
+  {
+   "code": "MHF2",
+   "label": "평행개폐형 에어 척 / 박형",
+   "type": "평행개폐형·박형",
+   "typeKey": "flat",
+   "fingers": 2,
+   "sizes": [
+    8,
+    12,
+    16,
+    20,
+    25,
+    32
+   ],
+   "externalAt05": {
+    "8": 19,
+    "12": 48,
+    "16": 90,
+    "20": 141,
+    "25": 240,
+    "32": 400
+   },
+   "verified": true,
+   "notes": [
+    "높이 방향 설치 공간이 작을 때 검토",
+    "짧은·중간·롱 3종 스트로크"
+   ],
+   "source": "parallel"
+  },
+  {
+   "code": "MHL2",
+   "label": "평행개폐형 에어 척 / 광폭 개폐형",
+   "type": "평행개폐형·광폭",
+   "typeKey": "wide",
+   "fingers": 2,
+   "sizes": [
+    10,
+    16,
+    20,
+    25,
+    32,
+    40
+   ],
+   "externalAt05": {
+    "10": 14,
+    "16": 45,
+    "20": 74,
+    "25": 131,
+    "32": 228,
+    "40": 396
+   },
+   "verified": true,
+   "notes": [
+    "긴 개폐 스트로크가 필요할 때 검토",
+    "실제 개폐 범위는 카탈로그 확인"
+   ],
+   "source": "parallel"
+  },
+  {
+   "code": "MHS3",
+   "label": "원형 3조 에어 척",
+   "type": "평행개폐형·3조",
+   "typeKey": "round3",
+   "fingers": 3,
+   "sizes": [
+    16,
+    20,
+    25,
+    32,
+    40,
+    50,
+    63,
+    80,
+    100,
+    125
+   ],
+   "externalAt05": {
+    "16": 14,
+    "20": 25,
+    "25": 42,
+    "32": 74,
+    "40": 118,
+    "50": 187,
+    "63": 335,
+    "80": 500,
+    "100": 750,
+    "125": 1270
+   },
+   "verified": true,
+   "notes": [
+    "원형 워크의 중심맞춤 파지",
+    "파지점 거리별 유효파지력은 카탈로그 확인"
+   ],
+   "source": "parallel"
+  },
+  {
+   "code": "MHS4",
+   "label": "원형 4조 에어 척",
+   "type": "평행개폐형·4조",
+   "typeKey": "round4",
+   "fingers": 4,
+   "sizes": [
+    16,
+    20,
+    25,
+    32,
+    40,
+    50,
+    63
+   ],
+   "externalAt05": {
+    "16": 10,
+    "20": 19,
+    "25": 31,
+    "32": 55,
+    "40": 88,
+    "50": 140,
+    "63": 251
+   },
+   "verified": true,
+   "notes": [
+    "4방향 파지",
+    "핑거 동기와 파지점 조건은 카탈로그 확인"
+   ],
+   "source": "parallel"
+  },
+  {
+   "code": "MHC2",
+   "label": "지점개폐형 에어 척 / 콤팩트",
+   "type": "지점개폐형",
+   "typeKey": "pivot",
+   "fingers": 2,
+   "sizes": [
+    10,
+    16,
+    20,
+    25
+   ],
+   "externalAt05": null,
+   "verified": false,
+   "notes": [
+    "지점을 중심으로 원호 개폐",
+    "사이즈 선택 후 파지 위치에 따른 모멘트 곡선으로 상세 검증"
+   ],
+   "source": "pivot"
+  }
+ ]
+}

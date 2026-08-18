@@ -1,0 +1,54 @@
+{
+ "loadFactor": {
+  "dynamic": 0.5,
+  "static": 0.7,
+  "guidedHorizontal": 1.0,
+  "verified": true,
+  "text": "실린더를 정적 작업에 사용하는 경우 부하율 η=0.7 이하, 동적 작업에 사용하는 경우 η=0.5 이하, 가이드 부착·수평 작동의 경우 η=1 이하 (고속 작동 시 부하율을 더 낮춤)",
+  "source": {
+   "label": "SMC Korea 기술자료 「에어실린더 기종선정순서」 자료1 튜브내경의 선정",
+   "url": "https://www.smckorea.co.kr/ppis/data/techword/%EC%97%90%EC%96%B4%EC%8B%A4%EB%A6%B0%EB%8D%94_%EA%B8%B0%EC%A2%85%EC%84%A0%EC%A0%95%EC%88%9C%EC%84%9C%28KBP6%29.pdf"
+  }
+ },
+ "defaultPressure": {
+  "valueMpa": 0.5,
+  "verified": true,
+  "note": "SMC Korea 기술자료 선정 예시에서 사용하는 압력(0.5 MPa). 실제 공급 압력을 직접 입력하는 것을 권장.",
+  "source": {
+   "label": "SMC Korea 기술자료 「에어실린더 기종선정순서」 선정 예",
+   "url": "https://www.smckorea.co.kr/ppis/data/techword/%EC%97%90%EC%96%B4%EC%8B%A4%EB%A6%B0%EB%8D%94_%EA%B8%B0%EC%A2%85%EC%84%A0%EC%A0%95%EC%88%9C%EC%84%9C%28KBP6%29.pdf"
+  }
+ },
+ "friction": {
+  "valueDefault": null,
+  "verified": false,
+  "userInputRequired": true,
+  "note": "SMC 자료에서 수평 마찰계수 표준값 미확인 → 사용자 입력 필수. 아래 참고값은 일반 공학 참고값이며 SMC 출처가 아님.",
+  "referenceNonSmc": {
+   "LM가이드": 0.02,
+   "롤러": 0.05,
+   "슬라이드(미끄럼)": 0.2,
+   "모름": 0.3
+  }
+ },
+ "gravity": {
+  "value": 9.80665,
+  "unit": "m/s²",
+  "kind": "물리 상수"
+ },
+ "strokeMarginMm": {
+  "start": 5,
+  "end": 5,
+  "note": "작업 지시서 기본값(각 5mm), 사용자 수정 가능"
+ },
+ "densities": {
+  "note": "일반 물성 참고값(⚪). 정확한 질량은 직접 입력 권장.",
+  "kg_per_m3": {
+   "강(steel)": 7850,
+   "스테인리스강": 7930,
+   "알루미늄": 2700,
+   "플라스틱": 1200,
+   "목재": 700
+  }
+ }
+}

@@ -1,0 +1,172 @@
+{
+ "formula": {
+  "push": "F_push(N) = 부하율 η × A1(mm²) × P(MPa)",
+  "pull": "F_pull(N) = 부하율 η × A2(mm²) × P(MPa)",
+  "theoretical": "이론출력(N) = 수압면적(mm²) × 압력(MPa)",
+  "note": "복동 편로드형 기준. 후진측 수압면적 A2는 피스톤 로드 단면적만큼 작아짐."
+ },
+ "pressureAreaTable": {
+  "label": "표-1 실린더의 수압면적 (SMC Korea 기술자료 「에어실린더 기종선정순서」)",
+  "verified": true,
+  "source": {
+   "label": "SMC Korea 기술자료 「에어실린더 기종선정순서」 표-1",
+   "url": "https://www.smckorea.co.kr/ppis/data/techword/%EC%97%90%EC%96%B4%EC%8B%A4%EB%A6%B0%EB%8D%94_%EA%B8%B0%EC%A2%85%EC%84%A0%EC%A0%95%EC%88%9C%EC%84%9C%28KBP6%29.pdf"
+  },
+  "rows": [
+   {
+    "bore": 4,
+    "rod": 2,
+    "a1": 12.6,
+    "a2": 9.4,
+    "appliesTo": "CJ1 등"
+   },
+   {
+    "bore": 6,
+    "rod": 3,
+    "a1": 28.3,
+    "a2": 21.2,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 8,
+    "rod": 5,
+    "a1": 50.3,
+    "a2": 30.6,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 10,
+    "rod": 4,
+    "a1": 78.5,
+    "a2": 66.0,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 12,
+    "rod": 6,
+    "a1": 113,
+    "a2": 84.8,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 16,
+    "rod": 5,
+    "a1": 201,
+    "a2": 181,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 16,
+    "rod": 6,
+    "a1": 201,
+    "a2": 173,
+    "appliesTo": "CJP2"
+   },
+   {
+    "bore": 16,
+    "rod": 8,
+    "a1": 201,
+    "a2": 151,
+    "appliesTo": "CQ2 계열"
+   },
+   {
+    "bore": 20,
+    "rod": 8,
+    "a1": 314,
+    "a2": 264,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 20,
+    "rod": 10,
+    "a1": 314,
+    "a2": 236,
+    "appliesTo": "CQ2 계열"
+   },
+   {
+    "bore": 25,
+    "rod": 10,
+    "a1": 491,
+    "a2": 412,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 25,
+    "rod": 12,
+    "a1": 491,
+    "a2": 378,
+    "appliesTo": "CQ2 계열"
+   },
+   {
+    "bore": 32,
+    "rod": 12,
+    "a1": 804,
+    "a2": 691,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 32,
+    "rod": 16,
+    "a1": 804,
+    "a2": 603,
+    "appliesTo": "CQ2 계열"
+   },
+   {
+    "bore": 40,
+    "rod": 14,
+    "a1": 1260,
+    "a2": 1100,
+    "appliesTo": "CM2"
+   },
+   {
+    "bore": 40,
+    "rod": 16,
+    "a1": 1260,
+    "a2": 1060,
+    "appliesTo": "CA, CQ2, CG"
+   },
+   {
+    "bore": 50,
+    "rod": 20,
+    "a1": 1960,
+    "a2": 1650,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 63,
+    "rod": 20,
+    "a1": 3120,
+    "a2": 2800,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 80,
+    "rod": 25,
+    "a1": 5030,
+    "a2": 4540,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 100,
+    "rod": 30,
+    "a1": 7850,
+    "a2": 7150,
+    "appliesTo": "일반"
+   },
+   {
+    "bore": 125,
+    "rod": 32,
+    "a1": 12300,
+    "a2": 11500,
+    "appliesTo": "CS2"
+   },
+   {
+    "bore": 125,
+    "rod": 36,
+    "a1": 12300,
+    "a2": 11300,
+    "appliesTo": "일반"
+   }
+  ]
+ }
+}
