@@ -133,7 +133,7 @@ def _evaluate_vertical_guide(inputs: dict[str, Any], guide: dict[str, Any]) -> d
     screw_z = inputs["screwZmm"] / 1000
     acceleration = _motion_profile(inputs)["acceleration"]
     design_thrust = (
-        max(0.0, weight - max(0.0, inputs["counterbalanceForceN"]))
+        abs(weight - max(0.0, inputs["counterbalanceForceN"]))
         + max(0.0, inputs["externalResistanceN"])
         + max(0.0, inputs["verticalProcessForceN"])
         + moving_mass * acceleration
@@ -367,7 +367,10 @@ def _evaluate_drive(inputs: dict[str, Any], screw: dict[str, Any], guide_eval: d
     counterbalance = max(0.0, inputs["counterbalanceForceN"]) if vertical else 0.0
     unbalanced = gravity_force - counterbalance if vertical else 0.0
     running_force = max(0.0, inputs["externalResistanceN"]) + ROLLING_RESISTANCE * guide_eval["movingMassKg"] * GRAVITY
-    steady_force = max(0.0, unbalanced) + running_force + max(0.0, inputs["verticalProcessForceN"]) if vertical else running_force + abs(inputs["externalFxN"])
+    process_force = max(0.0, inputs["verticalProcessForceN"])
+    upward_steady_force = unbalanced + running_force + process_force if vertical else running_force + abs(inputs["externalFxN"])
+    downward_steady_force = unbalanced - running_force - process_force if vertical else upward_steady_force
+    steady_force = abs(upward_steady_force)
     acceleration_force = guide_eval["movingMassKg"] * acceleration
     design_thrust = (
         abs(unbalanced) + running_force + max(0.0, inputs["verticalProcessForceN"]) + acceleration_force
@@ -381,16 +384,30 @@ def _evaluate_drive(inputs: dict[str, Any], screw: dict[str, Any], guide_eval: d
     coupling_inertia = 2e-5 if screw["diameterMm"] <= 20 else 98e-6 if screw["diameterMm"] <= 32 else 18e-5
     load_inertia = linear_inertia + screw_inertia + coupling_inertia
     angular_acceleration = 2 * math.pi * acceleration / lead_m
-    output_steady_torque = steady_force * max(1.0, inputs["serviceFactor"]) * lead_m / (2 * math.pi * SCREW_EFFICIENCY)
-    output_peak_torque = output_steady_torque + load_inertia * angular_acceleration
-    downward_output_torque = (
-        (running_force + max(0.0, inputs["verticalProcessForceN"]) - unbalanced)
-        * max(1.0, inputs["serviceFactor"])
-        * lead_m
-        / (2 * math.pi * SCREW_EFFICIENCY)
-    ) if vertical else steady_force * max(1.0, inputs["serviceFactor"]) * lead_m / (2 * math.pi * SCREW_EFFICIENCY)
-    stop_angular_acceleration = 2 * math.pi * peak_speed / max(0.03, inputs["emergencyStopTimeS"]) / lead_m if vertical else angular_acceleration
-    emergency_output_torque = abs(downward_output_torque) + load_inertia * stop_angular_acceleration
+    service_factor = max(1.0, inputs["serviceFactor"])
+    force_to_torque = service_factor * lead_m / (2 * math.pi * SCREW_EFFICIENCY)
+    output_steady_torque = abs(upward_steady_force) * force_to_torque
+    downward_output_torque = downward_steady_force * force_to_torque
+    translational_accel_torque = acceleration_force * force_to_torque
+    rotating_load_inertia = screw_inertia + coupling_inertia
+    rotational_accel_torque = rotating_load_inertia * angular_acceleration * service_factor
+    load_accel_torque = translational_accel_torque + rotational_accel_torque
+    upward_output_torque_signed = upward_steady_force * force_to_torque
+    upward_accel_output_torque = upward_output_torque_signed + load_accel_torque
+    upward_decel_output_torque = upward_output_torque_signed - load_accel_torque
+    downward_accel_output_torque = downward_output_torque - load_accel_torque
+    downward_decel_output_torque = downward_output_torque + load_accel_torque
+    output_peak_torque = max(
+        abs(upward_accel_output_torque), abs(upward_decel_output_torque),
+        abs(downward_accel_output_torque), abs(downward_decel_output_torque),
+    )
+    stop_angular_acceleration = 2 * math.pi * peak_speed / max(0.03, inputs["emergencyStopTimeS"]) / lead_m
+    stop_linear_acceleration = peak_speed / max(0.03, inputs["emergencyStopTimeS"])
+    emergency_output_torque = (
+        abs(downward_output_torque)
+        + guide_eval["movingMassKg"] * stop_linear_acceleration * force_to_torque
+        + rotating_load_inertia * stop_angular_acceleration * service_factor
+    )
     gear_options = _gear_options(motor, ratio, motor_rpm, max(output_peak_torque, emergency_output_torque))
     gear_pin = _js_round(inputs.get("gearSizePin", 0) or 0)
     eligible_options = [option for option in gear_options if option["gear"]["size"] == gear_pin] if gear_pin else gear_options
@@ -406,15 +423,21 @@ def _evaluate_drive(inputs: dict[str, Any], screw: dict[str, Any], guide_eval: d
     reflected_inertia = load_inertia / ratio ** 2 + gear_inertia
     motor_angular_acceleration = angular_acceleration * ratio
     motor_inertia = motor["brakeInertiaKgm2"] if vertical else motor["inertiaKgm2"]
+    motor_side_inertia = motor_inertia + gear_inertia
     total_motor_inertia = motor_inertia + reflected_inertia
-    upward_steady_motor_torque = output_steady_torque / (ratio * gear_efficiency)
-    upward_peak_motor_torque = upward_steady_motor_torque + total_motor_inertia * motor_angular_acceleration
-    upward_decel_motor_torque = abs(upward_steady_motor_torque - total_motor_inertia * motor_angular_acceleration)
+    motor_inertia_accel_torque = motor_side_inertia * motor_angular_acceleration
+    upward_steady_motor_torque = upward_output_torque_signed / (ratio * gear_efficiency)
+    upward_peak_motor_torque = abs(upward_accel_output_torque / (ratio * gear_efficiency) + motor_inertia_accel_torque)
+    upward_decel_motor_torque = abs(upward_decel_output_torque / (ratio * gear_efficiency) - motor_inertia_accel_torque)
     downward_steady_motor_torque = downward_output_torque / (ratio * gear_efficiency)
-    downward_peak_motor_torque = abs(downward_steady_motor_torque + total_motor_inertia * motor_angular_acceleration)
-    downward_decel_motor_torque = abs(downward_steady_motor_torque - total_motor_inertia * motor_angular_acceleration)
-    emergency_peak_motor_torque = abs(downward_steady_motor_torque) + total_motor_inertia * stop_angular_acceleration * ratio if vertical else upward_peak_motor_torque
-    motor_peak_torque = max(upward_peak_motor_torque, emergency_peak_motor_torque) if vertical else upward_peak_motor_torque
+    downward_peak_motor_torque = abs(downward_accel_output_torque / (ratio * gear_efficiency) - motor_inertia_accel_torque)
+    downward_decel_motor_torque = abs(downward_decel_output_torque / (ratio * gear_efficiency) + motor_inertia_accel_torque)
+    emergency_peak_motor_torque = emergency_output_torque / (ratio * gear_efficiency) + motor_side_inertia * stop_angular_acceleration * ratio
+    motor_peak_torque = max(
+        upward_peak_motor_torque, upward_decel_motor_torque,
+        downward_peak_motor_torque, downward_decel_motor_torque,
+        emergency_peak_motor_torque,
+    )
     cycle_time = max(1e-6, 4 * accel_time + 2 * constant_time + 2 * max(0.0, inputs["dwellTimeS"])) if vertical else max(1e-6, accel_time * 2 + constant_time + max(0.0, inputs["dwellTimeS"]))
     holding_torque = abs(unbalanced) * lead_m / (2 * math.pi * SCREW_EFFICIENCY * ratio * gear_efficiency) if vertical else 0.0
     holding_energy = holding_torque ** 2 * 2 * max(0.0, inputs["dwellTimeS"]) if vertical and inputs.get("dwellHoldMode") == "servo" else 0.0
@@ -494,6 +517,9 @@ def _evaluate_drive(inputs: dict[str, Any], screw: dict[str, Any], guide_eval: d
         "designThrustN": design_thrust,
         "outputSteadyTorqueNm": output_steady_torque,
         "outputPeakTorqueNm": output_peak_torque,
+        "outputEmergencyTorqueNm": emergency_output_torque,
+        "translationalAccelerationTorqueNm": translational_accel_torque,
+        "rotationalAccelerationTorqueNm": rotational_accel_torque,
         "motorPeakTorqueNm": motor_peak_torque,
         "motorRmsTorqueNm": rms_torque,
         "upwardSteadyMotorTorqueNm": upward_steady_motor_torque,
@@ -596,13 +622,25 @@ def calculate(raw_inputs: dict[str, Any], *, axis_mode: str | None = None) -> di
             drive = _evaluate_drive(inputs, screw, guide_eval, motor)
             is_input_screw = screw["id"] == inputs["screwModelId"] if inputs["screwSelectionMode"] == "manual" else screw["diameterMm"] == inputs["screwDiameterMm"] and screw["leadMm"] == inputs["screwLeadMm"]
             hardware = _hardware_for_diameter(screw["diameterMm"], inputs["couplingSeries"])
-            passed = guide_eval["pass"] and drive["passMotor"] and drive["passScrew"] and drive["passGear"]
-            failure_count = len(guide_eval["flags"]) + len(drive["flags"])
+            coupling_torque_need = max(drive["outputPeakTorqueNm"], drive["outputEmergencyTorqueNm"])
+            coupling_torque_ok = hardware["couplingTorqueNm"] > 0 and coupling_torque_need <= hardware["couplingTorqueNm"]
+            coupling_speed_ok = hardware["couplingMaxRpm"] > 0 and drive["screwRpm"] <= hardware["couplingMaxRpm"]
+            coupling_flags = []
+            if not coupling_torque_ok:
+                coupling_flags.append("커플링 허용·슬립 토크 부족")
+            if not coupling_speed_ok:
+                coupling_flags.append("커플링 허용 회전수 초과")
+            drive["passCoupling"] = not coupling_flags
+            drive["couplingTorqueNeedNm"] = coupling_torque_need
+            drive["couplingTorqueAllowNm"] = hardware["couplingTorqueNm"]
+            drive["couplingSpeedAllowRpm"] = hardware["couplingMaxRpm"]
+            passed = guide_eval["pass"] and drive["passMotor"] and drive["passScrew"] and drive["passGear"] and drive["passCoupling"]
+            failure_count = len(guide_eval["flags"]) + len(drive["flags"]) + len(coupling_flags)
             size_score = screw["diameterMm"] * 1.5 + guide["heightMm"] + guide["widthMm"] * 0.2 + ((drive["gear"] or {}).get("gear", {}).get("size", 0)) * 0.08
             screw_penalty = 0 if is_input_screw else 70 + abs(screw["diameterMm"] - inputs["screwDiameterMm"]) * 3 + abs(screw["leadMm"] - inputs["screwLeadMm"]) * 4
             family_penalty = 0 if guide["family"] == "four-way" else 18 if guide["family"] == "radial" else 30
             score = (0 if passed else 10000 + failure_count * 1000) + screw_penalty + family_penalty + size_score
-            notes = [*guide_eval["flags"], *drive["flags"]]
+            notes = [*guide_eval["flags"], *drive["flags"], *coupling_flags]
             if not is_input_screw:
                 notes.insert(0, f"요청 φ{inputs['screwDiameterMm']}×{inputs['screwLeadMm']} 대신 {_series_for_screw(screw['id'])} {screw['id']} 적용")
             combinations.append({
@@ -754,7 +792,7 @@ def _manual_guide(inputs: dict[str, Any], guide: dict[str, Any]) -> dict[str, An
     }
 
 
-def auto_select(raw_inputs: dict[str, Any]) -> dict[str, Any]:
+def auto_select(raw_inputs: dict[str, Any], minimum_margin: float = 0.3) -> dict[str, Any]:
     mode = raw_inputs.get("axisMode", "horizontal")
     defaults = VERTICAL_DEFAULTS if mode == "vertical" else HORIZONTAL_DEFAULTS
     inputs = {**deepcopy(defaults), **raw_inputs, "axisMode": mode}
@@ -771,8 +809,8 @@ def auto_select(raw_inputs: dict[str, Any]) -> dict[str, Any]:
         lm_min = min((item["margin"] for item in lm_items), default=-99)
         guide_rows.append({"guide": guide, "inputs": candidate_inputs, "result": result, "set": margins, "lmMin": lm_min, "soft": margins["soft"]})
     chosen_guide = (
-        next((row for row in guide_rows if row["lmMin"] >= 0.3 and not row["soft"]), None)
-        or next((row for row in guide_rows if row["lmMin"] >= 0.3), None)
+        next((row for row in guide_rows if row["lmMin"] >= minimum_margin and not row["soft"]), None)
+        or next((row for row in guide_rows if row["lmMin"] >= minimum_margin), None)
         or next((row for row in guide_rows if row["lmMin"] >= 0), None)
         or max(guide_rows, key=lambda row: row["lmMin"])
     )
@@ -796,7 +834,7 @@ def auto_select(raw_inputs: dict[str, Any]) -> dict[str, Any]:
     if not rows:
         return {"ok": False, "error": "모터 허용 회전수 안에서 성립하는 조합이 없습니다.", "tried": len(guide_rows) + combos}
     passed = [row for row in rows if row["min"] >= 0]
-    safe = [row for row in passed if row["min"] >= 0.3]
+    safe = [row for row in passed if row["min"] >= minimum_margin]
 
     def ranking(row: dict[str, Any]) -> tuple[float, ...]:
         return (len(row["soft"]), row["motor"]["powerW"], row["screw"]["diameterMm"], -row["min"], row["ratio"])
@@ -816,7 +854,8 @@ def auto_select(raw_inputs: dict[str, Any]) -> dict[str, Any]:
     ]
     return {
         "ok": True,
-        "safe": best["min"] >= 0.3,
+        "safe": best["min"] >= minimum_margin,
+        "minimumMargin": minimum_margin,
         "E": {"min": best["min"], "lim": best["set"]["lim"], "soft": best["soft"]},
         "set": best["set"],
         "reasons": reasons,

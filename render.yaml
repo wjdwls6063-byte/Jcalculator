@@ -1,14 +1,19 @@
 services:
   - type: web
-    name: jcalculator-engine-api
+    name: jcalculator
     runtime: python
     plan: free
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
       - key: JCALCULATOR_ALLOWED_ORIGINS
         value: https://jcalculator.onrender.com
-      - key: JCALCULATOR_API_KEYS
+      - key: DATABASE_URL
         sync: false
+      - key: JCALCULATOR_ADMIN_USERNAME
+        value: admin
+      - key: JCALCULATOR_ADMIN_PASSWORD_HASH
+        sync: false
+      - key: JCALCULATOR_COOKIE_SECURE
+        value: "true"

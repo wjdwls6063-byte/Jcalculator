@@ -1,6 +1,6 @@
 {
  "criteria": {
-  "stableTorqueMargin": 1.2,
+  "stableTorqueMargin": 1.5,
   "maxAccelerationDeg": 3000,
   "repeatBasicDeg": 0.05,
   "repeatPrecisionDeg": 0.03,

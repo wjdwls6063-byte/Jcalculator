@@ -469,10 +469,17 @@ function calc(P) {
     G3 = toG(T3, ad),
     Gh = toG(Th, 0);
   const Gpk = Math.max(G1, G3),
-    Grms = Math.sqrt((G1 * G1 * P.ta + G2 * G2 * P.tc + G3 * G3 * P.td + Gh * Gh * P.tw) / (cyc || 1));
+    gearTimeRms = Math.sqrt((G1 * G1 * P.ta + G2 * G2 * P.tc + G3 * G3 * P.td + Gh * Gh * P.tw) / (cyc || 1));
   const g = resolveGear(P.gmk, P.gsz, P.grt, P.etaR, P.gman),
     ig = g.ig,
     Jg = g.J;
+  const gearSpeedWeight = w * (.5 * P.ta + P.tc + .5 * P.td),
+    gearCubicAverage = gearSpeedWeight > 0 ? Math.cbrt((
+      Math.pow(Math.abs(G1), 3) * w * .5 * P.ta +
+      Math.pow(Math.abs(G2), 3) * w * P.tc +
+      Math.pow(Math.abs(G3), 3) * w * .5 * P.td
+    ) / gearSpeedWeight) : 0,
+    Grms = g.kind === 'hd' ? gearCubicAverage : gearTimeRms;
   const Jm = (P.brake && !P.mo.man ? P.mo.Jb : P.mo.J) * 1e-4;
   const e1 = gearEff(g, G1),
     e2 = gearEff(g, G2),
@@ -492,11 +499,16 @@ function calc(P) {
   let est = null;
   if (P.estop && P.te > 0) {
     const ae = w / P.te,
-      Te = J * ae + Tg + Tf;
+      Te = J * ae + Tg + Tf,
+      Ge = toG(Te, ae),
+      ee = gearEff(g, Ge),
+      Me = Ge / (ig * ee) + (Jm + Jg) * ae * ib * ig;
     est = {
       ae,
       Te,
-      G: toG(Te, ae)
+      G: Ge,
+      M: Me,
+      efficiency: ee
     };
   }
   const mo = P.mo,
@@ -547,6 +559,13 @@ function calc(P) {
     f: 'M_rms = √[ (M₁²·ta + M₂²·tc + M₃²·td + M_hold²·tw) / t_cycle ]',
     s: `= √[ (${fm(M1)}²×${P.ta} + ${fm(M2)}²×${P.tc} + ${fm(M3)}²×${P.td} + ${fm(Mh)}²×${P.tw}) / ${fm(cyc, 2)} ]\n= ${fm(Mrms)} Nm` + (P.hold ? '\n※ 휴지 중 서보 위치유지 ON → 중력토크가 휴지구간에도 포함됨' : '\n※ 휴지 중 서보 위치유지 OFF(기계 브레이크 가정)')
   });
+  if (est) {
+    add('Minst', '모터 비상정지 순간토크', est.M, mo.mx, 'Nm', true, P.light ? 0 : {
+      used: [`비상정지 시간 te = ${P.te} s`, `αe = ${fm(est.ae)} rad/s²`, `감속기 비상정지 출력 = ${fm(est.G)} Nm`, `ηg = ${fm(est.efficiency, 3)}`],
+      f: 'M_e = G_e /(i_g·ηg) + (Jm+Jg)·αe·i_b·i_g',
+      s: `M_e = ${fm(est.G)}/(${ig}×${fm(est.efficiency, 3)}) + ${fm((Jm + Jg) * 1e4)}×10⁻⁴×${fm(est.ae)}×${fm(ib)}×${ig}\n= ${fm(est.M)} Nm  (안전율 적용 후 모터 순간최대토크와 비교)`
+    });
+  }
   add('jratio', '이너샤비', ratio, mo.jr, '배', false, P.light ? 0 : {
     used: [`J = ${fm(J)}`, `Jp2 = ${fm(jp2)}`, `Jp1 = ${fm(jp1)} kg·m²`, `i_b = ${fm(ib)}`, `i_g = ${ig}`, `Jg = ${fm(Jg * 1e4)}×10⁻⁴`, `Jm = ${fm(Jm * 1e4)}×10⁻⁴ kg·m²`],
     f: 'J_ref = [ (J + Jp2)/i_b² + Jp1 ] / i_g² + Jg    ,   이너샤비 = J_ref / Jm',
@@ -565,8 +584,8 @@ function calc(P) {
     });
     add('Grms', '감속기 평균부하토크', Grms, g.lim.avg, 'Nm', true, P.light ? 0 : {
       used: [`G₁ = ${fm(G1)}`, `G₂ = ${fm(G2)}`, `G₃ = ${fm(G3)}`, `G_hold = ${fm(Gh)} Nm`],
-      f: 'G_rms = √[ (G₁²·ta + G₂²·tc + G₃²·td + G_hold²·tw) / t_cycle ]',
-      s: `= ${fm(Grms)} Nm\n허용 = 평균부하토크의 허용최대치 ${g.lim.avg} Nm (카탈로그)`
+      f: 'T_av = ∛[ Σ(|G|³·회전속도·시간) / Σ(회전속도·시간) ]',
+      s: `가속·감속 평균속도는 최고속도의 1/2로 반영하고 정지 유지구간은 회전수가 0이므로 제외\n= ${fm(Grms)} Nm\n허용 = 평균부하토크의 허용최대치 ${g.lim.avg} Nm (카탈로그)`
     });
     add('Grated', '감속기 연속 정격토크', G2, g.lim.rated, 'Nm', true, P.light ? 0 : {
       used: [`정속구간 부하축 토크 T₂ = Tg + Tf = ${fm(T2)} Nm`, `i_b = ${fm(ib)}`, `ηb = ${fm(eb, 3)}`],
@@ -664,7 +683,7 @@ function remedyList(P, item) {
     E,
     d
   });
-  const torqueM = ['Mpk', 'Mrms'].includes(k),
+  const torqueM = ['Mpk', 'Mrms', 'Minst'].includes(k),
     gearT = ['Gpk', 'Grms', 'Grated', 'Ginst'].includes(k);
   const spdM = k === 'Nmot',
     spdG = ['Gnmax', 'Gnavg'].includes(k),
@@ -856,6 +875,37 @@ function __safeJson(value){
   });
 }
 function __normalizeP(P){
+  const finite=function(name,value,min,inclusive){
+    const n=Number(value);
+    if(!Number.isFinite(n)||(inclusive?n<min:n<=min)) throw new Error(name+' 입력값이 올바르지 않습니다.');
+    return n;
+  };
+  P.m=finite('부하 질량',P.m,0,false);
+  P.e=finite('편심거리',P.e,0,true);
+  P.tf=finite('마찰토크',P.tf,0,true);
+  P.theta=finite('회전각',P.theta,0,false);
+  if(P.theta>360) throw new Error('회전각은 360° 이하여야 합니다.');
+  P.ta=finite('가속시간',P.ta,0,false);
+  P.tc=finite('정속시간',P.tc,0,true);
+  P.td=finite('감속시간',P.td,0,false);
+  P.tw=finite('휴지시간',P.tw,0,true);
+  P.sf=finite('안전율',P.sf,0,false);
+  P.passMargin=finite('통과 여유율',P.passMargin==null?0.3:P.passMargin,0,true);
+  if(P.passMargin>10) throw new Error('통과 여유율은 0~10 범위여야 합니다.');
+  if(P.estop) P.te=finite('비상정지시간',P.te,0,false);
+  if(P.shape==='disk') P.r=finite('원판 반경',P.r,0,false);
+  else if(P.shape==='rect'){
+    P.ra=finite('직사각 가로',P.ra,0,false);
+    P.rb=finite('직사각 세로',P.rb,0,false);
+  }else if(P.shape==='direct') P.jd=finite('직접입력 관성',P.jd,0,false);
+  if(P.drive!=='direct'){
+    P.d1=finite('구동풀리 지름',P.d1,0,false);
+    P.d2=P.drive==='belt11'?P.d1:finite('종동풀리 지름',P.d2,0,false);
+    P.eb=finite('벨트 효율',P.eb,0,false);
+    if(P.eb>1) throw new Error('벨트 효율은 1 이하여야 합니다.');
+    P.mp1=finite('구동풀리 질량',P.mp1,0,true);
+    P.mp2=finite('종동풀리 질량',P.mp2,0,true);
+  }
   if(P.motorId&&P.motorId!=='manual'){
     const found=MOTORS.find(function(m){return m.n===P.motorId;});
     if(!found) throw new Error('지원하지 않는 모터입니다: '+P.motorId);
@@ -877,7 +927,7 @@ function eccentricCalculateJSON(payload){
   const P=__normalizeP(JSON.parse(payload));
   const result=calc(P);
   result.items.forEach(function(item){
-    item.remedies=item.margin<0.3?remedyList(P,item):[];
+    item.remedies=item.margin<P.passMargin?remedyList(P,item):[];
   });
   return __safeJson(result);
 }
@@ -890,6 +940,6 @@ function eccentricSearchJSON(payload){
     rows.push({mk:mk,sz:sz,rt:rt,mo:MOTORS[mi],min:c.min,lim:c.lim.name,Mpk:c.Mpk,Mrms:c.Mrms,ratio:c.ratio,N:c.N});
   }
   rows.sort(function(a,b){return b.min-a.min;});
-  const safe=rows.filter(function(x){return x.min>=.3;}).sort(function(a,b){return a.mo.rt-b.mo.rt||a.sz-b.sz||a.min-b.min;});
+  const safe=rows.filter(function(x){return x.min>=P.passMargin;}).sort(function(a,b){return a.mo.rt-b.mo.rt||a.sz-b.sz||a.min-b.min;});
   return __safeJson({best:safe[0]||null,safeCount:safe.length,totalCount:rows.length,rows:rows.slice(0,30)});
 }

@@ -164,11 +164,11 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
     <div class="grp">
       <div class="gt">① 하중 조건</div>
       <div class="f"><label><span class="tt" data-term="총하중">총하중</span></label>
-        <div class="ig"><input id="load" type="number" value="20" min="0" step="0.5"><span class="unit">kg</span></div>
+        <div class="ig"><input id="load" type="number" value="20" min="0.1" step="0.5"><span class="unit">kg</span></div>
         <p class="hint">벨트 위 반송물 총 질량</p></div>
       <div class="f"><label><span class="tt" data-term="경사각">경사각 θ</span></label>
-        <div class="ig"><input id="angle" type="number" value="0" min="0" max="45" step="0.5"><span class="unit">°</span></div>
-        <p class="hint">수평 0° / 상향 반송 기준</p></div>
+        <div class="ig"><input id="angle" type="number" value="0" min="-45" max="45" step="0.5"><span class="unit">°</span></div>
+        <p class="hint">하향 −값 / 수평 0° / 상향 +값</p></div>
     </div>
 
     <div class="grp">
@@ -214,6 +214,16 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
         <p class="hint">기본 <b>3.0</b> (강화된 보수 설계) · STEP 4 설계토크와 STEP 5 필요동력에 각각 적용</p></div>
       <div class="f"><label><span class="tt" data-term="기계효율">기계효율 η</span></label>
         <div class="ig"><input id="eff" type="number" value="0.8" min="0.1" max="1" step="0.05"><span class="unit">-</span></div></div>
+    </div>
+
+    <div class="grp">
+      <div class="gt">⑤ 기동 조건</div>
+      <div class="f"><label><span class="tt" data-term="가속시간">목표 가속시간</span></label>
+        <div class="ig"><input id="accelTime" type="number" value="0.5" min="0.05" step="0.1"><span class="unit">s</span></div>
+        <p class="hint">정지 상태에서 입력 속도까지 도달하는 시간</p></div>
+      <div class="f"><label><span class="tt" data-term="회전체 등가관성">회전체 등가관성 J</span> <span style="font-weight:400">(선택)</span></label>
+        <div class="ig"><input id="equivalentInertia" type="number" placeholder="미입력" min="0" step="0.0001"><span class="unit">kg·m²</span></div>
+        <p class="hint">구동풀리 출력축 기준 합산값. 미입력 시 반송물·벨트의 직선 가속만 계산하고 결과를 ‘관성 확인 필요’로 표시합니다.</p></div>
     </div>
 
     <div class="btnrow">
@@ -271,7 +281,7 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
       <details>
         <summary><span class="stepno">STEP 2</span><span class="tt sttip" tabindex="0" id="s2">벨트 자중 및 총 이동질량<span class="ttbox" id="b2"></span></span><span class="res" id="r2">—</span></summary>
         <div class="dbody">
-          <div class="fx gen">m<sub>belt</sub> = (2 × C) × B × 3.0 kg/m²　　m<sub>total</sub> = 총하중 + m<sub>belt</sub>　　(마찰 관여 직선 2구간 기준 / 벨트 전장은 2C + πD)</div>
+          <div class="fx gen">m<sub>belt</sub> = (2C + πD) × B × 3.0 kg/m²　　m<sub>total</sub> = 총하중 + m<sub>belt</sub></div>
           <div class="fx" id="f2">—</div><p class="hint" id="n2"></p>
           <div id="n2roll"></div><div id="n2warn"></div>
         </div>
@@ -284,9 +294,9 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
         </div>
       </details>
       <details>
-        <summary><span class="stepno">STEP 4</span><span class="tt sttip" tabindex="0" id="s4">구동풀리 토크 (운전 / 설계 / 모터샤트)<span class="ttbox" id="b4"></span></span><span class="res" id="r4">—</span></summary>
+        <summary><span class="stepno">STEP 4</span><span class="tt sttip" tabindex="0" id="s4">구동풀리 토크 (정상 / 기동 / 설계)<span class="ttbox" id="b4"></span></span><span class="res" id="r4">—</span></summary>
         <div class="dbody">
-          <div class="fx gen">① 정상운전 T<sub>run</sub> = Fe × (D ÷ 2)　　② 설계 필요토크 T<sub>req</sub> = T<sub>run</sub> × Sf　　③ 모터샤트 환산 T<sub>motor</sub> = T<sub>req</sub> ÷ (i × η)</div>
+          <div class="fx gen">T<sub>acc</sub> = (m·a)r + Jα　　T<sub>start</sub> = T<sub>run</sub> + T<sub>acc</sub>　　T<sub>req</sub> = max(|T<sub>run</sub>|, |T<sub>start</sub>|) × Sf</div>
           <div class="fx" id="f4">—</div>
           <div id="n4box"></div><p class="hint" id="n4"></p>
         </div>
@@ -294,7 +304,7 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
       <details>
         <summary><span class="stepno">STEP 5</span><span class="tt sttip" tabindex="0" id="s5">필요동력 P<sub>req</sub><span class="ttbox" id="b5"></span></span><span class="res" id="r5">—</span></summary>
         <div class="dbody">
-          <div class="fx gen">P<sub>req</sub> = Fe × v × Sf ÷ η　　(v는 m/s 환산값)</div>
+          <div class="fx gen">P<sub>req</sub> = T<sub>selected</sub> × ω<sub>out</sub> × Sf ÷ η　　(정상·기동 중 큰 절대토크 적용)</div>
           <div class="fx" id="f5">—</div><p class="hint" id="n5"></p>
         </div>
       </details>
@@ -348,7 +358,7 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
     <footer>
       본 툴은 <b>개략 검증(1차 스크리닝)</b>용입니다. 실제 설계는 벨트·감속기 제조사 사양서, 기동 토크(관성 가속),
       벨트 장력 안전율, 축·베어링 강도 검토와 실부하 시험으로 최종 확인하십시오.<br>
-      계산 가정 — 벨트 단위중량 3.0 kg/m² · 벨트 길이 ≈ 2 × 축간거리 · g = 9.81 m/s² · 정상운전(등속) 기준 · 구동은 기어드모터 직결 전제<br>
+      계산 가정 — 벨트 단위중량 3.0 kg/m² · 벨트 길이 = 2C + πD · g = 9.81 m/s² · 정상운전과 입력 가속시간의 기동 검토 · 구동은 기어드모터 직결 전제<br>
       지지방식 5종은 모듐 무동력 지지 구조이며, 모터 내장 구동 롤러(파워몰러·MDR)는 구동부 부품로 별도 산정이 필요합니다.
     </footer>
   </main>
@@ -360,26 +370,28 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
 <script>
 (function(){
   "use strict";
-  var G=9.81, BELT_KG_M2=3.0;
+  var G=9.81, BELT_KG_M2=3.0, PASS_MARGIN_PCT=30, ADMIN_DEFAULTS={};
 
   /* ---------- 용어 사전 ---------- */
   var GLOSSARY={
     "총하중":["벨트 위에 동시에 올라가는 반송물 전체 질량(kg).","벨트 자중은 별도로 STEP 2 에서 더해집니다."],
-    "경사각":["수평면 기준 컨베이어 기울기 θ(°).","질량의 sinθ 성분이 그대로 추가 부하가 됩니다. 0°는 수평 반송."],
+    "경사각":["수평면 기준 컨베이어 기울기 θ(°).","상향은 +, 하향은 −로 입력합니다. 하향 구동력 합계가 음수이면 구동 가능이 아니라 제동 운전으로 판정합니다."],
     "모터 정격출력":["모터의 연속 정격 출력(W).","카탈로그 정격출력을 입력합니다. 기동 시 순간 출력은 이보다 큽니다."],
     "모터 회전수":["모터가 정격 부하에서 도는 회전수(rpm).","감속기 입력측 회전수입니다."],
     "감속비":["감속기 입력 회전수 ÷ 출력 회전수.","값이 클수록 속도는 낮아지고 토크는 커집니다.","출력 rpm = 모터 rpm ÷ i"],
     "구동풀리 지름":["벨트를 구동하는 헤드풀리 외경 D(mm).","벨트속도와 소요토크에 직접 영향을 줍니다.","v = π·D·N"],
-    "축간거리":["구동풀리와 종동풀리 중심 사이 거리 C(mm).","벨트 길이(≈2C)와 벨트 자중 계산에 사용됩니다."],
+    "축간거리":["구동풀리와 종동풀리 중심 사이 거리 C(mm).","벨트 전장 2C+πD와 벨트 자중 계산에 사용됩니다."],
     "벨트폭":["벨트의 폭 B(mm).","벨트 자중과 초기장력(T = B × 1.0 N/mm) 산정에 사용됩니다."],
     "지지방식":["벨트 하면을 받쳐주는 무동력 지지 구조의 종류.","구조에 따라 등가 마찰계수 μ가 달라져 필요동력이 크게 변합니다. 파워몰러(MDR)처럼 모터 내장 구동 롤러는 지지방식이 아니라 구동부 부품입니다."],
     "마찰계수":["벨트와 지지면(또는 롤러) 사이의 등가 마찰계수 μ.","클수록 같은 하중에서 필요동력·벨트장력이 커집니다."],
     "롤러피치":["캐리어 롤러의 배치 간격 p(mm).","크면 롤러 사이에서 벨트가 처집니다. 통상 300mm 이하를 권장합니다."],
     "안전율":["필요동력에 곱하는 여유 계수 Sf.","기동 충격·경년 마찰 증가·예상 밖 부하를 보정합니다. 일반 경량은 1.5~2.5, 보수 설계는 2.0 이상이며 본 툴 기본값은 3.0 입니다. STEP 4 설계토크와 STEP 5 필요동력에 각각 1회만 적용되므로 이중 곱셈이 아니며, 감속기·모터 선정의 기준값이 됩니다."],
     "기계효율":["모터 출력이 구동력으로 전달되는 비율 η.","웜 감속기 0.6~0.8, 헬리컬 0.85~0.95. 손실만큼 필요동력이 커집니다."],
+    "가속시간":["정지 상태에서 목표 벨트속도까지 도달하는 시간(s).","짧을수록 직선 가속력 m·a와 기동토크가 커집니다."],
+    "회전체 등가관성":["풀리·축·감속기 등 회전체 관성을 구동풀리 출력축으로 환산한 합계 J(kg·m²).","미입력 시 반송물·벨트 직선 가속은 계산하지만 회전체 가속토크 Jα는 제외되므로 최종 결과를 조건부로 표시합니다."],
     "벨트속도":["벨트 표면의 진행 선속도.","경량 컨베이어 실용 범위는 통상 5~30 m/min 입니다.","v = π·D·(rpm ÷ i)"],
     "유효장력":["벨트를 실제로 끌기 위해 구동풀리가 내야 하는 힘 Fe(N).","지지면 마찰 저항과 경사 성분의 합입니다.","Fe = m·g·(μ·cosθ + sinθ)"],
-    "필요동력":["안전율과 기계효율을 반영한 모터측 요구 동력.","이 값보다 모터 정격출력이 커야 구동이 성립합니다.","P = Fe·v·Sf ÷ η"],
+    "필요동력":["정상·기동 중 큰 절대토크에 안전율과 기계효율을 반영한 모터측 요구 동력.","이 값보다 모터 정격출력이 커야 구동이 성립합니다.","P = T_selected·ωout·Sf ÷ η"],
     "여유율":["(모터출력 − 필요동력) ÷ 필요동력 × 100.","30% 이상이면 안전, 0~30%는 조건부, 음수면 구동 불가입니다."],
     "초기장력":["설치 시 벨트에 미리 걸어두는 장력 T(N).","처짐을 버티는 힘으로, 여기서는 벨트폭 × 1.0 N/mm 로 가정합니다."],
     "처짐률":["롤러 사이 처짐량 ÷ 롤러 피치 × 100(%).","1.0% 이하를 안전 기준으로 봅니다.","s = w·p² ÷ (8·T)"]
@@ -572,7 +584,7 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
 
   /* ---------- 메인 계산 ---------- */
   async function calc(){
-    var request={load:num("load"),angle:num("angle"),pmotor:num("pmotor"),rpm:num("rpm"),ratio:num("ratio"),pulley:num("pulley"),center:num("center"),width:num("width"),support:$("support").value,pitch:num("pitch"),sf:num("sf"),eff:num("eff"),cmu:num("cmu")};
+    var request={load:num("load"),angle:num("angle"),pmotor:num("pmotor"),rpm:num("rpm"),ratio:num("ratio"),pulley:num("pulley"),center:num("center"),width:num("width"),support:$("support").value,pitch:num("pitch"),sf:num("sf"),eff:num("eff"),cmu:num("cmu"),accelTime:num("accelTime"),equivalentInertia:num("equivalentInertia")};
     var api;
     try{api=await globalThis.JCalculatorApi.conveyorCalculate(request);}catch(err){globalThis.JCalculatorApi.showError(err);return null;}
     var {load,ang,pm,rpm,i,D,C,B,sup,p,sf,eff,mu,isRoll,outRpm,vmm,vmin,vms,area,mBelt,mTot,nRoll,perRoll,th,fFric,fGrad,Fe,T,Tk,Treq,Treqk,Tmotor,Trated,Tratio,Preq,PreqNoSf,margin,need30,ratio,Tini,wl}=api;
@@ -593,10 +605,11 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
     $("kf").textContent=fmt(Fe,1);
     $("kp").textContent=fmt(Preq/1000,3)+" kW"; $("kp2").textContent=fmt(Preq,1)+" W";
     $("kmg").textContent=(isFinite(margin)?fmt(margin,1):"∞")+" %";
-    $("kmg2").textContent="동력 용량비 "+(isFinite(ratio)?fmt(ratio,1):"∞")+"% · 여유율 30% 이상 권장";
+    $("kmg2").textContent="동력 용량비 "+(isFinite(ratio)?fmt(ratio,1):"∞")+"% · 여유율 "+fmt(PASS_MARGIN_PCT,0)+"% 이상 권장";
 
     /* 게이지 */
-    var col=margin>=30?"#16a34a":(margin>=0?"#d97706":"#dc2626");
+    var conditionalContext=api.operatingMode==="braking"||!api.inertiaConfirmed;
+    var col=margin>=PASS_MARGIN_PCT&&!conditionalContext?"#16a34a":(margin>=0?"#d97706":"#dc2626");
     $("barfill").style.width=(margin<0?3:Math.max(0,Math.min(100,isFinite(margin)?margin:100)))+"%";
     $("barfill").style.background=col;
 
@@ -611,59 +624,59 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
       "출력 회전수 "+fmt(outRpm,2)+" rpm 기준. 표시 단위는 mm/min, 괄호는 m/min 병기입니다.");
 
     $("r2").textContent=fmt(mTot,2)+" kg";
-    $("f2").innerHTML="m<sub>belt</sub> = (2 × "+fmt(C,0)+"mm) × "+fmt(B,0)+"mm × 3.0 kg/m² = "+fmt(area,3)+
+    $("f2").innerHTML="m<sub>belt</sub> = (2 × "+fmt(C,0)+"mm + π × "+fmt(D,0)+"mm) × "+fmt(B,0)+"mm × 3.0 kg/m² = "+fmt(area,3)+
       " m² × 3.0 = <b>"+fmt(mBelt,2)+" kg</b> ／ m<sub>total</sub> = "+fmt(load,1)+" + "+fmt(mBelt,2)+" = <b>"+fmt(mTot,2)+" kg</b>";
-    $("n2").innerHTML="질량 산정에는 베드·롤러 위를 지나는 <b>직선 2구간(상부+리턴) = 2C = "+fmt(2*C,0)+" mm</b> 만 반영합니다. "+
-      "풀리에 감기는 πD = "+fmt(Math.PI*D,0)+" mm 구간은 풀리가 지지하므로 베드 마찰에 관여하지 않아 제외한 것이며, 보수적 가산이 아닙니다. "+
-      "벨트 <b>전장(구매·제작 길이)</b>은 2C + πD = <b>"+fmt(api.beltPurchaseLengthMm,0)+" mm</b> (질량 "+
-      fmt(api.beltPurchaseMassKg,2)+" kg) 이므로 벨트 발주·장력조정 시에는 이 값을 사용하십시오.";
+    $("n2").innerHTML="벨트 <b>전체 길이</b> 2C + πD = <b>"+fmt(api.beltPurchaseLengthMm,0)+" mm</b>를 자중에 반영했습니다. "+
+      "풀리 감김부도 이동하는 벨트 질량이므로 기동 관성과 경사 중량 계산에서 제외하지 않습니다.";
     $("n2roll").innerHTML=isRoll?'<p class="hint">지지 롤러 개수 ≈ C ÷ p + 1 = '+fmt(C,0)+" ÷ "+fmt(p,0)+" + 1 = <b>"+nRoll+
       " 개</b>, 롤러 1개당 평균 하중 ≈ "+fmt(perRoll,2)+" kg</p>":"";
     $("n2warn").innerHTML=(isRoll&&p>300)?'<div class="note w">⚠ 롤러피치 '+fmt(p,0)+
       "mm 는 권장 상한 300mm 를 초과합니다. 롤러 사이에서 벨트 처짐이 발생해 반송물 흔들림·벨트 사행·국부 마모가 생길 수 있습니다.</div>":"";
-    $("b2").innerHTML=stepTip("STEP 2 · 총 이동질량","m_belt = (2C) × B × 3.0 kg/m²  /  m_total = 총하중 + m_belt",
-      "m_belt = (2×"+fmt(C,0)+") × "+fmt(B,0)+" × 3.0 = "+fmt(mBelt,2)+" kg",fmt(mTot,2)+" kg",
-      "벨트 단위중량 3.0 kg/m². 마찰에 관여하는 직선 2구간(2C)만 반영하고 풀리 감김부(πD)는 제외합니다. 벨트 전장은 2C+πD = "+
-      fmt(api.beltPurchaseLengthMm,0)+" mm."+(isRoll?" 롤러 "+nRoll+"개, 개당 "+fmt(perRoll,2)+" kg.":""));
+    $("b2").innerHTML=stepTip("STEP 2 · 총 이동질량","m_belt = (2C+πD) × B × 3.0 kg/m²  /  m_total = 총하중 + m_belt",
+      "m_belt = (2×"+fmt(C,0)+"+π×"+fmt(D,0)+") × "+fmt(B,0)+" × 3.0 = "+fmt(mBelt,2)+" kg",fmt(mTot,2)+" kg",
+      "벨트 단위중량 3.0 kg/m²와 벨트 전장 2C+πD를 적용했습니다."+(isRoll?" 롤러 "+nRoll+"개, 개당 "+fmt(perRoll,2)+" kg.":""));
 
     $("r3").textContent=fmt(Fe,1)+" N";
     $("f3").innerHTML="Fe = "+fmt(mTot,2)+"kg × 9.81 × ( "+mu.toFixed(2)+" × cos"+fmt(ang,1)+"° + sin"+fmt(ang,1)+"° ) = "+
       fmt(api.weightN,1)+"N × "+api.forceFactor.toFixed(4)+" = <b>"+fmt(Fe,1)+" N</b>";
     $("n3").innerHTML="지지방식 <b>"+SUP[sup].name+"</b> (μ = "+mu.toFixed(2)+") 적용 ／ 마찰 성분 "+fmt(fFric,1)+
-      " N + 경사 성분 "+fmt(fGrad,1)+" N"+(ang>0?"":" (수평이므로 경사 성분 0)");
+      " N + 경사 성분 "+fmt(fGrad,1)+" N"+(ang===0?" (수평이므로 경사 성분 0)":(Fe<0?" — 합력이 음수이므로 내리막 제동 운전":""));
     $("b3").innerHTML=stepTip("STEP 3 · 유효장력 Fe","Fe = m·g·(μ·cosθ + sinθ)",
       "Fe = "+fmt(mTot,2)+" × 9.81 × ("+mu.toFixed(2)+"×cos"+fmt(ang,1)+"° + sin"+fmt(ang,1)+"°)",fmt(Fe,1)+" N",
       "마찰 "+fmt(fFric,1)+" N + 경사 "+fmt(fGrad,1)+" N. 벨트 자중도 경사 성분에 포함시킨 보수적 계산입니다.");
 
-    $("r4").textContent="운전 "+fmt(T,2)+" / 설계 "+fmt(Treq,2)+" N·m";
+    var Tacc=api.accelerationTorqueNm,Tstart=api.startupTorqueNm,Tselected=api.selectedOutputTorqueNm;
+    var inertiaPending=!api.inertiaConfirmed, braking=api.operatingMode==="braking";
+    $("r4").textContent="정상 "+fmt(T,2)+" / 기동 "+fmt(Tstart,2)+" / 설계 "+fmt(Treq,2)+" N·m";
     $("f4").innerHTML=
-      "① T<sub>run</sub> = "+fmt(Fe,1)+"N × ("+fmt(D,0)+"mm ÷ 2) = <b>"+fmt(T,2)+" N·m</b> ("+fmt(Tk,1)+" kgf·cm) ← 정상운전 토크<br>"+
-      "② T<sub>req</sub> = "+fmt(T,2)+" × Sf "+fmt(sf,1)+" = <b>"+fmt(Treq,2)+" N·m</b> ("+fmt(Treqk,1)+" kgf·cm) ← <b>감속기 정격 출력토크는 이 값 이상</b><br>"+
-      "③ T<sub>motor</sub> = "+fmt(Treq,2)+" ÷ ("+fmt(i,1)+" × "+fmt(eff,2)+") = <b>"+fmt(Tmotor,3)+" N·m</b> ／ 모터 정격토크 = "+
-      fmt(pm,0)+"W ÷ (2π×"+fmt(rpm,0)+"÷60) = <b>"+fmt(Trated,3)+" N·m</b>";
+      "① T<sub>run</sub> = "+fmt(Fe,1)+"N × "+fmt(D/2000,4)+"m = <b>"+fmt(T,3)+" N·m</b><br>"+
+      "② a = "+fmt(vms,4)+" ÷ "+fmt(api.accelTime,2)+" = "+fmt(api.accelerationMS2,4)+" m/s², α = "+fmt(api.angularAccelerationRadS2,3)+" rad/s²<br>"+
+      "③ T<sub>acc</sub> = ("+fmt(mTot,2)+"×"+fmt(api.accelerationMS2,4)+")×"+fmt(D/2000,4)+" + "+fmt(api.equivalentInertia,4)+"×"+fmt(api.angularAccelerationRadS2,3)+" = <b>"+fmt(Tacc,3)+" N·m</b><br>"+
+      "④ T<sub>start</sub> = "+fmt(T,3)+" + "+fmt(Tacc,3)+" = <b>"+fmt(Tstart,3)+" N·m</b><br>"+
+      "⑤ T<sub>req</sub> = max(|"+fmt(T,3)+"|, |"+fmt(Tstart,3)+"|) × Sf "+fmt(sf,1)+" = <b>"+fmt(Treq,3)+" N·m</b> ("+fmt(Treqk,1)+" kgf·cm)<br>"+
+      "⑥ T<sub>motor</sub> = "+fmt(Treq,3)+" ÷ ("+fmt(i,1)+" × "+fmt(eff,2)+") = <b>"+fmt(Tmotor,3)+" N·m</b> ／ 모터 정격토크 <b>"+fmt(Trated,3)+" N·m</b>";
     $("n4box").innerHTML=(Tmotor<=Trated)
       ? '<div class="note g">✓ 모터샤프트 환산 토크 '+fmt(Tmotor,3)+" N·m ≤ 모터 정격토크 "+fmt(Trated,3)+" N·m (여유 "+
         (isFinite(Tratio)?fmt(Tratio,2):"∞")+"배) — 토크 기준으로도 성립합니다.</div>"
       : '<div class="note w">⚠ 모터샤프트 환산 토크 '+fmt(Tmotor,3)+" N·m 가 모터 정격토크 "+fmt(Trated,3)+
         " N·m 를 초과합니다 — 안전율 Sf 포함 기준으로 토크가 부족합니다.</div>";
-    $("n4").innerHTML="①은 실제 운전 상태의 토크(실측 부하 비교용), <b>②가 감속기 선정 기준값</b>입니다. "+
-      "기계효율 η는 감속기 <b>출력축</b> 정격토크와 비교할 때는 다시 나누지 않으며(정격치에 이미 반영), 모터샤프트로 환산하는 ③에서만 적용합니다. "+
-      "③은 STEP 5의 필요동력을 토크로 환산한 값과 동일합니다(P<sub>req</sub> ÷ ω<sub>motor</sub>). "+
-      "기동 시에는 관성·정지마찰로 ①의 1.5~2배가 순간 요구될 수 있으므로 별도의 기동토크 검토가 필요합니다.";
-    $("b4").innerHTML=stepTip("STEP 4 · 토크 3단 비교",
-      "T_run = Fe×(D÷2)   T_req = T_run×Sf   T_motor = T_req÷(i×η)",
-      "T_run = "+fmt(T,2)+"  →  T_req = "+fmt(T,2)+"×"+fmt(sf,1)+" = "+fmt(Treq,2)+"  →  T_motor = "+fmt(Treq,2)+"÷("+fmt(i,1)+"×"+fmt(eff,2)+")",
-      "운전 "+fmt(T,2)+" / 설계 "+fmt(Treq,2)+" / 모터샤프트 "+fmt(Tmotor,3)+" N·m",
-      "감속기 정격 출력토크는 설계값 "+fmt(Treq,2)+" N·m 이상, 모터 정격토크("+fmt(Trated,3)+" N·m)는 모터샤프트 환산값 "+
-      fmt(Tmotor,3)+" N·m 이상이면 성립합니다. η는 출력축 비교 시 재적용하지 않습니다.");
+    $("n4").innerHTML="정상운전과 기동 중 <b>절대값이 큰 토크</b>를 선정한 뒤 안전율을 한 번 적용합니다. "+
+      "기계효율 η는 모터샤프트 환산에서만 적용합니다."+(inertiaPending?
+      " <b>⚠ 회전체 등가관성이 미입력되어 Jα 항은 0입니다. 직선 가속토크는 포함했지만 최종 선정 전 풀리·축·감속기 관성을 확인하십시오.</b>":
+      " 회전체 등가관성 Jα까지 포함했습니다.");
+    $("b4").innerHTML=stepTip("STEP 4 · 정상·기동 토크 비교",
+      "T_acc=(m·a)r+Jα / T_start=T_run+T_acc / T_req=max(|T_run|,|T_start|)×Sf",
+      "T_run="+fmt(T,3)+", T_acc="+fmt(Tacc,3)+", T_start="+fmt(Tstart,3),
+      "선정 "+fmt(Tselected,3)+" / 설계 "+fmt(Treq,3)+" / 모터샤프트 "+fmt(Tmotor,3)+" N·m",
+      "가속시간 "+fmt(api.accelTime,2)+"s"+(inertiaPending?", 회전체 관성은 미입력.":", 회전체 관성 "+fmt(api.equivalentInertia,4)+" kg·m² 포함."));
 
     $("r5").textContent=fmt(Preq/1000,3)+" kW";
-    $("f5").innerHTML="P<sub>req</sub> = "+fmt(Fe,1)+"N × "+fmt(vms,4)+"m/s × "+fmt(sf,1)+" ÷ "+fmt(eff,2)+
+    $("f5").innerHTML="P<sub>req</sub> = "+fmt(Tselected,3)+"N·m × "+fmt(2*Math.PI*outRpm/60,3)+"rad/s × "+fmt(sf,1)+" ÷ "+fmt(eff,2)+
       " = <b>"+fmt(Preq/1000,3)+" kW</b> ( "+fmt(Preq,1)+" W )";
-    $("n5").innerHTML="안전율·효율 반영 전 순 소요동력은 "+fmt(PreqNoSf,1)+" W 입니다. 여기에 안전율 "+fmt(sf,1)+
+    $("n5").innerHTML="정상·기동 중 큰 절대토크 기준, 안전율·효율 반영 전 순 소요동력은 "+fmt(PreqNoSf,1)+" W 입니다. 여기에 안전율 "+fmt(sf,1)+
       "배를 곱하고 기계효율 "+fmt(eff,2)+"로 나누어 모터측 필요동력을 산출합니다.";
-    $("b5").innerHTML=stepTip("STEP 5 · 필요동력 P_req","P_req = Fe × v × Sf ÷ η",
-      "P_req = "+fmt(Fe,1)+" × "+fmt(vms,4)+" × "+fmt(sf,1)+" ÷ "+fmt(eff,2),
+    $("b5").innerHTML=stepTip("STEP 5 · 필요동력 P_req","P_req = T_selected × ω_out × Sf ÷ η",
+      "P_req = "+fmt(Tselected,3)+" × "+fmt(2*Math.PI*outRpm/60,3)+" × "+fmt(sf,1)+" ÷ "+fmt(eff,2),
       fmt(Preq/1000,3)+" kW ("+fmt(Preq,1)+" W)","순 소요동력 "+fmt(PreqNoSf,1)+" W 에 안전율·효율을 반영한 모터측 요구값입니다.");
 
     $("r6").textContent=(isFinite(margin)?fmt(margin,1):"∞")+" %";
@@ -673,50 +686,58 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
       (isFinite(margin)?fmt(margin,1):"∞")+" %</b>　← 추가로 남는 여유분 （용량비 − 100%）";
     $("n6extra").innerHTML='<p class="hint">안전율 Sf '+fmt(sf,1)+"배와 기계효율 η "+fmt(eff,2)+"는 이미 필요동력 안에 들어가 있습니다. "+
       "안전율·효율 미적용 순 소요동력 "+fmt(PreqNoSf,1)+" W 기준으로는 모터가 "+
-      (PreqNoSf>0?fmt(pm/PreqNoSf,2):"∞")+"배이므로, 여유율 30% 기준은 이중 여유에 해당하는 보수적 잣대입니다.</p>";
+      (PreqNoSf>0?fmt(pm/PreqNoSf,2):"∞")+"배이므로, 여유율 "+fmt(PASS_MARGIN_PCT,0)+"% 기준은 이중 여유에 해당하는 보수적 잣대입니다.</p>";
     $("b6").innerHTML=stepTip("STEP 6 · 여유율 판정",
       "용량비 = 모터출력 ÷ 필요동력 × 100／여유율 = (모터출력 − 필요동력) ÷ 필요동력 × 100",
       "용량비 = "+fmt(pm,0)+" ÷ "+fmt(Preq,1)+"／여유율 = ("+fmt(pm,0)+" − "+fmt(Preq,1)+") ÷ "+fmt(Preq,1),
       "용량비 "+(isFinite(ratio)?fmt(ratio,1):"∞")+"% ／ 여유율 "+(isFinite(margin)?fmt(margin,1):"∞")+" %",
-      "30% 이상 안전 / 0~30% 조건부 / 0% 미만 구동 불가. 여유율 30% 기준 최소 모터출력은 "+fmt(need30,1)+" W 입니다.");
+      fmt(PASS_MARGIN_PCT,0)+"% 이상 안전 / 0~"+fmt(PASS_MARGIN_PCT,0)+"% 조건부 / 0% 미만 구동 불가. 여유율 "+fmt(PASS_MARGIN_PCT,0)+"% 기준 최소 모터출력은 "+fmt(need30,1)+" W 입니다.");
 
     /* 판정 */
     var v=$("verdict"), cls,big,sub,n6;
-    if(margin>=30){
-      cls="ok"; big="✅ 정상운전 기준 안전 — 구동 가능";
-      sub="모터 정격출력 "+fmt(pm,0)+"W 가 필요동력 "+fmt(Preq,1)+"W 를 상회합니다. (동력 용량비 "+
-        (isFinite(ratio)?fmt(ratio,1):"∞")+"% / 여유율 "+fmt(margin,1)+"%)";
-      n6='<div class="note g">판정: <b>정상운전(등속) 기준 안전</b>. 필요동력 '+fmt(Preq,1)+" W 대비 모터 "+fmt(pm,0)+
-        " W 로 동력 용량비 "+(isFinite(ratio)?fmt(ratio,1):"∞")+"%, 여유율 "+fmt(margin,1)+"% 이며 기준(30%)을 만족합니다. "+
-        "감속기는 설계 필요토크 "+fmt(Treq,2)+" N·m 이상(STEP 4 참조)으로 선정하십시오.<br>"+
-        "⚠ 단, <b>급가속·빈번한 기동·적재물 투입 충격</b>이 있는 경우 관성 가속 토크(기동토크)를 별도로 검토해야 합니다 "+
-        "— 본 툴은 가속시간·풀리 관성·투입 충격을 계산하지 않습니다.</div>";
-    }else if(margin>=0){
-      cls="wn"; big="⚠ 조건부 가능 — 재검토 권장";
-      sub="구동은 되지만 여유가 부족합니다. 필요동력 "+fmt(Preq,1)+"W / 모터 "+fmt(pm,0)+"W (여유율 "+fmt(margin,1)+"%)";
-      n6='<div class="note w">판정: 조건부 가능. 권장 하한 30% 미달입니다. 여유율 30% 확보에는 모터 <b>'+fmt(need30,1)+
-        "W 이상</b>이 필요합니다. 또는 감속비 상향(속도 저감)·저마찰 지지방식으로 변경하십시오.</div>";
-    }else{
+    if(margin<0){
       cls="ng"; big="❌ 구동 불가";
       sub="필요동력 "+fmt(Preq,1)+"W 가 모터 정격 "+fmt(pm,0)+"W 를 초과합니다. (부족 "+fmt(Preq-pm,1)+"W)";
-      n6='<div class="note w">판정: 구동 불가. 여유율 30% 확보에는 모터 <b>'+fmt(need30,1)+
+      n6='<div class="note w">판정: 구동 불가. 여유율 '+fmt(PASS_MARGIN_PCT,0)+'% 확보에는 모터 <b>'+fmt(need30,1)+
         "W 이상</b>이 필요합니다. 모터 증설·감속비 상향·지지방식 저마찰화·총하중 감소 중 하나 이상이 필요합니다.</div>";
+    }else if(braking){
+      cls="wn"; big="⚠ 내리막 제동 운전 — 브레이크 검토 필수";
+      sub="정상 유효장력이 음수("+fmt(Fe,1)+"N)여서 하중이 컨베이어를 끌어내립니다. 구동 가능 판정 대신 제동 용량을 확인해야 합니다.";
+      n6='<div class="note w">판정: <b>제동 운전</b>. 계산상 요구 절대동력은 '+fmt(Preq,1)+" W 이지만, 정전·비상정지·연속 회생 시의 "+
+        "브레이크 유지토크와 회생 처리능력을 별도로 확인해야 합니다. 자동으로 ‘안전’ 처리하지 않습니다.</div>";
+    }else if(inertiaPending){
+      cls="wn"; big="⚠ 동력 여유 충족 · 회전체 관성 확인 필요";
+      sub="직선 가속토크는 포함했습니다. 풀리·축·감속기의 출력축 환산 관성을 입력해야 최종 구동 가능 판정이 됩니다.";
+      n6='<div class="note w">판정: <b>조건부</b>. 현재 필요동력 '+fmt(Preq,1)+" W, 여유율 "+fmt(margin,1)+
+        "%입니다. 회전체 등가관성 J가 미입력되어 Jα 항이 빠졌으므로 최종 모터·감속기 확정 전 값을 입력하십시오.</div>";
+    }else if(margin>=PASS_MARGIN_PCT){
+      cls="ok"; big="✅ 정상·기동 기준 안전 — 구동 가능";
+      sub="모터 정격출력 "+fmt(pm,0)+"W 가 기동 포함 필요동력 "+fmt(Preq,1)+"W 를 상회합니다. (동력 용량비 "+
+        (isFinite(ratio)?fmt(ratio,1):"∞")+"% / 여유율 "+fmt(margin,1)+"%)";
+      n6='<div class="note g">판정: <b>정상운전·입력 가속시간 기준 안전</b>. 필요동력 '+fmt(Preq,1)+" W 대비 모터 "+fmt(pm,0)+
+        " W 로 여유율 "+fmt(margin,1)+"% 이며 기준("+fmt(PASS_MARGIN_PCT,0)+"%)을 만족합니다. 감속기는 설계 필요토크 "+fmt(Treq,2)+
+        " N·m 이상으로 선정하십시오. 적재물 투입 충격은 실기 조건으로 추가 확인하십시오.</div>";
+    }else{
+      cls="wn"; big="⚠ 조건부 가능 — 재검토 권장";
+      sub="구동은 되지만 여유가 부족합니다. 필요동력 "+fmt(Preq,1)+"W / 모터 "+fmt(pm,0)+"W (여유율 "+fmt(margin,1)+"%)";
+      n6='<div class="note w">판정: 조건부 가능. 권장 하한 '+fmt(PASS_MARGIN_PCT,0)+'% 미달입니다. 여유율 '+fmt(PASS_MARGIN_PCT,0)+'% 확보에는 모터 <b>'+fmt(need30,1)+
+        "W 이상</b>이 필요합니다. 또는 감속비 상향(속도 저감)·저마찰 지지방식으로 변경하십시오.</div>";
     }
     v.className="verdict "+cls; $("vbig").textContent=big; $("vsub").textContent=sub; $("n6").innerHTML=n6;
 
     /* 경고/제안 */
     var tips=[];
-    if(margin<30) tips.push("여유율 30% 기준 최소 모터출력: <b>"+fmt(need30,1)+" W</b>");
-    if(margin<30&&mu>0.10){
+    if(margin<PASS_MARGIN_PCT) tips.push("여유율 "+fmt(PASS_MARGIN_PCT,0)+"% 기준 최소 모터출력: <b>"+fmt(need30,1)+" W</b>");
+    if(margin<PASS_MARGIN_PCT&&mu>0.10){
       var alt=api.altPower;
       tips.push("정밀 베어링 롤러(μ=0.10)로 변경 시 필요동력 약 <b>"+fmt(alt,1)+" W</b>로 감소");
     }
-    if(margin<30&&Preq>0&&pm>0){
+    if(margin<PASS_MARGIN_PCT&&Preq>0&&pm>0){
       var iNeed=api.iNeed;
-      if(isFinite(iNeed)&&iNeed>i) tips.push("현재 모터로 여유율 30%를 확보하려면 감속비를 약 <b>"+fmt(iNeed,0)+
+      if(isFinite(iNeed)&&iNeed>i) tips.push("현재 모터로 여유율 "+fmt(PASS_MARGIN_PCT,0)+"%를 확보하려면 감속비를 약 <b>"+fmt(iNeed,0)+
         " : 1</b> 이상으로 올려 속도를 "+fmt(vmm*i/iNeed,0)+" mm/min 로 낮추는 방법도 있습니다");
     }
-    if(api.backdriveRisk) tips.push("⚠ <b>미끄러짐 위험: tanθ("+Math.tan(th).toFixed(3)+") > μ("+mu.toFixed(2)+")</b> — 요철·돌기 벨트 또는 경사 전용 벨트를 검토하십시오.");
+    if(api.backdriveRisk) tips.push("⚠ <b>내리막 자주행 위험: |tanθ|("+Math.abs(Math.tan(th)).toFixed(3)+") > μ("+mu.toFixed(2)+")</b> — 브레이크 모터·역주행 방지·회생 처리능력을 검토하십시오.");
     if(ang>0) tips.push("경사 컨베이어는 정지 시 역주행 방지를 위해 브레이크 모터 또는 역회전 방지 장치를 권장합니다.");
     if(Preq>200) tips.push("필요동력 "+fmt(Preq,1)+" W 는 경량 컨베이어 범위(약 200 W)를 초과합니다. 중하중용 기종 검토가 필요합니다.");
     if(vmin>30) tips.push("벨트속도 "+fmt(vmin,1)+" m/min 는 경량 컨베이어 통상 범위(5~30 m/min)를 초과합니다.");
@@ -738,7 +759,7 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
     /* 비교표 */
     var rows="";
     api.comparison.forEach(function(row){
-      var k=row.key,d=SUP[k],st=row.status==="safe"?"✅ 안전":(row.status==="conditional"?"△ 조건부":"✕ 불가");
+      var k=row.key,d=SUP[k],st=row.braking?"⚠ 제동 검토":(row.status==="safe"?"✅ 안전":(row.status==="conditional"?"△ 조건부":"✕ 불가"));
       rows+='<tr class="'+(k===sup?'sel':'')+'"><td>'+d.name+'</td><td>'+row.mu.toFixed(2)+'</td>'+ 
         '<td>'+fmt(row.powerW,1)+' W<br><span style="color:#64748b">('+fmt(row.relativePct,0)+'%)</span></td>'+ 
         '<td>'+(isFinite(row.marginPct)?fmt(row.marginPct,1):'–')+' %</td><td>'+st+'</td>'+ 
@@ -771,10 +792,17 @@ footer{text-align:center;color:var(--sub);font-size:11.5px;padding:14px 10px 4px
     try{
       var data=await globalThis.JCalculatorApi.conveyorBootstrap();
       SUP=data.supports; ORDER=data.order; TBL=data.tableOrder;
+      ADMIN_DEFAULTS=data.adminDefaults||{};
+      PASS_MARGIN_PCT=Number(data.adminThresholds&&data.adminThresholds.passMarginPct);
+      if(!isFinite(PASS_MARGIN_PCT)||PASS_MARGIN_PCT<0)PASS_MARGIN_PCT=30;
+      $("fit").textContent="⚡ 여유율 "+fmt(PASS_MARGIN_PCT,0)+"% 만족 모터출력 채우기";
+      var initial={load:20,angle:0,pmotor:90,rpm:1500,ratio:30,pulley:50,center:1000,width:300,pitch:200,sf:3.0,eff:0.8,cmu:0.20,accelTime:0.5,equivalentInertia:"",support:"slider"};
+      Object.assign(initial,ADMIN_DEFAULTS);
+      for(var initialKey in initial)if($(initialKey))$(initialKey).value=initial[initialKey];
       initTerms(); initOverlay(); buildCards();
       Array.prototype.forEach.call(document.querySelectorAll("input,select"),function(e){e.addEventListener("input",calc);e.addEventListener("change",calc);});
       $("support").addEventListener("change",onSupChange);
-      $("reset").addEventListener("click",function(){var d={load:20,angle:0,pmotor:90,rpm:1500,ratio:30,pulley:50,center:1000,width:300,pitch:200,sf:3.0,eff:0.8,cmu:0.20};for(var k in d)$(k).value=d[k];$("support").value="slider";onSupChange();});
+      $("reset").addEventListener("click",function(){var d={load:20,angle:0,pmotor:90,rpm:1500,ratio:30,pulley:50,center:1000,width:300,pitch:200,sf:3.0,eff:0.8,cmu:0.20,accelTime:0.5,equivalentInertia:"",support:"slider"};Object.assign(d,ADMIN_DEFAULTS);for(var k in d)if($(k))$(k).value=d[k];onSupChange();});
       $("fit").addEventListener("click",async function(){var result=await calc();if(!result)return;$("pmotor").value=Math.ceil(result.need30);await calc();});
       onSupChange();
     }catch(err){globalThis.JCalculatorApi.showError(err);}

@@ -23,7 +23,7 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radi
 <body>
 <main class="shell">
 <header class="topbar"><div class="brand"><div class="logo">AX</div><div><div class="eyebrow">MECHANICAL DESIGN VERIFICATION SUITE</div><div class="brand-title">이송 기구 설계 검증 도구 모음</div></div></div><div class="status">SELECT &amp; VERIFY</div></header>
-<section class="hero"><div><div class="eyebrow">01 / TOOL CATALOG</div><h1>설계할 기구를<br>선택하세요</h1><p>모터·감속기·기구 부품을 선정하고, 구동 가능 여부와<br>안전 여유를 한 번에 검증합니다.</p></div><div class="hero-mark">AX<br><span>TOOLS</span></div></section>
+<section class="hero"><div><div class="eyebrow">01 / TOOL CATALOG</div><h1 id="homeTitle">설계할 기구를<br>선택하세요</h1><p id="homeDescription">모터·감속기·기구 부품을 선정하고, 구동 가능 여부와<br>안전 여유를 한 번에 검증합니다.</p></div><div class="hero-mark">AX<br><span>TOOLS</span></div></section>
 <!-- 파일/폴더 경로가 바뀌면 href만 수정하세요 -->
 <section class="grid" aria-label="설계 검증 도구 선택">
 <a class="card" href="conveyor/"><div class="card-top"><span class="num">01</span><svg class="icon" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 54h56M17 54l7-25h33l7 25M20 29l8 25m32-25-8 25"/><circle cx="25" cy="60" r="6"/><circle cx="59" cy="60" r="6"/><path d="M22 38h36M31 29v25m18-25v25"/></svg></div><div class="card-body"><div class="eyebrow">BELT CONVEYOR</div><h2>벨트 컨베이어</h2><p>모터·감속비·풀리를 선정해 입력하면 경량 소형 벨트 컨베이어의 구동 가능 여부를 판정합니다.</p></div><div class="card-foot"><div class="tags"><span class="tag">수평 반송</span><span class="tag">안전율 2.0</span><span class="tag">여유율 검증</span></div><span class="arrow">→</span></div></a>
@@ -34,7 +34,17 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radi
 
 <a class="card" href="sensor/"><div class="card-top"><span class="num">06</span><svg class="icon" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2"><rect x="13" y="24" width="18" height="32" rx="3"/><rect x="49" y="24" width="18" height="32" rx="3"/><path d="M31 34h18M31 40h18M31 46h18" stroke-dasharray="4 3"/><circle cx="22" cy="34" r="3"/><circle cx="58" cy="34" r="3"/><path d="M20 17h40M40 12v10"/><path d="m36 16 4-4 4 4"/><path d="M20 63h40"/><path d="m56 59 4 4-4 4"/></svg></div><div class="card-body"><div class="eyebrow">SENSOR SELECTION</div><h2>센서 선정</h2><p>용도·검출 대상·설치 환경·거리·형상·전기 조건을 입력하면 후보를 좁히고, 공식 근거와 특성 데이터까지 확인합니다.</p></div><div class="card-foot"><div class="tags"><span class="tag">OMRON 공식 자료</span><span class="tag">E3T · EE-SX47/67</span><span class="tag">특성 데이터</span></div><span class="arrow">→</span></div></a>
 </section>
-<footer>GitHub → Render Static Site · 설계 검증용 참고 도구이며 최종 설계 책임은 설계자에게 있습니다.</footer>
+<footer id="homeNotice">GitHub → Render Web Service · 설계 검증용 참고 도구이며 최종 설계 책임은 설계자에게 있습니다.</footer>
 </main>
+<script src="api-config.js"></script>
+<script src="runtime-config.js"></script>
+<script>
+window.addEventListener('jcalculator:config',event=>{
+  const content=event.detail?.content||{};
+  if(content.homeTitle)document.getElementById('homeTitle').textContent=content.homeTitle;
+  if(content.homeDescription)document.getElementById('homeDescription').textContent=content.homeDescription;
+  if(content.footerNotice)document.getElementById('homeNotice').textContent=content.footerNotice;
+});
+</script>
 </body>
 </html>

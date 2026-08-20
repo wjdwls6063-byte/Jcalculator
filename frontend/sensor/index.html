@@ -785,12 +785,22 @@ button,input{font:inherit} button{cursor:pointer}
   "handoffRule": "Any future chat/AI continuing this project should read PROJECT_HANDOFF.md and data/source-policy.json before modifying product data or recommendation logic."
 }
 </script>
+<script src="../api-config.js"></script>
+<script src="../runtime-config.js"></script>
 <script src="data/omron-sensor-selection-data-v10.js"></script>
 <script src="data/fiber-assets-inline-v01.js"></script>
 <script src="data/omron-fiber-sensor-data-v01.js"></script>
 <script src="data/connection-accessory-engine-v01.js"></script>
 <script>
 const state={step:1,sensorType:null,photoMethod:null,proxSize:null,proxShield:null,purpose:null,target:null,targetDetails:[],through:null,reflector:null,background:null,distance:'',shape:null,output:null,operation:null,connection:[],ip67Required:false,compareSelected:['E3T-FL11','E3T-SR41'],compareMode:'same'};
+const SENSOR_ADMIN={nonMagneticRatio:.30};
+const sensorAdminPercent=()=>Number((SENSOR_ADMIN.nonMagneticRatio*100).toFixed(1));
+window.addEventListener('jcalculator:config',event=>{
+  const defaults=event.detail?.tools?.sensor?.defaults||{};
+  const ratio=Number(defaults.nonMagneticRatio);
+  if(Number.isFinite(ratio)&&ratio>0&&ratio<=1)SENSOR_ADMIN.nonMagneticRatio=ratio;
+  if(typeof render==='function')render();
+});
 const labels=['센서 종류','검출 대상','검출 방식','거리·형상','전기 조건','결과'];
 const sampleProducts={
  'E3T-FL11':{maker:'OMRON',series:'E3T',model:'E3T-FL11',method:'BGS 반사형',distance:'1~15mm',output:'NPN',op:'입광 시 ON',shape:'플랫',reason:'배경 영향 억제가 필요한 근거리 검출 조건에서 우선 비교'},
@@ -954,6 +964,14 @@ document.addEventListener('click',e=>{
 window.addEventListener('scroll',()=>{if(window.matchMedia('(hover:hover)').matches)schedulePopoverHide(80)},{passive:true});
 window.addEventListener('resize',hidePopover);
 function chips(){const vals=[];if(state.sensorType)vals.push(state.sensorType==='photoelectric'?'광전센서':state.sensorType==='proximity'?'근접센서':'포토마이크로센서');else if(state.purpose)vals.push(state.purpose==='presence'?'제품 유무 확인':state.purpose);if(state.target)vals.push(state.target);if(state.proxSize)vals.push(({phi3:'φ3',phi4:'φ4',phi65:'φ6.5',m4:'M4',m5:'M5'}[state.proxSize]));if(state.proxShield)vals.push(state.proxShield==='shield'?'실드':'비실드');(state.targetDetails||[]).forEach(v=>vals.push(v));if(state.through==='yes')vals.push('양쪽 설치 가능');if(state.through==='no')vals.push('양쪽 설치 불가');if(state.background==='yes')vals.push('배경 가까움');if(state.distance)vals.push(state.distance+'mm');if(state.shape)vals.push(state.shape);if(state.output)vals.push(state.output);if(state.operation)vals.push(state.operation);const bar=document.getElementById('conditionBar');bar.querySelectorAll('.chip.dynamic').forEach(x=>x.remove());const empty=document.getElementById('emptyCond');empty.style.display=vals.length?'none':'inline';vals.forEach(v=>{const c=document.createElement('span');c.className='chip dynamic';c.textContent=v;bar.insertBefore(c,bar.querySelector('.clear'))})}
+function validateWizardDistance(input){
+  state.distance=input.value;chips();
+  const raw=String(state.distance??'').trim(),valid=raw===''||(Number.isFinite(Number(raw))&&Number(raw)>=0),next=document.getElementById('nextBtn'),question=document.querySelector('#panel .question');
+  input.setCustomValidity(valid?'':'검출 거리는 0 이상의 숫자만 입력하세요.');
+  if(next)next.disabled=!valid;
+  question?.querySelector('.distance-input-error')?.remove();
+  if(!valid&&question)question.insertAdjacentHTML('beforeend','<div class="official-note distance-input-error" style="border-color:#fca5a5;color:#b91c1c"><strong>입력 오류:</strong> 검출 거리는 0 이상의 숫자만 입력할 수 있습니다.</div>');
+}
 function setVal(k,v){state[k]=v;chips();render()}
 function toggleTargetDetail(v,btn){
   state.targetDetails=state.targetDetails||[];
@@ -1026,7 +1044,7 @@ function render(){renderStepper();chips();const p=document.getElementById('panel
 <div id="targetDetailSelected" class="target-detail-selected">${(state.targetDetails||[]).length?`<strong>선택됨:</strong> ${(state.targetDetails||[]).join(' · ')}`:'선택된 상세 조건이 없습니다.'}</div>
 </details></div><aside class="guide"><h4>물체 예시</h4><p>같은 재질이라도 표면 광택·색상·투명도·크기에 따라 검출 안정성이 달라질 수 있습니다.</p><div class="mini"><strong>대표 예</strong><ul><li>검정 고무 부품</li><li>도금 금속 브라켓</li><li>PET 투명 용기</li><li>색상이 바뀌는 다품종 워크</li></ul></div></aside></div>`}
  if(state.step===3){let method='확산 반사형 포함 후보 유지';if(state.through==='yes')method='투과형 우선';else if(state.through==='no'&&state.reflector==='yes')method='회귀 반사형 우선';else if(state.through==='no'&&state.reflector==='no'&&state.background==='yes')method='BGS / 한정 반사형 우선';html=`<div class="panel-grid"><div class="question"><h2>센서를 어떻게 설치할 수 있습니까?</h2><div class="sub">전문 방식명을 먼저 고르지 않고 설치 상황으로 판단합니다.</div><div class="qa"><div class="qa-title">① 물체 양쪽에 센서를 설치할 수 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.through===v?'active':''}" onclick="setVal('through','${v}')">${['가능','불가능','잘 모르겠음'][i]}</button>`).join('')}</div></div><div class="qa"><div class="qa-title">② 반대편에 작은 반사판은 설치할 수 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.reflector===v?'active':''}" onclick="setVal('reflector','${v}')">${['가능','불가능','잘 모르겠음'][i]}</button>`).join('')}</div></div><div class="qa"><div class="qa-title">③ 검출 물체 뒤쪽에 벽·프레임이 가까이 있습니까?</div><div class="seg">${['yes','no','unknown'].map((v,i)=>`<button class="${state.background===v?'active':''}" onclick="setVal('background','${v}')">${['있음','없음','잘 모르겠음'][i]}</button>`).join('')}</div></div><div class="recommend-method"><div><div style="font-size:12px;color:#667085">현재 설치조건 기준</div><strong>${method}</strong></div><div class="method-chips"><span class="method-tag">투과형 <span class="info term" data-term="through">?</span></span><span class="method-tag">회귀 반사형 <span class="info term" data-term="retro">?</span></span><span class="method-tag">BGS <span class="info term" data-term="bgs">?</span></span></div></div></div><aside class="guide"><h4>핵심 UX</h4><p>“BGS가 뭔지 아십니까?”라고 묻지 않습니다. 사용자의 설치 조건을 받은 뒤 시스템이 검출 방식을 추천하고, ⓘ에서 5~10초 설명을 제공합니다.</p></aside></div>`}
- if(state.step===4){html=`<div class="panel-grid"><div class="question"><h2>검출 거리와 설치 공간을 알려주세요.</h2><div class="sub">거리는 강한 Must 조건으로, 형상은 상황에 따라 Must/Prefer로 처리합니다.</div><div class="fields"><div class="field"><label>센서 ↔ 물체 거리 <span class="info term" data-term="distance">?</span></label><div style="display:flex;gap:8px"><input type="number" value="${state.distance}" placeholder="예: 20" oninput="state.distance=this.value;chips()"><span style="align-self:center">mm</span></div></div><div class="field"><label>설치 공간 / 형상</label><select onchange="setVal('shape',this.value)"><option value="">선택</option><option ${state.shape==='플랫 선호'?'selected':''}>플랫 선호</option><option ${state.shape==='사이드 뷰 선호'?'selected':''}>사이드 뷰 선호</option><option ${state.shape==='상관없음'?'selected':''}>상관없음</option></select></div></div><div class="qa" style="margin-top:12px"><div class="qa-title">빠른 거리 선택</div><div class="seg"><button onclick="setVal('distance','10')">10mm 이하</button><button onclick="setVal('distance','20')">10~30mm</button><button onclick="setVal('distance','50')">30~100mm</button><button onclick="setVal('distance','200')">100~300mm</button><button onclick="setVal('distance','500')">300mm 이상</button><button onclick="setVal('distance','')">잘 모르겠음</button></div></div><details class="advanced"><summary>+ 상세 조건</summary><p style="font-size:12px;color:#667085">최소 검출 물체·응차 등은 결과 상세보기에서 공식값을 확인할 수 있습니다. 이후 별도 Must 필터로 확장할 수 있습니다.</p></details></div><aside class="guide"><h4>실무자 관점</h4><p>왼쪽 필터에는 최소/최대 mm를 직접 입력할 수 있고, Wizard 선택값과 즉시 동기화합니다.</p></aside></div>`}
+ if(state.step===4){html=`<div class="panel-grid"><div class="question"><h2>검출 거리와 설치 공간을 알려주세요.</h2><div class="sub">거리는 강한 Must 조건으로, 형상은 상황에 따라 Must/Prefer로 처리합니다.</div><div class="fields"><div class="field"><label>센서 ↔ 물체 거리 <span class="info term" data-term="distance">?</span></label><div style="display:flex;gap:8px"><input type="number" min="0" value="${state.distance}" placeholder="예: 20" oninput="validateWizardDistance(this)"><span style="align-self:center">mm</span></div></div><div class="field"><label>설치 공간 / 형상</label><select onchange="setVal('shape',this.value)"><option value="">선택</option><option ${state.shape==='플랫 선호'?'selected':''}>플랫 선호</option><option ${state.shape==='사이드 뷰 선호'?'selected':''}>사이드 뷰 선호</option><option ${state.shape==='상관없음'?'selected':''}>상관없음</option></select></div></div><div class="qa" style="margin-top:12px"><div class="qa-title">빠른 거리 선택</div><div class="seg"><button onclick="setVal('distance','10')">10mm 이하</button><button onclick="setVal('distance','20')">10~30mm</button><button onclick="setVal('distance','50')">30~100mm</button><button onclick="setVal('distance','200')">100~300mm</button><button onclick="setVal('distance','500')">300mm 이상</button><button onclick="setVal('distance','')">잘 모르겠음</button></div></div><details class="advanced"><summary>+ 상세 조건</summary><p style="font-size:12px;color:#667085">최소 검출 물체·응차 등은 결과 상세보기에서 공식값을 확인할 수 있습니다. 이후 별도 Must 필터로 확장할 수 있습니다.</p></details></div><aside class="guide"><h4>실무자 관점</h4><p>왼쪽 필터에는 최소/최대 mm를 직접 입력할 수 있고, Wizard 선택값과 즉시 동기화합니다.</p></aside></div>`}
  if(state.step===5){html=`<div class="panel-grid"><div class="question"><h2>전기 조건을 확인합니다.</h2><div class="sub">사용자가 값을 알면 Must, 모르면 후보 선정 후 “추가 확인 필요”로 표시합니다.</div><div class="qa"><div class="qa-title">PLC 입력에 맞는 출력 방식</div><div class="seg"><button class="${state.output==='NPN'?'active':''}" onclick="setVal('output','NPN')">NPN <span class="info term" data-term="npn" onclick="event.stopPropagation()">?</span></button><button class="${state.output==='PNP'?'active':''}" onclick="setVal('output','PNP')">PNP <span class="info term" data-term="pnp" onclick="event.stopPropagation()">?</span></button><button class="${state.output==='잘 모르겠음'?'active':''}" onclick="setVal('output','잘 모르겠음')">잘 모르겠음</button></div></div><div class="qa"><div class="qa-title">출력이 언제 ON되어야 합니까?</div><div class="seg"><button class="${state.operation==='입광 시 ON'?'active':''}" onclick="setVal('operation','입광 시 ON')">입광 시 ON <span class="info term" data-term="lighton" onclick="event.stopPropagation()">?</span></button><button class="${state.operation==='차광 시 ON'?'active':''}" onclick="setVal('operation','차광 시 ON')">차광 시 ON <span class="info term" data-term="darkon" onclick="event.stopPropagation()">?</span></button><button class="${state.operation==='잘 모르겠음'?'active':''}" onclick="setVal('operation','잘 모르겠음')">잘 모르겠음</button></div></div><details class="advanced"><summary>+ 접속 / 환경 조건</summary><div class="seg" style="margin-top:10px"><button id="wizConnM12" onclick="toggleWizardConnection('m12')">M12 <span class="info term" data-term="m12" onclick="event.stopPropagation()">?</span></button><button id="wizConnEcon" onclick="toggleWizardConnection('econ')">e-CON <span class="info term" data-term="econ" onclick="event.stopPropagation()">?</span></button><button id="wizConnRobot" onclick="toggleWizardConnection('robot')">로봇 코드</button><button>IP67 <span class="info term" data-term="ip67">?</span></button></div></details></div><aside class="guide"><h4>표현 원칙</h4><p>전문 용어는 숨기지 않습니다. 실무자는 바로 보고 선택하고, 초보자는 ⓘ를 통해 즉시 뜻을 확인할 수 있게 합니다.</p></aside></div>`}
  if(state.step===6){html=`<div class="question"><div class="result-top"><div><h2>추천 결과 미리보기</h2><div class="result-count">샘플 3개 모델 · 카드의 ‘비교 담기’로 그룹 비교 가능</div></div><div style="display:flex;gap:8px"><button class="ghost" onclick="openCompare('same')">그룹 비교</button><button class="ghost" onclick="openPolicy()">데이터 기준</button></div></div><div class="result-grid">${product('E3T-FL11','BGS 반사형','1~15mm','NPN','입광 시 ON','플랫','best')}${product('E3T-SR41','회귀 반사형','200mm*','NPN','입광 시 ON','사이드 뷰','')}${product('E3T-FT11','투과형','500mm','NPN','입광 시 ON','플랫','')}</div><div class="official-note" style="margin-top:14px"><strong>비교 설계:</strong> 같은 제조사에서는 유사 모델/시리즈를 그룹으로 묶고, 향후 타 제조사 데이터가 추가되면 공통 사양을 정규화해 제조사 간 비교로 확장합니다. 현재 미리보기의 실제 제품 사양은 OMRON 자료만 사용합니다.</div><div class="official-note" style="margin-top:8px"><strong>* 회귀 반사형:</strong> E3T-SR4□의 검출 거리는 사용하는 반사판 조합에 따라 달라집니다. 실제 선정 화면에서는 반사판 조건을 결과와 함께 연결합니다.</div></div>`}
  p.innerHTML=html;document.getElementById('prevBtn').style.visibility=state.step===1?'hidden':'visible';document.getElementById('nextBtn').textContent=state.step===6?'처음으로':'다음';updateCompareTray()}
@@ -1891,7 +1909,9 @@ render();
     if(state.purpose && !['presence','position'].includes(state.purpose))return [];
     const f=sidebarFilters(),route=routeCategory(),e3m=inferredE3TMethods();
     const q=(document.getElementById('globalSearch')?.value||'').trim().toLowerCase();
-    const wd=parseFloat(state.distance),hasWD=Number.isFinite(wd);
+    const wd=parseFloat(state.distance),hasDistanceInput=String(state.distance).trim()!=='';
+    if(hasDistanceInput&&(!Number.isFinite(wd)||wd<0))return [];
+    const hasWD=Number.isFinite(wd)&&wd>=0;
     const outReq=['NPN','PNP'].includes(state.output)?state.output:null;
     const opReq=state.operation==='입광 시 ON'?'light_on'
       :state.operation==='차광 시 ON'?'dark_on'
@@ -1947,18 +1967,20 @@ render();
           if(req==='m8_connector'&&p.connection?.base?.type!=='m8_connector')fail=true;
         }
         const setMax=+p.specs?.settingDistance?.max;
-        if(hasWD&&Number.isFinite(setMax)&&wd>setMax)fail=true;
-        if(f.min!=null&&Number.isFinite(setMax)&&setMax<f.min)fail=true;
+        const materialFactor=state.target==='비자성 금속'?SENSOR_ADMIN.nonMagneticRatio:1;
+        const effectiveSetMax=Number.isFinite(setMax)?setMax*materialFactor:setMax;
+        if(hasWD&&Number.isFinite(effectiveSetMax)&&wd>effectiveSetMax)fail=true;
+        if(f.min!=null&&Number.isFinite(effectiveSetMax)&&effectiveSetMax<f.min)fail=true;
         if(f.max!=null&&d.min!=null&&d.min>f.max)fail=true;
         if(fail)continue;
 
         if(state.proxSize){score+=16;reasons.push(`선택 사이즈 ${p.classification?.sizeLabel} 일치`)}
         if(state.proxShield){score+=14;reasons.push(`${p.classification?.shieldNameKo} 설치 조건 일치`)}
-        if(hasWD){score+=24;reasons.push(`실제 간격 ${wd}mm가 설정 거리 0~${p.specs?.settingDistance?.max}mm 안에 있음`)}
+        if(hasWD){score+=24;reasons.push(`실제 간격 ${wd}mm가 ${state.target==='비자성 금속'?`비자성 금속 보수 보정(${sensorAdminPercent()}%) 후 `:''}설정 거리 0~${Number(effectiveSetMax.toFixed(3))}mm 안에 있음`)}
         if(outReq){score+=10;reasons.push(`${outReq} 출력 조건 만족`)}
         if(opReq){score+=10;reasons.push(`${operationLabel(p)} 동작 조건 만족`)}
         if((state.connection||[]).length){score+=10;reasons.push('선택한 접속 방식과 일치')}
-        if(state.target==='비자성 금속'){score-=4;reasons.push('비자성 금속은 카탈로그상 검출 거리 저하 가능')}
+        if(state.target==='비자성 금속'){score-=4;reasons.push(`비자성 금속 종류가 미정이므로 철 기준 설정 거리의 ${sensorAdminPercent()}%만 자동 통과`)}
         if(!reasons.length)reasons.push('E2E Small New 근접센서 기본 조건에 해당');
 
       }else{
@@ -2402,9 +2424,9 @@ render();
     document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question">
       <h2>실제 설치할 검출 거리를 확인합니다.</h2>
       <div class="sub">근접센서는 정격 검출 거리 끝에 딱 맞추기보다 <b>설정 거리</b> 안에서 사용하는 것이 안정적입니다.</div>
-      ${cfg?`<div class="prox-distance-summary"><div><span>선택 외형</span><b>${PROX_SIZE_LABEL[state.proxSize]} · ${state.proxShield==='shield'?'실드':'비실드'}</b></div><div><span>정격 검출 거리</span><b>${cfg.rated}mm</b></div><div><span>권장 설정 거리</span><b>0~${cfg.set}mm <span class="info term" data-term="prox_setting">?</span></b></div></div>`:
+      ${cfg?`<div class="prox-distance-summary"><div><span>선택 외형</span><b>${PROX_SIZE_LABEL[state.proxSize]} · ${state.proxShield==='shield'?'실드':'비실드'}</b></div><div><span>정격 검출 거리</span><b>${cfg.rated}mm</b></div><div><span>${state.target==='비자성 금속'?`비자성 금속 자동판정 거리 (철 기준의 ${sensorAdminPercent()}%)`:'권장 설정 거리'}</span><b>0~${state.target==='비자성 금속'?Number((cfg.set*SENSOR_ADMIN.nonMagneticRatio).toFixed(3)):cfg.set}mm <span class="info term" data-term="prox_setting">?</span></b></div></div>`:
       `<div class="official-note">사이즈 또는 실드/비실드를 아직 정하지 않았다면 원하는 실제 설치 거리만 입력해도 후보를 좁힐 수 있습니다.</div>`}
-      <div class="field" style="margin-top:14px"><label>센서 검출면 ↔ 금속 물체의 실제 간격 <span class="info term" data-term="prox_setting">?</span></label><div style="display:flex;gap:8px"><input type="number" min="0" step="0.1" value="${state.distance}" placeholder="예: 0.5" oninput="state.distance=this.value;chips()"><span style="align-self:center">mm</span></div></div>
+      <div class="field" style="margin-top:14px"><label>센서 검출면 ↔ 금속 물체의 실제 간격 <span class="info term" data-term="prox_setting">?</span></label><div style="display:flex;gap:8px"><input type="number" min="0" step="0.1" value="${state.distance}" placeholder="예: 0.5" oninput="validateWizardDistance(this)"><span style="align-self:center">mm</span></div></div>
       <div class="qa"><div class="qa-title">빠른 입력</div><div class="seg distance-quick"><button onclick="setVal('distance','0.5')">0.5mm</button><button onclick="setVal('distance','1')">1mm</button><button onclick="setVal('distance','1.5')">1.5mm</button><button onclick="setVal('distance','2')">2mm</button><button onclick="setVal('distance','')">잘 모르겠음</button></div></div>
       <div class="official-note"><strong>선정 로직:</strong> 입력한 실제 간격이 각 형번의 p.60 설정 거리 범위 안에 들어오는 형번을 우선 남깁니다.</div>
     </div><aside class="guide"><h4>정격 거리 vs 설정 거리</h4><p><b>정격 검출 거리</b>는 센서 성능의 기준값이고, <b>설정 거리</b>는 실제 설치에서 권장하는 안정 범위입니다.</p></aside></div>`;
@@ -2485,7 +2507,7 @@ render();
     document.getElementById('panel').innerHTML=`<div class="panel-grid"><div class="question"><h2>필요한 검출 거리를 입력합니다.</h2>
       <div class="sub">선택한 검출 방식에 맞는 실제 설치 거리를 mm 단위로 입력합니다. E3T 근거리부터 E3Z 장거리까지 함께 비교합니다.</div>
       <div class="fields"><div class="field"><label>${photoDistanceLabel()} <span class="info term" data-term="distance">?</span></label>
-        <div style="display:flex;gap:8px"><input type="number" min="0" value="${state.distance}" placeholder="예: 500" oninput="state.distance=this.value;document.getElementById('filterDistanceMin').value=this.value;document.getElementById('filterDistanceMax').value=this.value;chips()"><span style="align-self:center">mm</span></div></div>
+        <div style="display:flex;gap:8px"><input type="number" min="0" value="${state.distance}" placeholder="예: 500" oninput="validateWizardDistance(this);document.getElementById('filterDistanceMin').value=this.value;document.getElementById('filterDistanceMax').value=this.value"><span style="align-self:center">mm</span></div></div>
         <div class="field"><label>본체 형상 선호</label><select onchange="setVal('shape',this.value)"><option value="">상관없음</option><option ${state.shape==='플랫 선호'?'selected':''}>플랫 선호</option><option ${state.shape==='사이드 뷰 선호'?'selected':''}>사이드 뷰 선호</option></select></div></div>
       <div class="qa" style="margin-top:12px"><div class="qa-title">빠른 거리 선택</div><div class="seg distance-quick">
         <button onclick="setVal('distance','20')">20mm</button><button onclick="setVal('distance','100')">100mm</button><button onclick="setVal('distance','500')">500mm</button>
@@ -2851,7 +2873,7 @@ render();
               <div class="beginner-term-card"><div class="beginner-term-title">실드 / 비실드 <span class="info term" data-term="prox_shield">?</span></div><div class="beginner-term-desc">실드는 주변 금속 가까이에 설치하기 쉽고, 비실드는 더 긴 검출 거리를 얻는 대신 센서 앞부분 주변에 금속 여유 공간이 필요합니다.</div></div>
               <div class="beginner-term-card"><div class="beginner-term-title">설정 거리 <span class="info term" data-term="prox_setting">?</span></div><div class="beginner-term-desc">정격 검출 거리 끝까지 쓰기보다 실제 장비에서는 이 범위 안쪽으로 설치해 검출 여유를 확보하는 값입니다.</div></div>
               <div class="beginner-term-card"><div class="beginner-term-title">NO / NC <span class="info term" data-term="prox_no">?</span></div><div class="beginner-term-desc">NO는 금속이 오면 ON, NC는 평소 ON 상태에서 금속이 오면 OFF되는 방식입니다.</div></div>
-              <div class="beginner-term-card"><div class="beginner-term-title">비자성 금속 주의 <span class="info term" data-term="prox_metal">?</span></div><div class="beginner-term-desc">카탈로그 검출 거리 기준은 자성 금속입니다. 알루미늄 등 비자성 금속은 실제 검출 거리가 줄어들 수 있어 실제 워크 확인이 필요합니다.</div></div>
+              <div class="beginner-term-card"><div class="beginner-term-title">비자성 금속 주의 <span class="info term" data-term="prox_metal">?</span></div><div class="beginner-term-desc">카탈로그 검출 거리 기준은 자성 금속입니다. 비자성 금속은 철 기준 권장 설정 거리의 ${sensorAdminPercent()}%까지만 자동 통과시키며 실제 워크 확인이 필요합니다.</div></div>
             </div>
           </section>
           <section class="detail-section detail-characteristic-section">
@@ -3053,7 +3075,15 @@ render();
     if(state.step===5&&state.sensorType==='proximity')renderProximityStep5();
     if(state.step===6)renderCombinedResults();
     const next=document.getElementById('nextBtn');
-    if(next)next.style.visibility=state.step===1?'hidden':'visible';
+    if(next){
+      next.style.visibility=state.step===1?'hidden':'visible';
+      const raw=String(state.distance??'').trim(),distanceValid=raw===''||(Number.isFinite(Number(raw))&&Number(raw)>=0);
+      next.disabled=state.step===4&&!distanceValid;
+      if(state.step===4&&!distanceValid){
+        const question=document.querySelector('#panel .question');
+        if(question&&!question.querySelector('.distance-input-error'))question.insertAdjacentHTML('beforeend','<div class="official-note distance-input-error" style="border-color:#fca5a5;color:#b91c1c"><strong>입력 오류:</strong> 검출 거리는 0 이상의 숫자만 입력할 수 있습니다.</div>');
+      }
+    }
   };
   render();
 })();

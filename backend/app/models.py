@@ -6,18 +6,18 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class BallscrewInputs(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
 
     axisMode: Literal["horizontal", "vertical"] = "horizontal"
     couplingSeries: Literal["auto", "SD", "SDW"] = "auto"
     motorId: str = "HG-KR43"
     reducerRatio: float = Field(default=3, gt=0)
-    massKg: float = Field(default=80, ge=0)
-    strokeMm: float = Field(default=500, ge=0)
-    maxSpeedMmS: float = Field(default=250, ge=0)
+    massKg: float = Field(default=80, gt=0)
+    strokeMm: float = Field(default=500, gt=0)
+    maxSpeedMmS: float = Field(default=250, gt=0)
     accelTimeS: float = Field(default=0.2, gt=0)
     dwellTimeS: float = Field(default=0.2, ge=0)
-    cyclesPerMin: float = Field(default=10, ge=0)
+    cyclesPerMin: float = Field(default=10, gt=0)
     externalResistanceN: float = Field(default=50, ge=0)
     counterbalanceForceN: float = Field(default=0, ge=0)
     verticalProcessForceN: float = Field(default=0, ge=0)
@@ -47,7 +47,7 @@ class BallscrewInputs(BaseModel):
     guideSelectionMode: Literal["auto", "manual"] = "manual"
     guideSeries: str = "HSR"
     guideModelId: str = "HSR25C"
-    targetLifeHours: float = Field(default=20_000, ge=0)
+    targetLifeHours: float = Field(default=20_000, gt=0)
     safetyGoal: Literal["standard", "safe", "extra"] = "safe"
     externalFxN: float = 0
     externalFyN: float = 0
@@ -60,12 +60,12 @@ class BallscrewInputs(BaseModel):
 
 
 class ConveyorInputs(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
 
-    load: float = Field(default=20, ge=0)
+    load: float = Field(default=20, gt=0)
     angle: float = Field(default=0, ge=-90, le=90)
-    pmotor: float = Field(default=90, ge=0)
-    rpm: float = Field(default=1500, ge=0)
+    pmotor: float = Field(default=90, gt=0)
+    rpm: float = Field(default=1500, gt=0)
     ratio: float = Field(default=30, gt=0)
     pulley: float = Field(default=50, gt=0)
     center: float = Field(default=1000, gt=0)
@@ -75,12 +75,14 @@ class ConveyorInputs(BaseModel):
     sf: float = Field(default=3.0, gt=0)
     eff: float = Field(default=0.8, gt=0, le=1)
     cmu: float = Field(default=0.2, gt=0, le=1)
+    accelTime: float = Field(default=0.5, gt=0)
+    equivalentInertia: float = Field(default=0, ge=0)
 
 
 class EccentricInputs(BaseModel):
     """The eccentric page has catalog and manual-entry variants, so fields remain flexible."""
 
-    model_config = ConfigDict(extra="allow")
+    model_config = ConfigDict(extra="allow", allow_inf_nan=False)
 
     m: float = Field(ge=0)
     e: float = Field(ge=0)
@@ -95,4 +97,4 @@ class EccentricInputs(BaseModel):
 
 
 class SmcCylinderInputs(BaseModel):
-    model_config = ConfigDict(extra="allow")
+    model_config = ConfigDict(extra="allow", allow_inf_nan=False)

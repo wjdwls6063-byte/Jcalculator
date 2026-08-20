@@ -423,8 +423,9 @@ function fm(x,d){
   return x.toLocaleString('ko-KR',{maximumFractionDigits:d});
 }
 const pc=x=>!isFinite(x)?'∞':(x*100).toFixed(Math.abs(x*100)>=10?0:1)+'%';
-const grade=m=>m>=.3?'ok':m>=0?'cond':'ng';
-const gtxt=m=>m>=.3?'안전':m>=0?'조건부':'사용불가';
+let PASS_MARGIN=.3;
+const grade=m=>m>=PASS_MARGIN?'ok':m>=0?'cond':'ng';
+const gtxt=m=>m>=PASS_MARGIN?'안전':m>=0?'조건부':'사용불가';
 
 /* ===================== 출처(근거자료) ===================== */
 const SRC={
@@ -481,6 +482,7 @@ const TERMS={
  ib:['벨트비 i_b','종동풀리 ÷ 구동풀리 = D2 / D1.','전체 감속비 = i_b × i_g. 벨트비를 올리면 감속기 출력토크 요구가 줄어듭니다.'],
  Mpk:['모터 피크토크','가속 또는 감속 구간에서 모터가 내야 하는 최대 토크.','모터 최대토크와 비교합니다. 보통 가속 구간이 지배적입니다.'],
  Mrms:['모터 RMS 토크','1사이클 실효(제곱평균) 토크. 발열·연속정격의 기준입니다.','모터 정격토크와 비교합니다. 휴지 중 위치유지를 하면 이 값이 크게 올라갑니다.'],
+ Minst:['모터 비상정지 순간토크','입력 비상정지시간 동안 부하와 모터 회전자 관성을 감속하는 모터축 순간토크.','감속기 순간허용토크뿐 아니라 모터 최대토크와도 함께 비교합니다.'],
  jratio:['이너샤비','모터축 환산 부하관성 ÷ 모터 로터관성.','너무 크면 응답·정정시간이 나빠지고 진동합니다. 카탈로그 권장값 이하로 맞춥니다.'],
  Nmot:['모터 회전수','정속 구간에서의 모터 회전수 = 부하 회전수 × i_b × i_g.','모터 최대회전수 및 감속기 허용최고 입력회전수 두 곳에서 동시에 제한됩니다.'],
  Navg:['평균 입력회전수','1사이클 총 회전량을 사이클 시간으로 나눈 평균 회전수.','감속기 수명(윤활·발열) 기준인 허용평균 입력회전수와 비교합니다.'],
@@ -573,8 +575,8 @@ function readP(){
 
 function res(E){
   if(!E||!isFinite(E.v)) return '';
-  let h=`<span class="res ${E.v>=.3?'g':E.v>=0?'y':'r'}">이 항목 ${pc(E.v)}</span>`;
-  if(isFinite(E.min)) h+=`<span class="res ${E.min>=.3?'g':E.min>=0?'y':'r'}">${E.min>=0?'전체 통과 '+pc(E.min):'전체 최소 '+pc(E.min)}</span>`;
+  let h=`<span class="res ${E.v>=PASS_MARGIN?'g':E.v>=0?'y':'r'}">이 항목 ${pc(E.v)}</span>`;
+  if(isFinite(E.min)) h+=`<span class="res ${E.min>=PASS_MARGIN?'g':E.min>=0?'y':'r'}">${E.min>=0?'전체 통과 '+pc(E.min):'전체 최소 '+pc(E.min)}</span>`;
   return h;
 }
 
@@ -628,13 +630,13 @@ function render(r){
       <td class="num">${pc(it.margin)}</td><td><span class="lb ${grade(it.margin)}">${gtxt(it.margin)}</span></td></tr>
     <tr class="det hidden" data-d="${i}"><td colspan="7">${detailHTML(it,P)}</td></tr>`).join('');
 
-  const bad=r.items.filter(i=>i.margin<0), warn=r.items.filter(i=>i.margin>=0&&i.margin<.3);
+  const bad=r.items.filter(i=>i.margin<0), warn=r.items.filter(i=>i.margin>=0&&i.margin<PASS_MARGIN);
   let fixes='';
   [...bad,...warn].forEach(it=>{
     const L=it.remedies||[], ng=it.margin<0;
     fixes+=`<div class="fix ${ng?'':'c'}"><h3>${ng?'✕ 사용불가':'△ 조건부'} : ${it.name} — 여유율 ${pc(it.margin)}</h3>
       <p class="why">필요 ${fm(it.need)} ${it.unit}${it.useSf?` × Sf ${fm(P.sf,2)} = ${fm(it.req)} ${it.unit}`:''} 에 대해 허용치는 ${fm(it.allow)} ${it.unit} 입니다.
-      ${ng?`<b>${fm(it.req/it.allow,2)}배 초과</b> — 아래 중 하나를 적용하면 통과합니다.`:'여유가 30% 미만이라 조건부입니다.'}</p>
+      ${ng?`<b>${fm(it.req/it.allow,2)}배 초과</b> — 아래 중 하나를 적용하면 통과합니다.`:`여유가 ${pc(PASS_MARGIN)} 미만이라 조건부입니다.`}</p>
       <ol>${L.length?L.map(x=>`<li><b>${x.t}</b> ${res(x.E)}<p>${x.d}</p></li>`).join('')
         :'<li>자동 탐색으로 찾은 단일 대책이 없습니다. 부하 조건(질량·편심량·회전각) 자체를 재검토하십시오.</li>'}</ol></div>`;
   });
@@ -649,6 +651,7 @@ function render(r){
     <div class="metric"><span class="tt" data-k="ib">전체 감속비</span><b>${fm(r.ib*r.ig,2)}<em> (i_b ${fm(r.ib,2)}×i_g ${r.ig})</em></b></div>
     <div class="metric"><span class="tt" data-k="Mpk">모터 피크토크</span><b>${fm(r.Mpk)}<em> Nm</em></b></div>
     <div class="metric"><span class="tt" data-k="Mrms">모터 RMS토크</span><b>${fm(r.Mrms)}<em> Nm</em></b></div>
+    ${P.estop?`<div class="metric"><span class="tt" data-k="Minst">모터 비상정지토크</span><b>${fm(r.est.M)}<em> Nm</em></b></div>`:''}
     <div class="metric"><span class="tt" data-k="jratio">이너샤비</span><b>${fm(r.ratio,2)}<em> 배</em></b></div>
   </div>
 
@@ -665,7 +668,7 @@ function render(r){
     <div class="tblwrap"><table><thead><tr><th>검토 항목</th><th>필요치</th><th>Sf 적용</th><th>허용치</th><th>단위</th><th><span class="tt" data-k="margin">여유율</span></th><th>판정</th></tr></thead><tbody>${rows}</tbody></table></div></div>
 
   ${fixes?`<div class="sec"><h2>개선 방안 <span style="font-size:11.5px;font-weight:400;color:#64748b">— 각 대책은 실제로 다시 계산한 결과입니다</span></h2>${fixes}</div>`:
-    '<div class="note g"><b>✔ 모든 검토 항목이 30% 이상 여유</b><br>현재 조합으로 구동 가능합니다. 벨트 축하중·브레이크 유지토크·구조 강성은 별도 확인하십시오.</div>'}
+    `<div class="note g"><b>✔ 모든 검토 항목이 ${pc(PASS_MARGIN)} 이상 여유</b><br>현재 조합으로 구동 가능합니다. 벨트 축하중·브레이크 유지토크·구조 강성은 별도 확인하십시오.</div>`}
 
   <div class="sec"><h2>근거 자료 (카탈로그 출처)</h2><ul class="srcs">${srcs.join('')}</ul></div>`;
 
@@ -685,8 +688,8 @@ async function runSearch(){
     const nm=x=>x.mk.startsWith('ATG')?`ATG KSB${x.sz} ${x.mk==='ATG1'?'1단':'2단'}`:`하모닉 ${x.mk} 형번${x.sz}`;
     $('searchOut').innerHTML=`<div class="sec"><h2>최적 조합 자동 탐색</h2>
       ${best?`<div class="verdict ok">🏆 추천 : ${best.mo.n} + ${nm(best)} · 감속비 ${best.rt}
-        <small>최소 여유율 ${pc(best.min)} · 제한 항목 ${best.lim} · 안전(≥30%) 조합 ${data.safeCount}건 / 전체 ${data.totalCount}건 검토</small></div>`
-        :`<div class="verdict ng">✕ 현재 부하·프로파일 조건에서 여유율 30% 이상인 조합이 없습니다<small>가감속 시간·편심량·사이클 조건을 완화하거나 상위 모터 시리즈를 검토하십시오.</small></div>`}
+        <small>최소 여유율 ${pc(best.min)} · 제한 항목 ${best.lim} · 안전(≥${pc(PASS_MARGIN)}) 조합 ${data.safeCount}건 / 전체 ${data.totalCount}건 검토</small></div>`
+        :`<div class="verdict ng">✕ 현재 부하·프로파일 조건에서 여유율 ${pc(PASS_MARGIN)} 이상인 조합이 없습니다<small>가감속 시간·편심량·사이클 조건을 완화하거나 상위 모터 시리즈를 검토하십시오.</small></div>`}
       <p class="hint">현재 입력된 조건으로 감속기·모터 조합을 서버에서 전수 계산했습니다. (여유율 높은 순 상위 30건)</p>
       <div class="tblwrap"><table><thead><tr><th>모터</th><th>감속기</th><th>비</th><th>모터 피크</th><th>모터 RMS</th><th>이너샤비</th><th>모터 rpm</th><th>최소 여유율</th><th>제한 항목</th><th>판정</th></tr></thead><tbody>
       ${rows.map(x=>`<tr><td>${x.mo.n}</td><td>${nm(x)}</td><td class="num">${x.rt}</td>
@@ -748,6 +751,10 @@ async function initEccentric(){
   try{
     const data=await globalThis.JCalculatorApi.eccentricBootstrap();
     MOTORS=data.motors; GEAR_OPTIONS=data.gearOptions;
+    const adminDefaults=data.adminDefaults||{};
+    Object.keys(adminDefaults).forEach(id=>{if($(id))$(id).value=adminDefaults[id];});
+    PASS_MARGIN=Number(data.adminThresholds&&data.adminThresholds.passMargin);
+    if(!Number.isFinite(PASS_MARGIN)||PASS_MARGIN<0)PASS_MARGIN=.3;
     fillMotors(); syncGear(); syncUI(); initTips(document);
     $('gmaker').addEventListener('change',()=>{syncGear();run();});
     $('gsize').addEventListener('change',()=>{syncRatio();run();});

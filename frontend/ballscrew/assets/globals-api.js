@@ -9122,7 +9122,8 @@ function ve({
   });
 }
 var $rcPct = n => Number.isFinite(n) ? `${(n * 100).toFixed(Math.abs(n * 100) >= 10 ? 0 : 1)}%` : `∞`;
-var $rcGrade = n => Number.isFinite(n) ? n >= 0.3 ? `g` : n >= 0 ? `y` : `r` : `g`;
+var $rcMinMargin = Number(globalThis.__JCALC_BOOTSTRAP__.catalog.adminThresholds?.autoSelectMargin ?? 0.3);
+var $rcGrade = n => Number.isFinite(n) ? n >= $rcMinMargin ? `g` : n >= 0 ? `y` : `r` : `g`;
 var $rcTone = {
   g: {
     bg: `#d1fae5`,
@@ -9432,7 +9433,7 @@ function $rcFixCard({
         color: `#64748b`,
         lineHeight: 1.7
       },
-      children: [i, `. `, e.note ? `${e.note} ` : ``, n ? `${Number.isFinite(a) ? `${R(a, 2)}배 초과 — ` : ``}아래 대책 중 하나를 적용하면 통과합니다.` : `여유가 30% 미만이라 조건부입니다. 아래 대책으로 30% 이상 확보를 검토하십시오.`]
+      children: [i, `. `, e.note ? `${e.note} ` : ``, n ? `${Number.isFinite(a) ? `${R(a, 2)}배 초과 — ` : ``}아래 대책 중 하나를 적용하면 통과합니다.` : `여유가 ${$rcPct($rcMinMargin)} 미만이라 조건부입니다. 아래 대책으로 ${$rcPct($rcMinMargin)} 이상 확보를 검토하십시오.`]
     }), t && t.length > 0 ? (0, P.jsx)($rcRemedyList, {
       id: e.key,
       list: t
@@ -9541,7 +9542,7 @@ function $rcAutoPanel({
         color: `#475569`,
         lineHeight: 1.7
       },
-      children: [`LM 가이드 ${R(e.guideTried, 0)}형번 + 모터 ${u.length}기종 × 표준 감속비 ${d.length}종 × 볼스크류 ${v.length}형번 중 회전수 성립 조합 ${R(e.combos, 0)}건을 전부 다시 계산했습니다. 전체 통과 ${R(e.passCount, 0)}건 · 여유 30% 이상 ${R(e.safeCount, 0)}건.`, e.safe ? `` : ` 여유 30% 이상 조합이 없어 최소 여유율이 가장 큰 조합을 표시합니다.`]
+      children: [`LM 가이드 ${R(e.guideTried, 0)}형번 + 모터 ${u.length}기종 × 표준 감속비 ${d.length}종 × 볼스크류 ${v.length}형번 중 회전수 성립 조합 ${R(e.combos, 0)}건을 전부 다시 계산했습니다. 전체 통과 ${R(e.passCount, 0)}건 · 여유 ${$rcPct($rcMinMargin)} 이상 ${R(e.safeCount, 0)}건.`, e.safe ? `` : ` 여유 ${$rcPct($rcMinMargin)} 이상 조합이 없어 최소 여유율이 가장 큰 조합을 표시합니다.`]
     }), (0, P.jsx)(`ol`, {
       style: {
         margin: `0 0 8px`,
@@ -9583,7 +9584,7 @@ function $rcImprovePanel({
 }) {
   if (!e) return null;
   let o = e.items.filter(e => Number.isFinite(e.margin) && e.margin < 0),
-    s = e.items.filter(e => Number.isFinite(e.margin) && e.margin >= 0 && e.margin < 0.3),
+    s = e.items.filter(e => Number.isFinite(e.margin) && e.margin >= 0 && e.margin < $rcMinMargin),
     c = [...o, ...s];
   return (0, P.jsxs)(`section`, {
     className: `selection-guidelines`,
@@ -9603,7 +9604,7 @@ function $rcImprovePanel({
           })]
         })]
       }), (0, P.jsx)(`p`, {
-        children: `부적합(여유율 0% 미만)과 조건부(30% 미만) 항목마다 파라미터를 바꿔 전체 계산을 다시 실행하고, 각 대책의 [이 항목] 여유율과 [전체 통과] 최소 여유율을 함께 표시합니다.`
+        children: `부적합(여유율 0% 미만)과 조건부(${$rcPct($rcMinMargin)} 미만) 항목마다 파라미터를 바꿔 전체 계산을 다시 실행하고, 각 대책의 [이 항목] 여유율과 [전체 통과] 최소 여유율을 함께 표시합니다.`
       })]
     }), (0, P.jsxs)(`div`, {
       style: {
@@ -9658,7 +9659,7 @@ function $rcImprovePanel({
         lineHeight: 1.7
       },
       children: [(0, P.jsx)(`b`, {
-        children: `✔ 모든 검토 항목이 30% 이상 여유`
+        children: `✔ 모든 검토 항목이 ${$rcPct($rcMinMargin)} 이상 여유`
       }), (0, P.jsx)(`br`, {}), `현재 사양으로 구동 가능합니다. 강성·열변위·백래시·안전회로와 제조사 최종 용량선정은 별도로 확인해야 합니다.`]
     })]
   });
@@ -10890,10 +10891,10 @@ function ye({
     $rcMap = (0, l.useMemo)(() => {
       let e = {};
       if (!$rcSet) return e;
-      for (let t of $rcSet.items) Number.isFinite(t.margin) && t.margin < 0.3 && (e[t.key] = $rcRemedies($rcPinned, t.key));
+      for (let t of $rcSet.items) Number.isFinite(t.margin) && t.margin < $rcMinMargin && (e[t.key] = $rcRemedies($rcPinned, t.key));
       for (let t of $rcGuideIds) {
         let n = $rcMarginOf($rcSet, t);
-        Number.isFinite(n) && n < 0.3 && !e[t] && (e[t] = $rcRemedies($rcPinned, t));
+        Number.isFinite(n) && n < $rcMinMargin && !e[t] && (e[t] = $rcRemedies($rcPinned, t));
       }
       return e;
     }, [$rcSet, $rcPinned]),
@@ -12557,6 +12558,11 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
                 tone: E.screwRpm <= E.criticalRpm ? `good` : `bad`,
                 formula: `고정-지지 조건 1차 보수식, 허용계수 0.8 적용\n위험속도 ${R(E.criticalRpm, 0)} rpm / 사용 ${R(E.screwRpm, 0)} rpm`
               }), (0, P.jsx)(L, {
+                label: `커플링 토크·속도`,
+                value: E.passCoupling ? `적합` : `부적합`,
+                tone: E.passCoupling ? `good` : `bad`,
+                formula: `필요 출력토크 = max(기동 ${R(E.outputPeakTorqueNm, 3)}, 비상정지 ${R(E.outputEmergencyTorqueNm, 3)}) = ${R(E.couplingTorqueNeedNm, 3)} N·m\n허용토크 ${R(E.couplingTorqueAllowNm, 3)} N·m\n사용속도 ${R(E.screwRpm, 0)} rpm / 허용속도 ${R(E.couplingSpeedAllowRpm, 0)} rpm`
+              }), (0, P.jsx)(L, {
                 label: `좌굴 안전율`,
                 value: R(E.bucklingSafety, 1),
                 tone: E.bucklingSafety >= O.staticSafety ? `good` : `bad`,
@@ -12571,7 +12577,7 @@ C0a 근거: ${E.screw.id} · 카탈로그 ${E.screw.page}쪽`
                 formula: `${F.c0a}\n선택 형번 ${E.screw.id}, 카탈로그 ${E.screw.page}쪽.`
               })]
             }), (0, P.jsx)(Se, {
-              rows: [[`볼스크류`, `${E.screw.id} · Ø${E.screw.diameterMm} · 리드 ${E.screw.leadMm} mm`], [`서포트 유니트`, T.support], [`커플링`, `${T.coupling}${T.couplingTorqueNm ? ` · 허용토크 ${T.couplingTorqueNm} N·m · 최대 ${T.couplingMaxRpm.toLocaleString()} rpm` : ` · 축경 대조 필요`}`], [`축단 조립 판정`, `카탈로그 형번군 가선정 완료 · 실제 축단경/키/체결길이 CAD 최종 대조 필요`]]
+              rows: [[`볼스크류`, `${E.screw.id} · Ø${E.screw.diameterMm} · 리드 ${E.screw.leadMm} mm`], [`서포트 유니트`, T.support], [`커플링`, `${T.coupling}${T.couplingTorqueNm ? ` · 허용토크 ${T.couplingTorqueNm} N·m · 최대 ${T.couplingMaxRpm.toLocaleString()} rpm` : ` · 축경 대조 필요`}`], [`커플링 판정`, E.passCoupling ? `적합 · 필요 ${R(E.couplingTorqueNeedNm, 3)} N·m / 허용 ${R(E.couplingTorqueAllowNm, 3)} N·m` : `부적합 · 토크 또는 회전속도 한계 초과`], [`축단 조립 판정`, `계산상 커플링 토크·속도 대조 완료 · 실제 축단경/키/체결길이 CAD 최종 대조 필요`]]
             })]
           }), p === `guide` && (0, P.jsxs)(`div`, {
             className: `detail-card`,

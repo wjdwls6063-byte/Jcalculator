@@ -4,7 +4,6 @@ import os
 
 import pytest
 
-os.environ["JCALCULATOR_API_KEYS"] = "coworker=test-secret,former=revoked-secret"
 os.environ["JCALCULATOR_ALLOWED_ORIGINS"] = "https://jcalculator.onrender.com"
 
 from fastapi.testclient import TestClient  # noqa: E402
@@ -13,7 +12,7 @@ from app.main import app  # noqa: E402
 
 
 client = TestClient(app)
-AUTH = {"X-API-Key": "test-secret"}
+AUTH = {}
 
 
 ECCENTRIC_DEFAULT = {
@@ -51,7 +50,7 @@ ECCENTRIC_DEFAULT = {
 }
 
 
-def test_conveyor_default_matches_original_equations() -> None:
+def test_conveyor_default_includes_full_belt_mass_and_startup_torque() -> None:
     response = client.post(
         "/api/conveyor",
         headers=AUTH,
@@ -69,16 +68,37 @@ def test_conveyor_default_matches_original_equations() -> None:
             "sf": 3,
             "eff": 0.8,
             "cmu": 0.2,
+            "accelTime": 0.5,
+            "equivalentInertia": 0,
         },
     )
     assert response.status_code == 200
     result = response.json()
     assert result["vmm"] == pytest.approx(7853.981633974483)
-    assert result["mBelt"] == pytest.approx(1.8)
-    assert result["Fe"] == pytest.approx(85.5432)
-    assert result["Preq"] == pytest.approx(41.990920106962875)
-    assert result["margin"] == pytest.approx(114.33205028788194)
+    assert result["mBelt"] == pytest.approx(1.9413716694115406)
+    assert result["Fe"] == pytest.approx(86.0979424307709)
+    assert result["accelerationTorqueNm"] == pytest.approx(0.14360594176313857)
+    assert result["startupTorqueNm"] == pytest.approx(2.296054502532411)
+    assert result["Preq"] == pytest.approx(45.08292473373494)
+    assert result["margin"] == pytest.approx(99.63212354023301)
+    assert result["inertiaConfirmed"] is False
     assert len(result["comparison"]) == 6
+
+
+def test_conveyor_downhill_requires_braking_and_invalid_inputs_are_rejected() -> None:
+    payload = {
+        "load": 20, "angle": -30, "pmotor": 90, "rpm": 1500,
+        "ratio": 30, "pulley": 50, "center": 1000, "width": 300,
+        "support": "slider", "pitch": 200, "sf": 3, "eff": 0.8,
+        "cmu": 0.2, "accelTime": 0.5, "equivalentInertia": 0.001,
+    }
+    result = client.post("/api/conveyor", headers=AUTH, json=payload).json()
+    assert result["operatingMode"] == "braking"
+    assert result["backdriveRisk"] is True
+    assert result["Preq"] > 0
+    for field, value in (("rpm", 0), ("load", -1), ("ratio", 0)):
+        invalid = {**payload, field: value}
+        assert client.post("/api/conveyor", headers=AUTH, json=invalid).status_code == 422
 
 
 def test_eccentric_default_matches_original_engine() -> None:
@@ -94,11 +114,26 @@ def test_eccentric_default_matches_original_engine() -> None:
     assert len(result["items"]) == 8
 
 
+def test_eccentric_emergency_stop_checks_motor_and_harmonic_average_load() -> None:
+    payload = {**ECCENTRIC_DEFAULT, "estop": True, "te": 0.03, "ta": 0.1, "td": 0.1,
+               "gmk": "CSF-2UH", "gsz": 20, "grt": 80}
+    response = client.post("/api/eccentric", headers=AUTH, json=payload)
+    assert response.status_code == 200
+    result = response.json()
+    items = {item["k"]: item for item in result["items"]}
+    assert "Minst" in items
+    assert items["Minst"]["need"] == pytest.approx(result["est"]["M"])
+    assert items["Minst"]["req"] == pytest.approx(result["est"]["M"] * payload["sf"])
+    assert items["Grms"]["det"]["f"].startswith("T_av = ∛")
+
+
 def test_eccentric_catalog_does_not_bulk_export_torque_tables() -> None:
     response = client.get("/api/eccentric/catalog", headers=AUTH)
     assert response.status_code == 200
     catalog = response.json()
-    assert set(catalog) == {"motors", "gearOptions"}
+    assert {"motors", "gearOptions"}.issubset(catalog)
+    assert "adminDefaults" in catalog
+    assert "adminThresholds" in catalog
     assert "HD" not in catalog
     assert "ATG" not in catalog
     assert catalog["gearOptions"]["ATG2"][0]["ratios"]
@@ -114,8 +149,8 @@ def test_eccentric_server_side_auto_selection() -> None:
     assert result["best"] is not None
 
 
-def test_smc_selection_and_catalog_are_protected() -> None:
-    assert client.get("/api/smc-cylinder/catalog").status_code == 401
+def test_smc_selection_and_catalog_are_public() -> None:
+    assert client.get("/api/smc-cylinder/catalog").status_code == 200
     catalog = client.get("/api/smc-cylinder/catalog", headers=AUTH)
     assert catalog.status_code == 200
     assert len(catalog.json()["SERIES"]) == 102
@@ -275,8 +310,7 @@ def test_smc_clean_rodless_respects_its_lower_pressure_limit() -> None:
     assert round(bore_15["push"][2]["newton"], 1) == 52.8
 
 
-def test_all_new_endpoints_reject_a_revoked_key() -> None:
-    wrong = {"X-API-Key": "this-key-was-revoked"}
-    assert client.post("/api/conveyor", headers=wrong, json={}).status_code == 401
-    assert client.post("/api/eccentric", headers=wrong, json=ECCENTRIC_DEFAULT).status_code == 401
-    assert client.post("/api/smc-cylinder", headers=wrong, json={}).status_code == 401
+def test_all_calculation_routes_are_available_to_guests() -> None:
+    assert client.post("/api/conveyor", json={}).status_code == 200
+    assert client.post("/api/eccentric", json=ECCENTRIC_DEFAULT).status_code == 200
+    assert client.post("/api/smc-cylinder", json={}).status_code == 200

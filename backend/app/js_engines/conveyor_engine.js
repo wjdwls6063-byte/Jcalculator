@@ -94,23 +94,41 @@ function __safeJson(value){
 function conveyorCatalogJSON(){return __safeJson({supports:SUP,order:ORDER,tableOrder:TBL});}
 function conveyorCalculateJSON(payload){
   const P=JSON.parse(payload);
-  const load=+P.load||0,ang=+P.angle||0,pm=+P.pmotor||0,rpm=+P.rpm||0;
-  const i=Math.max(+P.ratio||0,0.0001),D=+P.pulley||0,C=+P.center||0,B=+P.width||0;
-  const sup=P.support in SUP?P.support:'slider',p=Math.max(+P.pitch||0,1);
-  const sf=Math.max(+P.sf||0,0.1),eff=Math.min(Math.max(+P.eff||0,0.05),1);
+  const finite=function(name,value,min,inclusive){
+    const n=Number(value);
+    if(!Number.isFinite(n)||(inclusive?n<min:n<=min)) throw new Error(name+' 입력값이 올바르지 않습니다.');
+    return n;
+  };
+  const load=finite('총하중',P.load,0,false),ang=finite('경사각',P.angle,-90,true),pm=finite('모터 출력',P.pmotor,0,false),rpm=finite('모터 회전수',P.rpm,0,false);
+  if(ang>90) throw new Error('경사각은 -90~90° 범위여야 합니다.');
+  const i=finite('감속비',P.ratio,0,false),D=finite('구동풀리 지름',P.pulley,0,false),C=finite('축간거리',P.center,0,false),B=finite('벨트폭',P.width,0,false);
+  const sup=P.support in SUP?P.support:'slider',p=finite('롤러 피치',P.pitch,0,false);
+  const sf=finite('안전율',P.sf,0,false),eff=finite('기계효율',P.eff,0,false);
+  if(eff>1) throw new Error('기계효율은 0 초과 1 이하여야 합니다.');
+  const accelTime=finite('가속시간',P.accelTime==null?0.5:P.accelTime,0,false);
+  const equivalentInertia=finite('회전체 등가관성',P.equivalentInertia==null?0:P.equivalentInertia,0,true);
+  const passMarginPct=finite('통과 여유율',P.passMarginPct==null?30:P.passMarginPct,0,true);
+  if(passMarginPct>1000) throw new Error('통과 여유율은 0~1000% 범위여야 합니다.');
+  const passFactor=1+passMarginPct/100;
   const mu=sup==='custom'?Math.min(Math.max(+P.cmu||0,0.01),1):SUP[sup].mu,isRoll=SUP[sup].roll;
   const outRpm=rpm/i,vmm=Math.PI*D*outRpm,vmin=vmm/1000,vms=vmin/60;
-  const area=(2*C/1000)*(B/1000),mBelt=area*BELT_KG_M2,mTot=load+mBelt;
+  const beltLengthMm=2*C+Math.PI*D,area=(beltLengthMm/1000)*(B/1000),mBelt=area*BELT_KG_M2,mTot=load+mBelt;
   const nRoll=Math.floor(C/p)+1,perRoll=mTot/nRoll;
   const th=ang*Math.PI/180,fFric=mTot*G*mu*Math.cos(th),fGrad=mTot*G*Math.sin(th),Fe=fFric+fGrad;
-  const T=Fe*(D/2000),Tk=T*10.1972,Treq=T*sf,Treqk=Treq*10.1972;
-  const Tmotor=Treq/(i*eff),Trated=rpm>0?pm/(2*Math.PI*rpm/60):Infinity,Tratio=Tmotor>0?Trated/Tmotor:Infinity;
-  const Preq=Fe*vms*sf/eff,PreqNoSf=Fe*vms;
-  const margin=Preq>0?(pm-Preq)/Preq*100:Infinity,need30=Preq*1.3,ratio=Preq>0?pm/Preq*100:Infinity;
+  const radius=D/2000,acceleration=vms/accelTime,angularAcceleration=acceleration/radius;
+  const accelerationForce=mTot*acceleration,steadyTorque=Fe*radius;
+  const accelerationTorque=accelerationForce*radius+equivalentInertia*angularAcceleration;
+  const startupTorque=steadyTorque+accelerationTorque;
+  const selectedOutputTorque=Math.max(Math.abs(steadyTorque),Math.abs(startupTorque));
+  const T=steadyTorque,Tk=T*10.1972,Treq=selectedOutputTorque*sf,Treqk=Treq*10.1972;
+  const Tmotor=Treq/(i*eff),Trated=pm/(2*Math.PI*rpm/60),Tratio=Trated/Tmotor;
+  const outputOmega=2*Math.PI*outRpm/60,Preq=Treq*outputOmega/eff,PreqNoSf=selectedOutputTorque*outputOmega;
+  const margin=(pm-Preq)/Preq*100,need30=Preq*passFactor,ratio=pm/Preq*100;
   const comparison=TBL.map(function(k){
     const m=k==='custom'?Math.min(Math.max(+P.cmu||0,0.01),1):SUP[k].mu;
-    const f=mTot*G*(m*Math.cos(th)+Math.sin(th)),pw=f*vms*sf/eff,mg=pw>0?(pm-pw)/pw*100:Infinity;
-    return {key:k,mu:m,powerW:pw,marginPct:mg,relativePct:Preq>0?pw/Preq*100:0,status:mg>=30?'safe':mg>=0?'conditional':'fail'};
+    const f=mTot*G*(m*Math.cos(th)+Math.sin(th)),runT=f*radius,startT=runT+accelerationTorque;
+    const pw=Math.max(Math.abs(runT),Math.abs(startT))*sf*outputOmega/eff,mg=(pm-pw)/pw*100;
+    return {key:k,mu:m,powerW:pw,marginPct:mg,relativePct:pw/Preq*100,status:mg>=passMarginPct?'safe':mg>=0?'conditional':'fail',braking:f<0};
   });
   const Tini=B*1.0,wl=(load+mBelt/2)*G/Math.max(C/1000,0.001);
   const pitches=[100,150,200,250,300,400,500,600];
@@ -121,13 +139,17 @@ function conveyorCalculateJSON(payload){
     const rate=sag/pp*100,n=Math.max(1,Math.floor(C/pp)+1),kg=mTot/n;
     return {pitchMm:pp,sagMm:sag,ratePct:rate,rollerCount:n,kgPerRoller:kg,status:rate<=1?'safe':rate<=2?'warning':'fail'};
   });
-  const altPower=mTot*G*(0.10*Math.cos(th)+Math.sin(th))*vms*sf/eff;
-  const iNeed=margin<30&&Preq>0&&pm>0?i*(Preq/(pm/1.3)):null;
+  const altForce=mTot*G*(0.10*Math.cos(th)+Math.sin(th));
+  const altPower=Math.max(Math.abs(altForce*radius),Math.abs(altForce*radius+accelerationTorque))*sf*outputOmega/eff;
+  const iNeed=margin<passMarginPct&&Preq>0&&pm>0?i*(Preq/(pm/passFactor)):null;
   return __safeJson({load:load,ang:ang,pm:pm,rpm:rpm,i:i,D:D,C:C,B:B,sup:sup,p:p,sf:sf,eff:eff,mu:mu,isRoll:isRoll,
     outRpm:outRpm,vmm:vmm,vmin:vmin,vms:vms,area:area,mBelt:mBelt,mTot:mTot,nRoll:nRoll,perRoll:perRoll,th:th,
     fFric:fFric,fGrad:fGrad,Fe:Fe,T:T,Tk:Tk,Treq:Treq,Treqk:Treqk,Tmotor:Tmotor,Trated:Trated,Tratio:Tratio,
-    Preq:Preq,PreqNoSf:PreqNoSf,margin:margin,need30:need30,ratio:ratio,comparison:comparison,Tini:Tini,wl:wl,
-    sagRows:sagRows,altPower:altPower,iNeed:iNeed,backdriveRisk:ang>0&&Math.tan(th)>mu,
-    beltPurchaseLengthMm:2*C+Math.PI*D,beltPurchaseMassKg:(2*C+Math.PI*D)/1000*(B/1000)*BELT_KG_M2,
-    weightN:mTot*G,forceFactor:mu*Math.cos(th)+Math.sin(th)});
+    Preq:Preq,PreqNoSf:PreqNoSf,margin:margin,need30:need30,passMarginPct:passMarginPct,ratio:ratio,comparison:comparison,Tini:Tini,wl:wl,
+    sagRows:sagRows,altPower:altPower,iNeed:iNeed,backdriveRisk:Fe<0,
+    beltPurchaseLengthMm:beltLengthMm,beltPurchaseMassKg:mBelt,
+    weightN:mTot*G,forceFactor:mu*Math.cos(th)+Math.sin(th),accelTime:accelTime,equivalentInertia:equivalentInertia,
+    accelerationMS2:acceleration,angularAccelerationRadS2:angularAcceleration,accelerationForceN:accelerationForce,
+    accelerationTorqueNm:accelerationTorque,startupTorqueNm:startupTorque,selectedOutputTorqueNm:selectedOutputTorque,
+    operatingMode:Fe<0?'braking':'driving',brakingPowerW:Fe<0?Math.abs(Fe)*vms*sf/eff:0,inertiaConfirmed:equivalentInertia>0});
 }

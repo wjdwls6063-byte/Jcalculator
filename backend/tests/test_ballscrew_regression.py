@@ -102,6 +102,46 @@ FIXTURES = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
 
 
 @pytest.mark.parametrize("fixture", FIXTURES, ids=lambda item: item["name"])
-def test_python_engine_matches_original_javascript(fixture: dict[str, Any]) -> None:
-    actual = json_safe(_summary(calculate(fixture["inputs"])))
-    _assert_equivalent(actual, fixture["expected"])
+def test_corrected_engine_preserves_catalog_selection_and_safe_invariants(fixture: dict[str, Any]) -> None:
+    result = calculate(fixture["inputs"])
+    selected = result["selected"]
+    drive = selected["drive"]
+    expected = fixture["expected"]["selected"]
+
+    assert drive["screw"]["id"] == expected["screw"]
+    assert selected["guideEval"]["guide"]["id"] == expected["guide"]
+    assert selected["coupling"] == expected["coupling"]
+    assert selected["support"] == expected["support"]
+    assert drive["outputPeakTorqueNm"] >= abs(drive["outputSteadyTorqueNm"])
+    assert drive["outputEmergencyTorqueNm"] >= 0
+    assert drive["motorPeakTorqueNm"] >= drive["emergencyPeakTorqueNm"]
+    assert drive["couplingTorqueNeedNm"] == pytest.approx(
+        max(drive["outputPeakTorqueNm"], drive["outputEmergencyTorqueNm"])
+    )
+    assert drive["passCoupling"] == (
+        drive["couplingTorqueNeedNm"] <= drive["couplingTorqueAllowNm"]
+        and drive["screwRpm"] <= drive["couplingSpeedAllowRpm"]
+    )
+    assert selected["pass"] == (
+        selected["guideEval"]["pass"]
+        and drive["passMotor"]
+        and drive["passScrew"]
+        and drive["passGear"]
+        and drive["passCoupling"]
+    )
+    numeric_values = [
+        drive["outputPeakTorqueNm"], drive["outputEmergencyTorqueNm"],
+        drive["translationalAccelerationTorqueNm"], drive["rotationalAccelerationTorqueNm"],
+        drive["motorPeakTorqueNm"], drive["motorRmsTorqueNm"], drive["designThrustN"],
+    ]
+    assert all(math.isfinite(value) and value >= 0 for value in numeric_values)
+
+
+def test_coupling_limit_can_fail_the_whole_combination() -> None:
+    inputs = {**FIXTURES[0]["inputs"], "massKg": 2_000}
+    selected = calculate(inputs)["selected"]
+    drive = selected["drive"]
+    assert drive["couplingTorqueNeedNm"] > drive["couplingTorqueAllowNm"]
+    assert drive["passCoupling"] is False
+    assert selected["pass"] is False
+    assert "커플링 허용·슬립 토크 부족" in selected["notes"]

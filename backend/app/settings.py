@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 
 DEFAULT_ORIGIN = "https://jcalculator.onrender.com"
@@ -11,21 +12,33 @@ def allowed_origins() -> list[str]:
     return [origin.strip().rstrip("/") for origin in raw.split(",") if origin.strip()]
 
 
-def api_keys() -> dict[str, str]:
-    """Read `name=key,name2=key2` or a legacy single key from the environment."""
-    raw = os.getenv("JCALCULATOR_API_KEYS", "").strip()
-    result: dict[str, str] = {}
+def database_url() -> str:
+    raw = os.getenv("DATABASE_URL", "").strip()
+    if raw.startswith("postgres://"):
+        return "postgresql://" + raw[len("postgres://") :]
     if raw:
-        for index, item in enumerate(raw.split(","), start=1):
-            item = item.strip()
-            if not item:
-                continue
-            if "=" in item:
-                name, value = item.split("=", 1)
-                result[name.strip() or f"key-{index}"] = value.strip()
-            else:
-                result[f"key-{index}"] = item
-    legacy = os.getenv("JCALCULATOR_API_KEY", "").strip()
-    if legacy:
-        result.setdefault("legacy", legacy)
-    return {name: value for name, value in result.items() if value}
+        return raw
+    path = os.getenv("JCALCULATOR_SQLITE_PATH", "").strip()
+    if not path:
+        path = str(Path(__file__).resolve().parents[1] / ".data" / "jcalculator.db")
+    return f"sqlite:///{Path(path).resolve()}"
+
+
+def admin_username() -> str:
+    return os.getenv("JCALCULATOR_ADMIN_USERNAME", "admin").strip() or "admin"
+
+
+def admin_password_hash() -> str:
+    return os.getenv("JCALCULATOR_ADMIN_PASSWORD_HASH", "").strip()
+
+
+def session_minutes() -> int:
+    raw = os.getenv("JCALCULATOR_SESSION_MINUTES", "30")
+    try:
+        return min(720, max(5, int(raw)))
+    except ValueError:
+        return 30
+
+
+def cookie_secure_default() -> bool:
+    return os.getenv("JCALCULATOR_COOKIE_SECURE", "true").strip().lower() not in {"0", "false", "no"}

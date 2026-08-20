@@ -572,7 +572,7 @@
           "label": "전체 형식표 · E3T-ST12",
           "highlight": {
             "xPct": 61.04497,
-            "yPct": 20.0,
+            "yPct": 20,
             "wPct": 12.76455,
             "hPct": 2.42718
           },
@@ -762,7 +762,7 @@
         "label": "전체 형식표 · E3T-ST12",
         "highlight": {
           "xPct": 61.04497,
-          "yPct": 20.0,
+          "yPct": 20,
           "wPct": 12.76455,
           "hPct": 2.42718
         },
@@ -1282,7 +1282,7 @@
           "label": "전체 형식표 · E3T-ST14",
           "highlight": {
             "xPct": 73.80952,
-            "yPct": 20.0,
+            "yPct": 20,
             "wPct": 12.16931,
             "hPct": 2.42718
           },
@@ -1472,7 +1472,7 @@
         "label": "전체 형식표 · E3T-ST14",
         "highlight": {
           "xPct": 73.80952,
-          "yPct": 20.0,
+          "yPct": 20,
           "wPct": 12.16931,
           "hPct": 2.42718
         },
@@ -12704,7 +12704,7 @@
           "label": "전체 형식표 · E3T-FL21",
           "highlight": {
             "xPct": 61.04497,
-            "yPct": 65.0,
+            "yPct": 65,
             "wPct": 12.76455,
             "hPct": 2.42718
           },
@@ -12869,7 +12869,7 @@
         "label": "전체 형식표 · E3T-FL21",
         "highlight": {
           "xPct": 61.04497,
-          "yPct": 65.0,
+          "yPct": 65,
           "wPct": 12.76455,
           "hPct": 2.42718
         },
@@ -13374,7 +13374,7 @@
           "label": "전체 형식표 · E3T-FL23",
           "highlight": {
             "xPct": 73.80952,
-            "yPct": 65.0,
+            "yPct": 65,
             "wPct": 12.16931,
             "hPct": 2.42718
           },
@@ -13539,7 +13539,7 @@
         "label": "전체 형식표 · E3T-FL23",
         "highlight": {
           "xPct": 73.80952,
-          "yPct": 65.0,
+          "yPct": 65,
           "wPct": 12.16931,
           "hPct": 2.42718
         },
@@ -13961,8 +13961,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -14032,7 +14033,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 44.52114,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -14157,7 +14158,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 44.52114,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -14243,8 +14244,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -14314,7 +14316,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 44.52114,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -14439,7 +14441,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 44.52114,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -14525,8 +14527,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -14596,7 +14599,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 46.16048,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.94133
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -14721,7 +14724,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 46.16048,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.94133
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -14807,8 +14810,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -14878,7 +14882,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 46.16048,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.94133
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -15003,7 +15007,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 46.16048,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.94133
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -15089,8 +15093,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -15159,7 +15164,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 48.10181,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -15284,7 +15289,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 48.10181,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -15370,8 +15375,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -15440,7 +15446,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 48.10181,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -15565,7 +15571,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 48.10181,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -15651,8 +15657,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -15722,7 +15729,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 49.74116,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -15847,7 +15854,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 49.74116,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -15933,8 +15940,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -16004,7 +16012,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 49.74116,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -16129,7 +16137,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 49.74116,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -16215,8 +16223,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -16286,7 +16295,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 51.3805,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.89819
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -16411,7 +16420,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 51.3805,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.89819
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -16497,8 +16506,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -16568,7 +16578,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 51.3805,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.89819
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -16693,7 +16703,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 51.3805,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.89819
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -16779,8 +16789,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -16849,7 +16860,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 53.27869,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.68248
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -16974,7 +16985,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 53.27869,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.68248
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -17060,8 +17071,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -17130,7 +17142,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 53.27869,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.68248
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -17255,7 +17267,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 53.27869,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.68248
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -17341,8 +17353,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -17412,7 +17425,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 54.96117,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -17537,7 +17550,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 54.96117,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -17623,8 +17636,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -17694,7 +17708,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 54.96117,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -17819,7 +17833,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 54.96117,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -17905,8 +17919,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -17976,7 +17991,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 56.60052,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.89819
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -18101,7 +18116,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 56.60052,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.89819
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -18187,8 +18202,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -18258,7 +18274,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 56.60052,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.89819
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -18383,7 +18399,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 56.60052,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.89819
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -18469,8 +18485,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -18539,7 +18556,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 58.49871,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -18664,7 +18681,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 58.49871,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -18750,8 +18767,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -18820,7 +18838,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 58.49871,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -18945,7 +18963,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 58.49871,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -19031,8 +19049,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -19102,7 +19121,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 60.13805,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.68248
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -19227,7 +19246,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 60.13805,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.68248
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -19313,8 +19332,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -19384,7 +19404,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 60.13805,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.68248
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -19509,7 +19529,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 60.13805,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.68248
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -19595,8 +19615,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -19666,7 +19687,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 61.82053,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.89819
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -19791,7 +19812,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 61.82053,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.89819
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -19877,8 +19898,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -19948,7 +19970,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 61.82053,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.89819
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -20073,7 +20095,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 61.82053,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.89819
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -20159,8 +20181,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -20229,7 +20252,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 63.71872,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -20354,7 +20377,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 63.71872,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -20440,8 +20463,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -20510,7 +20534,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 63.71872,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -20635,7 +20659,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 63.71872,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -20721,8 +20745,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -20792,7 +20817,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 65.35807,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -20917,7 +20942,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 65.35807,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -21003,8 +21028,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -21074,7 +21100,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 65.35807,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -21199,7 +21225,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 65.35807,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -21285,8 +21311,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -21356,7 +21383,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 66.99741,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.94133
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -21481,7 +21508,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 66.99741,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.94133
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -21567,8 +21594,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -21638,7 +21666,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 66.99741,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.94133
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -21763,7 +21791,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 66.99741,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.94133
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -21849,8 +21877,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -21919,7 +21948,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 68.93874,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -22044,7 +22073,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 68.93874,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -22130,8 +22159,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -22200,7 +22230,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 68.93874,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 1.63934
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -22325,7 +22355,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 68.93874,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 1.63934
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -22411,8 +22441,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -22482,7 +22513,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 70.57808,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 4.65919
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -22607,7 +22638,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 70.57808,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 4.65919
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -22693,8 +22724,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -22764,7 +22796,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 70.57808,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 4.65919
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -22889,7 +22921,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 70.57808,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 4.65919
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -22975,8 +23007,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -23046,7 +23079,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 75.23727,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 4.65919
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -23171,7 +23204,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 75.23727,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 4.65919
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -23257,8 +23290,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -23328,7 +23362,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 75.23727,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 4.65919
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -23453,7 +23487,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 75.23727,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 4.65919
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -23539,8 +23573,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -23610,7 +23645,7 @@
           "highlight": {
             "xPct": 66.88235,
             "yPct": 79.89646,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 4.65919
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -23735,7 +23770,7 @@
         "highlight": {
           "xPct": 66.88235,
           "yPct": 79.89646,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 4.65919
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -23821,8 +23856,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -23892,7 +23928,7 @@
           "highlight": {
             "xPct": 77.88235,
             "yPct": 79.89646,
-            "wPct": 11.0,
+            "wPct": 11,
             "hPct": 4.65919
           },
           "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -24017,7 +24053,7 @@
         "highlight": {
           "xPct": 77.88235,
           "yPct": 79.89646,
-          "wPct": 11.0,
+          "wPct": 11,
           "hPct": 4.65919
         },
         "highlightNote": "공식 카탈로그 전체 페이지는 1개 원본 이미지를 공유하고, 선택된 형번 위치만 브라우저에서 파란색 박스로 강조합니다."
@@ -24103,8 +24139,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -24346,8 +24383,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -24598,8 +24636,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -24841,8 +24880,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -25093,8 +25133,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -25336,8 +25377,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -25588,8 +25630,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -25831,8 +25874,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -26083,8 +26127,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -26326,8 +26371,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -26578,8 +26624,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -26821,8 +26868,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -27073,8 +27121,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -27316,8 +27365,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -27568,8 +27618,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -27811,8 +27862,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -28063,8 +28115,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -28306,8 +28359,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -28558,8 +28612,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -28801,8 +28856,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -29053,8 +29109,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -29296,8 +29353,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -29548,8 +29606,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -29791,8 +29850,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -30043,8 +30103,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -30286,8 +30347,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -30538,8 +30600,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -30781,8 +30844,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -31033,8 +31097,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -31276,8 +31341,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 35,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "NPN",
         "output": {
@@ -31528,8 +31594,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -31771,8 +31838,9 @@
           "rippleMax": "10% p-p"
         },
         "consumptionCurrent": {
-          "max": 30,
-          "unit": "mA"
+          "max": 12,
+          "unit": "mA",
+          "note": "OMRON 현행 공식 사양: 12mA 이하"
         },
         "outputType": "PNP",
         "output": {
@@ -52883,7 +52951,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -52923,7 +52991,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -53138,7 +53206,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -53178,7 +53246,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -53393,7 +53461,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -53433,7 +53501,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -53648,7 +53716,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -53688,7 +53756,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -53903,7 +53971,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -54158,7 +54226,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -54413,7 +54481,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -54668,7 +54736,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -54906,7 +54974,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -54963,7 +55031,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -55161,7 +55229,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -55218,7 +55286,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -55416,7 +55484,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -55473,7 +55541,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -55671,7 +55739,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -55728,7 +55796,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -55926,7 +55994,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -56181,7 +56249,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -56436,7 +56504,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -56691,7 +56759,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -56963,7 +57031,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -57003,7 +57071,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -57218,7 +57286,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -57258,7 +57326,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -57473,7 +57541,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -57513,7 +57581,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -57728,7 +57796,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -57768,7 +57836,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -57983,7 +58051,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -58238,7 +58306,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -58493,7 +58561,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -58748,7 +58816,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -59003,7 +59071,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -59258,7 +59326,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -59513,7 +59581,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -59768,7 +59836,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -60006,7 +60074,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -60023,7 +60091,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -60063,7 +60131,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -60261,7 +60329,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -60278,7 +60346,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -60318,7 +60386,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -60516,7 +60584,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -60533,7 +60601,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -60573,7 +60641,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -60771,7 +60839,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -60788,7 +60856,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -60828,7 +60896,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -61026,7 +61094,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -61043,7 +61111,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -61281,7 +61349,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -61298,7 +61366,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -61536,7 +61604,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -61553,7 +61621,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -61791,7 +61859,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -61808,7 +61876,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -62046,7 +62114,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -62063,7 +62131,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -62301,7 +62369,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -62318,7 +62386,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -62556,7 +62624,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -62573,7 +62641,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -62811,7 +62879,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -62828,7 +62896,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -63066,7 +63134,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -63083,7 +63151,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -63123,7 +63191,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -63321,7 +63389,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -63338,7 +63406,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -63378,7 +63446,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -63576,7 +63644,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -63593,7 +63661,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -63633,7 +63701,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -63831,7 +63899,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -63848,7 +63916,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -63888,7 +63956,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -64086,7 +64154,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -64103,7 +64171,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -64341,7 +64409,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -64358,7 +64426,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -64596,7 +64664,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -64613,7 +64681,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -64851,7 +64919,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -64868,7 +64936,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -65106,7 +65174,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -65123,7 +65191,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -65361,7 +65429,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -65378,7 +65446,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -65616,7 +65684,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -65633,7 +65701,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -65871,7 +65939,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -65888,7 +65956,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 6.5×6.5×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -66126,7 +66194,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -66143,7 +66211,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -66183,7 +66251,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -66381,7 +66449,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -66398,7 +66466,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -66438,7 +66506,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -66636,7 +66704,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -66653,7 +66721,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -66693,7 +66761,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -66891,7 +66959,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -66908,7 +66976,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -66948,7 +67016,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -67146,7 +67214,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -67163,7 +67231,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -67401,7 +67469,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -67418,7 +67486,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -67656,7 +67724,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -67673,7 +67741,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -67911,7 +67979,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -67928,7 +67996,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -68166,7 +68234,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -68183,7 +68251,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -68421,7 +68489,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -68438,7 +68506,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -68676,7 +68744,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -68693,7 +68761,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -68931,7 +68999,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 4.0,
+          "value": 4,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -68948,7 +69016,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 12×12×1mm",
         "responseFrequency": {
-          "value": 3.0,
+          "value": 3,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -69203,7 +69271,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -69243,7 +69311,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -69458,7 +69526,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -69498,7 +69566,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -69713,7 +69781,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -69753,7 +69821,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -69968,7 +70036,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -70008,7 +70076,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -70223,7 +70291,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -70478,7 +70546,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -70733,7 +70801,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -70988,7 +71056,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 3×3×1mm",
         "responseFrequency": {
-          "value": 5.0,
+          "value": 5,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -71226,7 +71294,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -71283,7 +71351,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -71481,7 +71549,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -71538,7 +71606,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -71736,7 +71804,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -71793,7 +71861,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -71991,7 +72059,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -72048,7 +72116,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -72246,7 +72314,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -72501,7 +72569,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -72756,7 +72824,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -73011,7 +73079,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 2.0,
+          "value": 2,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -73283,7 +73351,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -73323,7 +73391,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -73538,7 +73606,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -73578,7 +73646,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -73793,7 +73861,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -73833,7 +73901,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -74048,7 +74116,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -74088,7 +74156,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -74303,7 +74371,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -74558,7 +74626,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -74813,7 +74881,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -75068,7 +75136,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -75323,7 +75391,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -75578,7 +75646,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -75833,7 +75901,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -76088,7 +76156,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 4×4×1mm",
         "responseFrequency": {
-          "value": 4.0,
+          "value": 4,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -76326,7 +76394,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -76343,7 +76411,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -76383,7 +76451,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -76581,7 +76649,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -76598,7 +76666,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -76638,7 +76706,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -76836,7 +76904,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -76853,7 +76921,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -76893,7 +76961,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -77091,7 +77159,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -77108,7 +77176,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -77148,7 +77216,7 @@
         "base": {
           "type": "cable",
           "label": "코드 인출 타입(2m)",
-          "length": 2.0,
+          "length": 2,
           "unit": "m",
           "officialCatalogBaseline": true
         },
@@ -77346,7 +77414,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -77363,7 +77431,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -77601,7 +77669,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -77618,7 +77686,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -77856,7 +77924,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -77873,7 +77941,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -78111,7 +78179,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -78128,7 +78196,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -78366,7 +78434,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -78383,7 +78451,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -78621,7 +78689,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -78638,7 +78706,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -78876,7 +78944,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -78893,7 +78961,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {
@@ -79131,7 +79199,7 @@
       "specs": {
         "sensingDistance": {
           "type": "fixed",
-          "value": 3.0,
+          "value": 3,
           "unit": "mm",
           "tolerance": "±10%"
         },
@@ -79148,7 +79216,7 @@
         "detectableObject": "자성 금속(비자성 금속은 검출 거리가 저하됨)",
         "standardDetectableObject": "철 9×9×1mm",
         "responseFrequency": {
-          "value": 2.0,
+          "value": 2,
           "unit": "kHz"
         },
         "supplyVoltage": {

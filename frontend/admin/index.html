@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Jcalculator 관리자</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="admin.js" defer></script>
+</head>
+<body>
+  <section class="login" id="loginView">
+    <div class="login-card">
+      <div class="login-copy">
+        <div class="logo">AX</div>
+        <h1>설계 기준을<br>안전하게 관리합니다</h1>
+        <p>계산 기본값과 판정 기준, 부품 카탈로그를<br>한 곳에서 검토하고 버전별로 저장합니다.</p>
+        <ul><li>비밀번호 해시와 서버 세션 로그인</li><li>저장 전 변경 검토 및 버전 이력</li><li>다른 PC에서도 동일한 운영 설정 사용</li></ul>
+      </div>
+      <form class="login-form" id="loginForm">
+        <div class="eyebrow">JCALCULATOR / ADMIN</div>
+        <h2>관리자 로그인</h2>
+        <p>관리자 계정으로 로그인해야 편집 화면을 사용할 수 있습니다.</p>
+        <label>관리자 ID<input id="username" autocomplete="username" required maxlength="80" value="admin"></label>
+        <label>비밀번호<input id="password" type="password" autocomplete="current-password" required maxlength="500"></label>
+        <div class="form-error hidden" id="loginError" role="alert"></div>
+        <button class="primary wide" type="submit">로그인</button>
+        <small>로그인 세션은 활동 중 갱신되며 기본 30분 후 만료됩니다.</small>
+      </form>
+    </div>
+  </section>
+
+  <div class="app hidden" id="adminApp">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">AX</div><div><span>ADMIN CONSOLE</span><strong>Jcalculator</strong></div></div>
+      <nav id="nav">
+        <p>OVERVIEW</p><button class="active" data-page="dashboard">▦ <span>대시보드</span></button>
+        <p>CONFIGURATION</p><button data-page="common">⚙ <span>공통 기준값</span></button><button data-page="tools">⌁ <span>도구별 설정</span></button><button data-page="catalog">▤ <span>부품 카탈로그</span></button><button data-page="content">T <span>안내 문구</span></button>
+        <p>SYSTEM</p><button data-page="history">↺ <span>변경 이력·백업</span></button>
+      </nav>
+      <div class="user"><i>AD</i><div><strong id="sessionUser">관리자</strong><small id="sessionTime">세션 확인 중</small></div><button id="logoutBtn" title="로그아웃">↪</button></div>
+    </aside>
+    <main>
+      <header class="topbar"><button class="mobile-menu" id="mobileMenu">☰</button><div>관리자 / <b id="crumb">대시보드</b></div><div class="top-actions"><span class="connected">● DB CONNECTED</span><a href="/" target="_blank">게스트 화면 보기 ↗</a></div></header>
+      <div class="content">
+        <section class="page active" id="page-dashboard">
+          <div class="page-head"><div><span class="eyebrow">OVERVIEW</span><h1>관리 대시보드</h1><p>현재 적용 중인 설계 기준과 최근 변경 상태입니다.</p></div><button class="primary" data-jump="common">설정 편집</button></div>
+          <div class="stats"><article><small>ACTIVE TOOLS</small><strong>6</strong></article><article><small>CONFIG VERSION</small><strong id="statVersion">—</strong></article><article><small>SCHEMA STATUS</small><strong class="green">VALID</strong></article><article><small>UNSAVED CHANGES</small><strong class="amber" id="statChanges">0</strong></article></div>
+          <div class="dash-grid"><article class="panel"><div class="panel-head"><h2>계산 도구 관리</h2><small>6 tools</small></div><div class="tool-cards" id="toolCards"></div></article><article class="panel"><div class="panel-head"><h2>최근 저장 버전</h2><small id="lastUpdated">—</small></div><div id="recentVersions" class="activity"></div></article></div>
+        </section>
+
+        <section class="page" id="page-common">
+          <div class="page-head"><div><span class="eyebrow">COMMON POLICY</span><h1>공통 기준값</h1><p>전체 설계 정책의 기준 기록입니다. 실제 계산에는 도구별 설정값이 우선 적용됩니다.</p></div></div>
+          <div class="callout"><b>🔒 물리 상수는 수정할 수 없습니다.</b><span>중력가속도 9.80665 m/s² · 원주율 π · 1 kgf = 9.80665 N</span></div>
+          <article class="panel form-panel"><h2>공통 판정 정책</h2><p class="section-copy">신규 기준을 정할 때 참고하는 운영 정책이며, 기존 도구의 값을 일괄 덮어쓰지 않습니다.</p><div class="form-grid" id="commonForm"></div><h2>결과 화면 표시 기준</h2><div class="form-grid" id="displayForm"></div></article>
+        </section>
+
+        <section class="page" id="page-tools">
+          <div class="page-head"><div><span class="eyebrow">TOOL SETTINGS</span><h1>도구별 설정</h1><p>게스트의 초기 입력값과 판정 임계값을 도구별로 변경합니다.</p></div><button class="ghost" id="resetToolBtn">현재 도구 초기화</button></div>
+          <div class="tabs" id="toolTabs"></div>
+          <article class="panel form-panel"><h2 id="toolFormTitle">도구 기본값</h2><p class="section-copy">필드 이름은 계산 API의 실제 입력 키와 연결됩니다.</p><div class="form-grid" id="toolDefaultsForm"></div><h2>판정 임계값</h2><div class="form-grid" id="toolThresholdForm"></div></article>
+        </section>
+
+        <section class="page" id="page-catalog">
+          <div class="page-head"><div><span class="eyebrow">CATALOG OVERRIDES</span><h1>부품 카탈로그</h1><p>원본 카탈로그는 보존하고, 추가·교정 항목만 버전별로 관리합니다.</p></div><button class="primary" id="addCatalogBtn">항목 추가</button></div>
+          <div class="callout warning"><b>출처가 없는 항목은 저장할 수 없습니다.</b><span>모델명, 제조사, 공식 출처 URL, 확인일을 함께 기록합니다.</span></div>
+          <div class="tabs" id="catalogTabs"></div>
+          <article class="panel"><div class="table-tools"><input id="catalogSearch" placeholder="모델명·제조사 검색"><span id="catalogCount">0개 항목</span></div><div class="table-wrap"><table><thead><tr><th>상태</th><th>제조사</th><th>모델</th><th>핵심 사양</th><th>확인일</th><th></th></tr></thead><tbody id="catalogBody"></tbody></table></div><p class="table-note">이 목록은 공식 사양의 추가·교정 검토 기록입니다. 계산 엔진 수치는 검증된 소스 배포 시에만 갱신되며, 관리자 입력만으로 즉시 덮어쓰지 않습니다.</p></article>
+        </section>
+
+        <section class="page" id="page-content">
+          <div class="page-head"><div><span class="eyebrow">CONTENT</span><h1>안내 문구</h1><p>계산식과 무관한 메인 설명과 공통 판정 안내를 관리합니다.</p></div></div>
+          <div class="content-grid" id="contentForm"></div>
+        </section>
+
+        <section class="page" id="page-history">
+          <div class="page-head"><div><span class="eyebrow">VERSION & BACKUP</span><h1>변경 이력·백업</h1><p>저장 시점별 설정을 확인하고 이전 버전을 새 버전으로 복원합니다.</p></div><button class="ghost" id="backupBtn">JSON 백업 다운로드</button></div>
+          <article class="panel"><div class="history-list" id="historyList"></div></article>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="savebar hidden" id="savebar"><div><strong>저장하지 않은 변경이 있습니다.</strong><span id="changeSummary">0개 변경</span></div><div><button class="ghost" id="discardBtn">되돌리기</button><button class="primary" id="reviewBtn">변경 사항 검토</button></div></div>
+
+  <div class="overlay hidden" id="reviewModal"><div class="modal"><header><h2>변경 사항 검토</h2><button data-close="reviewModal">×</button></header><div class="modal-body"><p>현재 운영 버전 위에 새 버전으로 저장합니다.</p><div class="diff-list" id="diffList"></div><label>버전 설명<textarea id="versionNote" maxlength="500" required placeholder="변경 이유와 근거를 입력하세요."></textarea></label><div class="form-error hidden" id="saveError"></div></div><footer><button class="ghost" data-close="reviewModal">취소</button><button class="primary" id="applyBtn">검증 후 서버에 적용</button></footer></div></div>
+
+  <div class="overlay hidden" id="catalogModal"><form class="modal" id="catalogForm"><header><h2 id="catalogModalTitle">카탈로그 항목</h2><button type="button" data-close="catalogModal">×</button></header><div class="modal-body form-grid one"><input type="hidden" id="catalogIndex"><label>제조사<input id="catalogMaker" required maxlength="120"></label><label>모델명<input id="catalogModel" required maxlength="160"></label><label>핵심 사양<textarea id="catalogSpec" required maxlength="1000"></textarea></label><label>공식 출처 URL<input id="catalogSource" type="url" required maxlength="1000"></label><label>확인일<input id="catalogVerified" type="date" required></label><label class="check"><input id="catalogEnabled" type="checkbox" checked> 검토 대상에 포함</label></div><footer><button class="danger hidden" type="button" id="deleteCatalogBtn">삭제</button><span></span><button class="ghost" type="button" data-close="catalogModal">취소</button><button class="primary" type="submit">목록에 반영</button></footer></form></div>
+  <div class="toast hidden" id="toast" role="status"></div>
+</body>
+</html>

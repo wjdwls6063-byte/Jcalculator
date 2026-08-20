@@ -1,6 +1,8 @@
 {
  "criteria": {
   "stableMassMargin": 1.2,
+  "maxAccelerationMmS2": 3000,
+  "maxDutyRatio": 0.5,
   "repeatBasicMm": 0.02,
   "repeatPrecisionMm": 0.015,
   "source": {

@@ -269,7 +269,7 @@ var ST={
   step:0, motionKind:null,
   dir:null, vdir:null,
   loadMode:"mass", mass:10, dims:{w:100,d:100,h:100}, material:"강(steel)",
-  motion:null, actDir:null,
+  motion:null, motionTime:0.5, actDir:null,
   moveDist:100, mStart:5, mEnd:5,
   guideType:null, mu:null,
   pressureMode:"default", pressure:0.5,
@@ -289,9 +289,9 @@ var ST={
           size:null, stroke:null, serIdx:0, candList:[], catalogConfirmed:false, order:{}, orderOpen:null, orderKey:null }
   ,pin:{ purpose:"precision", force:200, forceUnit:"N", direction:"out", pressure:0.5, strokeNeed:25, pinDiameter:12, repeatNeed:0.1,
          size:null, stroke:null, serIdx:0, candList:[], catalogConfirmed:false, order:{}, orderOpen:null }
-  ,elin:{ use:"slider", orientation:"horizontal", mass:10, speed:300, strokeNeed:300, precisionNeed:0.02, momentNeed:0,
+  ,elin:{ use:"slider", orientation:"horizontal", mass:10, speed:300, strokeNeed:300, precisionNeed:0.02, momentNeed:0, accelTime:0.2, cyclesPerMin:10,
           size:null, lead:null, stroke:null, serIdx:0, candList:[], catalogConfirmed:false, order:{}, orderOpen:null }
-  ,erot:{ use:"basic", shape:"disc", mass:2, radius:100, width:100, depth:100, directJ:0.01, angle:90, time:1,
+  ,erot:{ use:"basic", shape:"disc", mass:2, radius:100, width:100, depth:100, directJ:0.01, angle:90, time:1, orientation:"horizontal", resistanceTorque:0,
           torqueType:"K", size:null, pickedAngle:null, serIdx:0, candList:[], catalogConfirmed:false, order:{}, orderOpen:null }
 };
 var STEPS=["동작","조건 입력","필요 추력","시리즈","구경","스트로크","검증","결과"];
@@ -363,6 +363,9 @@ var ELIN_FALLBACK={criteria:{stableMassMargin:1.2,repeatBasicMm:0.02,repeatPreci
   {code:"LEYG",label:"가이드 부착 전동 액추에이터",profile:"guided",sizes:[16,25,40],leads:{"16":[10,5,2.5],"25":[12,6,3],"40":[16,8,4]},payloadH:{"16":{"10":4,"5":8,"2.5":30},"25":{"12":13,"6":25,"3":40},"40":{"16":30,"8":34,"4":70}},payloadV:{"16":{"10":2,"5":4,"2.5":8},"25":{"12":7,"6":14,"3":25},"40":{"16":8,"8":22,"4":32}},maxSpeed:{"16":{"10":500,"5":250,"2.5":125},"25":{"12":500,"6":250,"3":125},"40":{"16":500,"8":250,"4":125}},strokeRange:{"16":[30,300,50],"25":[30,400,50],"40":[30,500,50]},moment:null,repeatMm:0.02,image:"assets/motion/LEYG.png",manualMoment:true,notes:["가이드 일체형으로 회전 방지·횡하중 대응","부하 중심거리별 허용 모멘트는 LEYG 카탈로그 그래프로 최종 확인"],source:{label:"SMC Korea LEYG 카탈로그",pdf:"https://www.smckorea.co.kr/ppis/data/catalog/LEYG.pdf"}}
 ]};
 var EROT_FALLBACK={criteria:{stableTorqueMargin:1.2,maxAccelerationDeg:3000,repeatBasicDeg:0.05,repeatPrecisionDeg:0.03,source:{label:"SMC Korea LER 카탈로그",url:"https://www.smckorea.co.kr/ppis/data/catalog/LER.pdf"}},series:[{code:"LER",label:"전동 로터리 테이블 / 기본형",profile:"basic",precisionDeg:0.05,encoder:"인크리멘탈",image:"assets/motion/LER.jpg"},{code:"LERH",label:"전동 로터리 테이블 / 고정도형",profile:"precision",precisionDeg:0.03,encoder:"인크리멘탈",image:"assets/motion/LER.jpg"},{code:"LER-E",label:"전동 로터리 테이블 / 무배터리 앱솔루트",profile:"absolute",precisionDeg:0.03,encoder:"무배터리 앱솔루트",image:"assets/motion/LER-ABS.png"}],sizes:[10,30,50],torque:{"10":{J:0.22,K:0.32},"30":{J:0.8,K:1.2},"50":{J:6.6,K:10}},maxSpeed:{J:420,K:280},inertiaAt1000:{"10":{J:0.0017,K:0.004},"30":{J:0.015,K:0.035},"50":{J:0.05,K:0.13}},angles:{"10":[90,180,310,360],"30":[90,180,320,360],"50":[90,180,320,360]},loads:{"10":{radial:78,thrust:74,moment:2.4},"30":{radial:196,thrust:197,moment:5.3},"50":{radial:314,thrust:296,moment:9.7}},source:{label:"SMC Korea LER 카탈로그",pdf:"https://www.smckorea.co.kr/ppis/data/catalog/LER.pdf"},notes:["관성모멘트-각가속도와 실효토크-각속도 두 그래프를 모두 확인","최대 속도 기본 420°/s, 고토크 280°/s","최대 각가감속도 3000°/s²"]};
+ELIN_FALLBACK.criteria.maxAccelerationMmS2=3000;
+ELIN_FALLBACK.criteria.maxDutyRatio=0.5;
+EROT_FALLBACK.criteria.stableTorqueMargin=1.5;
 FALLBACK.pinshift=PIN_FALLBACK;FALLBACK.electric_linear=ELIN_FALLBACK;FALLBACK.electric_rotary=EROT_FALLBACK;
 var GRIP_ORDER={
   MHZ2:{pdf:"https://www.smckorea.co.kr/ppis/data/catalog/MHZ.pdf",label:"MHZ2 형식표시방법"},
@@ -407,22 +410,34 @@ var ELIN_IMGS={LEFS:{src:"assets/motion/LEFS.jpg",cap:"SMC Korea 공식 제품 �
 var ELIN_REF_IMGS={spec:{src:"assets/motion/ref-lefs-spec.png",cap:"SMC Korea LEFS 카탈로그 — 사이즈·리드별 가반질량, 속도, 스트로크, 반복정밀도 표"}};
 var EROT_IMGS={LER:{src:"assets/motion/LER.jpg",cap:"SMC Korea 공식 제품 이미지 — LER 전동 로터리 테이블"},LERH:{src:"assets/motion/LER.jpg",cap:"SMC Korea 공식 제품 이미지 — LERH 고정도형"},"LER-E":{src:"assets/motion/LER-ABS.png",cap:"SMC Korea 공식 제품 이미지 — LER 무배터리 앱솔루트"}};
 var EROT_REF_IMGS={selection:{src:"assets/motion/ref-ler-selection.png",cap:"SMC Korea LER 카탈로그 — 관성모멘트·각가속도 및 실효토크·각속도 선정 그래프"}};
+var ADMIN_CONFIG=null;
 function boot(){
   var restored=false;
   try{
     var saved=sessionStorage.getItem("smc-selector-state-v7");
     if(saved){var parsed=JSON.parse(saved);if(parsed&&typeof parsed==="object"){ST=parsed;restored=true;}}
   }catch(e){}
-  if(!restored)ST.pressure=DB.criteria.defaultPressure.valueMpa;
+  if(!restored){
+    ST.pressure=DB.criteria.defaultPressure.valueMpa;
+    var ad=ADMIN_CONFIG&&ADMIN_CONFIG.tools&&ADMIN_CONFIG.tools["smc-cylinder"]&&ADMIN_CONFIG.tools["smc-cylinder"].defaults||{};
+    if(Number.isFinite(Number(ad.supplyPressureMpa)))ST.pressure=Number(ad.supplyPressureMpa);
+    if(Number.isFinite(Number(ad.accelTimeS))&&Number(ad.accelTimeS)>0){ST.motionTime=Number(ad.accelTimeS);ST.elin.accelTime=Number(ad.accelTimeS);}
+    if(Number.isFinite(Number(ad.safetyFactor))&&Number(ad.safetyFactor)>=1){
+      ST.clamp.margin=Number(ad.safetyFactor);
+      if(DB.electric_linear&&DB.electric_linear.criteria)DB.electric_linear.criteria.stableMassMargin=Number(ad.safetyFactor);
+      if(DB.electric_rotary&&DB.electric_rotary.criteria)DB.electric_rotary.criteria.stableTorqueMargin=Number(ad.safetyFactor);
+    }
+  }
   render();
   /* catalog.html 등에서 #pick=CM2 해시로 진입하면 바로 최종 선정 화면 */
   function applyPickHash(){ try{ var mh=location.hash.match(/^#pick=([A-Za-z0-9]+)/); if(mh) directSel(mh[1].toUpperCase()); }catch(e){} }
   applyPickHash();
   window.addEventListener("hashchange",applyPickHash);
 }
+var configPromise=fetch("/api/public/config").then(function(r){return r.ok?r.json():null;}).then(function(c){ADMIN_CONFIG=c;}).catch(function(){});
 Promise.all(["series","thrust","criteria","sources","models","rotary","gripper","clamp","stopper","pinshift","electric_linear","electric_rotary"].map(function(k){
   return fetch("./data/"+k+".json").then(function(r){if(!r.ok)throw new Error(k+".json");return r.json();}).then(function(j){DB[k]=j;});
-})).then(boot)
+}).concat([configPromise])).then(boot)
 .catch(function(e){
   if(FALLBACK){ DB.series=FALLBACK.series; DB.thrust=FALLBACK.thrust; DB.criteria=FALLBACK.criteria; DB.sources=FALLBACK.sources; DB.models=FALLBACK.models; DB.rotary=FALLBACK.rotary; DB.gripper=FALLBACK.gripper; DB.clamp=FALLBACK.clamp; DB.stopper=FALLBACK.stopper; DB.pinshift=FALLBACK.pinshift; DB.electric_linear=FALLBACK.electric_linear; DB.electric_rotary=FALLBACK.electric_rotary; boot(); return; }
   $("app").innerHTML='<div class="card"><div class="danger">데이터 파일(data/*.json) 로드 실패: '+esc(e.message)+' — 파일 경로를 확인해 주세요.</div></div>';
@@ -502,27 +517,42 @@ function guideSvg(kind){
 
 /* ================= 계산 엔진 ================= */
 function calcMass(){
-  if(ST.loadMode==="mass") return {m:Number(ST.mass)||0, how:"입력 질량"};
+  if(ST.loadMode==="mass"){
+    var mass=Number(ST.mass);
+    return {m:Number.isFinite(mass)&&mass>0?mass:0, valid:Number.isFinite(mass)&&mass>0, how:"입력 질량"};
+  }
   var d=ST.dims, rho=DB.criteria.densities.kg_per_m3[ST.material]||0;
-  var vol=(Number(d.w)||0)*(Number(d.d)||0)*(Number(d.h)||0)*1e-9;
-  return {m:vol*rho, how:"사이즈 환산: "+d.w+"×"+d.d+"×"+d.h+"mm × "+ST.material+"("+rho+" kg/m³)"};
+  var w=Number(d.w),dd=Number(d.d),hh=Number(d.h),valid=[w,dd,hh].every(function(v){return Number.isFinite(v)&&v>0;});
+  var vol=valid?w*dd*hh*1e-9:0;
+  return {m:vol*rho, valid:valid&&rho>0, how:"사이즈 환산: "+d.w+"×"+d.d+"×"+d.h+"mm × "+ST.material+"("+rho+" kg/m³)"};
 }
 function calc(){
   var C=DB.criteria, g=C.gravity.value;
   var mm=calcMass(), m=mm.m;
   var mu=(ST.mu==null?null:Number(ST.mu));
-  var F=0, formula="", needMu=false;
+  var F=0, formula="", needMu=false,Fstatic=0,Facc=0,accel=0;
   if(ST.dir==="수평"){
     needMu=true;
-    F=(mu||0)*m*g;
+    Fstatic=(mu||0)*m*g;
+    F=Fstatic;
     formula="F = μ·m·g = "+n2(mu)+" × "+n2(m)+" × "+g;
   }else if(ST.dir==="수직"){
-    F=m*g;
+    Fstatic=m*g;
+    F=Fstatic;
     formula="F = m·g = "+n2(m)+" × "+g+(ST.vdir==="down"?" (받쳐서 내림 → 후진측 추력으로 판정)":"");
+  }
+  var motionTime=Number(ST.motionTime),distanceM=Number(ST.moveDist)/1000;
+  if(ST.motion==="dynamic"&&Number.isFinite(motionTime)&&motionTime>0&&Number.isFinite(distanceM)&&distanceM>0){
+    accel=4*distanceM/(motionTime*motionTime);
+    Facc=m*accel;
+    F+=Facc;
+    formula+=" + m·a (a=4L/t²)";
   }
   var eta=(ST.motion==="dynamic")?C.loadFactor.dynamic:C.loadFactor.static;
   var Freq=(F>0)?(F/eta):0;
-  return {m:m,how:mm.how,g:g,Fload:F,formula:formula,eta:eta,Freq:Freq,needMu:needMu};
+  var valid=mm.valid&&Number.isFinite(Freq)&&Freq>0&&Number(ST.pressure)>0;
+  if(ST.motion==="dynamic")valid=valid&&Number.isFinite(motionTime)&&motionTime>0&&distanceM>0;
+  return {m:m,how:mm.how,g:g,Fload:F,staticForce:Fstatic,accelerationForce:Facc,acceleration:accel,motionTime:motionTime,formula:formula,eta:eta,Freq:Freq,needMu:needMu,valid:valid};
 }
 function judgeDirs(){
   var dirs=[];
@@ -603,7 +633,7 @@ function buildCandidates(){
   return out.slice(0,6);
 }
 function feasible(s,Freq,dirs){
-  if(!s.verified||!s.bores)return false;
+  if(!calc().valid||!s.verified||!s.bores)return false;
   var P=Number(ST.pressure)||0;
   return s.bores.some(function(b){ return dirs.every(function(d){ var A=s.area[String(b)]; return A&&A[d==="out"?"out":"in"]*P>=Freq; }); });
 }
@@ -612,7 +642,7 @@ function pickBore(s){
   var rows=[], picked=null;
   (s.bores||[]).forEach(function(b){
     var A=s.area[String(b)], fo=A.out*P, fi=A.in*P;
-    var ok=dirs.every(function(d){return (d==="out"?fo:fi)>=R.Freq;});
+    var ok=R.valid&&dirs.every(function(d){return (d==="out"?fo:fi)>=R.Freq;});
     if(ok&&picked==null)picked=b;
     rows.push({bore:b,rod:s.rod?s.rod[String(b)]:null,fo:fo,fi:fi,ok:ok});
   });
@@ -866,18 +896,25 @@ function go(d){
   }
   render();
 }
-function setRot(k,v){ ST.rot[k]=v; render(); }
-function setPin(k,v){ST.pin[k]=v;render();}
-function setELin(k,v){ST.elin[k]=v;render();}
-function setERot(k,v){ST.erot[k]=v;render();}
+function rejectInvalidNumeric(v){
+  if(typeof v==="number")return !Number.isFinite(v)||v<0;
+  if(typeof v!=="string"||v.trim()==="")return false;
+  if(!/^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?$/i.test(v.trim()))return false;
+  var n=Number(v);return !Number.isFinite(n)||n<0;
+}
+function acceptInput(v){if(!rejectInvalidNumeric(v))return true;alert("음수·NaN·Infinity는 입력할 수 없습니다.");return false;}
+function setRot(k,v){ if(!acceptInput(v))return;ST.rot[k]=v; render(); }
+function setPin(k,v){if(!acceptInput(v))return;ST.pin[k]=v;render();}
+function setELin(k,v){if(!acceptInput(v))return;ST.elin[k]=v;render();}
+function setERot(k,v){if(!acceptInput(v))return;ST.erot[k]=v;render();}
 function applyRotFix(size,time){
   ST.rot.size=size; ST.rot.time=Number(time);
   if(ST.rot.candList.length){ var s=rotCur(); ST.rot.pickedAngle=rotPickAngleForSize(s,size).picked; }
   render();
 }
 function jumpRot(step){ ST.step=step; render(); }
-function set(k,v){ ST[k]=v; render(); }
-function setDim(k,v){ ST.dims[k]=v; }
+function set(k,v){ if(!acceptInput(v))return;ST[k]=v; render(); }
+function setDim(k,v){ if(!acceptInput(v))return;ST.dims[k]=v; }
 function toggleSpecial(v){
   var i=ST.special.indexOf(v);
   if(i<0)ST.special.push(v); else ST.special.splice(i,1);
@@ -1020,6 +1057,9 @@ function step1(){
     '</h3><div class="row">'+
     optBtn(ST.motion==="dynamic","set('motion','dynamic')","움직인다","부하율 50% 이하 적용 (동적 작업)")+
     optBtn(ST.motion==="static","set('motion','static')","정지 상태로 유지","부하율 70% 이하 적용 (정적 작업)")+'</div>';
+  if(ST.motion==="dynamic"){
+    h+='<div class="subq"><h3 style="margin-top:4px">목표 동작시간 <span class="badge b-user">필수</span> '+tip("동작시간과 가속부하","출발부터 목표 위치에서 정지할 때까지의 시간입니다. 절반 가속·절반 감속의 삼각 속도 패턴으로 a=4L/t²를 계산해 마찰·중력 부하에 m·a를 더합니다.","techp1")+'</h3><div class="row"><input type="number" min="0.05" step="0.1" value="'+ST.motionTime+'" onchange="set(\'motionTime\',this.value)"><span class="unit">s</span></div></div>';
+  }
 
   /* 1-4 작동 방향 */
   h+='<h3>1-4. 작동 방향(하중이 걸리는 행정) <span class="badge b-user">필수</span> '+
@@ -1098,7 +1138,8 @@ function step1(){
   h+=environmentBlock("1-10");
 
   /* 유효성 */
-  var ok=!!(ST.dir&&ST.motion&&ST.actDir&&Number(ST.moveDist)>0);
+  var ok=!!(ST.dir&&ST.motion&&ST.actDir&&Number(ST.moveDist)>0&&calcMass().m>0&&Number(ST.pressure)>0);
+  if(ST.motion==="dynamic") ok=ok&&Number(ST.motionTime)>0;
   if(ST.dir==="수평") ok=ok&&ST.mu!=null;
   if(ST.dir==="수직") ok=ok&&!!ST.vdir;
   if(ST.envMode==="special") ok=ok&&ST.special.length>0;
@@ -1115,6 +1156,10 @@ function step2(){
   h+='<li>중력가속도 g = <span class="v">'+R.g+' m/s²</span> '+bConst()+'</li>';
   if(R.needMu) h+='<li>마찰계수 μ = <span class="v">'+ST.mu+'</span> ('+esc(ST.guideType||"직접 입력")+') '+bUser()+' <span class="eq">(SMC 자료에 표준값 없음 → 사용자 입력)</span></li>';
   h+='<li>부하 하중 F_load = <span class="v">'+n1(R.Fload)+' N</span> <span class="eq">'+esc(R.formula)+'</span></li>';
+  if(ST.motion==="dynamic"){
+    h+='<li>가속도 a = <span class="v">'+n2(R.acceleration)+' m/s²</span> <span class="eq">4×'+ST.moveDist+'/1000÷'+ST.motionTime+'²</span></li>';
+    h+='<li>기동 가속력 m·a = <span class="v">'+n1(R.accelerationForce)+' N</span></li>';
+  }
   h+='<li>부하율 η = <span class="v">'+(R.eta*100)+'%</span> ('+(ST.motion==="dynamic"?"동적 작업":"정적 작업")+') '+bSmc(C.loadFactor.source.url,"SMC Korea 기술자료")+' '+
     tip("부하율 원문 (SMC 기술자료)",esc(C.loadFactor.text),"techp1")+'</li>';
   h+='<li><b>필요 추력 F_required = F_load ÷ η = <span class="v">'+n1(R.Freq)+' N</span></b></li>';
@@ -1949,6 +1994,7 @@ function copyRotResult(){
 
 /* ================= 집기(에어 척) 선정 ================= */
 function setGrip(k,v){
+  if(!acceptInput(v))return;
   if(k==="fingers"||k==="mass"||k==="safety"||k==="workMin"||k==="workMax"||k==="pointL"||k==="size") v=(v===""?null:Number(v));
   ST.grip[k]=v;
   if(k==="method"&&v==="pivot") ST.grip.fingers=2;
@@ -1964,7 +2010,7 @@ function setGripProfile(v){
   render();
 }
 function emptyGripVerify(){return {manualSize:null,catalogStroke:null,forceAtL:null,actualMoment:null,allowMoment:null,fingerMass:null,fingerMassLimit:null,repeatCatalog:null,repeatRequired:null};}
-function setGripVerify(k,v){ST.grip.verify[k]=(v===""?null:Number(v));render();}
+function setGripVerify(k,v){if(!acceptInput(v))return;ST.grip.verify[k]=(v===""?null:Number(v));render();}
 function gripCalc(){
   var g=DB.gripper.criteria.gravity, m=Number(ST.grip.mass)||0, sf=Number(ST.grip.safety)||0;
   return {g:g,m:m,weight:m*g,safety:sf,required:m*g*sf,stroke:Math.abs((Number(ST.grip.workMax)||0)-(Number(ST.grip.workMin)||0))};
@@ -2365,7 +2411,8 @@ function clampForceDual(n,primaryUnit){
   return primaryUnit==="kgf"?n2(n/KGF_TO_N)+' kgf ('+n2(n)+' N)':n2(n)+' N ('+n2(n/KGF_TO_N)+' kgf)';
 }
 function setClampForce(v){
-  var value=Math.max(0,Number(v)||0);
+  if(!acceptInput(v))return;
+  var value=Number(v)||0;
   ST.clamp.force=ST.clamp.forceUnit==="kgf"?value*KGF_TO_N:value;
   render();
 }
@@ -2374,6 +2421,7 @@ function setClampForceUnit(unit){
   render();
 }
 function setClamp(k,v){
+  if(!acceptInput(v))return;
   var nums=["force","pressure","strokeNeed","margin","armLength","openAngle"];
   ST.clamp[k]=nums.indexOf(k)>=0?Number(v):v;
   if(k==="mode"){ST.clamp.size=null;ST.clamp.stroke=null;ST.clamp.catalogConfirmed=false;ST.clamp.candList=[];ST.clamp.order={};ST.clamp.orderKey=null;}
@@ -2571,6 +2619,7 @@ function copyClampResult(){
 
 /* ================= 충돌 정지·스톱퍼 실린더 선정 ================= */
 function setStop(k,v){
+  if(!acceptInput(v))return;
   var nums=["mass","speed","friction","pressure"];
   ST.stop[k]=nums.indexOf(k)>=0?Number(v):v;
   if(k==="head"||k==="purpose"||k==="height"){ST.stop.size=null;ST.stop.stroke=null;ST.stop.candList=[];ST.stop.serIdx=0;ST.stop.catalogConfirmed=false;ST.stop.order={};ST.stop.orderKey=null;}
@@ -2754,18 +2803,28 @@ function elinUseName(v){return {slider:"정밀 슬라이더",belt:"장거리·�
 function elinCandidates(){var p=ST.elin.use,a=DB.electric_linear.series.map(function(s){var score=s.profile===p?10:0;if(p==='slider'&&s.profile==='guided')score+=3;if(p==='rod'&&s.profile==='guided')score+=5;return {s:s,score:score};});a.sort(function(x,y){return y.score-x.score;});return a;}
 function elinCur(){return ST.elin.candList.length?ST.elin.candList[ST.elin.serIdx].s:DB.electric_linear.series[0];}
 function setELinSeries(i){ST.elin.serIdx=Number(i);ST.elin.size=null;ST.elin.lead=null;ST.elin.stroke=null;ST.elin.catalogConfirmed=false;ST.elin.order={};render();}
-function elinCalc(){var m=Math.max(0,Number(ST.elin.mass)||0),margin=DB.electric_linear.criteria.stableMassMargin||1.2;return {mass:m,required:m*margin,speed:Math.max(0,Number(ST.elin.speed)||0),stroke:Math.max(0,Number(ST.elin.strokeNeed)||0),margin:margin};}
-function elinRows(s){var C=elinCalc(),rows=[];s.sizes.forEach(function(z){(s.leads[String(z)]||[]).forEach(function(lead){var capMap=ST.elin.orientation==='vertical'?s.payloadV:s.payloadH,cap=capMap&&capMap[String(z)]?capMap[String(z)][String(lead)]:null,spd=s.maxSpeed[String(z)][String(lead)],rg=s.strokeRange[String(z)],ok=cap!=null&&cap>=C.required&&spd>=C.speed&&C.stroke<=rg[1]&&!(s.horizontalOnly&&ST.elin.orientation==='vertical');rows.push({size:z,lead:lead,capacity:cap,maxSpeed:spd,range:rg,ok:ok});});});return rows;}
+function elinCalc(){var m=Number(ST.elin.mass),speed=Number(ST.elin.speed),stroke=Number(ST.elin.strokeNeed),accelTime=Number(ST.elin.accelTime),cycles=Number(ST.elin.cyclesPerMin),margin=DB.electric_linear.criteria.stableMassMargin||1.2,maxAccel=DB.electric_linear.criteria.maxAccelerationMmS2||3000,maxDuty=DB.electric_linear.criteria.maxDutyRatio||0.5,valid=[m,speed,stroke,accelTime,cycles].every(function(v){return Number.isFinite(v)&&v>0;}),acceleration=valid?speed/accelTime:0,oneWayTime=valid?stroke/speed+accelTime:0,dutyRatio=valid?2*oneWayTime*cycles/60:0;return {mass:valid?m:0,required:valid?m*margin:0,speed:valid?speed:0,stroke:valid?stroke:0,margin:margin,accelTime:accelTime,cyclesPerMin:cycles,acceleration:acceleration,oneWayTime:oneWayTime,dutyRatio:dutyRatio,maxAcceleration:maxAccel,maxDutyRatio:maxDuty,accelerationOk:valid&&acceleration<=maxAccel,dutyOk:valid&&dutyRatio<=maxDuty,valid:valid};}
+function elinRows(s){var C=elinCalc(),rows=[];s.sizes.forEach(function(z){(s.leads[String(z)]||[]).forEach(function(lead){var capMap=ST.elin.orientation==='vertical'?s.payloadV:s.payloadH,cap=capMap&&capMap[String(z)]?capMap[String(z)][String(lead)]:null,spd=s.maxSpeed[String(z)][String(lead)],rg=s.strokeRange[String(z)],ok=C.valid&&C.accelerationOk&&C.dutyOk&&cap!=null&&cap>=C.required&&spd>=C.speed&&C.stroke<=rg[1]&&!(s.horizontalOnly&&ST.elin.orientation==='vertical');rows.push({size:z,lead:lead,capacity:cap,maxSpeed:spd,range:rg,ok:ok});});});return rows;}
 function elinPickSize(s){var rows=elinRows(s),x=rows.find(function(r){return r.ok;});return {rows:rows,picked:x?x.size:null,lead:x?x.lead:null};}
 function elinStrokeList(s,size){var z=Number(size),r=s.strokeRange[String(size)],a=[];if(!r)return a;if(s.code==='LEY'||s.code==='LEYG'){a=[30,50,100,150,200,250,300];if(z>=25)a=a.concat([350,400]);if(z>=40)a=a.concat([450,500]);return a;}var start=r[0],max=r[1],inc=r[2];for(var v=start;v<=max;v+=inc){if(s.code==='LEFS'&&z===40&&(v===1050||v===1150))continue;a.push(v);}return a;}
 function elinPickStroke(s,size){var list=elinStrokeList(s,size),need=Number(ST.elin.strokeNeed)||0,p=list.find(function(v){return v>=need;});return {list:list,need:need,picked:p==null?null:p};}
-function elstep1(){var h='<div class="card"><h2>STEP 1 — 전동 직선 이동 조건</h2><p class="desc">총질량·방향·속도·이동거리만으로 1차 안정 후보를 고릅니다. 모멘트는 필요한 경우에만 입력합니다.</p><h3>1-1. 구조 선택 '+tip("어떤 구조를 선택하나요?","<b>LEFS</b>는 정밀 위치결정, <b>LEFB</b>는 장거리·고속 수평 이송, <b>LEY</b>는 로드로 밀기·당기기, <b>LEYG</b>는 외부 가이드 없이 회전방지·횡하중이 필요한 경우의 후보입니다.","elin:LEFS")+'</h3><div class="grid big">'+optBtn(ST.elin.use==='slider',"setELin('use','slider')","정밀 슬라이더","볼스크류 LEFS")+optBtn(ST.elin.use==='belt',"setELin('use','belt')","장거리·고속","벨트 LEFB")+optBtn(ST.elin.use==='rod',"setELin('use','rod')","밀기·당기기","로드 LEY")+optBtn(ST.elin.use==='guided',"setELin('use','guided')","가이드 부착","LEYG")+'</div><h3>1-2. 설치 방향 '+tip("수평과 수직이 왜 다른가요?","수직축은 모터가 질량을 계속 들어야 하므로 동일 사이즈라도 허용 가반질량이 크게 줄어듭니다. 벨트형 LEFB는 수직 자동 선정에서 제외합니다.","elinRef:spec")+'</h3><div class="row">'+optBtn(ST.elin.orientation==='horizontal',"setELin('orientation','horizontal')","수평 이동")+optBtn(ST.elin.orientation==='vertical',"setELin('orientation','vertical')","수직 이동","낙하 방지·브레이크 확인")+'</div><h3>1-3. 워크+지그 총질량</h3><div class="row"><input type="number" min="0" step="0.1" value="'+ST.elin.mass+'" onchange="setELin(\'mass\',this.value)"><span class="unit">kg</span><span class="muted">앱은 1.2배 안정 여유 적용</span></div><h3>1-4. 목표 속도·이동거리 '+tip("속도와 스트로크","속도는 이동 중 목표 최고속도, 이동거리는 실제 시작점부터 끝점까지입니다. 스트로크가 길면 카탈로그 표에서 허용 최고속도가 낮아질 수 있습니다.","elinRef:spec")+'</h3><div class="row"><label class="f">속도</label><input type="number" min="1" value="'+ST.elin.speed+'" onchange="setELin(\'speed\',this.value)"><span class="unit">mm/s</span><label class="f">이동거리</label><input type="number" min="1" value="'+ST.elin.strokeNeed+'" onchange="setELin(\'strokeNeed\',this.value)"><span class="unit">mm</span></div><h3>1-5. 반복 위치결정 정밀도·필요 모멘트(선택)</h3><div class="row"><label class="f">반복정밀도</label><input type="number" min="0.005" step="0.005" value="'+ST.elin.precisionNeed+'" onchange="setELin(\'precisionNeed\',this.value)"><span class="unit">±mm</span><label class="f">외력 모멘트</label><input type="number" min="0" step="0.1" value="'+ST.elin.momentNeed+'" onchange="setELin(\'momentNeed\',this.value)"><span class="unit">N·m (모르면 0)</span></div>'+environmentBlock('1-6')+nav(true,ST.elin.mass>0&&ST.elin.speed>0&&ST.elin.strokeNeed>0,"필요 성능 계산 →")+'</div>';return h;}
-function elstep2(){var C=elinCalc(),h='<div class="card"><h2>STEP 2 — 필요한 전동 직선 성능</h2><div class="formula"><b>안정 선정질량 = 총질량 × 1.2</b><br>'+C.mass+'kg × '+C.margin+' = <strong>'+n2(C.required)+'kg</strong></div><div class="res-head"><div class="cell"><span>설치 방향</span><b>'+(ST.elin.orientation==='vertical'?'수직':'수평')+'</b></div><div class="cell"><span>안정 선정질량</span><b>'+n2(C.required)+'kg</b></div><div class="cell"><span>목표 속도</span><b>'+C.speed+'mm/s</b></div><div class="cell"><span>필요 스트로크</span><b>'+C.stroke+'mm</b></div></div><div class="info">'+tip("공식 성능표 보기","사이즈와 리드별 수평·수직 가반질량, 스트로크 구간별 속도, 반복 위치결정 정밀도와 정적 허용 모멘트 표입니다.","elinRef:spec")+' 질량·속도·스트로크 세 조건을 동시에 만족하는 조합만 통과합니다.</div>'+nav(true,true,"시리즈 후보 →")+'</div>';return h;}
+function elstep1(){
+  var C=elinCalc(),h='<div class="card"><h2>STEP 1 — 전동 직선 이동 조건</h2><p class="desc">총질량·방향·속도·이동거리와 가감속·운전률을 함께 검증합니다.</p>';
+  h+='<h3>1-1. 구조 선택 '+tip("어떤 구조를 선택하나요?","<b>LEFS</b>는 정밀 위치결정, <b>LEFB</b>는 장거리·고속 수평 이송, <b>LEY</b>는 로드로 밀기·당기기, <b>LEYG</b>는 외부 가이드 없이 회전방지·횡하중이 필요한 경우의 후보입니다.","elin:LEFS")+'</h3><div class="grid big">'+optBtn(ST.elin.use==='slider',"setELin('use','slider')","정밀 슬라이더","볼스크류 LEFS")+optBtn(ST.elin.use==='belt',"setELin('use','belt')","장거리·고속","벨트 LEFB")+optBtn(ST.elin.use==='rod',"setELin('use','rod')","밀기·당기기","로드 LEY")+optBtn(ST.elin.use==='guided',"setELin('use','guided')","가이드 부착","LEYG")+'</div>';
+  h+='<h3>1-2. 설치 방향 '+tip("수평과 수직이 왜 다른가요?","수직축은 모터가 질량을 계속 들어야 하므로 동일 사이즈라도 허용 가반질량이 크게 줄어듭니다. 벨트형 LEFB는 수직 자동 선정에서 제외합니다.","elinRef:spec")+'</h3><div class="row">'+optBtn(ST.elin.orientation==='horizontal',"setELin('orientation','horizontal')","수평 이동")+optBtn(ST.elin.orientation==='vertical',"setELin('orientation','vertical')","수직 이동","낙하 방지·브레이크 확인")+'</div>';
+  h+='<h3>1-3. 워크+지그 총질량</h3><div class="row"><input type="number" min="0.1" step="0.1" value="'+ST.elin.mass+'" onchange="setELin(\'mass\',this.value)"><span class="unit">kg</span><span class="muted">앱은 1.2배 안정 여유 적용</span></div>';
+  h+='<h3>1-4. 목표 속도·이동거리 '+tip("속도와 스트로크","속도는 이동 중 목표 최고속도, 이동거리는 실제 시작점부터 끝점까지입니다. 스트로크가 길면 카탈로그 표에서 허용 최고속도가 낮아질 수 있습니다.","elinRef:spec")+'</h3><div class="row"><label class="f">속도</label><input type="number" min="1" value="'+ST.elin.speed+'" onchange="setELin(\'speed\',this.value)"><span class="unit">mm/s</span><label class="f">이동거리</label><input type="number" min="1" value="'+ST.elin.strokeNeed+'" onchange="setELin(\'strokeNeed\',this.value)"><span class="unit">mm</span></div>';
+  h+='<h3>1-5. 반복 위치결정 정밀도·필요 모멘트</h3><div class="row"><label class="f">반복정밀도</label><input type="number" min="0.005" step="0.005" value="'+ST.elin.precisionNeed+'" onchange="setELin(\'precisionNeed\',this.value)"><span class="unit">±mm</span><label class="f">외력 모멘트</label><input type="number" min="0" step="0.1" value="'+ST.elin.momentNeed+'" onchange="setELin(\'momentNeed\',this.value)"><span class="unit">N·m (모르면 0)</span></div>';
+  h+='<h3>1-6. 가감속·운전률 조건</h3><div class="row"><label class="f">가감속시간</label><input type="number" min="0.01" step="0.05" value="'+ST.elin.accelTime+'" onchange="setELin(\'accelTime\',this.value)"><span class="unit">s</span><label class="f">분당 왕복 횟수</label><input type="number" min="0.1" step="1" value="'+ST.elin.cyclesPerMin+'" onchange="setELin(\'cyclesPerMin\',this.value)"><span class="unit">회/min</span></div>';
+  h+='<div class="info">요구 가속도 '+n1(C.acceleration)+'mm/s² · 계산 운전률 '+n1(C.dutyRatio*100)+'%</div>'+environmentBlock('1-7')+nav(true,C.valid,"필요 성능 계산 →")+'</div>';
+  return h;
+}
+function elstep2(){var C=elinCalc(),h='<div class="card"><h2>STEP 2 — 필요한 전동 직선 성능</h2><div class="formula"><b>안정 선정질량 = 총질량 × 1.2</b><br>'+C.mass+'kg × '+C.margin+' = <strong>'+n2(C.required)+'kg</strong><br>요구 가속도 = 속도÷가감속시간 = <strong>'+n1(C.acceleration)+'mm/s²</strong><br>왕복 운전률 = <strong>'+n1(C.dutyRatio*100)+'%</strong></div><div class="res-head"><div class="cell"><span>설치 방향</span><b>'+(ST.elin.orientation==='vertical'?'수직':'수평')+'</b></div><div class="cell"><span>안정 선정질량</span><b>'+n2(C.required)+'kg</b></div><div class="cell"><span>목표 속도</span><b>'+C.speed+'mm/s</b></div><div class="cell"><span>필요 스트로크</span><b>'+C.stroke+'mm</b></div><div class="cell"><span>요구 가속도</span><b>'+n1(C.acceleration)+'mm/s²</b></div><div class="cell"><span>운전률</span><b>'+n1(C.dutyRatio*100)+'%</b></div></div><div class="info">'+tip("공식 성능표 보기","사이즈와 리드별 수평·수직 가반질량, 스트로크 구간별 속도, 반복 위치결정 정밀도와 정적 허용 모멘트 표입니다.","elinRef:spec")+' 질량·속도·스트로크·가속도·운전률을 동시에 만족하는 조합만 통과합니다.</div>'+nav(true,C.valid&&C.accelerationOk&&C.dutyOk,"시리즈 후보 →")+'</div>';return h;}
 function elstep3(){if(!ST.elin.candList.length)ST.elin.candList=elinCandidates();var h='<div class="card"><h2>STEP 3 — 형식·시리즈 후보 (전동 직선)</h2><p class="desc">용도 우선순위와 현재 입력조건을 함께 표시합니다.</p>';ST.elin.candList.forEach(function(o,i){var s=o.s,p=elinPickSize(s),sel=i===ST.elin.serIdx;h+='<div class="cand '+(sel?'sel':'')+'" onclick="setELinSeries('+i+')">'+motionThumb(s.code,null,'elin')+'<div><b><span class="rank">'+(i+1)+'순위</span> '+s.code+' — '+esc(s.label)+' '+tip(s.code+" 참고",s.notes.join("<br>"),"elin:"+s.code)+'</b><p>'+esc(elinUseName(s.profile))+' · 사이즈 '+s.sizes.join('/')+' · 반복정밀도 ±'+s.repeatMm+'mm</p><em>'+(p.picked!=null?'현재 질량·속도·거리 통과 가능':'현재 조건에서 자동 통과 조합 없음')+'</em></div></div>';});h+='<div class="info">'+bSmc(DB.electric_linear.criteria.source.url,"SMC Korea 전동 액추에이터 카탈로그")+' 기준 후보입니다.</div>'+nav(true,!!elinCur(),"사이즈 선정 →")+'</div>';return h;}
 function elstep4(){var s=elinCur(),P=elinPickSize(s),C=elinCalc(),h='<div class="card"><h2>STEP 4 — 사이즈 선정 · '+s.code+'</h2><p class="desc">같은 사이즈도 리드에 따라 가반질량과 최고속도가 다릅니다. 행을 클릭해 조합을 선택하세요.</p><div class="info">안정 선정질량 <b>'+n2(C.required)+'kg</b> · 목표 '+C.speed+'mm/s · 스트로크 '+C.stroke+'mm</div><div class="tablewrap"><table class="t"><tr><th>사이즈</th><th>리드</th><th>가반질량</th><th>최고속도</th><th>스트로크 범위</th><th>판정</th></tr>';P.rows.forEach(function(r){var sel=Number(ST.elin.size)===r.size&&Number(ST.elin.lead)===Number(r.lead);if(ST.elin.size==null&&P.picked===r.size&&P.lead===r.lead)sel=true;h+='<tr class="'+(sel?'pick':'')+'" style="cursor:pointer" onclick="ST.elin.size='+r.size+';ST.elin.lead='+r.lead+';render()"><td>'+r.size+'</td><td>'+r.lead+'mm</td><td>'+(r.capacity==null?'—':r.capacity+'kg')+'</td><td>'+r.maxSpeed+'mm/s</td><td>'+r.range[0]+'~'+r.range[1]+'mm</td><td>'+(r.ok?(sel?'✅ 채택':'만족'):'미달')+'</td></tr>';});h+='</table></div><div class="info">'+tip("리드가 무엇인가요?","모터가 1회전할 때 액추에이터가 이동하는 거리입니다. 큰 리드는 빠르고, 작은 리드는 더 큰 하중에 유리합니다. 앱은 질량과 속도를 모두 만족하는 첫 조합을 제안합니다.","elinRef:spec")+'</div>'+nav(true,(ST.elin.size!=null?P.rows.some(function(r){return r.size==ST.elin.size&&Number(r.lead)===Number(ST.elin.lead)&&r.ok;}):P.picked!=null),"리드·스트로크 선택 →")+'</div>';return h;}
 function elstep5(){var s=elinCur(),P=elinPickSize(s);if(ST.elin.size==null){ST.elin.size=P.picked;ST.elin.lead=P.lead;}var rows=elinRows(s).filter(function(r){return r.size==ST.elin.size;}),S=elinPickStroke(s,ST.elin.size),h='<div class="card"><h2>STEP 5 — 리드·스트로크 선택</h2><h3>리드</h3><div class="tablewrap"><table class="t"><tr><th>리드</th><th>가반질량</th><th>최고속도</th><th>현재 조건</th></tr>';rows.forEach(function(r){var sel=Number(ST.elin.lead)===Number(r.lead);h+='<tr class="'+(sel?'pick':'')+'" style="cursor:pointer" onclick="setELin(\'lead\','+r.lead+')"><td>'+r.lead+'mm</td><td>'+(r.capacity==null?'—':r.capacity+'kg')+'</td><td>'+r.maxSpeed+'mm/s</td><td>'+(r.ok?(sel?'✅ 선택':'가능'):'미달')+'</td></tr>';});h+='</table></div><h3>표준 스트로크</h3><div class="row">';S.list.forEach(function(v){if(v>=Math.max(S.need-100,0)&&v<=S.need+200)h+=optBtn(Number(ST.elin.stroke)===v||(ST.elin.stroke==null&&S.picked===v),"setELin('stroke',"+v+")",v+'mm');});h+='</div><div class="guidegrid"><div class="guideitem"><b>가반질량</b>테이블 위에 얹는 워크·지그의 합계입니다. 수직은 브레이크와 낙하 방지까지 확인합니다.</div><div class="guideitem"><b>리드</b>1회전 이동거리입니다. 작은 리드는 속도는 낮지만 가반질량이 커집니다.</div><div class="guideitem"><b>정적 허용 모멘트</b>워크 무게중심이 테이블 중심에서 멀 때 발생합니다. 입력값이 0이면 주문 전 도면 확인으로 남깁니다.</div></div><div class="info">'+tip("공식 표 확대","선택 조합의 가반질량·속도·스트로크를 공식 표와 대조합니다.","elinRef:spec")+'</div>'+nav(true,ST.elin.stroke!=null||S.picked!=null,"최종 검증 →")+'</div>';return h;}
 function elinSelectedRow(){return elinRows(elinCur()).find(function(r){return r.size==ST.elin.size&&Number(r.lead)===Number(ST.elin.lead);});}
-function elinChecks(){var s=elinCur(),C=elinCalc(),r=elinSelectedRow(),a=[];function c(st,t){a.push({status:st,text:t});}c(r&&r.capacity!=null&&r.capacity>=C.required?'pass':'fail','가반질량 '+(r&&r.capacity!=null?r.capacity:'—')+'kg ≥ 안정 선정질량 '+n2(C.required)+'kg');c(r&&r.maxSpeed>=C.speed?'pass':'fail','최고속도 '+(r?r.maxSpeed:'—')+'mm/s ≥ 목표 '+C.speed+'mm/s');c(r&&ST.elin.stroke>=C.stroke&&ST.elin.stroke<=r.range[1]?'pass':'fail','표준 스트로크 '+ST.elin.stroke+'mm ≥ 필요 '+C.stroke+'mm');c(Number(ST.elin.precisionNeed)>=s.repeatMm?'pass':'review','요구 반복정밀도 ±'+ST.elin.precisionNeed+'mm · 시리즈 기본 ±'+s.repeatMm+'mm');if(Number(ST.elin.momentNeed)>0&&s.moment){var lim=Math.min.apply(null,s.moment[String(ST.elin.size)]),ok=lim>=Number(ST.elin.momentNeed);c(ok?'pass':'fail','입력 모멘트 '+ST.elin.momentNeed+'N·m · 정적 허용 최소축 '+lim+'N·m');}else c('review','워크 무게중심 거리와 허용 모멘트 그래프 확인'+(s.manualMoment?' — LEYG 전용 그래프 필수':''));if(ST.elin.orientation==='vertical')c('review','수직축 브레이크·정전 시 낙하 방지·회생 조건 확인');c('review','스트로크 구간별 속도 저하와 가감속도 조건을 원본 표에서 확인');return a;}
+function elinChecks(){var s=elinCur(),C=elinCalc(),r=elinSelectedRow(),a=[];function c(st,t){a.push({status:st,text:t});}c(C.valid?'pass':'fail','질량·속도·이동거리·가감속시간·분당 왕복 횟수는 모두 0보다 커야 함');c(r&&r.capacity!=null&&r.capacity>=C.required?'pass':'fail','가반질량 '+(r&&r.capacity!=null?r.capacity:'—')+'kg ≥ 안정 선정질량 '+n2(C.required)+'kg');c(r&&r.maxSpeed>=C.speed?'pass':'fail','최고속도 '+(r?r.maxSpeed:'—')+'mm/s ≥ 목표 '+C.speed+'mm/s');c(r&&ST.elin.stroke>=C.stroke&&ST.elin.stroke<=r.range[1]?'pass':'fail','표준 스트로크 '+ST.elin.stroke+'mm ≥ 필요 '+C.stroke+'mm');c(C.accelerationOk?'pass':'fail','요구 가속도 '+n1(C.acceleration)+'mm/s² ≤ 보수 한계 '+C.maxAcceleration+'mm/s²');c(C.dutyOk?'pass':'fail','계산 운전률 '+n1(C.dutyRatio*100)+'% ≤ 보수 한계 '+n1(C.maxDutyRatio*100)+'%');c(Number(ST.elin.precisionNeed)>=s.repeatMm?'pass':'review','요구 반복정밀도 ±'+ST.elin.precisionNeed+'mm · 시리즈 기본 ±'+s.repeatMm+'mm');if(Number(ST.elin.momentNeed)>0&&s.moment){var lim=Math.min.apply(null,s.moment[String(ST.elin.size)]),ok=lim>=Number(ST.elin.momentNeed);c(ok?'pass':'fail','입력 모멘트 '+ST.elin.momentNeed+'N·m · 정적 허용 최소축 '+lim+'N·m');}else c('review','워크 무게중심 거리와 허용 모멘트 그래프 확인'+(s.manualMoment?' — LEYG 전용 그래프 필수':''));if(ST.elin.orientation==='vertical')c('review','수직축 브레이크·정전 시 낙하 방지·회생 조건 확인');return a;}
 function elinLeadCode(s,size,lead){if(s.code==='LEFB')return '';var arr=s.leads[String(size)]||[],i=arr.indexOf(Number(lead));if(arr.length===2)return i===0?'A':'B';return ['H','A','B'][i]||'';}
 function elinOrderString(s){var o=ST.elin.order;if(!o.cable)o.cable='R3';if(!o.controller)o.controller='C1';return s.code+ST.elin.size+elinLeadCode(s,ST.elin.size,ST.elin.lead)+'-'+ST.elin.stroke+'-'+o.cable+'-'+o.controller;}
 function elinOrderBuilder(s){var o=ST.elin.order;if(!o.cable)o.cable='R3';if(!o.controller)o.controller='C1';return '<h3>주문 형번 구성 (How to Order) '+bSmc(s.source.pdf,"SMC 카탈로그 형식표시방법")+'</h3><div class="modelcode">'+esc(elinOrderString(s))+'</div><div class="row">'+optBtn(o.cable==='R1',"ST.elin.order.cable='R1';render()","R1 케이블","1.5m")+optBtn(o.cable==='R3',"ST.elin.order.cable='R3';render()","R3 케이블","3m")+optBtn(o.cable==='R5',"ST.elin.order.cable='R5';render()","R5 케이블","5m")+optBtn(o.controller==='C1',"ST.elin.order.controller='C1';render()","컨트롤러 세트")+optBtn(o.controller==='무기호',"ST.elin.order.controller='무기호';render()","컨트롤러 없음")+'</div><div class="warn">모터 종류, 케이블 취출 방향, 컨트롤러 통신 방식과 케이블 고정/가동 사양은 발주 전 형식표시방법에서 확정하세요.</div>'+cadLinks(elinOrderString(s));}
@@ -2777,14 +2836,26 @@ function elstep7(){var s=elinCur(),C=elinCalc(),r=elinSelectedRow(),cs=elinCheck
 function erotCandidates(){var p=ST.erot.use,a=DB.electric_rotary.series.map(function(s){var score=s.profile===p?10:0;if(p==='basic'&&s.profile==='precision')score+=4;if(p==='precision'&&s.profile==='absolute')score+=5;return {s:s,score:score};});a.sort(function(x,y){return y.score-x.score;});return a;}
 function erotCur(){return ST.erot.candList.length?ST.erot.candList[ST.erot.serIdx].s:DB.electric_rotary.series[0];}
 function setERotSeries(i){ST.erot.serIdx=Number(i);ST.erot.size=null;ST.erot.pickedAngle=null;ST.erot.catalogConfirmed=false;ST.erot.order={};render();}
-function erotJ(){var m=Math.max(0,Number(ST.erot.mass)||0),r=Math.max(0,Number(ST.erot.radius)||0)/1000,a=Math.max(0,Number(ST.erot.width)||0)/1000,b=Math.max(0,Number(ST.erot.depth)||0)/1000;if(ST.erot.shape==='disc')return 0.5*m*r*r;if(ST.erot.shape==='plate')return m*(a*a+b*b)/12;if(ST.erot.shape==='point')return m*r*r;return Math.max(0,Number(ST.erot.directJ)||0);}
-function erotCalc(){var th=Math.max(1,Number(ST.erot.angle)||0),t=Math.max(0.01,Number(ST.erot.time)||0),J=erotJ(),omega=2*th/t,alpha=4*th/(t*t),torque=J*(alpha*Math.PI/180),margin=DB.electric_rotary.criteria.stableTorqueMargin||1.2;return {J:J,omega:omega,alpha:alpha,torque:torque,requiredTorque:torque*margin,angle:th,time:t,margin:margin};}
+function erotJ(){var m=Number(ST.erot.mass),r=Number(ST.erot.radius)/1000,a=Number(ST.erot.width)/1000,b=Number(ST.erot.depth)/1000;if(!Number.isFinite(m)||m<=0)return 0;if(ST.erot.shape==='disc')return Number.isFinite(r)&&r>0?0.5*m*r*r:0;if(ST.erot.shape==='plate')return Number.isFinite(a)&&a>0&&Number.isFinite(b)&&b>0?m*(a*a+b*b)/12:0;if(ST.erot.shape==='point')return Number.isFinite(r)&&r>0?m*r*r:0;var direct=Number(ST.erot.directJ);return Number.isFinite(direct)&&direct>0?direct:0;}
+function erotCalc(){var th=Number(ST.erot.angle),t=Number(ST.erot.time),J=erotJ(),mass=Number(ST.erot.mass),radius=Number(ST.erot.radius)/1000,width=Number(ST.erot.width)/1000,depth=Number(ST.erot.depth)/1000,resistance=Number(ST.erot.resistanceTorque),valid=Number.isFinite(th)&&th>0&&th<=360&&Number.isFinite(t)&&t>0&&J>0&&Number.isFinite(resistance)&&resistance>=0,omega=valid?2*th/t:0,alpha=valid?4*th/(t*t):0,Ta=valid?J*(alpha*Math.PI/180):0,gravityArm=0;if(ST.erot.orientation==='vertical'&&Number.isFinite(mass)&&mass>0){if(ST.erot.shape==='disc'||ST.erot.shape==='point')gravityArm=Number.isFinite(radius)&&radius>0?radius:0;else if(ST.erot.shape==='plate'&&width>0&&depth>0)gravityArm=0.5*Math.sqrt(width*width+depth*depth);}var Tg=ST.erot.orientation==='vertical'?mass*9.80665*gravityArm:0,margin=DB.electric_rotary.criteria.stableTorqueMargin||1.5,Tf=Math.max(0,resistance||0)+Math.max(0,Tg),required=margin*(Ta+Tf);return {J:J,omega:omega,alpha:alpha,torque:Ta,accelerationTorque:Ta,gravityTorque:Tg,resistanceTorque:Math.max(0,resistance||0),resistingTorque:Tf,requiredTorque:required,angle:th,time:t,margin:margin,valid:valid};}
 function erotCapacity(size,type,C){var rated=DB.electric_rotary.torque[String(size)][type],max=DB.electric_rotary.maxSpeed[type],ratio=Math.min(1,C.omega/max),torque=rated*(1-0.45*ratio),base=DB.electric_rotary.inertiaAt1000[String(size)][type],inertia=base*(C.alpha<=1000?1:Math.max(0.6,1-0.4*(C.alpha-1000)/2000));return {rated:rated,maxSpeed:max,torque:torque,inertia:inertia,ok:C.omega<=max&&C.alpha<=DB.electric_rotary.criteria.maxAccelerationDeg&&C.requiredTorque<=torque&&C.J<=inertia};}
 function erotSizeRows(){var C=erotCalc(),type=ST.erot.torqueType;return DB.electric_rotary.sizes.map(function(z){var q=erotCapacity(z,type,C);q.size=z;return q;});}
 function erotPickSize(){var rows=erotSizeRows(),x=rows.find(function(r){return r.ok;});return {rows:rows,picked:x?x.size:null};}
 function erotPickAngle(size){var list=(DB.electric_rotary.angles[String(size)]||[]).slice(),need=Number(ST.erot.angle)||0,p=list.find(function(v){return v>=need;});return {list:list,need:need,picked:p==null?null:p};}
-function erstep1(){var h='<div class="card"><h2>STEP 1 — 전동 회전 조건 입력</h2><p class="desc">워크의 관성모멘트를 계산해 LER 공식 그래프 범위와 비교합니다. 질량만이 아니라 회전축에서 얼마나 떨어져 있는지가 중요합니다.</p><h3>1-1. 타입 '+tip("기본형·고정도형·앱솔루트","<b>기본형 LER</b>은 일반 위치결정, <b>LERH</b>는 테이블 베어링 강성과 반복정밀도가 중요한 경우, <b>무배터리 앱솔루트</b>는 전원 복귀 시 원점 복귀 부담을 줄이는 용도입니다.","erot:LER")+'</h3><div class="grid big">'+optBtn(ST.erot.use==='basic',"setERot('use','basic')","일반 위치결정","LER 기본형")+optBtn(ST.erot.use==='precision',"setERot('use','precision')","고정도","LERH · ±0.03°")+optBtn(ST.erot.use==='absolute',"setERot('use','absolute')","무배터리 앱솔루트","위치정보 유지")+'</div><h3>1-2. 워크 형상 '+tip("왜 형상이 필요한가요?","같은 질량이라도 회전축에서 멀리 퍼질수록 관성모멘트가 커져 더 큰 토크와 긴 시간이 필요합니다.","erotRef:selection")+'</h3><div class="row">'+optBtn(ST.erot.shape==='disc',"setERot('shape','disc')","원판·원통","중심축 회전")+optBtn(ST.erot.shape==='plate',"setERot('shape','plate')","직사각 판","중심축 회전")+optBtn(ST.erot.shape==='point',"setERot('shape','point')","암 끝 집중질량","가장 보수적")+optBtn(ST.erot.shape==='direct',"setERot('shape','direct')","관성 직접 입력")+'</div>';if(ST.erot.shape==='direct')h+='<div class="row"><label class="f">관성모멘트</label><input type="number" min="0" step="0.001" value="'+ST.erot.directJ+'" onchange="setERot(\'directJ\',this.value)"><span class="unit">kg·m²</span></div>';else{h+='<div class="row"><label class="f">총질량</label><input type="number" min="0" step="0.1" value="'+ST.erot.mass+'" onchange="setERot(\'mass\',this.value)"><span class="unit">kg</span>';if(ST.erot.shape==='plate')h+='<label class="f">가로×세로</label><input type="number" min="1" value="'+ST.erot.width+'" onchange="setERot(\'width\',this.value)" style="width:80px"><span>×</span><input type="number" min="1" value="'+ST.erot.depth+'" onchange="setERot(\'depth\',this.value)" style="width:80px"><span class="unit">mm</span>';else h+='<label class="f">회전반경</label><input type="number" min="1" value="'+ST.erot.radius+'" onchange="setERot(\'radius\',this.value)"><span class="unit">mm</span>';h+='</div>';}h+='<h3>1-3. 회전각·목표 이동시간 '+tip("이동시간을 어떻게 입력하나요?","정지 상태에서 출발해 목표각에서 다시 정지할 때까지의 시간입니다. 앱은 절반 가속·절반 감속의 보수적인 삼각 속도 패턴으로 계산합니다. 컨트롤러 정지시간은 별도입니다.","erotRef:selection")+'</h3><div class="row"><label class="f">회전각</label><input type="number" min="1" max="360" value="'+ST.erot.angle+'" onchange="setERot(\'angle\',this.value)"><span class="unit">°</span><label class="f">이동시간</label><input type="number" min="0.05" step="0.1" value="'+ST.erot.time+'" onchange="setERot(\'time\',this.value)"><span class="unit">s</span></div><h3>1-4. 토크 사양</h3><div class="row">'+optBtn(ST.erot.torqueType==='J',"setERot('torqueType','J')","기본 토크 J","최대속도 420°/s")+optBtn(ST.erot.torqueType==='K',"setERot('torqueType','K')","고토크 K","안정 여유 우선 · 최대 280°/s")+'</div>'+environmentBlock('1-5')+nav(true,erotJ()>0&&ST.erot.angle>0&&ST.erot.time>0,"관성·토크 계산 →")+'</div>';return h;}
-function erstep2(){var C=erotCalc(),h='<div class="card"><h2>STEP 2 — 관성모멘트·필요 토크</h2><div class="formula"><b>삼각 속도 패턴</b><br>최대 각속도 = 2θ/t = '+n2(C.omega)+'°/s<br>각가속도 = 4θ/t² = '+n2(C.alpha)+'°/s²<br>필요 토크 = J×α = '+n3(C.torque)+'N·m × '+C.margin+' = <strong>'+n3(C.requiredTorque)+'N·m</strong></div><div class="res-head"><div class="cell"><span>관성모멘트</span><b>'+n3(C.J)+'kg·m²</b></div><div class="cell"><span>최대 각속도</span><b>'+n2(C.omega)+'°/s</b></div><div class="cell"><span>각가속도</span><b>'+n1(C.alpha)+'°/s²</b></div><div class="cell"><span>안정 필요토크</span><b>'+n3(C.requiredTorque)+'N·m</b></div></div><div class="info">'+tip("공식 그래프 보기","왼쪽은 관성모멘트-각가속도, 오른쪽은 실효토크-각속도 그래프입니다. 앱은 그래프의 보수적 근사값으로 1차 판정하고 원본 교점 확인을 남깁니다.","erotRef:selection")+'</div>'+nav(true,true,"시리즈 후보 →")+'</div>';return h;}
+function erstep1(){
+  var C=erotCalc(),h='<div class="card"><h2>STEP 1 — 전동 회전 조건 입력</h2><p class="desc">관성·가속토크와 설치 방향의 중력·외부 저항토크를 함께 검증합니다.</p>';
+  h+='<h3>1-1. 타입 '+tip("기본형·고정도형·앱솔루트","<b>기본형 LER</b>은 일반 위치결정, <b>LERH</b>는 테이블 베어링 강성과 반복정밀도가 중요한 경우, <b>무배터리 앱솔루트</b>는 전원 복귀 시 원점 복귀 부담을 줄이는 용도입니다.","erot:LER")+'</h3><div class="grid big">'+optBtn(ST.erot.use==='basic',"setERot('use','basic')","일반 위치결정","LER 기본형")+optBtn(ST.erot.use==='precision',"setERot('use','precision')","고정도","LERH · ±0.03°")+optBtn(ST.erot.use==='absolute',"setERot('use','absolute')","무배터리 앱솔루트","위치정보 유지")+'</div>';
+  h+='<h3>1-2. 워크 형상 '+tip("왜 형상이 필요한가요?","같은 질량이라도 회전축에서 멀리 퍼질수록 관성모멘트가 커져 더 큰 토크와 긴 시간이 필요합니다.","erotRef:selection")+'</h3><div class="row">'+optBtn(ST.erot.shape==='disc',"setERot('shape','disc')","원판·원통","중심축 회전")+optBtn(ST.erot.shape==='plate',"setERot('shape','plate')","직사각 판","중심축 회전")+optBtn(ST.erot.shape==='point',"setERot('shape','point')","암 끝 집중질량","가장 보수적")+optBtn(ST.erot.shape==='direct',"setERot('shape','direct')","관성 직접 입력")+'</div>';
+  if(ST.erot.shape==='direct')h+='<div class="row"><label class="f">관성모멘트</label><input type="number" min="0.000001" step="0.001" value="'+ST.erot.directJ+'" onchange="setERot(\'directJ\',this.value)"><span class="unit">kg·m²</span></div>';
+  else{h+='<div class="row"><label class="f">총질량</label><input type="number" min="0.01" step="0.1" value="'+ST.erot.mass+'" onchange="setERot(\'mass\',this.value)"><span class="unit">kg</span>';if(ST.erot.shape==='plate')h+='<label class="f">가로×세로</label><input type="number" min="1" value="'+ST.erot.width+'" onchange="setERot(\'width\',this.value)" style="width:80px"><span>×</span><input type="number" min="1" value="'+ST.erot.depth+'" onchange="setERot(\'depth\',this.value)" style="width:80px"><span class="unit">mm</span>';else h+='<label class="f">회전반경</label><input type="number" min="1" value="'+ST.erot.radius+'" onchange="setERot(\'radius\',this.value)"><span class="unit">mm</span>';h+='</div>';}
+  h+='<h3>1-3. 회전각·목표 이동시간</h3><div class="row"><label class="f">회전각</label><input type="number" min="1" max="360" value="'+ST.erot.angle+'" onchange="setERot(\'angle\',this.value)"><span class="unit">°</span><label class="f">이동시간</label><input type="number" min="0.05" step="0.1" value="'+ST.erot.time+'" onchange="setERot(\'time\',this.value)"><span class="unit">s</span></div>';
+  h+='<h3>1-4. 설치·저항 조건</h3><div class="row">'+optBtn(ST.erot.orientation==='horizontal',"setERot('orientation','horizontal')","수평면 회전","중력토크 0")+optBtn(ST.erot.orientation==='vertical',"setERot('orientation','vertical')","수직면 회전","최악 위치 중력토크 반영")+'</div><div class="row"><label class="f">외부 저항 토크</label><input type="number" min="0" step="0.01" value="'+ST.erot.resistanceTorque+'" onchange="setERot(\'resistanceTorque\',this.value)"><span class="unit">N·m</span></div>';
+  if(ST.erot.orientation==='vertical'&&ST.erot.shape==='direct')h+='<div class="warn">관성 직접 입력에서는 무게중심 정보를 알 수 없으므로 중력토크를 외부 저항 토크에 포함해 입력하세요.</div>';
+  h+='<div class="info">가속 '+n3(C.accelerationTorque)+'N·m · 중력 '+n3(C.gravityTorque)+'N·m · 외부저항 '+n3(C.resistanceTorque)+'N·m</div>';
+  h+='<h3>1-5. 토크 사양</h3><div class="row">'+optBtn(ST.erot.torqueType==='J',"setERot('torqueType','J')","기본 토크 J","최대속도 420°/s")+optBtn(ST.erot.torqueType==='K',"setERot('torqueType','K')","고토크 K","안정 여유 우선 · 최대 280°/s")+'</div>'+environmentBlock('1-6')+nav(true,C.valid,"관성·토크 계산 →")+'</div>';
+  return h;
+}
+function erstep2(){var C=erotCalc(),h='<div class="card"><h2>STEP 2 — 관성모멘트·필요 토크</h2><div class="formula"><b>SMC 안정 선정식</b><br>최대 각속도 = 2θ/t = '+n2(C.omega)+'°/s<br>각가속도 = 4θ/t² = '+n2(C.alpha)+'°/s²<br>가속토크 Ta = J×α = '+n3(C.accelerationTorque)+'N·m<br>저항토크 Tf = 중력 '+n3(C.gravityTorque)+' + 외부저항 '+n3(C.resistanceTorque)+' = '+n3(C.resistingTorque)+'N·m<br>필요 토크 = 1.5×(Ta+Tf) = <strong>'+n3(C.requiredTorque)+'N·m</strong></div><div class="res-head"><div class="cell"><span>관성모멘트</span><b>'+n3(C.J)+'kg·m²</b></div><div class="cell"><span>최대 각속도</span><b>'+n2(C.omega)+'°/s</b></div><div class="cell"><span>각가속도</span><b>'+n1(C.alpha)+'°/s²</b></div><div class="cell"><span>중력·저항토크</span><b>'+n3(C.resistingTorque)+'N·m</b></div><div class="cell"><span>안정 필요토크</span><b>'+n3(C.requiredTorque)+'N·m</b></div></div><div class="info">'+tip("공식 그래프 보기","관성모멘트-각가속도와 실효토크-각속도 그래프의 두 교점을 모두 확인합니다.","erotRef:selection")+'</div>'+nav(true,C.valid,"시리즈 후보 →")+'</div>';return h;}
 function erstep3(){if(!ST.erot.candList.length)ST.erot.candList=erotCandidates();var h='<div class="card"><h2>STEP 3 — 형식·시리즈 후보 (전동 회전)</h2>';ST.erot.candList.forEach(function(o,i){var s=o.s,sel=i===ST.erot.serIdx;h+='<div class="cand '+(sel?'sel':'')+'" onclick="setERotSeries('+i+')">'+motionThumb(s.code,null,'erot')+'<div><b><span class="rank">'+(i+1)+'순위</span> '+s.code+' — '+esc(s.label)+' '+tip(s.code+" 참고","반복 위치결정 정밀도 ±"+s.precisionDeg+"°<br>엔코더: "+esc(s.encoder),"erot:"+s.code)+'</b><p>사이즈 10/30/50 · 기본/고토크 선택 · '+esc(s.encoder)+'</p><em>'+((erotPickSize().picked!=null)?'현재 관성·속도 조건 통과 가능':'현재 조건에서 사이즈 미달')+'</em></div></div>';});h+='<div class="info">'+bSmc(DB.electric_rotary.source.pdf,"SMC Korea LER 공식 카탈로그")+' 기준 후보입니다.</div>'+nav(true,!!erotCur(),"사이즈 선정 →")+'</div>';return h;}
 function erstep4(){var P=erotPickSize(),C=erotCalc(),h='<div class="card"><h2>STEP 4 — 사이즈 선정 · '+erotCur().code+'</h2><p class="desc">관성·각가속도, 실효토크·각속도를 동시에 만족하는 사이즈만 통과합니다.</p><div class="tablewrap"><table class="t"><tr><th>사이즈</th><th>정격 토크</th><th>속도 반영 가능토크</th><th>관성 한계 근사</th><th>판정</th></tr>';P.rows.forEach(function(r){var sel=Number(ST.erot.size)===r.size||(ST.erot.size==null&&P.picked===r.size);h+='<tr class="'+(sel?'pick':'')+'" style="cursor:pointer" onclick="setERot(\'size\','+r.size+')"><td>'+r.size+'</td><td>'+r.rated+'N·m</td><td>'+n3(r.torque)+'N·m</td><td>'+n3(r.inertia)+'kg·m²</td><td>'+(r.ok?(sel?'✅ 채택':'만족'):'미달')+'</td></tr>';});h+='</table></div><div class="info">현재 J='+n3(C.J)+'kg·m² · '+n1(C.alpha)+'°/s² · '+n1(C.omega)+'°/s '+tip("그래프 대조 방법","왼쪽 그래프에서 J와 각가속도의 교점이 선택 곡선 아래인지, 오른쪽 그래프에서 필요토크와 각속도 교점이 곡선 아래인지 각각 확인합니다.","erotRef:selection")+'</div>'+nav(true,(ST.erot.size!=null?P.rows.some(function(r){return r.size==ST.erot.size&&r.ok;}):P.picked!=null),"각도·토크형 선택 →")+'</div>';return h;}
 function erstep5(){if(ST.erot.size==null)ST.erot.size=erotPickSize().picked;var A=erotPickAngle(ST.erot.size),h='<div class="card"><h2>STEP 5 — 요동각·토크형 선택</h2><h3>표준 요동각 '+tip("표준 각도와 360°","90°·180°는 외부 스토퍼 기호가 있으며, 기본 요동각은 LER10 310°, LER30/50 320°입니다. 360° 위치결정은 컨트롤러 설정과 가동범위를 함께 확인합니다.","erot:LER")+'</h3><div class="row">';A.list.forEach(function(v){h+=optBtn(Number(ST.erot.pickedAngle)===v||(ST.erot.pickedAngle==null&&A.picked===v),"setERot('pickedAngle',"+v+")",v+'°');});h+='</div><h3>토크형</h3><div class="row">'+optBtn(ST.erot.torqueType==='J',"setERot('torqueType','J')","J 기본 토크",DB.electric_rotary.torque[String(ST.erot.size)].J+"N·m · 420°/s")+optBtn(ST.erot.torqueType==='K',"setERot('torqueType','K')","K 고토크",DB.electric_rotary.torque[String(ST.erot.size)].K+"N·m · 280°/s")+'</div><div class="guidegrid"><div class="guideitem"><b>관성모멘트</b>질량이 회전축에서 멀수록 급격히 커집니다. 암·척·워크를 모두 포함하세요.</div><div class="guideitem"><b>실효 토크</b>모터가 실제 각속도에서 낼 수 있는 토크입니다. 정지 시 정격토크만으로 판단하면 안 됩니다.</div><div class="guideitem"><b>반복 위치결정 정밀도</b>같은 방향으로 반복 접근했을 때 위치 편차입니다. 절대 위치 정확도와는 다릅니다.</div></div>'+nav(true,ST.erot.pickedAngle!=null||A.picked!=null,"최종 검증 →")+'</div>';return h;}
@@ -2796,6 +2867,12 @@ function erotOrderBuilder(s){var o=ST.erot.order;if(!o.cable)o.cable='R3';if(!o.
 function toggleERotConfirm(){ST.erot.catalogConfirmed=!ST.erot.catalogConfirmed;render();}
 function erstep6(){var cs=erotChecks(),fail=cs.some(function(x){return x.status==='fail';}),h='<div class="card"><h2>STEP 6 — 최종 검증</h2><ul class="checks">';cs.forEach(function(x){h+='<li>'+(x.status==='pass'?'✅':(x.status==='fail'?'❌':'⚠'))+' '+esc(x.text)+'</li>';});h+='</ul><button class="opt'+(ST.erot.catalogConfirmed?' sel':'')+'" onclick="toggleERotConfirm()" style="width:100%;text-align:left"><b>'+(ST.erot.catalogConfirmed?'☑ 공식 그래프를 확인했습니다':'☐ 주문 전 공식 그래프 확인')+'</b><small>관성-각가속도와 실효토크-각속도 두 교점, 허용 하중과 케이블 간섭을 확인합니다.</small></button>'+(fail?'<div class="danger">미달 항목이 있습니다. 더 큰 사이즈, 더 긴 이동시간 또는 다른 토크형을 선택하세요.</div>':'<div class="info">자동 계산을 통과했습니다. 공식 그래프 확인 후 1차 선정이 완료됩니다.</div>')+nav(true,!fail,"선정 결과 보기 →")+'</div>';return h;}
 function erstep7(){var s=erotCur(),C=erotCalc(),q=erotSelectedCapacity(),cs=erotChecks(),fail=cs.some(function(x){return x.status==='fail';}),status=fail?'미달':(ST.erot.catalogConfirmed?'1차 선정 완료':'주문 전 확인 필요'),h='<div class="card"><h2>STEP 7 — 전동 회전 선정 결과 '+tip("결과에서 확정된 범위","타입·사이즈·토크형·요동각과 관성·속도 자동 판정 결과입니다. 두 공식 그래프 교점은 주문 전 확인 상태로 남습니다.","erot:'+s.code+'")+'</h2><div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">'+motionThumb(s.code,'result','erot')+'<div class="res-head" style="flex:1;min-width:280px;margin:0"><div class="cell"><span>타입</span><b style="font-size:15px">'+esc(s.label)+'</b></div><div class="cell"><span>시리즈</span><b>'+s.code+'</b></div><div class="cell"><span>사이즈</span><b>'+ST.erot.size+'</b></div><div class="cell"><span>요동각</span><b>'+ST.erot.pickedAngle+'°</b></div><div class="cell"><span>토크형</span><b>'+ST.erot.torqueType+'</b></div><div class="cell"><span>선정 상태</span><b style="font-size:15px">'+status+'</b></div></div></div>'+environmentResult()+'<div class="timebox"><strong>'+s.code+ST.erot.size+' 안정 여유 후보</strong><br>관성 '+n3(C.J)+'kg·m² ≤ '+n3(q.inertia)+'kg·m² · 안정 필요토크 '+n3(C.requiredTorque)+'N·m ≤ 가능 '+n3(q.torque)+'N·m</div><h3>선정 근거</h3><div class="tablewrap"><table class="t"><tr><th>항목</th><th>입력·계산</th><th>근거</th></tr><tr><td>관성모멘트</td><td>'+n3(C.J)+'kg·m²</td><td>워크 형상·질량·반경 계산</td></tr><tr><td>각속도</td><td>2×'+C.angle+'°/'+C.time+'s = '+n2(C.omega)+'°/s</td><td>삼각 속도 패턴</td></tr><tr><td>각가속도</td><td>4×'+C.angle+'°/'+C.time+'² = '+n1(C.alpha)+'°/s²</td><td>'+bSmc(DB.electric_rotary.source.pdf,"SMC 그래프")+'</td></tr><tr><td>필요 토크</td><td>'+n3(C.torque)+'×1.2 = '+n3(C.requiredTorque)+'N·m</td><td>J×α · 앱 안정 여유</td></tr><tr><td>반복정밀도</td><td>±'+s.precisionDeg+'°</td><td>'+s.code+' 사양</td></tr></table></div>'+erotOrderBuilder(s)+'<details class="learn" open><summary>용어 정리와 주문 전 체크</summary><div class="learnbody"><p><b>관성모멘트</b>는 회전하기 어려운 정도입니다. 질량이 축에서 두 배 멀어지면 관성은 대략 네 배 커집니다. 암·척·배관·워크를 모두 포함해야 합니다.</p><p><b>요동시간</b>은 출발부터 목표각 정지까지이며, 가속·등속·감속과 컨트롤러 정지시간을 포함한 실제 사이클은 설정에 따라 달라집니다. 앱은 보수적인 삼각 속도 패턴으로 1차 판정합니다.</p><p>테이블 허용 래이디얼·스러스트 하중, 허용 모멘트, 중공 배선과 케이블 간섭, 외부 스토퍼 사용 여부를 확인하세요.</p></div></details><h3>출처</h3><ul class="srcs"><li>🔵 <a href="'+esc(DB.electric_rotary.source.pdf)+'" target="_blank" rel="noopener">'+esc(DB.electric_rotary.source.label)+'</a></li></ul><div class="nav"><button class="prev" onclick="go(-1)">← 이전</button><button class="next" onclick="restart()">처음부터 다시</button></div></div>';return h;}
+var erstep7Original=erstep7;
+erstep7=function(){
+  var C=erotCalc(),html=erstep7Original();
+  return html.replace(/<tr><td>필요 토크<\/td><td>.*?<\/td><td>.*?<\/td><\/tr>/,
+    '<tr><td>필요 토크</td><td>1.5×('+n3(C.accelerationTorque)+'+'+n3(C.resistingTorque)+') = '+n3(C.requiredTorque)+'N·m</td><td>1.5×(Ta+Tf) · 중력·외부저항 포함</td></tr>');
+};
 </script>
 </body>
 </html>
