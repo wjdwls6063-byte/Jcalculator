@@ -45,6 +45,12 @@
       add('fiber_detection_method','검출 방식 / 특징','assets/fiber/evidence/p005.jpg','같은 화이버센서라도 투과형·반사형·배경 커트·액면·내열처럼 목적이 다릅니다. “빛을 어떻게 쓰는가”와 “어떤 환경을 견디는가”를 함께 나타내는 항목이므로 실제 워크와 설치 구조에 맞는 항목을 선택합니다.','OMRON 공식 카탈로그 · 선정 가이드 p.4~5');
       add('fiber_search','형번 / 키워드 검색','assets/fiber/evidence/p098.jpg','정확한 E32 형번을 알면 형번으로 바로 찾고, 모르면 “슬리브”, “내열”, “액면”, “배경 커트” 같은 사용 조건 키워드로 후보를 줄일 수 있습니다.','OMRON 공식 카탈로그 · 형식 INDEX p.98');
 
+      add('sensor_series','OMRON 시리즈','assets/e3z/intro-p176.png','시리즈는 같은 설치 목적과 제품 구조를 묶은 제품군 이름입니다. 시리즈를 먼저 고르는 것은 형번을 확정하는 일이 아닙니다. 검출 방식·거리·출력·접속 조건까지 정한 뒤 최종 형번을 확인하세요.','등록된 OMRON 공식 한글 카탈로그 기준');
+      add('series_e3t','E3T · 초소형/박형 광전센서','assets/e3t-product-group.png','작은 설치 공간이나 얇은 본체가 필요한 광전 검출용 시리즈입니다. 투과형·회귀 반사형·확산 반사형 등 실제 검출 방식과 거리 조건을 다음 단계에서 함께 선택하세요.','OMRON E3T 한글 공식 카탈로그 2010');
+      add('series_e3z','E3Z · 소형 광전센서','assets/e3z/intro-p176.png','소형 광전센서 제품군입니다. 물체 양쪽 설치 가능 여부, 반사판 사용 여부, 배경 간섭 및 필요한 검출 거리로 방식을 먼저 정한 후 세부 형번을 고릅니다.','OMRON E3Z 한글 공식 카탈로그 2010');
+      add('series_e2e','E2E Small New · 소경 근접센서','assets/e2e/intro-p58.jpg','작은 원통형 몸체로 금속을 비접촉 검출하는 근접센서 제품군입니다. 설치 구멍 크기, 실드/비실드, 필요한 검출 거리와 PLC 출력(NPN/PNP)을 함께 확인해야 합니다.','OMRON E2E Small New 한글 공식 카탈로그 2014');
+      add('series_ee','EE-SX47/67 · 말굽형 포토마이크로센서','assets/ee_sx47_67/product-group.png','송광부와 수광부 사이의 5mm 홈을 워크·도그가 통과할 때 검출하는 제품군입니다. 일반적인 원거리 광전센서와 달리, 먼저 홈 안으로 물체가 지나갈 수 있는지와 필요한 본체 형상을 확인하세요.','OMRON EE-SX47/67 한글 공식 카탈로그 2010');
+
       add('fiber_group_standard','표준 설치','assets/fiber/evidence/p005.jpg','일반적인 기계 브라켓에 나사 또는 원주형 헤드를 고정하는 기본 분류입니다. 특별한 공간 제약이나 환경 조건이 없다면 여기부터 확인하면 됩니다.','OMRON 공식 카탈로그 · 선정 가이드 p.5');
       add('fiber_group_space','공간 절감','assets/fiber/evidence/p005.jpg','검출 위치가 좁아 일반 센서 본체를 둘 수 없을 때 사용하는 소형 헤드 분류입니다. 플랫형은 얇게 붙이고, 슬리브형은 아주 작은 선단을 워크 가까이에 배치할 때 유리합니다.','OMRON 공식 카탈로그 · 선정 가이드 p.5');
       add('fiber_group_beam','빔 강화','assets/fiber/evidence/p005.jpg','작은 물체, 긴 거리, 좁은 틈, 가까운 배경처럼 빛의 크기·세기·퍼짐을 제어해야 할 때 선택합니다. 무엇이 문제인지에 따라 소스폿/하이 파워/협시계/배경 커트를 고릅니다.','OMRON 공식 카탈로그 · 선정 가이드 p.5');
@@ -109,6 +115,13 @@
       <div class="fiber-field"><label>형번 / 키워드 ${info('fiber_search')}</label><input id="fiberSideSearch" placeholder="예: E32-T11N, 내열, 슬리브"></div>`;
     side.appendChild(box);
     box.querySelector('#fiberSidebarEnable').addEventListener('change',e=>{if(e.target.checked)selectFiberSensorType()});
+    // Keep the primary "센서 종류" list authoritative.  The old E32-only
+    // expert section made Fiber easy to overlook because it was separated
+    // from the other three sensor categories.
+    const mainToggle=document.getElementById('fiberCategoryToggle');
+    if(mainToggle)mainToggle.addEventListener('change',e=>{
+      if(e.target.checked)selectFiberSensorType();
+    });
     box.querySelector('#fiberSideGroup').addEventListener('change',e=>{const f=fiberState();f.group=e.target.value||null;f.subcategory=null;state.step=6;render()});
     box.querySelector('#fiberSideMethod').addEventListener('change',e=>{fiberState().method=e.target.value||null;state.step=6;render()});
     box.querySelector('#fiberSideSearch').addEventListener('input',e=>{fiberState().search=e.target.value;state.step=6;render()});
@@ -116,7 +129,9 @@
   function setSidebarMode(on){
     const side=document.querySelector('.sidebar');if(!side)return;const fs=document.getElementById('fiberExpertSection');
     side.querySelectorAll('.filter-section').forEach(x=>{if(x===fs)return;if(on)x.dataset.fiberWasDisplay=x.style.display||'';x.style.display=on?'none':(x.dataset.fiberWasDisplay||'')});
-    if(fs)fs.classList.toggle('show',on);const count=document.getElementById('sidebarCount');if(count&&on)count.innerHTML=`현재 화이버 조건 <b>${filtered().length}개</b> / E32 ${products.length}개`;
+    if(fs)fs.classList.toggle('show',on);
+    const mainToggle=document.getElementById('fiberCategoryToggle');if(mainToggle)mainToggle.checked=on;
+    const count=document.getElementById('sidebarCount');if(count&&on)count.innerHTML=`현재 화이버 조건 <b>${filtered().length}개</b> / E32 ${products.length}개`;
   }
   function renderFiberChips(){
     const f=fiberState(),bar=document.getElementById('conditionBar');if(!bar)return;bar.querySelectorAll('.chip.dynamic').forEach(x=>x.remove());const empty=document.getElementById('emptyCond');

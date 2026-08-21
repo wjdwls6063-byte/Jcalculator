@@ -580,12 +580,13 @@ button,input{font:inherit} button{cursor:pointer}
       <label class="check"><input type="checkbox" data-filter="category" value="photoelectric"> 광전센서 <span class="info term" data-term="photo" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
       <label class="check"><input type="checkbox" data-filter="category" value="proximity"> 근접센서 <span class="info term" data-term="proximity" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
       <label class="check"><input type="checkbox" data-filter="category" value="photo_microsensor"> 포토마이크로센서 <span class="info term" data-term="photomicro" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
+      <label class="check"><input id="fiberCategoryToggle" type="checkbox"> 화이버센서 <span class="info term" data-term="fiber" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
     </div>
-    <div class="filter-section"><div class="filter-title">OMRON 시리즈</div>
-      <label class="check"><input type="checkbox" data-filter="series" value="E3T"> E3T · 초소형/박형</label>
-      <label class="check"><input type="checkbox" data-filter="series" value="E3Z"> E3Z · 소형/장거리</label>
-      <label class="check"><input type="checkbox" data-filter="series" value="E2E Small New"> E2E Small New · 소경 근접</label>
-      <label class="check"><input type="checkbox" data-filter="series" value="EE-SX47/67"> EE-SX47/67 · 말굽형</label>
+    <div class="filter-section"><div class="filter-title">OMRON 시리즈 <span class="info term" data-term="sensor_series" onclick="event.preventDefault();event.stopPropagation()">?</span></div>
+      <label class="check"><input type="checkbox" data-filter="series" value="E3T"> E3T · 초소형/박형 <span class="info term" data-term="series_e3t" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="series" value="E3Z"> E3Z · 소형/장거리 <span class="info term" data-term="series_e3z" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="series" value="E2E Small New"> E2E Small New · 소경 근접 <span class="info term" data-term="series_e2e" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
+      <label class="check"><input type="checkbox" data-filter="series" value="EE-SX47/67"> EE-SX47/67 · 말굽형 <span class="info term" data-term="series_ee" onclick="event.preventDefault();event.stopPropagation()">?</span></label>
     </div>
     <div class="filter-section"><div class="filter-title">검출 방식</div><label class="check"><input type="checkbox" data-filter="method" value="inductive_proximity"> 고주파 발진형 근접 <span class="info term" data-term="proximity">?</span></label>
       <label class="check"><input type="checkbox" data-filter="method" value="through_beam"> 투과형 <span class="info term" data-term="through">?</span></label>
