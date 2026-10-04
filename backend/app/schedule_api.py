@@ -9,6 +9,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .admin_api import AdminSession, CsrfSession
+from .settings import admin_password_hash
 from .store import StoreUnavailable, VersionConflict, store
 
 
@@ -89,6 +90,21 @@ class SaveBody(BaseModel):
 def require_persistent_database() -> None:
     if os.environ.get("RENDER") == "true" and not store.postgres:
         raise HTTPException(status_code=503, detail="Render에 영구 저장용 DATABASE_URL을 설정해 주세요.")
+
+
+@router.get("/readiness")
+def readiness() -> dict[str, bool]:
+    try:
+        store.schedule_current()
+        database_available = True
+    except StoreUnavailable:
+        database_available = False
+    return {
+        "ready": database_available and bool(admin_password_hash()) and (store.postgres or os.environ.get("RENDER") != "true"),
+        "persistentDatabase": store.postgres,
+        "databaseAvailable": database_available,
+        "loginConfigured": bool(admin_password_hash()),
+    }
 
 
 @router.get("/document")

@@ -5,6 +5,7 @@ from test_api import TEST_ADMIN_PASSWORD, client
 
 def test_schedule_requires_login_csrf_and_prevents_stale_overwrite() -> None:
     client.cookies.clear()
+    assert client.get("/api/schedule/readiness").json()["databaseAvailable"] is True
     assert client.get("/api/schedule/document").status_code == 401
     response = client.post(
         "/api/admin/login", json={"username": "admin", "password": TEST_ADMIN_PASSWORD}
