@@ -1,6 +1,6 @@
 # Jcalculator 통합 Web Service
 
-메인과 6개 설계 도구, 00 일정관리, 계산 API, `/admin` 편집 화면을 제공합니다. 현재 운영 환경은 Render Static Site(`Jcalculator`)와 Python Web Service(`jcalculator-engine-api`)로 나뉘며, `/api/*` 요청은 Web Service로 전달됩니다. 게스트는 로그인 없이 계산기를 사용하고, 관리자만 서버 세션으로 운영 설정과 일정 데이터를 관리합니다.
+메인과 6개 설계 도구, 00 일정관리, 계산 API, `/admin` 편집 화면을 제공합니다. 현재 운영 환경은 Render Static Site(`Jcalculator`)와 Python Web Service(`jcalculator-engine-api`)로 나뉘며, `/api/*` 요청은 Web Service로 전달됩니다. 계산기는 로그인 없이 사용하며, 일정관리는 관리자 편집 모드와 게스트 보기 모드를 제공합니다.
 
 ## 구조
 
@@ -17,8 +17,8 @@
 - `/`, `/conveyor/`, `/ballscrew/`, `/ballscrew/vertical/`
 - `/eccentric/`, `/smc-cylinder/`, `/sensor/`
 - `/admin/`: 관리자 로그인·편집·변경 이력·백업
-- `/schedule/`: 관리자 로그인 후 여러 기기에서 공유하는 프로젝트 일정관리
-- `/api/schedule/document`: 일정 데이터 조회·저장 (관리자 세션, 저장 시 CSRF·버전 검사)
+- `/schedule/`: 관리자 편집 또는 게스트 보기 모드로 공유하는 프로젝트 일정관리
+- `/api/schedule/document`: 관리자·게스트 조회, 관리자만 저장 (CSRF·버전 검사)
 - `/api/public/config`: 게스트 화면에 적용할 공개 설정
 - `/api/admin/*`: 로그인 세션과 CSRF 검증이 필요한 관리자 API
 - `/health`: Render 상태 확인
@@ -26,7 +26,8 @@
 ## 보안·저장 방식
 
 - 관리자 비밀번호 원문은 소스와 DB에 저장하지 않습니다.
-- Render 환경변수 `JCALCULATOR_ADMIN_PASSWORD_HASH`에는 scrypt 해시만 저장합니다.
+- Render 환경변수 `JCALCULATOR_ADMIN_PASSWORD_HASH`와 `JCALCULATOR_GUEST_PASSWORD_HASH`에는 각각 scrypt 해시만 저장합니다.
+- 게스트는 별도 세션으로 일정만 조회할 수 있습니다. 관리자 설정 조회와 일정 저장은 서버에서 거부합니다.
 - 로그인 세션은 예측 불가능한 토큰을 사용하고, DB에는 토큰의 SHA-256 해시만 저장합니다.
 - 쿠키는 `HttpOnly`, `SameSite=Strict`, 운영 HTTPS에서는 `Secure`입니다.
 - 설정 변경 요청은 CSRF 토큰, 버전 충돌 검사, 서버측 값 범위 검증을 통과해야 합니다.

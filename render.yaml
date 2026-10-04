@@ -15,5 +15,7 @@ services:
         value: admin
       - key: JCALCULATOR_ADMIN_PASSWORD_HASH
         sync: false
+      - key: JCALCULATOR_GUEST_PASSWORD_HASH
+        sync: false
       - key: JCALCULATOR_COOKIE_SECURE
         value: "true"

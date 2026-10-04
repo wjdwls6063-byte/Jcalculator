@@ -13,6 +13,8 @@ from app.admin_auth import hash_password  # noqa: E402
 
 TEST_ADMIN_PASSWORD = secrets.token_urlsafe(18)
 os.environ["JCALCULATOR_ADMIN_PASSWORD_HASH"] = hash_password(TEST_ADMIN_PASSWORD)
+TEST_GUEST_PASSWORD = secrets.token_urlsafe(18)
+os.environ["JCALCULATOR_GUEST_PASSWORD_HASH"] = hash_password(TEST_GUEST_PASSWORD)
 
 from fastapi.testclient import TestClient  # noqa: E402
 

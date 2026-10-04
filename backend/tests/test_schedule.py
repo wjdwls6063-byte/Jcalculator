@@ -1,6 +1,32 @@
 from __future__ import annotations
 
-from test_api import TEST_ADMIN_PASSWORD, client
+from test_api import TEST_ADMIN_PASSWORD, TEST_GUEST_PASSWORD, client
+
+
+def test_guest_can_read_but_cannot_save_or_access_admin() -> None:
+    client.cookies.clear()
+    assert client.get("/api/schedule/readiness").json()["guestConfigured"] is True
+    assert client.post("/api/schedule/guest/login", json={"password": "wrong"}).status_code == 401
+    login = client.post("/api/schedule/guest/login", json={"password": TEST_GUEST_PASSWORD})
+    assert login.status_code == 200
+    assert login.json()["role"] == "guest"
+    assert "httponly" in login.headers["set-cookie"].lower()
+    assert client.get("/api/schedule/session").json()["role"] == "guest"
+    document = client.get("/api/schedule/document")
+    assert document.status_code == 200
+    assert client.get("/api/admin/config").status_code == 401
+    attempt = client.put(
+        "/api/schedule/document",
+        json={"expectedVersion": document.json()["version"], "data": document.json()["data"]},
+        headers={"X-CSRF-Token": login.json()["csrfToken"]},
+    )
+    assert attempt.status_code == 401
+    assert client.get("/api/schedule/document").json()["version"] == document.json()["version"]
+    assert client.post("/api/schedule/guest/logout").status_code == 403
+    assert client.post(
+        "/api/schedule/guest/logout", headers={"X-CSRF-Token": login.json()["csrfToken"]}
+    ).status_code == 200
+    assert client.get("/api/schedule/document").status_code == 401
 
 
 def test_schedule_requires_login_csrf_and_prevents_stale_overwrite() -> None:

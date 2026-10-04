@@ -19,7 +19,7 @@
 3. Connection Details에서 PostgreSQL 연결 문자열을 복사합니다. 가능하면 pooled connection 문자열을 사용합니다.
 4. 연결 문자열은 GitHub 파일에 넣지 않고 Render의 `DATABASE_URL` 비밀 환경변수에만 저장합니다.
 
-앱 첫 연결 시 `app_config`, `config_versions`, `admin_sessions`, `schedule_document` 테이블과 초기 설정 v1을 자동 생성합니다.
+앱 첫 연결 시 `app_config`, `config_versions`, `admin_sessions`, `schedule_document`, `schedule_guest_sessions` 테이블과 초기 설정 v1을 자동 생성합니다.
 
 ## 3. 관리자 비밀번호 해시 생성
 
@@ -50,6 +50,7 @@ python backend/scripts/generate_admin_password_hash.py
 | `DATABASE_URL` | Neon 연결 문자열, Secret |
 | `JCALCULATOR_ADMIN_USERNAME` | 기본 `admin`, 필요 시 변경 |
 | `JCALCULATOR_ADMIN_PASSWORD_HASH` | 3단계에서 만든 해시, Secret |
+| `JCALCULATOR_GUEST_PASSWORD_HASH` | 게스트 비밀번호의 별도 scrypt 해시, Secret. 설정하지 않으면 게스트 로그인 불가 |
 | `JCALCULATOR_ALLOWED_ORIGINS` | `https://jcalculator.onrender.com` |
 | `JCALCULATOR_COOKIE_SECURE` | `true` |
 
@@ -71,7 +72,7 @@ python backend/scripts/generate_admin_password_hash.py
 - `/admin/`
 - `/schedule/`
 
-게스트 6개 도구에서 기본 결과가 보이고 API 키 입력창이 나타나지 않아야 합니다. `/admin`은 비로그인 상태에서 편집 내용을 보여주지 않아야 합니다. 로그인 후 테스트 문구를 새 버전으로 저장하고 게스트 메인에 반영되는지 확인한 뒤 이전 버전을 복원하면 저장·공개 반영·복원까지 한 번에 검증할 수 있습니다.
+게스트 6개 도구에서 기본 결과가 보이고 API 키 입력창이 나타나지 않아야 합니다. `/admin`은 비로그인 상태에서 편집 내용을 보여주지 않아야 합니다. `/schedule/`에서 게스트는 일정을 조회하고 편집 버튼은 보이지 않아야 하며, 관리자만 일정을 저장할 수 있어야 합니다. 관리자 로그인 후 테스트 문구를 새 버전으로 저장하고 게스트 화면에 반영되는지 확인한 뒤 이전 버전을 복원하면 저장·공개 반영·복원까지 한 번에 검증할 수 있습니다.
 
 ## 6. 무료 플랜 동작
 

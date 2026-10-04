@@ -123,6 +123,18 @@ class ConfigStore:
                     )
                     """,
                 )
+                self.execute(
+                    connection,
+                    """
+                    CREATE TABLE IF NOT EXISTS schedule_guest_sessions (
+                        token_hash TEXT PRIMARY KEY,
+                        csrf_token TEXT NOT NULL,
+                        created_at TEXT NOT NULL,
+                        expires_at TEXT NOT NULL,
+                        last_seen_at TEXT NOT NULL
+                    )
+                    """,
+                )
                 row = self.execute(connection, "SELECT version FROM app_config WHERE singleton = 1").fetchone()
                 if row is None:
                     now = iso_now()
@@ -297,6 +309,51 @@ class ConfigStore:
         self.ensure_schema()
         with self.connect() as connection:
             self.execute(connection, "DELETE FROM admin_sessions WHERE token_hash = ?", (token_hash,))
+            connection.commit()
+
+    def create_guest_session(self, token_hash: str, csrf_token: str, minutes: int) -> dict[str, Any]:
+        self.ensure_schema()
+        now = utc_now()
+        expires = now + timedelta(minutes=minutes)
+        with self.connect() as connection:
+            self.execute(connection, "DELETE FROM schedule_guest_sessions WHERE expires_at <= ?", (now.isoformat(),))
+            self.execute(
+                connection,
+                "INSERT INTO schedule_guest_sessions(token_hash, csrf_token, created_at, expires_at, last_seen_at) VALUES(?, ?, ?, ?, ?)",
+                (token_hash, csrf_token, now.isoformat(), expires.isoformat(), now.isoformat()),
+            )
+            connection.commit()
+        return {"role": "guest", "expiresAt": expires.isoformat(), "csrfToken": csrf_token}
+
+    def guest_session(self, token_hash: str, minutes: int) -> dict[str, Any] | None:
+        self.ensure_schema()
+        now = utc_now()
+        with self.connect() as connection:
+            row = self.execute(
+                connection,
+                "SELECT csrf_token, created_at, expires_at FROM schedule_guest_sessions WHERE token_hash = ?",
+                (token_hash,),
+            ).fetchone()
+            if row is None:
+                return None
+            expires = datetime.fromisoformat(row[2])
+            if expires <= now:
+                self.execute(connection, "DELETE FROM schedule_guest_sessions WHERE token_hash = ?", (token_hash,))
+                connection.commit()
+                return None
+            expires = now + timedelta(minutes=minutes)
+            self.execute(
+                connection,
+                "UPDATE schedule_guest_sessions SET expires_at = ?, last_seen_at = ? WHERE token_hash = ?",
+                (expires.isoformat(), now.isoformat(), token_hash),
+            )
+            connection.commit()
+        return {"role": "guest", "csrfToken": row[0], "createdAt": row[1], "expiresAt": expires.isoformat()}
+
+    def delete_guest_session(self, token_hash: str) -> None:
+        self.ensure_schema()
+        with self.connect() as connection:
+            self.execute(connection, "DELETE FROM schedule_guest_sessions WHERE token_hash = ?", (token_hash,))
             connection.commit()
 
 

@@ -32,6 +32,10 @@ def admin_password_hash() -> str:
     return os.getenv("JCALCULATOR_ADMIN_PASSWORD_HASH", "").strip()
 
 
+def guest_password_hash() -> str:
+    return os.getenv("JCALCULATOR_GUEST_PASSWORD_HASH", "").strip()
+
+
 def session_minutes() -> int:
     raw = os.getenv("JCALCULATOR_SESSION_MINUTES", "30")
     try:
