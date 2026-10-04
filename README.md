@@ -1,16 +1,16 @@
 # Jcalculator 통합 Web Service
 
-메인과 6개 설계 도구, 00 일정관리, 계산 API, `/admin` 편집 화면을 하나의 FastAPI Web Service에서 제공합니다. 게스트는 로그인 없이 계산기를 사용하고, 관리자만 서버 세션으로 운영 설정과 일정 데이터를 관리합니다.
+메인과 6개 설계 도구, 00 일정관리, 계산 API, `/admin` 편집 화면을 제공합니다. 현재 운영 환경은 Render Static Site(`Jcalculator`)와 Python Web Service(`jcalculator-engine-api`)로 나뉘며, `/api/*` 요청은 Web Service로 전달됩니다. 게스트는 로그인 없이 계산기를 사용하고, 관리자만 서버 세션으로 운영 설정과 일정 데이터를 관리합니다.
 
 ## 구조
 
 - `frontend/`: 메인, 6개 도구, 실제 관리자 화면
 - `backend/app/`: 계산 엔진, 공개 API, 관리자 인증·설정 API
 - `backend/tests/`: 계산 회귀·예외입력·관리자 보안 테스트
-- `render.yaml`: Render Free Web Service 설정
+- `render.yaml`: 새 환경에서 단일 Web Service로 구성할 때 사용할 수 있는 Blueprint 예시
 - `DEPLOY_GUIDE_KO.md`: Neon + Render 배포 및 롤백 절차
 
-FastAPI가 `frontend/`를 루트(`/`)에 직접 제공하므로 별도 Static Site와 별도 계산 API를 만들지 않습니다.
+로컬 개발에서는 FastAPI가 `frontend/`도 직접 제공합니다. 현재 Render 운영 환경에서는 Static Site와 API Web Service를 사용합니다.
 
 ## 주요 경로
 

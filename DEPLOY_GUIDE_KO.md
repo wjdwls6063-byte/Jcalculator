@@ -4,14 +4,13 @@
 
 ```text
 사용자 브라우저
-  └─ https://jcalculator.onrender.com
-       ├─ 메인 + 6개 게스트 도구
-       ├─ 공개 계산 API
-       └─ /admin + 관리자 API
-              └─ Neon PostgreSQL (설정·버전·세션)
+  └─ https://jcalculator.onrender.com (Render Static Site)
+       ├─ 메인 + 6개 게스트 도구 + /schedule
+       └─ /api/* → jcalculator-engine-api (Render Python Web Service)
+                       └─ Neon PostgreSQL (설정·세션·일정)
 ```
 
-Render에는 Python Web Service 하나만 둡니다. Render 무료 파일시스템은 재배포·재시작 때 보존되지 않으므로 운영 DB는 Neon Free를 사용합니다. 로컬 SQLite는 개발 미리보기 전용입니다.
+현재 운영에는 Static Site와 Python Web Service가 하나씩 있습니다. API Web Service에 `DATABASE_URL`을 설정해 Neon Free에 연결합니다. Render 무료 파일시스템은 재배포·재시작 때 보존되지 않으므로 로컬 SQLite는 개발 미리보기 전용입니다.
 
 ## 2. Neon 준비
 
@@ -20,7 +19,7 @@ Render에는 Python Web Service 하나만 둡니다. Render 무료 파일시스�
 3. Connection Details에서 PostgreSQL 연결 문자열을 복사합니다. 가능하면 pooled connection 문자열을 사용합니다.
 4. 연결 문자열은 GitHub 파일에 넣지 않고 Render의 `DATABASE_URL` 비밀 환경변수에만 저장합니다.
 
-앱 첫 연결 시 `app_config`, `config_versions`, `admin_sessions` 테이블과 초기 설정 v1을 자동 생성합니다.
+앱 첫 연결 시 `app_config`, `config_versions`, `admin_sessions`, `schedule_document` 테이블과 초기 설정 v1을 자동 생성합니다.
 
 ## 3. 관리자 비밀번호 해시 생성
 
@@ -34,7 +33,7 @@ python backend/scripts/generate_admin_password_hash.py
 
 ## 4. Render Web Service 설정
 
-`render.yaml` Blueprint를 사용하거나 기존 `jcalculator` 서비스를 아래 값으로 맞춥니다.
+현재 운영 중인 `jcalculator-engine-api` Web Service에 아래 값을 적용합니다. 새 환경에서 단일 Web Service로 구축할 때는 `render.yaml` Blueprint를 사용할 수 있습니다.
 
 | 항목 | 값 |
 |---|---|
@@ -60,6 +59,8 @@ python backend/scripts/generate_admin_password_hash.py
 
 먼저 `/health`가 `{"status":"ok","database":"ok"}`인지 확인하고 다음 경로를 실제 브라우저에서 엽니다.
 
+현재 분리된 운영 구성에서는 `/health`를 API Web Service 주소에서 확인합니다. 공개 사이트에서는 `/api/schedule/readiness`가 `ready: true`, `persistentDatabase: true`인지 확인합니다.
+
 - `/`
 - `/conveyor/`
 - `/ballscrew/`
@@ -68,6 +69,7 @@ python backend/scripts/generate_admin_password_hash.py
 - `/smc-cylinder/`
 - `/sensor/`
 - `/admin/`
+- `/schedule/`
 
 게스트 6개 도구에서 기본 결과가 보이고 API 키 입력창이 나타나지 않아야 합니다. `/admin`은 비로그인 상태에서 편집 내용을 보여주지 않아야 합니다. 로그인 후 테스트 문구를 새 버전으로 저장하고 게스트 메인에 반영되는지 확인한 뒤 이전 버전을 복원하면 저장·공개 반영·복원까지 한 번에 검증할 수 있습니다.
 
