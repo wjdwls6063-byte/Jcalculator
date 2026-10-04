@@ -17,8 +17,9 @@
 - `/`, `/conveyor/`, `/ballscrew/`, `/ballscrew/vertical/`
 - `/eccentric/`, `/smc-cylinder/`, `/sensor/`
 - `/admin/`: 관리자 로그인·편집·변경 이력·백업
-- `/schedule/`: 관리자 편집 또는 게스트 보기 모드로 공유하는 프로젝트 일정관리
+- `/schedule/`: 관리자 편집 또는 게스트 보기 모드로 공유하는 프로젝트 일정관리. 압축형 일정표와 대한민국 공휴일 달력 제공
 - `/api/schedule/document`: 관리자·게스트 조회, 관리자만 저장 (CSRF·버전 검사)
+- `/api/schedule/holidays/{year}`: 대한민국 공휴일·대체공휴일 조회. `holidays==0.105`의 한국 규칙 사용
 - `/api/public/config`: 게스트 화면에 적용할 공개 설정
 - `/api/admin/*`: 로그인 세션과 CSRF 검증이 필요한 관리자 API
 - `/health`: Render 상태 확인
@@ -34,6 +35,7 @@
 - 운영 설정·변경 이력·관리자 세션은 외부 Neon PostgreSQL에 저장합니다.
 - 일정 데이터도 같은 PostgreSQL에 저장합니다. Render에서 `DATABASE_URL`이 없으면 일정 API는 저장을 거부합니다.
 - 기존 브라우저의 `localStorage` 일정은 로그인 후 첫 화면의 **기존 일정 가져오기**로 한 번 옮깁니다. 서버가 이미 비어 있지 않으면 기존 내용을 자동 덮어쓰지 않고 JSON 백업을 받게 합니다.
+- 공휴일은 현재 규칙에 따라 계산합니다. 추후 정부가 새로 지정하는 임시공휴일은 라이브러리 업데이트가 필요할 수 있습니다.
 
 ## 로컬 실행
 

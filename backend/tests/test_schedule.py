@@ -3,6 +3,17 @@ from __future__ import annotations
 from test_api import TEST_ADMIN_PASSWORD, TEST_GUEST_PASSWORD, client
 
 
+def test_korean_holidays_include_2026_law_changes_and_substitute_days() -> None:
+    response = client.get("/api/schedule/holidays/2026")
+    assert response.status_code == 200
+    days = response.json()["holidays"]
+    assert days["2026-05-01"] == "노동절"
+    assert days["2026-07-17"] == "제헌절"
+    assert "대체" in days["2026-10-05"]
+    assert "추석" in days["2026-09-25"]
+    assert client.get("/api/schedule/holidays/2101").status_code == 422
+
+
 def test_guest_can_read_but_cannot_save_or_access_admin() -> None:
     client.cookies.clear()
     assert client.get("/api/schedule/readiness").json()["guestConfigured"] is True

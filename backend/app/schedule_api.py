@@ -6,6 +6,7 @@ import hmac
 from datetime import date
 from typing import Annotated
 
+import holidays
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -59,6 +60,14 @@ def require_schedule_viewer(request: Request) -> dict:
 
 
 ViewerSession = Annotated[dict, Depends(require_schedule_viewer)]
+
+
+@router.get("/holidays/{year}")
+def korean_holidays(year: int) -> dict:
+    if not 1948 <= year <= 2100:
+        raise HTTPException(status_code=422, detail="공휴일은 1948년부터 2100년까지 조회할 수 있습니다.")
+    calendar = holidays.SouthKorea(years=year, language="ko", observed=True)
+    return {"year": year, "holidays": {day.isoformat(): name for day, name in sorted(calendar.items()) if day.year == year}}
 
 
 class Project(BaseModel):
