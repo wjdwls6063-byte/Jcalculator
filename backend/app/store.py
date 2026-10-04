@@ -111,6 +111,18 @@ class ConfigStore:
                     )
                     """,
                 )
+                self.execute(
+                    connection,
+                    """
+                    CREATE TABLE IF NOT EXISTS schedule_document (
+                        singleton INTEGER PRIMARY KEY,
+                        version INTEGER NOT NULL,
+                        data_json TEXT NOT NULL,
+                        updated_at TEXT NOT NULL,
+                        updated_by TEXT NOT NULL
+                    )
+                    """,
+                )
                 row = self.execute(connection, "SELECT version FROM app_config WHERE singleton = 1").fetchone()
                 if row is None:
                     now = iso_now()
@@ -124,6 +136,13 @@ class ConfigStore:
                         connection,
                         "INSERT INTO config_versions(version, config_json, change_note, created_at, created_by) VALUES(1, ?, ?, ?, ?)",
                         (encoded, "원본 기준 초기 설정", now, "system"),
+                    )
+                row = self.execute(connection, "SELECT version FROM schedule_document WHERE singleton = 1").fetchone()
+                if row is None:
+                    self.execute(
+                        connection,
+                        "INSERT INTO schedule_document(singleton, version, data_json, updated_at, updated_by) VALUES(1, 1, ?, ?, ?)",
+                        (json.dumps({"version": 1, "projects": [], "events": [], "tasks": []}), iso_now(), "system"),
                     )
                 connection.commit()
             self._initialized = True
@@ -143,6 +162,33 @@ class ConfigStore:
             "updatedAt": row[2],
             "updatedBy": row[3],
         }
+
+    def schedule_current(self) -> dict[str, Any]:
+        self.ensure_schema()
+        with self.connect() as connection:
+            row = self.execute(
+                connection,
+                "SELECT version, data_json, updated_at, updated_by FROM schedule_document WHERE singleton = 1",
+            ).fetchone()
+        if row is None:
+            raise StoreUnavailable("일정 데이터를 찾을 수 없습니다.")
+        return {"version": int(row[0]), "data": json.loads(row[1]), "updatedAt": row[2], "updatedBy": row[3]}
+
+    def schedule_save(self, data: dict[str, Any], expected_version: int, actor: str) -> dict[str, Any]:
+        encoded = json.dumps(data, ensure_ascii=False, allow_nan=False)
+        self.ensure_schema()
+        now = iso_now()
+        with self.connect() as connection:
+            cursor = self.execute(
+                connection,
+                "UPDATE schedule_document SET version = version + 1, data_json = ?, updated_at = ?, updated_by = ? WHERE singleton = 1 AND version = ?",
+                (encoded, now, actor, expected_version),
+            )
+            if cursor.rowcount != 1:
+                connection.rollback()
+                raise VersionConflict("다른 기기에서 일정이 변경되었습니다. 현재 내용을 확인해 주세요.")
+            connection.commit()
+        return {"version": expected_version + 1, "data": data, "updatedAt": now, "updatedBy": actor}
 
     def save(self, config: dict[str, Any], expected_version: int, note: str, actor: str) -> dict[str, Any]:
         validated = validate_config(config)

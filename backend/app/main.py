@@ -18,6 +18,7 @@ from .engines.ballscrew import catalog as ballscrew_catalog
 from .engines.ballscrew import json_safe
 from .engines.server_js import conveyor_engine, eccentric_engine, smc_engine
 from .models import BallscrewInputs, ConveyorInputs, EccentricInputs, SmcCylinderInputs
+from .schedule_api import router as schedule_router
 from .settings import allowed_origins
 from .store import StoreUnavailable, iso_now, store
 
@@ -199,6 +200,7 @@ def smc_cylinder(payload: dict[str, Any]) -> JSONResponse:
 
 
 app.include_router(admin_router)
+app.include_router(schedule_router)
 
 FRONTEND_DIR = Path(__file__).resolve().parents[2] / "frontend"
 if FRONTEND_DIR.is_dir():
