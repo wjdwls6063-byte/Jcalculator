@@ -41,7 +41,7 @@
     <section class="compact-content" aria-label="프로젝트 일정과 할 일">
       <div class="compact-heading"><h2>주요 일정</h2><div class="summary" id="summary"></div><button class="button primary" id="addEventBtn">+ 일정 추가</button></div>
       <div class="schedule-table-wrap"><div class="schedule-table-head"><span>날짜</span><span>프로젝트</span><span>상위 일정</span><span>할 일 진행</span><span>마감</span><span>관리</span></div><div id="milestones"></div></div>
-      <div class="compact-heading secondary-heading"><h2>별도 할 일</h2><span class="section-note">상위·하위 목록 · 끌어서 순서 변경</span><button class="button" id="addTaskBtn">+ 할 일</button></div>
+      <div class="compact-heading secondary-heading"><h2>할 일 목록</h2><span class="section-note">연결된 일정과 별도 할 일 · 끌어서 순서 변경</span><button class="button" id="addTaskBtn">+ 할 일</button></div>
       <div class="unlinked" id="unlinked"></div>
     </section>
   </main>
@@ -92,7 +92,7 @@ const tasks=()=>data.tasks.filter(t=>scope==='all'||t.projectId===scope);
 const project=id=>data.projects.find(p=>p.id===id);
 const event=id=>data.events.find(e=>e.id===id);
 const color=id=>project(id)?.color||'#1769d6';
-const projectText=id=>`<span class="project-tag" style="--project-color:${esc(color(id))}">${esc(project(id)?.name||'프로젝트 없음')}</span>`;
+const projectText=(id,eventId)=>`<button type="button" class="project-tag event-open" style="--project-color:${esc(color(id))}" data-open-event="${esc(eventId)}" aria-label="${esc(project(id)?.name||'프로젝트 없음')} 일정 열기">${esc(project(id)?.name||'프로젝트 없음')}</button>`;
 const taskContext=t=>event(t.eventId)?.title||(t.parentId?data.tasks.find(p=>p.id===t.parentId)?.title:'')||'별도 할 일';
 const sortedEvents=()=>events().slice().sort((a,b)=>a.done-b.done||a.date.localeCompare(b.date)||a.title.localeCompare(b.title));
 const orderedTasks=eventId=>tasks().filter(t=>t.eventId===eventId).sort((a,b)=>(a.order||0)-(b.order||0));
@@ -121,13 +121,18 @@ function renderCalendar(){
   renderDaySelection();
 }
 function taskRow(t,index,label=''){return `<div class="task-row ${t.done?'done':''}" draggable="${role==='admin'}" data-task-row="${esc(t.id)}"><span class="drag-handle" title="끌어서 순서 변경">⋮⋮</span><span class="order">${esc(label||String(index+1))}</span><input class="task-check" type="checkbox" data-check-task="${esc(t.id)}" ${t.done?'checked':''} aria-label="${esc(t.title)} 완료"><span class="task-title" title="${esc(t.title)}">${esc(t.title)}</span><span class="priority ${esc(t.priority||'normal')}">${priorityLabel[t.priority]||'보통'}</span><span class="task-date">${t.due?esc(shortDate(t.due)):''}</span><button class="icon-button" data-edit-task="${esc(t.id)}" aria-label="${esc(t.title)} 수정">⋯</button></div>`}
+function eventPreview(e,linked){
+  const memo=e.notes?.trim();
+  return `<div class="event-preview" role="tooltip"><div class="event-preview-heading">${esc(e.title)} · ${esc(dateLabel(e.date))}</div><div class="event-preview-label">메모</div><div class="event-preview-memo">${memo?esc(memo):'등록된 메모가 없습니다.'}</div><div class="event-preview-label">할 일 (${linked.filter(t=>t.done).length}/${linked.length} 완료)</div>${linked.length?`<ul class="event-preview-tasks">${linked.map(t=>`<li class="${t.done?'done':''}"><span>${t.done?'✓':'○'}</span>${esc(t.title)}</li>`).join('')}</ul>`:'<div class="event-preview-empty">연결된 할 일이 없습니다.</div>'}</div>`;
+}
 function renderMilestones(){
   const list=sortedEvents();
   $('milestones').innerHTML=list.length?list.map(e=>{
     const linked=orderedTasks(e.id),done=linked.filter(t=>t.done).length,percent=linked.length?Math.round(done/linked.length*100):0,expanded=expandedEvents.has(e.id);
-    return `<article class="schedule-entry ${e.done?'done':''} ${expanded?'expanded':''}"><div class="schedule-line"><span class="milestone-date">${esc(shortDate(e.date))} ${esc(['일','월','화','수','목','금','토'][parseDate(e.date).getDay()])}</span>${projectText(e.projectId)}<span class="title" title="${esc(e.title)}">${esc(e.title)}${e.time?` <small>${esc(e.time)}</small>`:''}</span><span class="progress-wrap">${done}/${linked.length}<span class="progress" aria-label="할 일 ${percent}% 완료"><i style="width:${percent}%"></i></span></span><span class="badge ${e.done?'done':dClass(e.date)}">${e.done?'완료':esc(dLabel(e.date))}</span><span class="row-actions"><button class="icon-button" data-edit-event="${esc(e.id)}" aria-label="${esc(e.title)} 수정">✎</button><button class="icon-button" data-done-event="${esc(e.id)}" aria-label="${esc(e.title)} 완료 상태 변경">${e.done?'↩':'✓'}</button><button class="icon-button" data-toggle-event="${esc(e.id)}" aria-expanded="${expanded}" aria-label="${esc(e.title)} 할 일 ${expanded?'접기':'펼치기'}">${expanded?'⌄':'›'}</button></span></div><div class="tasks" data-task-group="${esc(e.id)}" ${expanded?'':'hidden'}>${linked.length?linked.map((t,i)=>taskRow(t,i)).join(''):'<div class="empty-tasks">연결된 할 일이 없습니다.</div>'}<button class="task-add" data-add-task="${esc(e.id)}">+ 할 일 추가</button></div></article>`;
+    return `<article class="schedule-entry ${e.done?'done':''} ${expanded?'expanded':''}"><div class="schedule-line"><span class="milestone-date">${esc(shortDate(e.date))} ${esc(['일','월','화','수','목','금','토'][parseDate(e.date).getDay()])}</span>${projectText(e.projectId,e.id)}<button type="button" class="title event-open" data-open-event="${esc(e.id)}" aria-label="${esc(e.title)} 일정 수정">${esc(e.title)}${e.time?` <small>${esc(e.time)}</small>`:''}</button><span class="progress-wrap">${done}/${linked.length}<span class="progress" aria-label="할 일 ${percent}% 완료"><i style="width:${percent}%"></i></span></span><span class="badge ${e.done?'done':dClass(e.date)}">${e.done?'완료':esc(dLabel(e.date))}</span><span class="row-actions"><button class="icon-button" data-edit-event="${esc(e.id)}" aria-label="${esc(e.title)} 수정">✎</button><button class="icon-button" data-done-event="${esc(e.id)}" aria-label="${esc(e.title)} 완료 상태 변경">${e.done?'↩':'✓'}</button><button class="icon-button" data-toggle-event="${esc(e.id)}" aria-expanded="${expanded}" aria-label="${esc(e.title)} 할 일 ${expanded?'접기':'펼치기'}">${expanded?'⌄':'›'}</button></span></div>${eventPreview(e,linked)}<div class="tasks" data-task-group="${esc(e.id)}" ${expanded?'':'hidden'}>${linked.length?linked.map((t,i)=>taskRow(t,i)).join(''):'<div class="empty-tasks">연결된 할 일이 없습니다.</div>'}<button class="task-add" data-add-task="${esc(e.id)}">+ 할 일 추가</button></div></article>`;
   }).join(''):'<div class="empty">프로젝트를 만들고 주요 일정을 추가하세요.</div>';
   const root=$('milestones');bindTaskControls(root);
+  root.querySelectorAll('[data-open-event]').forEach(b=>b.onclick=()=>{if(role==='admin')openEditor('event',b.dataset.openEvent);else{expandedEvents.has(b.dataset.openEvent)?expandedEvents.delete(b.dataset.openEvent):expandedEvents.add(b.dataset.openEvent);renderMilestones()}});
   root.querySelectorAll('[data-toggle-event]').forEach(b=>b.onclick=()=>{expandedEvents.has(b.dataset.toggleEvent)?expandedEvents.delete(b.dataset.toggleEvent):expandedEvents.add(b.dataset.toggleEvent);renderMilestones()});
   root.querySelectorAll('[data-edit-event]').forEach(b=>b.onclick=()=>openEditor('event',b.dataset.editEvent));
   root.querySelectorAll('[data-done-event]').forEach(b=>b.onclick=()=>{const e=event(b.dataset.doneEvent);e.done=!e.done;save()});
@@ -135,15 +140,20 @@ function renderMilestones(){
   bindDrag();
 }
 function renderUnlinked(){
-  const list=tasks().filter(t=>!t.eventId),roots=list.filter(t=>!t.parentId||!list.some(p=>p.id===t.parentId));
+  const all=tasks(),list=all.filter(t=>!t.eventId),roots=list.filter(t=>!t.parentId||!list.some(p=>p.id===t.parentId));
   roots.sort((a,b)=>data.projects.findIndex(p=>p.id===a.projectId)-data.projects.findIndex(p=>p.id===b.projectId)||(a.order||0)-(b.order||0));
   let lastProject='',html='';
+  sortedEvents().forEach(e=>{
+    const linked=all.filter(t=>t.eventId===e.id).sort((a,b)=>(a.order||0)-(b.order||0));
+    if(!linked.length)return;
+    html+=`<div class="project-group-title">${esc(project(e.projectId)?.name||'프로젝트')} · ${esc(e.title)} <span>연결된 일정</span></div><div class="task-family">${linked.map((t,i)=>taskRow(t,i)).join('')}</div>`;
+  });
   roots.forEach((parent,index)=>{
-    if(scope==='all'&&parent.projectId!==lastProject){lastProject=parent.projectId;html+=`<div class="project-group-title">${esc(project(lastProject)?.name||'프로젝트')}</div>`}
+    if(parent.projectId!==lastProject){lastProject=parent.projectId;html+=`<div class="project-group-title">${esc(project(lastProject)?.name||'프로젝트')} · 별도 할 일</div>`}
     const children=list.filter(t=>t.parentId===parent.id).sort((a,b)=>(a.order||0)-(b.order||0)),done=children.filter(t=>t.done).length;
     html+=`<div class="task-family">${taskRow(parent,index)}${children.length?`<div class="family-meta">하위 할 일 ${done}/${children.length} 완료 · 미완료 ${children.length-done}<span class="progress" style="display:inline-block;vertical-align:middle;margin-left:8px"><i style="width:${Math.round(done/children.length*100)}%"></i></span></div>`:''}<div class="child-list">${children.map((t,i)=>taskRow(t,i,`${index+1}.${i+1}`)).join('')}<button class="child-add" data-add-child="${esc(parent.id)}">+ 하위 할 일 추가</button></div></div>`;
   });
-  $('unlinked').innerHTML=html||`<div class="empty">특정 일정에 연결하지 않은 할 일은 여기에 표시됩니다.<br>상위 할 일을 만든 뒤 하위 할 일을 추가할 수 있습니다.</div>`;
+  $('unlinked').innerHTML=html||`<div class="empty">할 일이 없습니다. 위의 일정에 할 일을 연결하거나 별도 할 일을 추가하세요.</div>`;
   bindTaskControls($('unlinked'));
   $('unlinked').querySelectorAll('[data-add-child]').forEach(b=>b.onclick=()=>openEditor('task',null,null,'',b.dataset.addChild));
   bindDrag();
@@ -151,7 +161,7 @@ function renderUnlinked(){
 function bindTaskControls(root){root.querySelectorAll('[data-check-task]').forEach(c=>c.onchange=()=>{const t=data.tasks.find(t=>t.id===c.dataset.checkTask);if(!t)return;if(c.checked&&data.tasks.some(child=>child.parentId===t.id&&!child.done)){c.checked=false;toast('미완료 하위 할 일을 먼저 완료해 주세요.');return}t.done=c.checked;save()});root.querySelectorAll('[data-edit-task]').forEach(b=>b.onclick=()=>openEditor('task',b.dataset.editTask))}
 function bindDrag(){if(role!=='admin')return;document.querySelectorAll('[data-task-row]').forEach(row=>{row.ondragstart=e=>{dragId=row.dataset.taskRow;row.classList.add('dragging');e.dataTransfer.effectAllowed='move'};row.ondragend=()=>row.classList.remove('dragging');row.ondragover=e=>{if(dragId)e.preventDefault()};row.ondrop=e=>{e.preventDefault();const src=data.tasks.find(t=>t.id===dragId),dst=data.tasks.find(t=>t.id===row.dataset.taskRow);if(!src||!dst||src.id===dst.id||src.eventId!==dst.eventId||src.projectId!==dst.projectId||(src.parentId||'')!==(dst.parentId||''))return;const group=data.tasks.filter(t=>t.projectId===src.projectId&&t.eventId===src.eventId&&(t.parentId||'')===(src.parentId||'')).sort((a,b)=>(a.order||0)-(b.order||0));const from=group.findIndex(t=>t.id===src.id),to=group.findIndex(t=>t.id===dst.id);group.splice(to,0,group.splice(from,1)[0]);group.forEach((t,i)=>t.order=i+1);save()}})}
 function alertItems(){return [...events().filter(e=>!e.done).map(e=>({...e,kind:'event',due:e.date})),...tasks().filter(t=>!t.done&&t.due).map(t=>({...t,kind:'task'}))].filter(x=>dayDiff(x.due)<=7).sort((a,b)=>a.due.localeCompare(b.due)||priorityRank[a.priority||'normal']-priorityRank[b.priority||'normal'])}
-function renderUrgent(){const list=alertItems();$('urgent').innerHTML=list.length?list.slice(0,10).map(x=>`<div class="urgent-row"><span class="badge ${dClass(x.due)}">${esc(dLabel(x.due))}</span>${x.kind==='task'?`<input class="task-check" type="checkbox" data-check-task="${esc(x.id)}" aria-label="${esc(x.title)} 완료">`:''}<div class="urgent-main"><div class="urgent-title">${esc(x.title)}</div><div class="urgent-meta">${scope==='all'?esc(project(x.projectId)?.name||'')+' · ':''}${esc(x.kind==='task'?taskContext(x):'주요 일정')} · ${esc(dateLabel(x.due))}</div></div></div>`).join(''):`<div class="empty">7일 내 마감 또는 지연된 항목이 없습니다.</div>`;bindTaskControls($('urgent'))}
+function renderUrgent(){const list=alertItems();$('urgent').innerHTML=list.length?list.slice(0,10).map(x=>`<div class="urgent-row"><span class="badge ${dClass(x.due)}">${esc(dLabel(x.due))}</span>${x.kind==='task'?`<input class="task-check" type="checkbox" data-check-task="${esc(x.id)}" aria-label="${esc(x.title)} 완료">`:''}<div class="urgent-main"><div class="urgent-title">${esc(x.title)}</div><div class="urgent-meta"><span class="urgent-project" style="--project-color:${esc(color(x.projectId))}">${esc(project(x.projectId)?.name||'프로젝트')}</span> · ${esc(x.kind==='task'?taskContext(x):'주요 일정')} · <strong class="urgent-date">${esc(dateLabel(x.due))}</strong></div></div></div>`).join(''):`<div class="empty">7일 내 마감 또는 지연된 항목이 없습니다.</div>`;bindTaskControls($('urgent'))}
 function optionProjects(selected){return data.projects.map(p=>`<option value="${esc(p.id)}" ${selected===p.id?'selected':''}>${esc(p.name)}</option>`).join('')}
 function optionEvents(projectId,selected){return `<option value="">연결하지 않음</option>`+data.events.filter(e=>e.projectId===projectId).sort((a,b)=>a.date.localeCompare(b.date)).map(e=>`<option value="${esc(e.id)}" ${selected===e.id?'selected':''}>${esc(dateLabel(e.date))} · ${esc(e.title)}</option>`).join('')}
 function optionParents(projectId,selected,excludeId){return `<option value="">상위 할 일 없음</option>`+data.tasks.filter(t=>t.projectId===projectId&&!t.eventId&&!t.parentId&&t.id!==excludeId).map(t=>`<option value="${esc(t.id)}" ${selected===t.id?'selected':''}>${esc(t.title)}</option>`).join('')}
