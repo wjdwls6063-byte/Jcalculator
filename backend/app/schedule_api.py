@@ -56,7 +56,7 @@ def require_schedule_viewer(request: Request) -> dict:
                 return session
     except StoreUnavailable as error:
         raise HTTPException(status_code=503, detail=str(error)) from error
-    raise HTTPException(status_code=401, detail="로그인이 필요합니다.")
+    return {"role": "guest", "csrfToken": ""}
 
 
 ViewerSession = Annotated[dict, Depends(require_schedule_viewer)]
