@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from test_api import TEST_ADMIN_PASSWORD, TEST_GUEST_PASSWORD, client
+from test_api import TEST_ADMIN_PASSWORD, client
 
 
 def test_korean_holidays_include_2026_law_changes_and_substitute_days() -> None:
@@ -14,36 +14,29 @@ def test_korean_holidays_include_2026_law_changes_and_substitute_days() -> None:
     assert client.get("/api/schedule/holidays/2101").status_code == 422
 
 
-def test_guest_can_read_but_cannot_save_or_access_admin() -> None:
+def test_public_guest_can_read_without_password_but_cannot_save_or_access_admin(monkeypatch) -> None:
     client.cookies.clear()
-    assert client.get("/api/schedule/readiness").json()["guestConfigured"] is True
-    assert client.post("/api/schedule/guest/login", json={"password": "wrong"}).status_code == 401
-    login = client.post("/api/schedule/guest/login", json={"password": TEST_GUEST_PASSWORD})
-    assert login.status_code == 200
-    assert login.json()["role"] == "guest"
-    assert "httponly" in login.headers["set-cookie"].lower()
-    assert client.get("/api/schedule/session").json()["role"] == "guest"
+    monkeypatch.delenv("JCALCULATOR_GUEST_PASSWORD_HASH", raising=False)
+    session = client.get("/api/schedule/session")
+    assert session.status_code == 200
+    assert session.json()["role"] == "guest"
+    assert not session.json()["csrfToken"]
     document = client.get("/api/schedule/document")
     assert document.status_code == 200
     assert client.get("/api/admin/config").status_code == 401
     attempt = client.put(
         "/api/schedule/document",
         json={"expectedVersion": document.json()["version"], "data": document.json()["data"]},
-        headers={"X-CSRF-Token": login.json()["csrfToken"]},
+        headers={"X-CSRF-Token": "forged"},
     )
     assert attempt.status_code == 401
     assert client.get("/api/schedule/document").json()["version"] == document.json()["version"]
-    assert client.post("/api/schedule/guest/logout").status_code == 403
-    assert client.post(
-        "/api/schedule/guest/logout", headers={"X-CSRF-Token": login.json()["csrfToken"]}
-    ).status_code == 200
-    assert client.get("/api/schedule/document").status_code == 401
 
 
-def test_schedule_requires_login_csrf_and_prevents_stale_overwrite() -> None:
+def test_schedule_requires_admin_csrf_to_save_and_prevents_stale_overwrite() -> None:
     client.cookies.clear()
     assert client.get("/api/schedule/readiness").json()["databaseAvailable"] is True
-    assert client.get("/api/schedule/document").status_code == 401
+    assert client.get("/api/schedule/document").status_code == 200
     response = client.post(
         "/api/admin/login", json={"username": "admin", "password": TEST_ADMIN_PASSWORD}
     )
@@ -77,3 +70,6 @@ def test_schedule_requires_login_csrf_and_prevents_stale_overwrite() -> None:
         headers={"X-CSRF-Token": csrf},
     ).status_code == 422
     assert client.get("/api/schedule/document").json()["version"] == version + 1
+    assert client.post("/api/admin/logout", headers={"X-CSRF-Token": csrf}).status_code == 200
+    assert client.get("/api/schedule/document").json()["version"] == version + 1
+    assert client.get("/api/schedule/session").json()["role"] == "guest"
