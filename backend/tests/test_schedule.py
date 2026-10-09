@@ -105,7 +105,8 @@ def test_public_guest_can_add_shared_memo_and_checklist_without_editing_schedule
     assert listed.status_code == 200
     assert {item["body"] for item in listed.json()["notes"] if item["projectId"] == project_id} == {"현장 확인 메모", "안전 펜스 확인"}
     assert client.delete(f"/api/schedule/notes/{note_id}").status_code == 401
-    assert client.patch(f"/api/schedule/notes/{memo.json()['id']}", json={"done": True}).status_code == 404
+    assert client.patch(f"/api/schedule/notes/{memo.json()['id']}", json={"done": True}).json()["done"] is True
+    assert client.patch("/api/schedule/notes/missing", json={"done": True}).status_code == 404
     assert client.post("/api/schedule/notes", json={"projectId": "missing", "kind": "memo", "body": "없음"}).status_code == 404
     assert client.post("/api/schedule/notes", json={"projectId": project_id, "kind": "memo", "body": "차단"}, headers={"Origin": "https://other.example"}).status_code == 403
     assert client.get("/api/schedule/document").json()["version"] == saved.json()["version"]
