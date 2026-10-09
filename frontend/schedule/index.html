@@ -46,6 +46,7 @@
       <section class="shared-board" aria-label="공유 메모와 체크리스트">
         <div class="compact-heading secondary-heading"><h2>공유 메모 · 체크리스트</h2><span class="shared-board-help">게스트도 작성·체크 가능 · 모든 기기에 공유</span></div>
         <form id="sharedNoteForm" class="shared-note-form"><select name="projectId" aria-label="메모 프로젝트" required></select><select name="kind" aria-label="항목 종류"><option value="memo">메모</option><option value="checklist">체크리스트</option></select><textarea name="body" aria-label="메모 또는 할 일 내용" maxlength="500" rows="1" placeholder="메모 또는 체크할 내용을 입력하세요" required></textarea><button class="button primary" type="submit">등록</button></form>
+        <div class="shared-note-toolbar"><strong id="sharedNoteCount">체크리스트 0/0 완료 · 미완료 0</strong><span class="shared-note-progress" aria-hidden="true"><i id="sharedNoteProgress"></i></span><div class="shared-note-filters" id="sharedNoteFilters" role="group" aria-label="공유 항목 보기"></div></div>
         <div id="sharedNotes" class="shared-note-list"></div>
       </section>
     </section>
@@ -73,7 +74,7 @@ const dateLabel=s=>{const d=parseDate(s);return `${d.getMonth()+1}월 ${d.getDat
 const shortDate=s=>{const d=parseDate(s);return `${d.getMonth()+1}.${pad(d.getDate())}`};
 const priorityRank={high:0,normal:1,low:2};
 const priorityLabel={high:'높음',normal:'보통',low:'낮음'};
-let data=emptyData(),sharedNotes=[],scope='all',month=new Date(),selectedDate='',dragId='';
+let data=emptyData(),sharedNotes=[],noteFilter='all',scope='all',month=new Date(),selectedDate='',dragId='';
 const holidayCache=new Map(),holidayLoading=new Set(),holidayErrors=new Set(),expandedEvents=new Set();
 let serverVersion=0,csrfToken='',role='',pending=false,syncing=false,syncBlocked=false,syncErrorStatus=0,importingLegacy=false,serverEmpty=false;
 month.setDate(1);
@@ -187,15 +188,21 @@ function renderSharedNotes(){
   select.innerHTML=data.projects.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('');
   select.value=scope!=='all'?scope:(data.projects.some(p=>p.id===previous)?previous:data.projects[0]?.id||'');
   form.querySelectorAll('textarea,select,button').forEach(control=>control.disabled=!data.projects.length);
-  const visible=sharedNotes.filter(note=>project(note.projectId)&&(scope==='all'||note.projectId===scope));
-  $('sharedNotes').innerHTML=visible.length?visible.map(note=>`<div class="shared-note-row ${note.done?'done':''}">${note.kind==='checklist'?`<input type="checkbox" data-note-check="${esc(note.id)}" aria-label="${esc(note.body)} 완료" ${note.done?'checked':''}>`:'<span class="shared-note-type">메모</span>'}<span class="shared-note-body">${esc(note.body)}</span><span class="shared-note-project" style="--project-color:${esc(color(note.projectId))}">${esc(project(note.projectId)?.name||'프로젝트')}</span>${role==='admin'?`<button class="icon-button" type="button" data-note-delete="${esc(note.id)}" aria-label="공유 항목 삭제">✕</button>`:''}</div>`).join(''):`<div class="empty shared-note-empty">${data.projects.length?'공유 메모가 없습니다. 위에서 첫 항목을 등록하세요.':'프로젝트를 추가하면 공유 메모를 작성할 수 있습니다.'}</div>`;
+  const scoped=sharedNotes.filter(note=>project(note.projectId)&&(scope==='all'||note.projectId===scope));
+  const checklist=scoped.filter(note=>note.kind==='checklist'),done=checklist.filter(note=>note.done).length,open=checklist.length-done;
+  $('sharedNoteCount').textContent=`체크리스트 ${done}/${checklist.length} 완료 · 미완료 ${open}`;
+  $('sharedNoteProgress').style.width=`${checklist.length?Math.round(done/checklist.length*100):0}%`;
+  $('sharedNoteFilters').innerHTML=[['all',`전체 ${scoped.length}`],['open',`미완료 ${open}`],['done',`완료 ${done}`]].map(([key,label])=>`<button type="button" class="filter-chip ${noteFilter===key?'active':''}" data-note-filter="${key}" aria-pressed="${noteFilter===key}">${label}</button>`).join('');
+  $('sharedNoteFilters').querySelectorAll('[data-note-filter]').forEach(button=>button.onclick=()=>{noteFilter=button.dataset.noteFilter;renderSharedNotes()});
+  const visible=scoped.filter(note=>noteFilter==='all'||(note.kind==='checklist'&&(noteFilter==='done'?note.done:!note.done))).sort((a,b)=>(a.kind==='checklist'&&!a.done?0:a.kind==='memo'?1:2)-(b.kind==='checklist'&&!b.done?0:b.kind==='memo'?1:2)||b.createdAt.localeCompare(a.createdAt));
+  $('sharedNotes').innerHTML=visible.length?visible.map(note=>`<div class="shared-note-row ${note.done?'done':''}">${note.kind==='checklist'?`<label class="shared-note-toggle"><input type="checkbox" data-note-check="${esc(note.id)}" aria-label="${esc(note.body)} 완료" ${note.done?'checked':''}><span class="shared-note-body">${esc(note.body)}</span></label><span class="shared-note-status ${note.done?'complete':'incomplete'}">${note.done?'완료':'미완료'}</span>`:`<span class="shared-note-type">메모</span><span class="shared-note-body">${esc(note.body)}</span>`}<span class="shared-note-project" style="--project-color:${esc(color(note.projectId))}">${esc(project(note.projectId)?.name||'프로젝트')}</span>${role==='admin'?`<button class="icon-button" type="button" data-note-delete="${esc(note.id)}" aria-label="공유 항목 삭제">✕</button>`:''}</div>`).join(''):`<div class="empty shared-note-empty">${!data.projects.length?'프로젝트를 추가하면 공유 메모를 작성할 수 있습니다.':scoped.length?'이 보기에는 항목이 없습니다.':'공유 메모가 없습니다. 위에서 첫 항목을 등록하세요.'}</div>`;
   $('sharedNotes').querySelectorAll('[data-note-check]').forEach(box=>box.onchange=()=>checkSharedNote(box));
   $('sharedNotes').querySelectorAll('[data-note-delete]').forEach(button=>button.onclick=()=>deleteSharedNote(button.dataset.noteDelete));
 }
 async function addSharedNote(e){
   e.preventDefault();const form=e.currentTarget,button=form.querySelector('button[type=submit]'),f=new FormData(form),body=String(f.get('body')||'').trim();if(!body)return;
   button.disabled=true;
-  try{const note=await api('/api/schedule/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:String(f.get('projectId')),kind:String(f.get('kind')),body})});sharedNotes.unshift(note);form.elements.body.value='';renderSharedNotes();toast('공유 항목을 저장했습니다.')}
+  try{const note=await api('/api/schedule/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:String(f.get('projectId')),kind:String(f.get('kind')),body})});sharedNotes.unshift(note);noteFilter='all';form.elements.body.value='';renderSharedNotes();toast('공유 항목을 저장했습니다.')}
   catch(error){toast(error.message)}finally{button.disabled=false}
 }
 async function checkSharedNote(box){const note=sharedNotes.find(item=>item.id===box.dataset.noteCheck);if(!note)return;box.disabled=true;try{const updated=await api(`/api/schedule/notes/${encodeURIComponent(note.id)}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({done:box.checked})});Object.assign(note,updated);renderSharedNotes()}catch(error){toast(error.message);renderSharedNotes()}}

@@ -127,15 +127,25 @@
 .shared-note-form select,.shared-note-form textarea{width:100%;min-width:0;border:1px solid #cbd9e8;border-radius:6px;background:#fff;color:#20344f;padding:7px 8px;font-size:12px}
 .shared-note-form textarea{min-height:34px;resize:vertical}
 .shared-note-form .button{padding:6px 12px;font-size:12px}
+.shared-note-toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:8px 10px;background:#fff;border:1px solid #dce5ef;border-top:0;font-size:11px;color:#4d6682}
+.shared-note-toolbar strong{font-weight:800;white-space:nowrap}
+.shared-note-progress{width:75px;height:6px;background:#e1eaf3;border-radius:6px;overflow:hidden}
+.shared-note-progress i{display:block;height:100%;width:0;background:#16a06a}
+.shared-note-filters{display:flex;gap:4px;margin-left:auto}
+.shared-note-filters .filter-chip{padding:4px 8px}
 .shared-note-list{border:1px solid #dce5ef;border-top:0;border-radius:0 0 8px 8px;overflow:hidden;background:#fff}
-.shared-note-row{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;border-top:1px solid #edf1f6;font-size:12px}
+.shared-note-row{display:flex;align-items:center;gap:9px;padding:9px 11px;border-top:1px solid #edf1f6;font-size:12px}
 .shared-note-row:first-child{border-top:0}
-.shared-note-row input[type=checkbox]{width:16px;height:16px;flex:none;accent-color:#1769d6;margin:1px 0}
+.shared-note-toggle{display:flex;align-items:flex-start;gap:9px;flex:1;min-width:0;cursor:pointer}
+.shared-note-row input[type=checkbox]{width:19px;height:19px;flex:none;accent-color:#16a06a;margin:0}
 .shared-note-type{flex:none;color:#66809d;font-size:10px;font-weight:800;background:#edf3fa;padding:2px 5px;border-radius:4px}
 .shared-note-body{flex:1;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;font-weight:600}
 .shared-note-row.done .shared-note-body{text-decoration:line-through;color:#8a9caf}
+.shared-note-status{flex:none;font-size:10px;font-weight:800;border-radius:4px;padding:3px 6px}
+.shared-note-status.incomplete{color:#b46800;background:#fff1d9}
+.shared-note-status.complete{color:#138445;background:#e5f5ec}
 .shared-note-project{flex:none;color:var(--project-color);font-size:10px;font-weight:800;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .shared-note-row .icon-button{padding:0 3px;margin:-2px -2px 0 0}
 .shared-note-empty{padding:17px 10px;font-size:12px}
 @media(max-width:1000px){.compact-layout{grid-template-columns:208px minmax(0,1fr)}.compact-sidebar{padding:12px 9px}.compact-content{padding:12px}.schedule-table-head,.schedule-line{grid-template-columns:64px 78px minmax(105px,1fr) 72px 48px 63px;gap:5px;padding:7px}.schedule-entry .tasks{padding-left:155px}.schedule-entry .progress{display:none}.event-preview{left:150px;width:min(340px,calc(100% - 160px))}.compact-heading .summary{gap:6px}}
-@media(max-width:750px){.top{padding:9px 12px}.tabs{padding:6px 10px}.compact-layout{display:block;min-height:0;border:0}.compact-sidebar{border-right:0;border-bottom:1px solid #dce5ef;padding:10px 12px}.compact-alerts{display:none}.calendar-grid .day{height:35px}.compact-content{padding:12px 10px}.schedule-table-wrap{overflow-x:auto}.schedule-table-head,.schedule-line{min-width:625px}.schedule-entry .tasks{min-width:625px;padding-left:161px}.event-preview{left:145px;width:320px}.compact-heading{flex-wrap:wrap}.compact-heading .summary{order:3;flex-basis:100%}.secondary-heading .section-note{display:none}.top-actions .sync-status{display:none}.shared-note-form{grid-template-columns:1fr 105px}.shared-note-form textarea{grid-column:1/-1}.shared-note-form .button{grid-column:1/-1}.shared-board-help{flex-basis:100%}}
+@media(max-width:750px){.top{padding:9px 12px}.tabs{padding:6px 10px}.compact-layout{display:block;min-height:0;border:0}.compact-sidebar{border-right:0;border-bottom:1px solid #dce5ef;padding:10px 12px}.compact-alerts{display:none}.calendar-grid .day{height:35px}.compact-content{padding:12px 10px}.schedule-table-wrap{overflow-x:auto}.schedule-table-head,.schedule-line{min-width:625px}.schedule-entry .tasks{min-width:625px;padding-left:161px}.event-preview{left:145px;width:320px}.compact-heading{flex-wrap:wrap}.compact-heading .summary{order:3;flex-basis:100%}.secondary-heading .section-note{display:none}.top-actions .sync-status{display:none}.shared-note-form{grid-template-columns:1fr 105px}.shared-note-form textarea{grid-column:1/-1}.shared-note-form .button{grid-column:1/-1}.shared-note-toolbar{align-items:flex-start}.shared-note-filters{width:100%;margin-left:0}.shared-board-help{flex-basis:100%}}
