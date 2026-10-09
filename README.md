@@ -17,8 +17,8 @@
 - `/`, `/conveyor/`, `/ballscrew/`, `/ballscrew/vertical/`
 - `/eccentric/`, `/smc-cylinder/`, `/sensor/`
 - `/admin/`: 관리자 로그인·편집·변경 이력·백업
-- `/schedule/`: 관리자 편집 또는 게스트 보기 모드로 공유하는 프로젝트 일정관리. 압축형 일정표와 대한민국 공휴일 달력 제공
-- `/api/schedule/document`: 관리자·게스트 조회, 관리자만 저장 (CSRF·버전 검사)
+- `/schedule/`: 로그인 없이 게스트 보기로 열리는 프로젝트 일정관리. 화면의 **관리자 모드** 버튼으로 편집 모드에 진입
+- `/api/schedule/document`: 누구나 조회, 관리자만 저장 (CSRF·버전 검사)
 - `/api/schedule/holidays/{year}`: 대한민국 공휴일·대체공휴일 조회. `holidays==0.105`의 한국 규칙 사용
 - `/api/public/config`: 게스트 화면에 적용할 공개 설정
 - `/api/admin/*`: 로그인 세션과 CSRF 검증이 필요한 관리자 API
@@ -27,14 +27,14 @@
 ## 보안·저장 방식
 
 - 관리자 비밀번호 원문은 소스와 DB에 저장하지 않습니다.
-- Render 환경변수 `JCALCULATOR_ADMIN_PASSWORD_HASH`와 `JCALCULATOR_GUEST_PASSWORD_HASH`에는 각각 scrypt 해시만 저장합니다.
-- 게스트는 별도 세션으로 일정만 조회할 수 있습니다. 관리자 설정 조회와 일정 저장은 서버에서 거부합니다.
+- Render 환경변수 `JCALCULATOR_ADMIN_PASSWORD_HASH`에는 관리자 비밀번호의 scrypt 해시만 저장합니다. 기존 `JCALCULATOR_GUEST_PASSWORD_HASH`는 더 이상 일정 조회에 필요하지 않습니다.
+- 일정 조회는 공개됩니다. 관리자 설정 조회와 일정 저장은 서버에서 관리자 인증을 요구합니다.
 - 로그인 세션은 예측 불가능한 토큰을 사용하고, DB에는 토큰의 SHA-256 해시만 저장합니다.
 - 쿠키는 `HttpOnly`, `SameSite=Strict`, 운영 HTTPS에서는 `Secure`입니다.
 - 설정 변경 요청은 CSRF 토큰, 버전 충돌 검사, 서버측 값 범위 검증을 통과해야 합니다.
 - 운영 설정·변경 이력·관리자 세션은 외부 Neon PostgreSQL에 저장합니다.
 - 일정 데이터도 같은 PostgreSQL에 저장합니다. Render에서 `DATABASE_URL`이 없으면 일정 API는 저장을 거부합니다.
-- 기존 브라우저의 `localStorage` 일정은 로그인 후 첫 화면의 **기존 일정 가져오기**로 한 번 옮깁니다. 서버가 이미 비어 있지 않으면 기존 내용을 자동 덮어쓰지 않고 JSON 백업을 받게 합니다.
+- 기존 브라우저의 `localStorage` 일정은 관리자 모드에서 **기존 일정 가져오기**로 한 번 옮깁니다. 서버가 이미 비어 있지 않으면 기존 내용을 자동 덮어쓰지 않고 JSON 백업을 받게 합니다.
 - 공휴일은 현재 규칙에 따라 계산합니다. 추후 정부가 새로 지정하는 임시공휴일은 라이브러리 업데이트가 필요할 수 있습니다.
 
 ## 로컬 실행
