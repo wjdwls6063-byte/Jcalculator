@@ -19,7 +19,7 @@
 3. Connection Details에서 PostgreSQL 연결 문자열을 복사합니다. 가능하면 pooled connection 문자열을 사용합니다.
 4. 연결 문자열은 GitHub 파일에 넣지 않고 Render의 `DATABASE_URL` 비밀 환경변수에만 저장합니다.
 
-앱 첫 연결 시 `app_config`, `config_versions`, `admin_sessions`, `schedule_document`, `schedule_guest_sessions` 테이블과 초기 설정 v1을 자동 생성합니다.
+앱 첫 연결 시 `app_config`, `config_versions`, `admin_sessions`, `schedule_document`, `schedule_guest_sessions`, `schedule_shared_notes` 테이블과 초기 설정 v1을 자동 생성합니다.
 
 ## 3. 관리자 비밀번호 해시 생성
 
@@ -72,7 +72,7 @@ python backend/scripts/generate_admin_password_hash.py
 - `/admin/`
 - `/schedule/`
 
-게스트 6개 도구에서 기본 결과가 보이고 API 키 입력창이 나타나지 않아야 합니다. `/admin`은 비로그인 상태에서 편집 내용을 보여주지 않아야 합니다. `/schedule/`은 로그인 없이 열리고, 게스트에게 편집 버튼이 보이지 않아야 합니다. 화면의 **관리자 모드** 버튼으로 로그인한 뒤에만 일정을 저장할 수 있어야 합니다. 테스트 문구를 새 버전으로 저장하고 게스트 화면에 반영되는지 확인한 뒤 이전 버전을 복원하면 저장·공개 반영·복원까지 한 번에 검증할 수 있습니다.
+게스트 6개 도구에서 기본 결과가 보이고 API 키 입력창이 나타나지 않아야 합니다. `/admin`은 비로그인 상태에서 편집 내용을 보여주지 않아야 합니다. `/schedule/`은 로그인 없이 열리고, 게스트에게 일정 편집 버튼이 보이지 않아야 합니다. 게스트는 프로젝트별 공유 메모·체크리스트를 추가하고 체크할 수 있으며, 다른 기기에서도 같은 항목이 보여야 합니다. 공유 항목 삭제와 일정 저장은 화면의 **관리자 모드** 버튼으로 로그인한 뒤에만 가능합니다.
 
 ## 6. 무료 플랜 동작
 
