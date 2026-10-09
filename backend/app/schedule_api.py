@@ -3,8 +3,12 @@ from __future__ import annotations
 import json
 import os
 import hmac
+import threading
+import time
+from collections import defaultdict, deque
 from datetime import date
 from typing import Annotated
+from uuid import uuid4
 
 import holidays
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
@@ -12,12 +16,14 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from .admin_api import CsrfSession, SESSION_COOKIE, _blocked, _clear_attempts, _client_key, _failed, _secure_cookie
 from .admin_auth import new_csrf_token, new_session_token, token_hash, verify_password
-from .settings import admin_password_hash, guest_password_hash, session_minutes
+from .settings import admin_password_hash, allowed_origins, guest_password_hash, session_minutes
 from .store import StoreUnavailable, VersionConflict, store
 
 
 router = APIRouter(prefix="/api/schedule", tags=["schedule"])
 GUEST_COOKIE = "jcalculator_schedule_guest_session"
+_note_attempts: dict[str, deque[float]] = defaultdict(deque)
+_note_lock = threading.Lock()
 Identifier = Annotated[str, Field(min_length=1, max_length=100)]
 
 
@@ -140,6 +146,36 @@ class SaveBody(BaseModel):
     data: ScheduleDocument
 
 
+class SharedNoteBody(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    projectId: Identifier
+    kind: str = Field(pattern=r"^(memo|checklist)$")
+    body: str = Field(min_length=1, max_length=500)
+
+
+class SharedNoteCheckBody(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    done: bool
+
+
+def guard_shared_note_write(request: Request, action: str, limit: int) -> None:
+    origin = request.headers.get("origin", "")
+    local_origin = f"{request.url.scheme}://{request.headers.get('host', '')}"
+    if origin and origin not in {*allowed_origins(), local_origin}:
+        raise HTTPException(status_code=403, detail="허용되지 않은 사이트에서 요청했습니다.")
+    if request.headers.get("content-type", "").split(";", 1)[0].strip().lower() != "application/json":
+        raise HTTPException(status_code=415, detail="JSON 요청만 허용합니다.")
+    key = f"{action}:{_client_key(request)}"
+    now = time.monotonic()
+    with _note_lock:
+        attempts = _note_attempts[key]
+        while attempts and now - attempts[0] > 60:
+            attempts.popleft()
+        if len(attempts) >= limit:
+            raise HTTPException(status_code=429, detail="잠시 후 다시 시도해 주세요.", headers={"Retry-After": "60"})
+        attempts.append(now)
+
+
 def require_persistent_database() -> None:
     if os.environ.get("RENDER") == "true" and not store.postgres:
         raise HTTPException(status_code=503, detail="Render에 영구 저장용 DATABASE_URL을 설정해 주세요.")
@@ -226,3 +262,55 @@ def save_document(body: SaveBody, session: CsrfSession) -> dict:
         raise HTTPException(status_code=409, detail=str(error)) from error
     except StoreUnavailable as error:
         raise HTTPException(status_code=503, detail=str(error)) from error
+
+
+@router.get("/notes")
+def get_shared_notes(session: ViewerSession) -> dict:
+    require_persistent_database()
+    try:
+        project_ids = {item["id"] for item in store.schedule_current()["data"]["projects"]}
+        return {"notes": [note for note in store.shared_notes() if note["projectId"] in project_ids]}
+    except StoreUnavailable as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
+
+
+@router.post("/notes", status_code=201)
+def add_shared_note(body: SharedNoteBody, request: Request) -> dict:
+    require_persistent_database()
+    guard_shared_note_write(request, "add", 12)
+    content = body.body.strip()
+    if not content:
+        raise HTTPException(status_code=422, detail="내용을 입력해 주세요.")
+    try:
+        project_ids = {item["id"] for item in store.schedule_current()["data"]["projects"]}
+        if body.projectId not in project_ids:
+            raise HTTPException(status_code=404, detail="프로젝트를 찾을 수 없습니다.")
+        return store.shared_note_add(str(uuid4()), body.projectId, body.kind, content)
+    except ValueError as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except StoreUnavailable as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
+
+
+@router.patch("/notes/{note_id}")
+def check_shared_note(note_id: str, body: SharedNoteCheckBody, request: Request) -> dict:
+    require_persistent_database()
+    guard_shared_note_write(request, "check", 60)
+    try:
+        note = store.shared_note_check(note_id, body.done)
+    except StoreUnavailable as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
+    if note is None:
+        raise HTTPException(status_code=404, detail="체크리스트 항목을 찾을 수 없습니다.")
+    return note
+
+
+@router.delete("/notes/{note_id}")
+def delete_shared_note(note_id: str, session: CsrfSession) -> dict[str, bool]:
+    require_persistent_database()
+    try:
+        if not store.shared_note_delete(note_id):
+            raise HTTPException(status_code=404, detail="메모를 찾을 수 없습니다.")
+    except StoreUnavailable as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
+    return {"ok": True}

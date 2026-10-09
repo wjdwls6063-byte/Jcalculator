@@ -135,6 +135,20 @@ class ConfigStore:
                     )
                     """,
                 )
+                self.execute(
+                    connection,
+                    """
+                    CREATE TABLE IF NOT EXISTS schedule_shared_notes (
+                        id TEXT PRIMARY KEY,
+                        project_id TEXT NOT NULL,
+                        kind TEXT NOT NULL,
+                        body TEXT NOT NULL,
+                        done INTEGER NOT NULL DEFAULT 0,
+                        created_at TEXT NOT NULL,
+                        updated_at TEXT NOT NULL
+                    )
+                    """,
+                )
                 row = self.execute(connection, "SELECT version FROM app_config WHERE singleton = 1").fetchone()
                 if row is None:
                     now = iso_now()
@@ -201,6 +215,60 @@ class ConfigStore:
                 raise VersionConflict("다른 기기에서 일정이 변경되었습니다. 현재 내용을 확인해 주세요.")
             connection.commit()
         return {"version": expected_version + 1, "data": data, "updatedAt": now, "updatedBy": actor}
+
+    def shared_notes(self) -> list[dict[str, Any]]:
+        self.ensure_schema()
+        with self.connect() as connection:
+            rows = self.execute(
+                connection,
+                "SELECT id, project_id, kind, body, done, created_at, updated_at FROM schedule_shared_notes ORDER BY created_at DESC",
+            ).fetchall()
+        return [
+            {"id": row[0], "projectId": row[1], "kind": row[2], "body": row[3], "done": bool(row[4]), "createdAt": row[5], "updatedAt": row[6]}
+            for row in rows
+        ]
+
+    def shared_note_add(self, note_id: str, project_id: str, kind: str, body: str) -> dict[str, Any]:
+        self.ensure_schema()
+        now = iso_now()
+        with self.connect() as connection:
+            count = self.execute(connection, "SELECT COUNT(*) FROM schedule_shared_notes WHERE project_id = ?", (project_id,)).fetchone()[0]
+            if count >= 500:
+                raise ValueError("이 프로젝트의 공유 메모는 500개까지 등록할 수 있습니다.")
+            self.execute(
+                connection,
+                "INSERT INTO schedule_shared_notes(id, project_id, kind, body, done, created_at, updated_at) VALUES(?, ?, ?, ?, 0, ?, ?)",
+                (note_id, project_id, kind, body, now, now),
+            )
+            connection.commit()
+        return {"id": note_id, "projectId": project_id, "kind": kind, "body": body, "done": False, "createdAt": now, "updatedAt": now}
+
+    def shared_note_check(self, note_id: str, done: bool) -> dict[str, Any] | None:
+        self.ensure_schema()
+        now = iso_now()
+        with self.connect() as connection:
+            cursor = self.execute(
+                connection,
+                "UPDATE schedule_shared_notes SET done = ?, updated_at = ? WHERE id = ? AND kind = 'checklist'",
+                (int(done), now, note_id),
+            )
+            if cursor.rowcount != 1:
+                connection.rollback()
+                return None
+            row = self.execute(
+                connection,
+                "SELECT id, project_id, kind, body, done, created_at, updated_at FROM schedule_shared_notes WHERE id = ?",
+                (note_id,),
+            ).fetchone()
+            connection.commit()
+        return {"id": row[0], "projectId": row[1], "kind": row[2], "body": row[3], "done": bool(row[4]), "createdAt": row[5], "updatedAt": row[6]}
+
+    def shared_note_delete(self, note_id: str) -> bool:
+        self.ensure_schema()
+        with self.connect() as connection:
+            cursor = self.execute(connection, "DELETE FROM schedule_shared_notes WHERE id = ?", (note_id,))
+            connection.commit()
+        return cursor.rowcount == 1
 
     def save(self, config: dict[str, Any], expected_version: int, note: str, actor: str) -> dict[str, Any]:
         validated = validate_config(config)
