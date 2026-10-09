@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from uuid import uuid4
+
 from test_api import TEST_ADMIN_PASSWORD, client
 
 
@@ -73,3 +75,42 @@ def test_schedule_requires_admin_csrf_to_save_and_prevents_stale_overwrite() -> 
     assert client.post("/api/admin/logout", headers={"X-CSRF-Token": csrf}).status_code == 200
     assert client.get("/api/schedule/document").json()["version"] == version + 1
     assert client.get("/api/schedule/session").json()["role"] == "guest"
+
+
+def test_public_guest_can_add_shared_memo_and_checklist_without_editing_schedule() -> None:
+    client.cookies.clear()
+    login = client.post("/api/admin/login", json={"username": "admin", "password": TEST_ADMIN_PASSWORD})
+    assert login.status_code == 200
+    csrf = login.json()["csrfToken"]
+    current = client.get("/api/schedule/document").json()
+    project_id = f"shared-{uuid4()}"
+    document = current["data"]
+    document["projects"].append({"id": project_id, "name": "공유 테스트", "color": "#1769d6"})
+    saved = client.put(
+        "/api/schedule/document",
+        json={"expectedVersion": current["version"], "data": document},
+        headers={"X-CSRF-Token": csrf},
+    )
+    assert saved.status_code == 200
+    assert client.post("/api/admin/logout", headers={"X-CSRF-Token": csrf}).status_code == 200
+
+    memo = client.post("/api/schedule/notes", json={"projectId": project_id, "kind": "memo", "body": "  현장 확인 메모  "})
+    assert memo.status_code == 201
+    assert memo.json()["body"] == "현장 확인 메모"
+    checklist = client.post("/api/schedule/notes", json={"projectId": project_id, "kind": "checklist", "body": "안전 펜스 확인"})
+    assert checklist.status_code == 201
+    note_id = checklist.json()["id"]
+    assert client.patch(f"/api/schedule/notes/{note_id}", json={"done": True}).json()["done"] is True
+    listed = client.get("/api/schedule/notes")
+    assert listed.status_code == 200
+    assert {item["body"] for item in listed.json()["notes"] if item["projectId"] == project_id} == {"현장 확인 메모", "안전 펜스 확인"}
+    assert client.delete(f"/api/schedule/notes/{note_id}").status_code == 401
+    assert client.patch(f"/api/schedule/notes/{memo.json()['id']}", json={"done": True}).status_code == 404
+    assert client.post("/api/schedule/notes", json={"projectId": "missing", "kind": "memo", "body": "없음"}).status_code == 404
+    assert client.post("/api/schedule/notes", json={"projectId": project_id, "kind": "memo", "body": "차단"}, headers={"Origin": "https://other.example"}).status_code == 403
+    assert client.get("/api/schedule/document").json()["version"] == saved.json()["version"]
+
+    login = client.post("/api/admin/login", json={"username": "admin", "password": TEST_ADMIN_PASSWORD})
+    csrf = login.json()["csrfToken"]
+    assert client.delete(f"/api/schedule/notes/{note_id}", headers={"X-CSRF-Token": csrf}).status_code == 200
+    assert all(item["id"] != note_id for item in client.get("/api/schedule/notes").json()["notes"])
