@@ -249,7 +249,7 @@ class ConfigStore:
         with self.connect() as connection:
             cursor = self.execute(
                 connection,
-                "UPDATE schedule_shared_notes SET done = ?, updated_at = ? WHERE id = ? AND kind = 'checklist'",
+                "UPDATE schedule_shared_notes SET done = ?, updated_at = ? WHERE id = ?",
                 (int(done), now, note_id),
             )
             if cursor.rowcount != 1:

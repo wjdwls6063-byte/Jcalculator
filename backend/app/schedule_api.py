@@ -301,7 +301,7 @@ def check_shared_note(note_id: str, body: SharedNoteCheckBody, request: Request)
     except StoreUnavailable as error:
         raise HTTPException(status_code=503, detail=str(error)) from error
     if note is None:
-        raise HTTPException(status_code=404, detail="체크리스트 항목을 찾을 수 없습니다.")
+        raise HTTPException(status_code=404, detail="공유 항목을 찾을 수 없습니다.")
     return note
 
 
