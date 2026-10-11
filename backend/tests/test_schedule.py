@@ -77,7 +77,7 @@ def test_schedule_requires_admin_csrf_to_save_and_prevents_stale_overwrite() -> 
     assert client.get("/api/schedule/session").json()["role"] == "guest"
 
 
-def test_public_guest_can_add_shared_memo_and_checklist_without_editing_schedule() -> None:
+def test_public_guest_can_add_shared_checklist_but_only_admin_can_edit_content() -> None:
     client.cookies.clear()
     login = client.post("/api/admin/login", json={"username": "admin", "password": TEST_ADMIN_PASSWORD})
     assert login.status_code == 200
@@ -94,24 +94,45 @@ def test_public_guest_can_add_shared_memo_and_checklist_without_editing_schedule
     assert saved.status_code == 200
     assert client.post("/api/admin/logout", headers={"X-CSRF-Token": csrf}).status_code == 200
 
-    memo = client.post("/api/schedule/notes", json={"projectId": project_id, "kind": "memo", "body": "  현장 확인 메모  "})
-    assert memo.status_code == 201
-    assert memo.json()["body"] == "현장 확인 메모"
+    assert client.post("/api/schedule/notes", json={"projectId": project_id, "kind": "memo", "body": "옛 메모"}).status_code == 422
     checklist = client.post("/api/schedule/notes", json={"projectId": project_id, "kind": "checklist", "body": "안전 펜스 확인"})
     assert checklist.status_code == 201
     note_id = checklist.json()["id"]
     assert client.patch(f"/api/schedule/notes/{note_id}", json={"done": True}).json()["done"] is True
     listed = client.get("/api/schedule/notes")
     assert listed.status_code == 200
-    assert {item["body"] for item in listed.json()["notes"] if item["projectId"] == project_id} == {"현장 확인 메모", "안전 펜스 확인"}
+    assert {item["body"] for item in listed.json()["notes"] if item["projectId"] == project_id} == {"안전 펜스 확인"}
     assert client.delete(f"/api/schedule/notes/{note_id}").status_code == 401
-    assert client.patch(f"/api/schedule/notes/{memo.json()['id']}", json={"done": True}).json()["done"] is True
+    assert client.put(f"/api/schedule/notes/{note_id}", json={"body": "수정 시도"}).status_code == 401
     assert client.patch("/api/schedule/notes/missing", json={"done": True}).status_code == 404
-    assert client.post("/api/schedule/notes", json={"projectId": "missing", "kind": "memo", "body": "없음"}).status_code == 404
-    assert client.post("/api/schedule/notes", json={"projectId": project_id, "kind": "memo", "body": "차단"}, headers={"Origin": "https://other.example"}).status_code == 403
+    assert client.post("/api/schedule/notes", json={"projectId": "missing", "kind": "checklist", "body": "없음"}).status_code == 404
+    assert client.post("/api/schedule/notes", json={"projectId": project_id, "kind": "checklist", "body": "차단"}, headers={"Origin": "https://other.example"}).status_code == 403
     assert client.get("/api/schedule/document").json()["version"] == saved.json()["version"]
 
     login = client.post("/api/admin/login", json={"username": "admin", "password": TEST_ADMIN_PASSWORD})
     csrf = login.json()["csrfToken"]
+    assert client.put(f"/api/schedule/notes/{note_id}", json={"body": "수정 시도"}).status_code == 403
+    edited = client.put(f"/api/schedule/notes/{note_id}", json={"body": "  안전장치 확인  "}, headers={"X-CSRF-Token": csrf})
+    assert edited.status_code == 200
+    assert edited.json()["body"] == "안전장치 확인"
+    assert edited.json()["done"] is True
+    assert client.put("/api/schedule/notes/missing", json={"body": "내용"}, headers={"X-CSRF-Token": csrf}).status_code == 404
     assert client.delete(f"/api/schedule/notes/{note_id}", headers={"X-CSRF-Token": csrf}).status_code == 200
     assert all(item["id"] != note_id for item in client.get("/api/schedule/notes").json()["notes"])
+
+
+def test_existing_memo_becomes_checklist_without_losing_content_or_completion(tmp_path) -> None:
+    from app.store import ConfigStore
+
+    db = ConfigStore(f"sqlite:///{tmp_path / 'old-notes.db'}")
+    db.ensure_schema()
+    old = db.shared_note_add("old-memo", "project-a", "memo", "현장 확인 메모")
+    assert old["kind"] == "memo"
+    assert db.shared_note_check("old-memo", True)["done"] is True
+    reopened = ConfigStore(db.url)
+    reopened.ensure_schema()
+    notes = reopened.shared_notes()
+    assert len(notes) == 1
+    assert notes[0]["kind"] == "checklist"
+    assert notes[0]["body"] == "현장 확인 메모"
+    assert notes[0]["done"] is True
