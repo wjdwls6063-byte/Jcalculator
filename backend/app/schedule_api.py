@@ -149,13 +149,18 @@ class SaveBody(BaseModel):
 class SharedNoteBody(BaseModel):
     model_config = ConfigDict(extra="forbid")
     projectId: Identifier
-    kind: str = Field(pattern=r"^(memo|checklist)$")
+    kind: str = Field(pattern=r"^checklist$")
     body: str = Field(min_length=1, max_length=500)
 
 
 class SharedNoteCheckBody(BaseModel):
     model_config = ConfigDict(extra="forbid")
     done: bool
+
+
+class SharedNoteEditBody(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    body: str = Field(min_length=1, max_length=500)
 
 
 def guard_shared_note_write(request: Request, action: str, limit: int) -> None:
@@ -305,12 +310,27 @@ def check_shared_note(note_id: str, body: SharedNoteCheckBody, request: Request)
     return note
 
 
+@router.put("/notes/{note_id}")
+def edit_shared_note(note_id: str, body: SharedNoteEditBody, session: CsrfSession) -> dict:
+    require_persistent_database()
+    content = body.body.strip()
+    if not content:
+        raise HTTPException(status_code=422, detail="내용을 입력해 주세요.")
+    try:
+        note = store.shared_note_edit(note_id, content)
+    except StoreUnavailable as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
+    if note is None:
+        raise HTTPException(status_code=404, detail="체크리스트 항목을 찾을 수 없습니다.")
+    return note
+
+
 @router.delete("/notes/{note_id}")
 def delete_shared_note(note_id: str, session: CsrfSession) -> dict[str, bool]:
     require_persistent_database()
     try:
         if not store.shared_note_delete(note_id):
-            raise HTTPException(status_code=404, detail="메모를 찾을 수 없습니다.")
+            raise HTTPException(status_code=404, detail="체크리스트 항목을 찾을 수 없습니다.")
     except StoreUnavailable as error:
         raise HTTPException(status_code=503, detail=str(error)) from error
     return {"ok": True}

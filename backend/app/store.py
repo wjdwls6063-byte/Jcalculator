@@ -149,6 +149,7 @@ class ConfigStore:
                     )
                     """,
                 )
+                self.execute(connection, "UPDATE schedule_shared_notes SET kind = 'checklist' WHERE kind = 'memo'")
                 row = self.execute(connection, "SELECT version FROM app_config WHERE singleton = 1").fetchone()
                 if row is None:
                     now = iso_now()
@@ -251,6 +252,26 @@ class ConfigStore:
                 connection,
                 "UPDATE schedule_shared_notes SET done = ?, updated_at = ? WHERE id = ?",
                 (int(done), now, note_id),
+            )
+            if cursor.rowcount != 1:
+                connection.rollback()
+                return None
+            row = self.execute(
+                connection,
+                "SELECT id, project_id, kind, body, done, created_at, updated_at FROM schedule_shared_notes WHERE id = ?",
+                (note_id,),
+            ).fetchone()
+            connection.commit()
+        return {"id": row[0], "projectId": row[1], "kind": row[2], "body": row[3], "done": bool(row[4]), "createdAt": row[5], "updatedAt": row[6]}
+
+    def shared_note_edit(self, note_id: str, body: str) -> dict[str, Any] | None:
+        self.ensure_schema()
+        now = iso_now()
+        with self.connect() as connection:
+            cursor = self.execute(
+                connection,
+                "UPDATE schedule_shared_notes SET body = ?, updated_at = ? WHERE id = ?",
+                (body, now, note_id),
             )
             if cursor.rowcount != 1:
                 connection.rollback()
