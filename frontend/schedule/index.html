@@ -42,6 +42,7 @@
       <div class="compact-heading"><h2>월간 일정 <span id="largeMonthTitle"></span></h2><div class="summary" id="summary"></div><button class="button primary" id="addEventBtn">+ 일정 추가</button></div>
       <div class="month-toolbar"><span>일정을 누르면 연결된 할 일을 볼 수 있습니다.</span><div class="inline-actions"><button class="button small" id="largePrevMonth" aria-label="이전 달">‹</button><button class="button small" id="largeTodayMonth">오늘</button><button class="button small" id="largeNextMonth" aria-label="다음 달">›</button></div></div>
       <div class="month-scroll"><div class="month-board"><div class="month-week"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div id="milestones" class="month-grid"></div></div></div>
+      <section id="mobileDayAgenda" class="mobile-day-agenda" aria-label="선택한 날짜의 일정"></section>
       <div class="compact-heading secondary-heading"><h2>별도 할 일</h2><span class="section-note">일정에 연결되지 않은 할 일</span><button class="button" id="addTaskBtn">+ 할 일</button></div>
       <div class="unlinked" id="unlinked"></div>
     </section>
@@ -154,18 +155,28 @@ function eventPreview(e,linked){
 function renderMilestones(){
   const y=month.getFullYear(),m=month.getMonth(),first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),count=Math.ceil((first.getDay()+new Date(y,m+1,0).getDate())/7)*7;
   $('largeMonthTitle').textContent=`${y}년 ${m+1}월`;
+  const today=new Date(),activeKey=selectedDate||localDate(today.getFullYear()===y&&today.getMonth()===m?today:new Date(y,m,1));
   let html='';
   for(let i=0;i<count;i++){
     const day=new Date(start);day.setDate(start.getDate()+i);
     const key=localDate(day),holiday=holidayOn(key),dayEvents=events().filter(e=>e.date===key).sort((a,b)=>Number(a.done)-Number(b.done)||(a.time||'').localeCompare(b.time||'')||a.title.localeCompare(b.title));
     const freeTasks=tasks().filter(t=>t.due===key&&!t.eventId&&!t.done);
-    html+=`<div class="month-day ${day.getMonth()!==m?'outside':''} ${key===localDate()?'today':''} ${selectedDate===key?'selected':''}"><div class="month-day-head"><button type="button" class="month-day-number" data-month-day="${key}" aria-label="${esc(dateLabel(key))} 선택">${day.getDate()}</button>${role==='admin'?`<button type="button" class="month-day-add" data-month-add="${key}" aria-label="${esc(dateLabel(key))} 일정 추가">+</button>`:''}</div>${holiday?`<div class="month-holiday">${esc(holiday)}</div>`:''}<div class="month-items">${dayEvents.map(e=>{const linked=orderedTasks(e.id),done=linked.filter(t=>t.done).length;return `<div class="month-event-wrap"><button type="button" class="month-event ${e.done?'done':''}" style="--project-color:${esc(color(e.projectId))}" data-month-event="${esc(e.id)}" aria-label="${esc(e.title)} · ${esc(project(e.projectId)?.name||'프로젝트')} · 연결된 할 일 ${done}/${linked.length} 완료"><span class="month-event-time">${esc(e.time||'')}</span><span class="month-event-title">${esc(e.title)}</span>${linked.length?`<b>${done}/${linked.length}</b>`:''}</button>${eventPreview(e,linked)}</div>`}).join('')}${freeTasks.map(t=>`<button type="button" class="month-task" data-month-task="${esc(t.id)}" aria-label="별도 할 일 ${esc(t.title)}">□ ${esc(t.title)}</button>`).join('')}</div></div>`;
+    html+=`<div class="month-day ${day.getMonth()!==m?'outside':''} ${key===localDate()?'today':''} ${activeKey===key?'selected':''}"><div class="month-day-head"><button type="button" class="month-day-number" data-month-day="${key}" aria-label="${esc(dateLabel(key))} 선택" aria-pressed="${activeKey===key}">${day.getDate()}</button><span class="month-day-count" aria-hidden="true">${dayEvents.length+freeTasks.length||''}</span>${role==='admin'?`<button type="button" class="month-day-add" data-month-add="${key}" aria-label="${esc(dateLabel(key))} 일정 추가">+</button>`:''}</div>${holiday?`<div class="month-holiday">${esc(holiday)}</div>`:''}<div class="month-items">${dayEvents.map(e=>{const linked=orderedTasks(e.id),done=linked.filter(t=>t.done).length;return `<div class="month-event-wrap"><button type="button" class="month-event ${e.done?'done':''}" style="--project-color:${esc(color(e.projectId))}" data-month-event="${esc(e.id)}" aria-label="${esc(e.title)} · ${esc(project(e.projectId)?.name||'프로젝트')} · 연결된 할 일 ${done}/${linked.length} 완료"><span class="month-event-time">${esc(e.time||'')}</span><span class="month-event-title">${esc(e.title)}</span>${linked.length?`<b>${done}/${linked.length}</b>`:''}</button>${eventPreview(e,linked)}</div>`}).join('')}${freeTasks.map(t=>`<button type="button" class="month-task" data-month-task="${esc(t.id)}" aria-label="별도 할 일 ${esc(t.title)}">□ ${esc(t.title)}</button>`).join('')}</div></div>`;
   }
   $('milestones').innerHTML=html;
   $('milestones').querySelectorAll('[data-month-day]').forEach(b=>b.onclick=()=>{selectedDate=b.dataset.monthDay;renderCalendar();renderMilestones()});
   $('milestones').querySelectorAll('[data-month-add]').forEach(b=>b.onclick=()=>openEditor('event',null,null,b.dataset.monthAdd));
   $('milestones').querySelectorAll('[data-month-event]').forEach(b=>b.onclick=()=>openEventDetails(b.dataset.monthEvent));
   $('milestones').querySelectorAll('[data-month-task]').forEach(b=>b.onclick=()=>{if(role==='admin')openEditor('task',b.dataset.monthTask);else{const t=data.tasks.find(t=>t.id===b.dataset.monthTask);if(t)toast(`${t.title} · ${project(t.projectId)?.name||'프로젝트'}`)}});
+  renderMobileAgenda(activeKey);
+}
+function renderMobileAgenda(key){
+  const dayEvents=events().filter(e=>e.date===key).sort((a,b)=>(a.time||'').localeCompare(b.time||'')||a.title.localeCompare(b.title));
+  const freeTasks=tasks().filter(t=>t.due===key&&!t.eventId&&!t.done);
+  const holiday=holidayOn(key);
+  $('mobileDayAgenda').innerHTML=`<div class="mobile-agenda-head"><strong>${esc(dateLabel(key))} · 일정 ${dayEvents.length}건${freeTasks.length?` · 별도 할 일 ${freeTasks.length}건`:''}</strong>${role==='admin'?`<button type="button" class="button small" data-agenda-add="${key}">+ 일정</button>`:''}</div>${holiday?`<div class="mobile-agenda-holiday">공휴일 · ${esc(holiday)}</div>`:''}${dayEvents.map(e=>{const linked=orderedTasks(e.id),done=linked.filter(t=>t.done).length;return `<button type="button" class="mobile-agenda-event" data-agenda-event="${esc(e.id)}" style="--project-color:${esc(color(e.projectId))}"><span class="mobile-agenda-project">${esc(project(e.projectId)?.name||'프로젝트')}</span><strong>${esc(e.time?e.time+' ':'')}${esc(e.title)}</strong><small>${e.done?'완료':esc(dLabel(e.date))}${linked.length?` · 할 일 ${done}/${linked.length}`:''}</small></button>`}).join('')}${freeTasks.map(t=>`<div class="mobile-agenda-task"><span>할 일</span><strong>${esc(t.title)}</strong><small>${esc(project(t.projectId)?.name||'프로젝트')}</small></div>`).join('')}${!holiday&&!dayEvents.length&&!freeTasks.length?'<div class="mobile-agenda-empty">이 날짜에 등록된 일정이 없습니다.</div>':''}`;
+  $('mobileDayAgenda').querySelectorAll('[data-agenda-event]').forEach(b=>b.onclick=()=>openEventDetails(b.dataset.agendaEvent));
+  $('mobileDayAgenda').querySelector('[data-agenda-add]')?.addEventListener('click',b=>openEditor('event',null,null,b.currentTarget.dataset.agendaAdd));
 }
 function openEventDetails(id){activeEventId=id;renderEventDetails();if(!$('eventDetails').open)$('eventDetails').showModal()}
 function renderEventDetails(){const e=event(activeEventId);if(!e){$('eventDetails').close();return}const linked=orderedTasks(e.id),done=linked.filter(t=>t.done).length;

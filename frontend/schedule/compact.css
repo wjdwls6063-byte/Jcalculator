@@ -180,6 +180,7 @@
 .month-day.today:nth-child(7n+1) .month-day-number{color:#fff}
 .month-day-add{border:0;background:transparent;color:#5782b0;border-radius:5px;padding:2px 5px;font-size:15px;opacity:0}
 .month-day:hover .month-day-add,.month-day-add:focus-visible{opacity:1}
+.month-day-count,.mobile-day-agenda{display:none}
 .month-holiday{padding:3px 5px;margin:2px 0 4px;border-radius:4px;color:#b23647;background:#fff0f2;font-size:10px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .month-items{display:grid;align-content:start;gap:3px;min-width:0}
 .month-event-wrap{position:relative;min-width:0}
@@ -219,3 +220,45 @@
 .event-detail-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:15px}
 @media(max-width:1180px){.compact-layout{grid-template-columns:195px minmax(0,1fr)}.checklist-sidebar{grid-column:2;border-left:0;border-top:1px solid #dce5ef}.checklist-sidebar .shared-note-form{grid-template-columns:minmax(120px,180px) 1fr auto}.checklist-sidebar .shared-note-form .button{width:auto}.checklist-sidebar .shared-note-progress{grid-column:auto}.checklist-sidebar .shared-note-filters{grid-column:1/-1}.checklist-sidebar .shared-note-toggle{flex-basis:auto}.checklist-sidebar .shared-note-row .icon-button:first-of-type{margin-left:0}}
 @media(max-width:750px){.compact-layout{display:block}.compact-sidebar{padding:10px 12px}.compact-content{padding:12px 10px}.month-scroll{overflow-x:auto}.month-board{min-width:700px}.month-grid{grid-auto-rows:minmax(125px,auto)}.month-event-wrap .event-preview{display:none!important}.month-day-add{opacity:1}.checklist-sidebar{border-top:1px solid #dce5ef;padding:14px 10px}.checklist-sidebar .shared-note-form{grid-template-columns:1fr}.checklist-sidebar .shared-note-form .button{width:100%}.checklist-sidebar .shared-note-row .icon-button:first-of-type{margin-left:auto}.month-toolbar span{font-size:10px}}
+
+@media(max-width:750px){
+  .compact-sidebar{display:none}
+  .compact-content{padding:10px 8px 18px}
+  .compact-heading{gap:5px}
+  .compact-heading h2{font-size:16px}
+  .compact-heading h2 span{display:block;margin:2px 0 0;font-size:11px}
+  .compact-heading .summary{gap:3px 5px;font-size:11px}
+  .compact-heading .summary .summary-trigger{padding:3px}
+  .month-toolbar{margin:0 0 6px;flex-wrap:wrap}
+  .month-scroll{overflow:visible}
+  .month-board{min-width:0;width:100%}
+  .month-week span{padding:6px 0;font-size:10px}
+  .month-grid{grid-auto-rows:74px}
+  .month-day{height:74px;padding:2px;overflow:hidden}
+  .month-day-head{min-height:22px;margin:0 0 1px}
+  .month-day-number{width:22px;height:22px;font-size:11px}
+  .month-day-count{display:block;margin-left:auto;padding:1px 3px;border-radius:7px;background:#eaf2fb;color:#587695;font-size:9px;font-weight:750}
+  .month-day-count:empty{display:none}
+  .month-day-add{display:none}
+  .month-holiday{height:13px;margin:0 0 2px;padding:1px 2px;font-size:8px;line-height:11px}
+  .month-items{gap:2px}
+  .month-items>:nth-child(n+3){display:none}
+  .month-event{min-height:14px;padding:1px 2px;border-left-width:2px;font-size:8px}
+  .month-event-time,.month-event b{display:none}
+  .month-event-title{font-size:8px}
+  .month-task{min-height:14px;padding:1px 2px;font-size:8px}
+  .mobile-day-agenda{display:block;margin-top:9px;border:1px solid #dce5ef;border-radius:8px;background:#fff;overflow:hidden}
+  .mobile-agenda-head{display:flex;align-items:center;justify-content:space-between;gap:5px;padding:9px 10px;background:#f2f7fd;font-size:12px;color:#25415e}
+  .mobile-agenda-head strong{min-width:0}
+  .mobile-agenda-head .button{padding:4px 7px}
+  .mobile-agenda-holiday{padding:7px 10px;color:#b23a49;background:#fff4f5;font-size:11px}
+  .mobile-agenda-event{display:grid;grid-template-columns:minmax(65px,auto) 1fr auto;align-items:center;gap:6px;width:100%;padding:9px 10px;border:0;border-top:1px solid #edf1f6;background:#fff;text-align:left;font-size:11px;color:#243d58}
+  .mobile-agenda-event:focus-visible,.mobile-agenda-event:hover{background:#f2f7ff}
+  .mobile-agenda-project{font-size:10px;font-weight:800;color:var(--project-color)}
+  .mobile-agenda-event strong,.mobile-agenda-task strong{min-width:0;overflow-wrap:anywhere}
+  .mobile-agenda-event small{color:#758ba2;white-space:nowrap}
+  .mobile-agenda-task{display:grid;grid-template-columns:65px 1fr auto;gap:6px;padding:9px 10px;border-top:1px solid #edf1f6;font-size:11px}
+  .mobile-agenda-task span,.mobile-agenda-task small{color:#758ba2}
+  .mobile-agenda-empty{padding:13px 10px;color:#758ba2;font-size:11px}
+}
+@media(max-width:360px){.compact-content{padding-left:5px;padding-right:5px}.month-event-title{font-size:7px}.mobile-agenda-event{grid-template-columns:1fr auto}.mobile-agenda-project{grid-column:1/-1}.mobile-agenda-task{grid-template-columns:1fr auto}.mobile-agenda-task span{grid-column:1/-1}}
