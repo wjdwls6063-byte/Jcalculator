@@ -149,3 +149,73 @@
 .shared-note-empty{padding:17px 10px;font-size:12px}
 @media(max-width:1000px){.compact-layout{grid-template-columns:208px minmax(0,1fr)}.compact-sidebar{padding:12px 9px}.compact-content{padding:12px}.schedule-table-head,.schedule-line{grid-template-columns:64px 78px minmax(105px,1fr) 72px 48px 63px;gap:5px;padding:7px}.schedule-entry .tasks{padding-left:155px}.schedule-entry .progress{display:none}.event-preview{left:150px;width:min(340px,calc(100% - 160px))}.compact-heading .summary{gap:6px}}
 @media(max-width:750px){.top{padding:9px 12px}.tabs{padding:6px 10px}.compact-layout{display:block;min-height:0;border:0}.compact-sidebar{border-right:0;border-bottom:1px solid #dce5ef;padding:10px 12px}.compact-alerts{display:none}.calendar-grid .day{height:35px}.compact-content{padding:12px 10px}.schedule-table-wrap{overflow-x:auto}.schedule-table-head,.schedule-line{min-width:625px}.schedule-entry .tasks{min-width:625px;padding-left:161px}.event-preview{left:145px;width:320px}.compact-heading{flex-wrap:wrap}.compact-heading .summary{order:3;flex-basis:100%}.secondary-heading .section-note{display:none}.top-actions .sync-status{display:none}.shared-note-form{grid-template-columns:1fr 105px}.shared-note-form textarea{grid-column:1/-1}.shared-note-form .button{grid-column:1/-1}.shared-note-toolbar{align-items:flex-start}.shared-note-filters{width:100%;margin-left:0}.shared-board-help{flex-basis:100%}}
+
+/* Project calendar layout */
+.compact-layout{max-width:1850px;grid-template-columns:220px minmax(0,1fr) 300px}
+.compact-content{padding:15px 16px 22px}
+.compact-heading h2 span{font-size:13px;color:#627b99;font-weight:650;margin-left:7px}
+.compact-heading .summary{flex:1;min-width:0}
+.month-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#6d829a;font-size:11px;margin:0 0 8px}
+.month-toolbar .inline-actions{gap:4px}
+.month-scroll{border:1px solid #dce5ef;border-radius:9px;background:#fff}
+.month-week,.month-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.month-week{background:#f4f8fd;border-bottom:1px solid #dce5ef}
+.month-week span{text-align:center;padding:8px 2px;color:#58708c;font-size:11px;font-weight:800;border-right:1px solid #e4ebf3}
+.month-week span:last-child{border-right:0}
+.month-week span:first-child{color:#c7434e}
+.month-week span:last-child{color:#386ea6}
+.month-grid{grid-auto-rows:minmax(139px,auto)}
+.month-day{position:relative;min-width:0;padding:5px 5px 8px;border-right:1px solid #e8edf4;border-bottom:1px solid #e8edf4;background:#fff}
+.month-day:nth-child(7n){border-right:0}
+.month-day.outside{background:#f8fafd}
+.month-day.today{background:#f1f7ff}
+.month-day.selected{box-shadow:inset 0 0 0 2px #2778da}
+.month-day:has(.month-event-wrap:hover){z-index:10}
+.month-day-head{display:flex;align-items:center;justify-content:space-between;min-height:24px;margin-bottom:3px}
+.month-day-number{border:0;background:transparent;color:#27415e;border-radius:50%;width:25px;height:25px;font-size:12px;font-weight:750;padding:0}
+.month-day-number:hover{background:#e7f1ff}
+.month-day.today .month-day-number{background:#1769d6;color:#fff}
+.month-day.outside .month-day-number{color:#a2b2c5}
+.month-day:nth-child(7n+1) .month-day-number{color:#c7434e}
+.month-day.today:nth-child(7n+1) .month-day-number{color:#fff}
+.month-day-add{border:0;background:transparent;color:#5782b0;border-radius:5px;padding:2px 5px;font-size:15px;opacity:0}
+.month-day:hover .month-day-add,.month-day-add:focus-visible{opacity:1}
+.month-holiday{padding:3px 5px;margin:2px 0 4px;border-radius:4px;color:#b23647;background:#fff0f2;font-size:10px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.month-items{display:grid;align-content:start;gap:3px;min-width:0}
+.month-event-wrap{position:relative;min-width:0}
+.month-event{display:flex;align-items:center;gap:3px;width:100%;min-height:21px;padding:3px 5px;border:0;border-left:3px solid var(--project-color);border-radius:4px;text-align:left;color:#233d59;background:color-mix(in srgb,var(--project-color) 13%,white);font-size:10px;line-height:1.25}
+.month-event:hover,.month-event:focus-visible{background:color-mix(in srgb,var(--project-color) 23%,white);outline:1px solid var(--project-color)}
+.month-event.done{opacity:.62}
+.month-event.done .month-event-title{text-decoration:line-through}
+.month-event-time{font-weight:750;white-space:nowrap}
+.month-event-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:750}
+.month-event b{font-size:9px;white-space:nowrap;color:#506d8c}
+.month-task{border:0;background:#f0f4f9;color:#5e7690;border-radius:4px;text-align:left;font-size:10px;padding:3px 5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.month-event-wrap .event-preview{top:calc(100% + 3px);left:0;width:300px;max-width:min(300px,80vw)}
+.month-event-wrap:hover .event-preview,.month-event-wrap:focus-within .event-preview{display:block}
+.month-day:nth-child(7n+6) .event-preview,.month-day:nth-child(7n) .event-preview{left:auto;right:0}
+.checklist-sidebar{min-width:0;border-left:1px solid #dce5ef;padding:15px 12px;background:#fbfdff}
+.checklist-sidebar .shared-board{margin:0}
+.checklist-sidebar .secondary-heading{margin:0 0 4px}
+.checklist-sidebar .secondary-heading h2{font-size:16px}
+.checklist-sidebar .shared-board-help{display:block;margin:0 0 11px;line-height:1.4}
+.checklist-sidebar .shared-note-form{grid-template-columns:1fr;border-radius:8px 8px 0 0}
+.checklist-sidebar .shared-note-form textarea{min-height:62px}
+.checklist-sidebar .shared-note-form .button{width:100%}
+.checklist-sidebar .shared-note-toolbar{display:grid;grid-template-columns:1fr auto;gap:7px}
+.checklist-sidebar .shared-note-progress{grid-column:1/-1;width:100%}
+.checklist-sidebar .shared-note-filters{grid-column:1/-1;width:100%;margin:0}
+.checklist-sidebar .shared-note-row{flex-wrap:wrap;gap:6px 5px;align-items:center}
+.checklist-sidebar .shared-note-toggle{flex-basis:100%}
+.checklist-sidebar .shared-note-project{margin-left:28px;max-width:170px}
+.checklist-sidebar .shared-note-row .icon-button:first-of-type{margin-left:auto}
+.event-details-dialog{width:min(580px,calc(100vw - 24px))}
+.event-details-body{padding:15px 18px 18px;max-height:calc(90vh - 70px);overflow:auto}
+.event-detail-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:#496680}
+.event-detail-note{margin:13px 0 0;background:#f4f8fd;border-radius:7px;padding:10px 11px;color:#39516d;white-space:pre-wrap;font-size:12px}
+.event-detail-heading{margin:17px 0 6px;font-size:13px}
+.event-detail-tasks{border-top:1px solid #e4ebf3;border-bottom:1px solid #e4ebf3}
+.event-detail-tasks .empty-tasks{padding:15px 0;color:#7b8fa6;font-size:12px}
+.event-detail-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin-top:15px}
+@media(max-width:1180px){.compact-layout{grid-template-columns:195px minmax(0,1fr)}.checklist-sidebar{grid-column:2;border-left:0;border-top:1px solid #dce5ef}.checklist-sidebar .shared-note-form{grid-template-columns:minmax(120px,180px) 1fr auto}.checklist-sidebar .shared-note-form .button{width:auto}.checklist-sidebar .shared-note-progress{grid-column:auto}.checklist-sidebar .shared-note-filters{grid-column:1/-1}.checklist-sidebar .shared-note-toggle{flex-basis:auto}.checklist-sidebar .shared-note-row .icon-button:first-of-type{margin-left:0}}
+@media(max-width:750px){.compact-layout{display:block}.compact-sidebar{padding:10px 12px}.compact-content{padding:12px 10px}.month-scroll{overflow-x:auto}.month-board{min-width:700px}.month-grid{grid-auto-rows:minmax(125px,auto)}.month-event-wrap .event-preview{display:none!important}.month-day-add{opacity:1}.checklist-sidebar{border-top:1px solid #dce5ef;padding:14px 10px}.checklist-sidebar .shared-note-form{grid-template-columns:1fr}.checklist-sidebar .shared-note-form .button{width:100%}.checklist-sidebar .shared-note-row .icon-button:first-of-type{margin-left:auto}.month-toolbar span{font-size:10px}}

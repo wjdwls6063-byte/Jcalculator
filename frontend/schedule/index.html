@@ -38,22 +38,28 @@
       <section class="compact-calendar"><div class="calendar-top"><h2 id="monthTitle"></h2><div class="inline-actions"><button class="icon-button" id="prevMonth" aria-label="이전 달">‹</button><button class="icon-button" id="todayMonth">오늘</button><button class="icon-button" id="nextMonth" aria-label="다음 달">›</button></div></div><div class="calendar-week"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div class="calendar-grid" id="calendar"></div><div class="calendar-legend" id="legend"></div><div class="day-selection" id="daySelection"></div></section>
       <section class="compact-alerts"><h2>마감 임박</h2><div id="urgent"></div></section>
     </aside>
-    <section class="compact-content" aria-label="프로젝트 일정과 할 일">
-      <div class="compact-heading"><h2>주요 일정</h2><div class="summary" id="summary"></div><button class="button primary" id="addEventBtn">+ 일정 추가</button></div>
-      <div class="schedule-table-wrap"><div class="schedule-table-head"><span>날짜</span><span>프로젝트</span><span>상위 일정</span><span>할 일 진행</span><span>마감</span><span>관리</span></div><div id="milestones"></div></div>
-      <div class="compact-heading secondary-heading"><h2>할 일 목록</h2><span class="section-note">연결된 일정과 별도 할 일 · 끌어서 순서 변경</span><button class="button" id="addTaskBtn">+ 할 일</button></div>
+    <section class="compact-content" aria-label="프로젝트 월간 일정">
+      <div class="compact-heading"><h2>월간 일정 <span id="largeMonthTitle"></span></h2><div class="summary" id="summary"></div><button class="button primary" id="addEventBtn">+ 일정 추가</button></div>
+      <div class="month-toolbar"><span>일정을 누르면 연결된 할 일을 볼 수 있습니다.</span><div class="inline-actions"><button class="button small" id="largePrevMonth" aria-label="이전 달">‹</button><button class="button small" id="largeTodayMonth">오늘</button><button class="button small" id="largeNextMonth" aria-label="다음 달">›</button></div></div>
+      <div class="month-scroll"><div class="month-board"><div class="month-week"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div><div id="milestones" class="month-grid"></div></div></div>
+      <div class="compact-heading secondary-heading"><h2>별도 할 일</h2><span class="section-note">일정에 연결되지 않은 할 일</span><button class="button" id="addTaskBtn">+ 할 일</button></div>
       <div class="unlinked" id="unlinked"></div>
-      <section class="shared-board" aria-label="공유 메모와 체크리스트">
-        <div class="compact-heading secondary-heading"><h2>공유 메모 · 체크리스트</h2><span class="shared-board-help">게스트도 작성·체크 가능 · 모든 기기에 공유</span></div>
-        <form id="sharedNoteForm" class="shared-note-form"><select name="projectId" aria-label="메모 프로젝트" required></select><select name="kind" aria-label="항목 종류"><option value="memo">메모</option><option value="checklist">체크리스트</option></select><textarea name="body" aria-label="메모 또는 할 일 내용" maxlength="500" rows="1" placeholder="메모 또는 체크할 내용을 입력하세요" required></textarea><button class="button primary" type="submit">등록</button></form>
-        <div class="shared-note-toolbar"><strong id="sharedNoteCount">공유 항목 0/0 완료 · 미완료 0</strong><span class="shared-note-progress" aria-hidden="true"><i id="sharedNoteProgress"></i></span><div class="shared-note-filters" id="sharedNoteFilters" role="group" aria-label="공유 항목 보기"></div></div>
+    </section>
+    <aside class="checklist-sidebar" aria-label="공유 체크리스트">
+      <section class="shared-board">
+        <div class="compact-heading secondary-heading"><h2>공유 체크리스트</h2></div>
+        <p class="shared-board-help">프로젝트별로 공유 · 게스트도 추가하고 체크 가능</p>
+        <form id="sharedNoteForm" class="shared-note-form"><select name="projectId" aria-label="체크리스트 프로젝트" required></select><textarea name="body" aria-label="체크리스트 내용" maxlength="500" rows="2" placeholder="확인할 항목을 입력하세요" required></textarea><button class="button primary" type="submit">+ 항목 추가</button></form>
+        <div class="shared-note-toolbar"><strong id="sharedNoteCount">체크리스트 0/0 완료 · 미완료 0</strong><span class="shared-note-progress" aria-hidden="true"><i id="sharedNoteProgress"></i></span><div class="shared-note-filters" id="sharedNoteFilters" role="group" aria-label="공유 체크리스트 보기"></div></div>
         <div id="sharedNotes" class="shared-note-list"></div>
       </section>
-    </section>
+    </aside>
   </main>
   <p style="max-width:1584px;margin:0 auto;padding:0 22px 25px;color:#73849a;font-size:12px">일정은 서버 데이터베이스에 저장됩니다. 중요한 내용은 백업 파일도 내려받아 보관하세요.</p>
 </div>
 <dialog id="editor"><div class="dialog-head"><h2 id="editorTitle"></h2><button class="icon-button" id="closeEditor" aria-label="닫기">✕</button></div><form id="editorForm" class="form-body"></form></dialog>
+<dialog id="eventDetails" class="event-details-dialog"><div class="dialog-head"><h2 id="eventDetailsTitle"></h2><button class="icon-button" id="closeEventDetails" aria-label="닫기">✕</button></div><div id="eventDetailsBody" class="event-details-body"></div></dialog>
+<dialog id="checklistEditor"><div class="dialog-head"><h2>체크리스트 수정</h2><button class="icon-button" id="closeChecklistEditor" aria-label="닫기">✕</button></div><form id="checklistEditForm" class="form-body"><label class="field">내용<textarea name="body" maxlength="500" required></textarea></label><div class="form-actions"><button type="button" class="button" id="cancelChecklistEditor">취소</button><button type="submit" class="button primary">저장</button></div></form></dialog>
 <input id="restoreInput" type="file" accept="application/json,.json" class="hidden">
 <div id="toast" class="notification hidden" role="status"></div>
 <script>
@@ -74,7 +80,7 @@ const dateLabel=s=>{const d=parseDate(s);return `${d.getMonth()+1}월 ${d.getDat
 const shortDate=s=>{const d=parseDate(s);return `${d.getMonth()+1}.${pad(d.getDate())}`};
 const priorityRank={high:0,normal:1,low:2};
 const priorityLabel={high:'높음',normal:'보통',low:'낮음'};
-let data=emptyData(),sharedNotes=[],noteFilter='all',scope='all',month=new Date(),selectedDate='',dragId='';
+let data=emptyData(),sharedNotes=[],noteFilter='all',scope='all',month=new Date(),selectedDate='',dragId='',activeEventId='';
 const holidayCache=new Map(),holidayLoading=new Set(),holidayErrors=new Set(),expandedEvents=new Set();
 let serverVersion=0,csrfToken='',role='',pending=false,syncing=false,syncBlocked=false,syncErrorStatus=0,importingLegacy=false,serverEmpty=false;
 month.setDate(1);
@@ -102,7 +108,7 @@ const projectText=(id,eventId)=>`<button type="button" class="project-tag event-
 const taskContext=t=>event(t.eventId)?.title||(t.parentId?data.tasks.find(p=>p.id===t.parentId)?.title:'')||'별도 할 일';
 const sortedEvents=()=>events().slice().sort((a,b)=>a.done-b.done||a.date.localeCompare(b.date)||a.title.localeCompare(b.title));
 const orderedTasks=eventId=>tasks().filter(t=>t.eventId===eventId).sort((a,b)=>(a.order||0)-(b.order||0));
-function render(){renderTabs();renderSummary();renderCalendar();renderMilestones();renderUnlinked();renderUrgent();renderSharedNotes()}
+function render(){renderTabs();renderSummary();renderCalendar();renderMilestones();renderUnlinked();renderUrgent();renderSharedNotes();if($('eventDetails').open)renderEventDetails()}
 function renderTabs(){const nav=$('tabs');nav.innerHTML=`<button class="tab ${scope==='all'?'active':''}" data-scope="all">전체</button>`+data.projects.map(p=>`<button class="tab ${scope===p.id?'active':''}" data-scope="${esc(p.id)}"><span class="dot" style="--project-color:${esc(p.color)}"></span>${esc(p.name)}</button>`).join('')+`<button class="tab" data-action="new-project">+ 프로젝트</button>`;nav.querySelectorAll('[data-scope]').forEach(b=>b.onclick=()=>{scope=b.dataset.scope;selectedDate='';render()});nav.querySelector('[data-action]').onclick=()=>openEditor('project')}
 function summaryMetric(label,items,tone=''){
   const rows=items.slice().sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999')||a.title.localeCompare(b.title)).map(x=>`<li><span class="summary-kind">${x.kind==='event'?'일정':'할 일'}</span><span class="summary-project" style="--project-color:${esc(color(x.projectId))}">${esc(project(x.projectId)?.name||'프로젝트')}</span><span class="summary-title">${esc(x.title)}</span><strong class="summary-due">${x.done?'완료':x.due?esc(dateLabel(x.due)+' · '+dLabel(x.due)):'마감일 없음'}</strong></li>`).join('');
@@ -121,7 +127,7 @@ function renderSummary(){
 }
 function entriesOn(date){return [...events().filter(e=>e.date===date).map(e=>({type:'일정',title:e.title,projectId:e.projectId,time:e.time||'',done:e.done})),...tasks().filter(t=>t.due===date).map(t=>({type:'할 일',title:t.title,projectId:t.projectId,time:'',done:t.done}))]}
 function holidayOn(date){return holidayCache.get(Number(date.slice(0,4)))?.[date]||''}
-async function loadHolidays(year){if(holidayCache.has(year)||holidayLoading.has(year)||holidayErrors.has(year))return;holidayLoading.add(year);try{const result=await api(`/api/schedule/holidays/${year}`);holidayCache.set(year,result.holidays||{})}catch{holidayErrors.add(year)}finally{holidayLoading.delete(year);if(month.getFullYear()===year)renderCalendar()}}
+async function loadHolidays(year){if(holidayCache.has(year)||holidayLoading.has(year)||holidayErrors.has(year))return;holidayLoading.add(year);try{const result=await api(`/api/schedule/holidays/${year}`);holidayCache.set(year,result.holidays||{})}catch{holidayErrors.add(year)}finally{holidayLoading.delete(year);if(month.getFullYear()===year){renderCalendar();renderMilestones()}}}
 function renderDaySelection(){const today=new Date(),key=selectedDate||localDate(month.getFullYear()===today.getFullYear()&&month.getMonth()===today.getMonth()?today:new Date(month.getFullYear(),month.getMonth(),1)),entries=entriesOn(key),holiday=holidayOn(key);$('daySelection').innerHTML=`<strong>${esc(dateLabel(key))} · ${entries.length}건</strong>${holiday?`<span class="holiday-name">${esc(holiday)}</span>${entries.length?' · ':''}`:''}${entries.length?entries.slice(0,2).map(e=>esc(e.title)).join(' · '):holiday?'':'등록된 일정이 없습니다.'}`}
 function renderCalendar(){
   const y=month.getFullYear(),m=month.getMonth();$('monthTitle').textContent=`${y}년 ${m+1}월`;if(!holidayCache.has(y)&&!holidayErrors.has(y))loadHolidays(y);
@@ -134,40 +140,47 @@ function renderCalendar(){
     html+=`<div class="day ${outside?'outside':''} ${holiday?'holiday':''} ${key===localDate()?'today':''} ${selectedDate===key?'selected':''}"><button class="day-button" data-date="${key}" aria-label="${esc(dateLabel(key))}${holiday?', '+esc(holiday):''}, ${entries.length}건"><span>${d.getDate()}</span><span class="day-dots">${holiday?'<i class="holiday-mark"></i>':''}${dots.map(id=>`<i style="--dot-color:${esc(color(id))}"></i>`).join('')}</span></button><div class="day-popover"><strong>${esc(dateLabel(key))} · ${entries.length}건</strong>${holiday?`<div class="pop-row holiday-name">공휴일 · ${esc(holiday)}</div>`:''}${entries.length?entries.slice(0,6).map(e=>`<div class="pop-row"><b>${e.type}</b> ${e.time?esc(e.time)+' ':''}${esc(e.title)} ${scope==='all'?'· '+esc(project(e.projectId)?.name||''):''}${e.done?' ✓':''}</div>`).join(''):'<div class="pop-row">등록된 항목이 없습니다.</div>'}${entries.length>6?`<div class="pop-row">외 ${entries.length-6}건</div>`:''}<div class="popover-actions"><button data-date-event="${key}">+ 일정</button><button data-date-task="${key}">+ 할 일</button></div></div></div>`;
   }
   $('calendar').innerHTML=html;
-  $('calendar').querySelectorAll('[data-date]').forEach(b=>b.onclick=()=>{selectedDate=selectedDate===b.dataset.date?'':b.dataset.date;renderCalendar()});
+  $('calendar').querySelectorAll('[data-date]').forEach(b=>b.onclick=()=>{selectedDate=selectedDate===b.dataset.date?'':b.dataset.date;renderCalendar();renderMilestones()});
   $('calendar').querySelectorAll('[data-date-event]').forEach(b=>b.onclick=()=>openEditor('event',null,null,b.dataset.dateEvent));
   $('calendar').querySelectorAll('[data-date-task]').forEach(b=>b.onclick=()=>openEditor('task',null,null,b.dataset.dateTask));
   $('legend').innerHTML=`<span class="holiday-legend"><i></i>대한민국 공휴일</span>`+projects().map(p=>`<span><i style="--legend-color:${esc(p.color)}"></i>${esc(p.name)}</span>`).join('')+(holidayErrors.has(y)?'<span>공휴일을 불러오지 못했습니다. 새로고침해 주세요.</span>':'');
   renderDaySelection();
 }
-function taskRow(t,index,label=''){return `<div class="task-row ${t.done?'done':''}" draggable="${role==='admin'}" data-task-row="${esc(t.id)}"><span class="drag-handle" title="끌어서 순서 변경">⋮⋮</span><span class="order">${esc(label||String(index+1))}</span><input class="task-check" type="checkbox" data-check-task="${esc(t.id)}" ${t.done?'checked':''} aria-label="${esc(t.title)} 완료"><span class="task-title" title="${esc(t.title)}">${esc(t.title)}</span><span class="priority ${esc(t.priority||'normal')}">${priorityLabel[t.priority]||'보통'}</span><span class="task-date">${t.due?esc(shortDate(t.due)):''}</span><button class="icon-button" data-edit-task="${esc(t.id)}" aria-label="${esc(t.title)} 수정">⋯</button></div>`}
+function taskRow(t,index,label=''){return `<div class="task-row ${t.done?'done':''}" draggable="${role==='admin'}" data-task-row="${esc(t.id)}">${role==='admin'?'<span class="drag-handle" title="끌어서 순서 변경">⋮⋮</span>':''}<span class="order">${esc(label||String(index+1))}</span><input class="task-check" type="checkbox" data-check-task="${esc(t.id)}" ${t.done?'checked':''} ${role==='admin'?'':'disabled'} aria-label="${esc(t.title)} 완료"><span class="task-title" title="${esc(t.title)}">${esc(t.title)}</span><span class="priority ${esc(t.priority||'normal')}">${priorityLabel[t.priority]||'보통'}</span><span class="task-date">${t.due?esc(shortDate(t.due)):''}</span>${role==='admin'?`<button class="icon-button" data-edit-task="${esc(t.id)}" aria-label="${esc(t.title)} 수정">⋯</button>`:''}</div>`}
 function eventPreview(e,linked){
   const memo=e.notes?.trim();
   return `<div class="event-preview" role="tooltip"><div class="event-preview-heading">${esc(e.title)} · ${esc(dateLabel(e.date))}</div><div class="event-preview-label">메모</div><div class="event-preview-memo">${memo?esc(memo):'등록된 메모가 없습니다.'}</div><div class="event-preview-label">할 일 (${linked.filter(t=>t.done).length}/${linked.length} 완료)</div>${linked.length?`<ul class="event-preview-tasks">${linked.map(t=>`<li class="${t.done?'done':''}"><span>${t.done?'✓':'○'}</span>${esc(t.title)}</li>`).join('')}</ul>`:'<div class="event-preview-empty">연결된 할 일이 없습니다.</div>'}</div>`;
 }
 function renderMilestones(){
-  const list=sortedEvents();
-  $('milestones').innerHTML=list.length?list.map(e=>{
-    const linked=orderedTasks(e.id),done=linked.filter(t=>t.done).length,percent=linked.length?Math.round(done/linked.length*100):0,expanded=expandedEvents.has(e.id);
-    return `<article class="schedule-entry ${e.done?'done':''} ${expanded?'expanded':''}"><div class="schedule-line"><span class="milestone-date">${esc(shortDate(e.date))} ${esc(['일','월','화','수','목','금','토'][parseDate(e.date).getDay()])}</span>${projectText(e.projectId,e.id)}<button type="button" class="title event-open" data-open-event="${esc(e.id)}" aria-label="${esc(e.title)} 일정 수정">${esc(e.title)}${e.time?` <small>${esc(e.time)}</small>`:''}</button><span class="progress-wrap">${done}/${linked.length}<span class="progress" aria-label="할 일 ${percent}% 완료"><i style="width:${percent}%"></i></span></span><span class="badge ${e.done?'done':dClass(e.date)}">${e.done?'완료':esc(dLabel(e.date))}</span><span class="row-actions"><button class="icon-button" data-edit-event="${esc(e.id)}" aria-label="${esc(e.title)} 수정">✎</button><button class="icon-button" data-done-event="${esc(e.id)}" aria-label="${esc(e.title)} 완료 상태 변경">${e.done?'↩':'✓'}</button><button class="icon-button" data-toggle-event="${esc(e.id)}" aria-expanded="${expanded}" aria-label="${esc(e.title)} 할 일 ${expanded?'접기':'펼치기'}">${expanded?'⌄':'›'}</button></span></div>${eventPreview(e,linked)}<div class="tasks" data-task-group="${esc(e.id)}" ${expanded?'':'hidden'}>${linked.length?linked.map((t,i)=>taskRow(t,i)).join(''):'<div class="empty-tasks">연결된 할 일이 없습니다.</div>'}<button class="task-add" data-add-task="${esc(e.id)}">+ 할 일 추가</button></div></article>`;
-  }).join(''):'<div class="empty">프로젝트를 만들고 주요 일정을 추가하세요.</div>';
-  const root=$('milestones');bindTaskControls(root);
-  root.querySelectorAll('[data-open-event]').forEach(b=>b.onclick=()=>{if(role==='admin')openEditor('event',b.dataset.openEvent);else{expandedEvents.has(b.dataset.openEvent)?expandedEvents.delete(b.dataset.openEvent):expandedEvents.add(b.dataset.openEvent);renderMilestones()}});
-  root.querySelectorAll('[data-toggle-event]').forEach(b=>b.onclick=()=>{expandedEvents.has(b.dataset.toggleEvent)?expandedEvents.delete(b.dataset.toggleEvent):expandedEvents.add(b.dataset.toggleEvent);renderMilestones()});
-  root.querySelectorAll('[data-edit-event]').forEach(b=>b.onclick=()=>openEditor('event',b.dataset.editEvent));
-  root.querySelectorAll('[data-done-event]').forEach(b=>b.onclick=()=>{const e=event(b.dataset.doneEvent);e.done=!e.done;save()});
-  root.querySelectorAll('[data-add-task]').forEach(b=>b.onclick=()=>openEditor('task',null,b.dataset.addTask));
-  bindDrag();
+  const y=month.getFullYear(),m=month.getMonth(),first=new Date(y,m,1),start=new Date(y,m,1-first.getDay()),count=Math.ceil((first.getDay()+new Date(y,m+1,0).getDate())/7)*7;
+  $('largeMonthTitle').textContent=`${y}년 ${m+1}월`;
+  let html='';
+  for(let i=0;i<count;i++){
+    const day=new Date(start);day.setDate(start.getDate()+i);
+    const key=localDate(day),holiday=holidayOn(key),dayEvents=events().filter(e=>e.date===key).sort((a,b)=>Number(a.done)-Number(b.done)||(a.time||'').localeCompare(b.time||'')||a.title.localeCompare(b.title));
+    const freeTasks=tasks().filter(t=>t.due===key&&!t.eventId&&!t.done);
+    html+=`<div class="month-day ${day.getMonth()!==m?'outside':''} ${key===localDate()?'today':''} ${selectedDate===key?'selected':''}"><div class="month-day-head"><button type="button" class="month-day-number" data-month-day="${key}" aria-label="${esc(dateLabel(key))} 선택">${day.getDate()}</button>${role==='admin'?`<button type="button" class="month-day-add" data-month-add="${key}" aria-label="${esc(dateLabel(key))} 일정 추가">+</button>`:''}</div>${holiday?`<div class="month-holiday">${esc(holiday)}</div>`:''}<div class="month-items">${dayEvents.map(e=>{const linked=orderedTasks(e.id),done=linked.filter(t=>t.done).length;return `<div class="month-event-wrap"><button type="button" class="month-event ${e.done?'done':''}" style="--project-color:${esc(color(e.projectId))}" data-month-event="${esc(e.id)}" aria-label="${esc(e.title)} · ${esc(project(e.projectId)?.name||'프로젝트')} · 연결된 할 일 ${done}/${linked.length} 완료"><span class="month-event-time">${esc(e.time||'')}</span><span class="month-event-title">${esc(e.title)}</span>${linked.length?`<b>${done}/${linked.length}</b>`:''}</button>${eventPreview(e,linked)}</div>`}).join('')}${freeTasks.map(t=>`<button type="button" class="month-task" data-month-task="${esc(t.id)}" aria-label="별도 할 일 ${esc(t.title)}">□ ${esc(t.title)}</button>`).join('')}</div></div>`;
+  }
+  $('milestones').innerHTML=html;
+  $('milestones').querySelectorAll('[data-month-day]').forEach(b=>b.onclick=()=>{selectedDate=b.dataset.monthDay;renderCalendar();renderMilestones()});
+  $('milestones').querySelectorAll('[data-month-add]').forEach(b=>b.onclick=()=>openEditor('event',null,null,b.dataset.monthAdd));
+  $('milestones').querySelectorAll('[data-month-event]').forEach(b=>b.onclick=()=>openEventDetails(b.dataset.monthEvent));
+  $('milestones').querySelectorAll('[data-month-task]').forEach(b=>b.onclick=()=>{if(role==='admin')openEditor('task',b.dataset.monthTask);else{const t=data.tasks.find(t=>t.id===b.dataset.monthTask);if(t)toast(`${t.title} · ${project(t.projectId)?.name||'프로젝트'}`)}});
+}
+function openEventDetails(id){activeEventId=id;renderEventDetails();if(!$('eventDetails').open)$('eventDetails').showModal()}
+function renderEventDetails(){const e=event(activeEventId);if(!e){$('eventDetails').close();return}const linked=orderedTasks(e.id),done=linked.filter(t=>t.done).length;
+  $('eventDetailsTitle').textContent=e.title;
+  $('eventDetailsBody').innerHTML=`<div class="event-detail-meta"><span class="project-tag" style="--project-color:${esc(color(e.projectId))}">${esc(project(e.projectId)?.name||'프로젝트')}</span><strong>${esc(dateLabel(e.date))}${e.time?' · '+esc(e.time):''}</strong><span class="badge ${e.done?'done':dClass(e.date)}">${e.done?'완료':esc(dLabel(e.date))}</span></div>${e.notes?`<div class="event-detail-note">${esc(e.notes)}</div>`:''}<div class="event-detail-heading"><strong>연결된 할 일 ${done}/${linked.length} 완료</strong></div><div class="event-detail-tasks">${linked.length?linked.map((t,i)=>taskRow(t,i)).join(''):'<div class="empty-tasks">연결된 할 일이 없습니다.</div>'}</div>${role==='admin'?`<div class="event-detail-actions"><button class="button" data-detail-edit="${esc(e.id)}">일정 수정</button><button class="button" data-detail-done="${esc(e.id)}">${e.done?'완료 취소':'일정 완료'}</button><button class="button primary" data-detail-add="${esc(e.id)}">+ 할 일 추가</button></div>`:''}`;
+  const root=$('eventDetailsBody');bindTaskControls(root);bindDrag();
+  root.querySelector('[data-detail-edit]')?.addEventListener('click',()=>{ $('eventDetails').close();openEditor('event',e.id)});
+  root.querySelector('[data-detail-done]')?.addEventListener('click',()=>{e.done=!e.done;save()});
+  root.querySelector('[data-detail-add]')?.addEventListener('click',()=>{ $('eventDetails').close();openEditor('task',null,e.id)});
+  root.querySelectorAll('[data-edit-task]').forEach(b=>b.onclick=()=>{ $('eventDetails').close();openEditor('task',b.dataset.editTask)});
 }
 function renderUnlinked(){
   const all=tasks(),list=all.filter(t=>!t.eventId),roots=list.filter(t=>!t.parentId||!list.some(p=>p.id===t.parentId));
   roots.sort((a,b)=>data.projects.findIndex(p=>p.id===a.projectId)-data.projects.findIndex(p=>p.id===b.projectId)||(a.order||0)-(b.order||0));
   let lastProject='',html='';
-  sortedEvents().forEach(e=>{
-    const linked=all.filter(t=>t.eventId===e.id).sort((a,b)=>(a.order||0)-(b.order||0));
-    if(!linked.length)return;
-    html+=`<div class="project-group-title">${esc(project(e.projectId)?.name||'프로젝트')} · ${esc(e.title)} <span>연결된 일정</span></div><div class="task-family">${linked.map((t,i)=>taskRow(t,i)).join('')}</div>`;
-  });
   roots.forEach((parent,index)=>{
     if(parent.projectId!==lastProject){lastProject=parent.projectId;html+=`<div class="project-group-title">${esc(project(lastProject)?.name||'프로젝트')} · 별도 할 일</div>`}
     const children=list.filter(t=>t.parentId===parent.id).sort((a,b)=>(a.order||0)-(b.order||0)),done=children.filter(t=>t.done).length;
@@ -190,23 +203,26 @@ function renderSharedNotes(){
   form.querySelectorAll('textarea,select,button').forEach(control=>control.disabled=!data.projects.length);
   const scoped=sharedNotes.filter(note=>project(note.projectId)&&(scope==='all'||note.projectId===scope));
   const done=scoped.filter(note=>note.done).length,open=scoped.length-done;
-  $('sharedNoteCount').textContent=`공유 항목 ${done}/${scoped.length} 완료 · 미완료 ${open}`;
+  $('sharedNoteCount').textContent=`체크리스트 ${done}/${scoped.length} 완료 · 미완료 ${open}`;
   $('sharedNoteProgress').style.width=`${scoped.length?Math.round(done/scoped.length*100):0}%`;
   $('sharedNoteFilters').innerHTML=[['all',`전체 ${scoped.length}`],['open',`미완료 ${open}`],['done',`완료 ${done}`]].map(([key,label])=>`<button type="button" class="filter-chip ${noteFilter===key?'active':''}" data-note-filter="${key}" aria-pressed="${noteFilter===key}">${label}</button>`).join('');
   $('sharedNoteFilters').querySelectorAll('[data-note-filter]').forEach(button=>button.onclick=()=>{noteFilter=button.dataset.noteFilter;renderSharedNotes()});
   const visible=scoped.filter(note=>noteFilter==='all'||(noteFilter==='done'?note.done:!note.done)).sort((a,b)=>Number(a.done)-Number(b.done)||b.createdAt.localeCompare(a.createdAt));
-  $('sharedNotes').innerHTML=visible.length?visible.map(note=>`<div class="shared-note-row ${note.done?'done':''}"><label class="shared-note-toggle"><input type="checkbox" data-note-check="${esc(note.id)}" aria-label="${esc(note.body)} 완료" ${note.done?'checked':''}><span class="shared-note-type">${note.kind==='checklist'?'체크리스트':'메모'}</span><span class="shared-note-body">${esc(note.body)}</span></label><span class="shared-note-status ${note.done?'complete':'incomplete'}">${note.done?'완료':'미완료'}</span><span class="shared-note-project" style="--project-color:${esc(color(note.projectId))}">${esc(project(note.projectId)?.name||'프로젝트')}</span>${role==='admin'?`<button class="icon-button" type="button" data-note-delete="${esc(note.id)}" aria-label="공유 항목 삭제">✕</button>`:''}</div>`).join(''):`<div class="empty shared-note-empty">${!data.projects.length?'프로젝트를 추가하면 공유 메모를 작성할 수 있습니다.':scoped.length?'이 보기에는 항목이 없습니다.':'공유 메모가 없습니다. 위에서 첫 항목을 등록하세요.'}</div>`;
+  $('sharedNotes').innerHTML=visible.length?visible.map(note=>`<div class="shared-note-row ${note.done?'done':''}"><label class="shared-note-toggle"><input type="checkbox" data-note-check="${esc(note.id)}" aria-label="${esc(note.body)} 완료" ${note.done?'checked':''}><span class="shared-note-body">${esc(note.body)}</span></label><span class="shared-note-project" style="--project-color:${esc(color(note.projectId))}">${esc(project(note.projectId)?.name||'프로젝트')}</span>${role==='admin'?`<button class="icon-button" type="button" data-note-edit="${esc(note.id)}" aria-label="${esc(note.body)} 내용 수정">✎</button><button class="icon-button" type="button" data-note-delete="${esc(note.id)}" aria-label="${esc(note.body)} 삭제">✕</button>`:''}</div>`).join(''):`<div class="empty shared-note-empty">${!data.projects.length?'프로젝트를 추가하면 체크리스트를 작성할 수 있습니다.':scoped.length?'이 보기에는 항목이 없습니다.':'체크리스트가 없습니다. 위에서 첫 항목을 등록하세요.'}</div>`;
   $('sharedNotes').querySelectorAll('[data-note-check]').forEach(box=>box.onchange=()=>checkSharedNote(box));
+  $('sharedNotes').querySelectorAll('[data-note-edit]').forEach(button=>button.onclick=()=>openChecklistEditor(button.dataset.noteEdit));
   $('sharedNotes').querySelectorAll('[data-note-delete]').forEach(button=>button.onclick=()=>deleteSharedNote(button.dataset.noteDelete));
 }
 async function addSharedNote(e){
   e.preventDefault();const form=e.currentTarget,button=form.querySelector('button[type=submit]'),f=new FormData(form),body=String(f.get('body')||'').trim();if(!body)return;
   button.disabled=true;
-  try{const note=await api('/api/schedule/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:String(f.get('projectId')),kind:String(f.get('kind')),body})});sharedNotes.unshift(note);noteFilter='all';form.elements.body.value='';renderSharedNotes();toast('공유 항목을 저장했습니다.')}
+  try{const note=await api('/api/schedule/notes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({projectId:String(f.get('projectId')),kind:'checklist',body})});sharedNotes.unshift(note);noteFilter='all';form.elements.body.value='';renderSharedNotes();toast('체크리스트를 저장했습니다.')}
   catch(error){toast(error.message)}finally{button.disabled=false}
 }
 async function checkSharedNote(box){const note=sharedNotes.find(item=>item.id===box.dataset.noteCheck);if(!note)return;box.disabled=true;try{const updated=await api(`/api/schedule/notes/${encodeURIComponent(note.id)}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({done:box.checked})});Object.assign(note,updated);renderSharedNotes()}catch(error){toast(error.message);renderSharedNotes()}}
-async function deleteSharedNote(id){if(role!=='admin'||!confirm('이 공유 항목을 삭제할까요?'))return;try{await api(`/api/schedule/notes/${encodeURIComponent(id)}`,{method:'DELETE',headers:{'X-CSRF-Token':csrfToken}});sharedNotes=sharedNotes.filter(note=>note.id!==id);renderSharedNotes()}catch(error){toast(error.message)}}
+function openChecklistEditor(id){if(role!=='admin')return;const note=sharedNotes.find(item=>item.id===id);if(!note)return;const form=$('checklistEditForm');form.dataset.id=id;form.elements.body.value=note.body;$('checklistEditor').showModal();form.elements.body.focus()}
+async function saveChecklistEdit(e){e.preventDefault();if(role!=='admin')return;const form=e.currentTarget,id=form.dataset.id,body=form.elements.body.value.trim(),button=form.querySelector('[type=submit]');if(!body)return;button.disabled=true;try{const updated=await api(`/api/schedule/notes/${encodeURIComponent(id)}`,{method:'PUT',headers:{'Content-Type':'application/json','X-CSRF-Token':csrfToken},body:JSON.stringify({body})});const note=sharedNotes.find(item=>item.id===id);if(note)Object.assign(note,updated);$('checklistEditor').close();renderSharedNotes();toast('체크리스트를 수정했습니다.')}catch(error){toast(error.message)}finally{button.disabled=false}}
+async function deleteSharedNote(id){if(role!=='admin'||!confirm('이 체크리스트 항목을 삭제할까요?'))return;try{await api(`/api/schedule/notes/${encodeURIComponent(id)}`,{method:'DELETE',headers:{'X-CSRF-Token':csrfToken}});sharedNotes=sharedNotes.filter(note=>note.id!==id);renderSharedNotes()}catch(error){toast(error.message)}}
 function optionProjects(selected){return data.projects.map(p=>`<option value="${esc(p.id)}" ${selected===p.id?'selected':''}>${esc(p.name)}</option>`).join('')}
 function optionEvents(projectId,selected){return `<option value="">연결하지 않음</option>`+data.events.filter(e=>e.projectId===projectId).sort((a,b)=>a.date.localeCompare(b.date)).map(e=>`<option value="${esc(e.id)}" ${selected===e.id?'selected':''}>${esc(dateLabel(e.date))} · ${esc(e.title)}</option>`).join('')}
 function optionParents(projectId,selected,excludeId){return `<option value="">상위 할 일 없음</option>`+data.tasks.filter(t=>t.projectId===projectId&&!t.eventId&&!t.parentId&&t.id!==excludeId).map(t=>`<option value="${esc(t.id)}" ${selected===t.id?'selected':''}>${esc(t.title)}</option>`).join('')}
@@ -263,7 +279,7 @@ function deleteItem(kind,id){
 function downloadData(content){const blob=new Blob([JSON.stringify(content,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`00-일정관리-백업-${localDate()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),3000)}
 function downloadBackup(){downloadData(data)}
 async function restoreBackup(file){try{if(file.size>5*1024*1024)throw Error('5MB 이하 파일만 복원할 수 있습니다.');const x=JSON.parse(await file.text());if(!validData(x))throw Error('올바른 백업 파일이 아닙니다.');if(!confirm('서버의 모든 일정 데이터를 백업 파일 내용으로 교체할까요? 현재 내용은 먼저 백업해 주세요.'))return;data={version:1,projects:x.projects,events:x.events,tasks:x.tasks};scope='all';selectedDate='';save()}catch(e){toast(e.message||'복원에 실패했습니다.')}finally{$('restoreInput').value=''}}
-function bind(){ $('prevMonth').onclick=()=>{month.setMonth(month.getMonth()-1);selectedDate='';renderCalendar()};$('nextMonth').onclick=()=>{month.setMonth(month.getMonth()+1);selectedDate='';renderCalendar()};$('todayMonth').onclick=()=>{month=new Date();month.setDate(1);selectedDate='';renderCalendar()};$('addEventBtn').onclick=()=>openEditor('event');$('addTaskBtn').onclick=()=>openEditor('task');$('sharedNoteForm').onsubmit=addSharedNote;$('backupBtn').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreInput').click();$('restoreInput').onchange=e=>{if(e.target.files[0])restoreBackup(e.target.files[0])};$('closeEditor').onclick=()=>$('editor').close();$('modeBtn').onclick=()=>role==='admin'?logout():enterAdmin();$('closeLogin').onclick=()=>$('adminLogin').close()}
+function bind(){const changeMonth=offset=>{month.setMonth(month.getMonth()+offset);selectedDate='';renderCalendar();renderMilestones()},todayMonth=()=>{month=new Date();month.setDate(1);selectedDate='';renderCalendar();renderMilestones()};$('prevMonth').onclick=()=>changeMonth(-1);$('nextMonth').onclick=()=>changeMonth(1);$('todayMonth').onclick=todayMonth;$('largePrevMonth').onclick=()=>changeMonth(-1);$('largeNextMonth').onclick=()=>changeMonth(1);$('largeTodayMonth').onclick=todayMonth;$('addEventBtn').onclick=()=>openEditor('event');$('addTaskBtn').onclick=()=>openEditor('task');$('sharedNoteForm').onsubmit=addSharedNote;$('checklistEditForm').onsubmit=saveChecklistEdit;$('closeChecklistEditor').onclick=()=>$('checklistEditor').close();$('cancelChecklistEditor').onclick=()=>$('checklistEditor').close();$('closeEventDetails').onclick=()=>$('eventDetails').close();$('eventDetails').onclose=()=>{activeEventId=''};$('backupBtn').onclick=downloadBackup;$('restoreBtn').onclick=()=>$('restoreInput').click();$('restoreInput').onchange=e=>{if(e.target.files[0])restoreBackup(e.target.files[0])};$('closeEditor').onclick=()=>$('editor').close();$('modeBtn').onclick=()=>role==='admin'?logout():enterAdmin();$('closeLogin').onclick=()=>$('adminLogin').close()}
 async function enterAdmin(){try{const session=await api('/api/schedule/session');if(session.role==='admin'){role='admin';csrfToken=session.csrfToken;setStatus('서버에 저장됨');showApp();return}}catch(error){if(error.status!==401){toast(error.message);return}}showLogin()}
 async function login(event){event.preventDefault();const form=event.currentTarget,submit=form.querySelector('button[type=submit]');submit.disabled=true;$('authError').textContent='로그인 중…';try{const f=new FormData(form),session=await api('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:String(f.get('username')),password:String(f.get('password'))})});role='admin';csrfToken=session.csrfToken;form.querySelector('[name=password]').value='';await loadServer();$('adminLogin').close()}catch(error){role='guest';csrfToken='';$('authError').textContent=error.message}finally{submit.disabled=false}}
 async function logout(){if(pending||syncBlocked){if(!confirm('서버에 저장되지 않은 내용이 있습니다. 백업 후 편집 모드를 종료하시겠습니까?'))return}try{await api('/api/admin/logout',{method:'POST',headers:{'X-CSRF-Token':csrfToken}})}catch(error){if(error.status!==401){toast(error.message);return}}role='guest';csrfToken='';try{await loadServer()}catch(error){setStatus('서버 연결 실패');showApp();toast(error.message)}}
