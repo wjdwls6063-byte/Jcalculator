@@ -1,10 +1,10 @@
 # Jcalculator 통합 Web Service
 
-메인과 6개 설계 도구, 00 일정관리, 계산 API, `/admin` 편집 화면을 제공합니다. 현재 운영 환경은 Render Static Site(`Jcalculator`)와 Python Web Service(`jcalculator-engine-api`)로 나뉘며, `/api/*` 요청은 Web Service로 전달됩니다. 계산기는 로그인 없이 사용하며, 일정관리는 관리자 편집 모드와 게스트 보기 모드를 제공합니다.
+메인과 7개 설계 도구, 00 일정관리, 계산 API, `/admin` 편집 화면을 제공합니다. 현재 운영 환경은 Render Static Site(`Jcalculator`)와 Python Web Service(`jcalculator-engine-api`)로 나뉘며, `/api/*` 요청은 Web Service로 전달됩니다. 계산기는 로그인 없이 사용하며, 일정관리는 관리자 편집 모드와 게스트 보기 모드를 제공합니다.
 
 ## 구조
 
-- `frontend/`: 메인, 6개 도구, 실제 관리자 화면
+- `frontend/`: 메인, 7개 도구, 실제 관리자 화면
 - `backend/app/`: 계산 엔진, 공개 API, 관리자 인증·설정 API
 - `backend/tests/`: 계산 회귀·예외입력·관리자 보안 테스트
 - `render.yaml`: 새 환경에서 단일 Web Service로 구성할 때 사용할 수 있는 Blueprint 예시
@@ -15,7 +15,7 @@
 ## 주요 경로
 
 - `/`, `/conveyor/`, `/ballscrew/`, `/ballscrew/vertical/`
-- `/eccentric/`, `/smc-cylinder/`, `/sensor/`
+- `/eccentric/`, `/smc-cylinder/`, `/sensor/`, `/air-consumption/`
 - `/admin/`: 관리자 로그인·편집·변경 이력·백업
 - `/schedule/`: 로그인 없이 게스트 보기로 열리는 프로젝트 일정관리. 게스트도 프로젝트별 공유 메모·체크리스트를 추가하고 체크할 수 있음. 화면의 **관리자 모드** 버튼으로 일정 편집 모드에 진입
 - `/api/schedule/document`: 누구나 조회, 관리자만 저장 (CSRF·버전 검사)
