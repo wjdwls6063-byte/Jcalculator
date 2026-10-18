@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SMC 공식 계산식을 적용한 실린더 공기 소비량 계산기">
+  <title>실린더 공기 소비량 · Jcalculator 07</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="top">
+      <a href="../" class="back" aria-label="도구 모음으로 돌아가기">← 도구 모음</a>
+      <span class="top-label">PNEUMATIC AIR CONSUMPTION</span>
+    </header>
+
+    <section class="intro">
+      <div><span class="eyebrow">07 / AIR CONSUMPTION</span><h1>실린더 공기 소비량</h1><p>실린더와 밸브~실린더 배관의 소비량을 합산합니다. 복동·단동 방식에 따라 실제 공급되는 행정만 계산합니다.</p></div>
+      <div class="reference-chip"><span>기준</span><strong>SMC 공식 계산식</strong><small>L (ANR) · 게이지압 MPa</small></div>
+    </section>
+
+    <div class="workspace">
+      <section class="panel input-panel" aria-labelledby="inputTitle">
+        <div class="panel-title"><span class="step">01</span><div><h2 id="inputTitle">운전 조건 입력</h2><p>값을 바꾸면 바로 계산됩니다. 용어 옆 ⓘ에 마우스를 올리거나 눌러 보세요.</p></div></div>
+        <form id="calculator" novalidate>
+          <fieldset class="mode-group"><legend>작동 방식</legend><div class="mode-options">
+            <label><input type="radio" name="mode" value="double" checked><span>복동<small>전진 + 후진</small></span></label>
+            <label><input type="radio" name="mode" value="spring-return"><span>단동 전진<small>스프링 후진</small></span></label>
+            <label><input type="radio" name="mode" value="spring-extend"><span>단동 후진<small>스프링 전진</small></span></label>
+          </div></fieldset>
+
+          <div class="form-section"><h3>실린더 치수</h3><div class="field-grid three">
+            <label class="field">내경 D <span>mm</span><input name="bore" type="number" inputmode="decimal" min="0.01" step="any" value="20" required></label>
+            <label class="field">로드 지름 d <span>mm</span><input name="rod" type="number" inputmode="decimal" min="0" step="any" value="8" required></label>
+            <label class="field">스트로크 L <span>mm</span><input name="stroke" type="number" inputmode="decimal" min="0.01" step="any" value="50" required></label>
+          </div></div>
+
+          <div class="form-section"><h3>운전 조건</h3><div class="field-grid two">
+            <label class="field" data-direction="out">전진측 압력 P₁ <span>MPa</span><input name="pressureOut" type="number" inputmode="decimal" min="0" step="any" value="0.4" required></label>
+            <label class="field" data-direction="in">후진측 압력 P₂ <span>MPa</span><input name="pressureIn" type="number" inputmode="decimal" min="0" step="any" value="0.4" required></label>
+            <label class="field">작동 빈도 N <span>왕복/분</span><input name="cyclesPerMinute" type="number" inputmode="decimal" min="0" step="any" value="30" required></label>
+            <label class="field">실린더 수량 <span>개</span><input name="cylinderCount" type="number" inputmode="numeric" min="1" step="1" value="1" required></label>
+          </div></div>
+
+          <div class="form-section pipe-section"><div class="section-line"><h3>밸브~실린더 배관</h3><label class="switch"><input name="includePiping" type="checkbox" checked><span>배관 포함</span></label></div><p class="helper">튜브 길이는 방향별로 전자밸브에서 실린더 포트까지의 길이입니다.</p><div id="pipeInputs" class="field-grid two">
+            <label class="field" data-direction="out">전진측 튜브 내경 <span>mm</span><input name="tubeIdOut" type="number" inputmode="decimal" min="0" step="any" value="4" required></label>
+            <label class="field" data-direction="out">전진측 튜브 길이 <span>m</span><input name="tubeLengthOut" type="number" inputmode="decimal" min="0" step="any" value="1.5" required></label>
+            <label class="field" data-direction="in">후진측 튜브 내경 <span>mm</span><input name="tubeIdIn" type="number" inputmode="decimal" min="0" step="any" value="4" required></label>
+            <label class="field" data-direction="in">후진측 튜브 길이 <span>m</span><input name="tubeLengthIn" type="number" inputmode="decimal" min="0" step="any" value="1.5" required></label>
+          </div></div>
+
+          <details class="advanced"><summary>온도 보정</summary><label class="field">공기 온도 <span>°C</span><input name="temperatureC" type="number" inputmode="decimal" step="any" value="20" required></label><p class="helper">한국 SMC 설명서의 293/T 보정을 적용합니다. 20°C에서는 보정 계수가 1입니다.</p></details>
+          <div class="form-actions"><button type="button" id="exampleButton" class="button secondary">SMC 공식 예제값 불러오기</button><button type="reset" class="button text-button">입력 초기화</button></div>
+          <p id="formError" class="form-error" role="alert" hidden></p>
+        </form>
+      </section>
+
+      <div class="result-column">
+        <section class="panel result-panel" aria-labelledby="resultTitle"><div class="panel-title"><span class="step">02</span><div><h2 id="resultTitle">계산 결과</h2><p>공기 소비량 · 대기 기준 환산값(ANR)</p></div></div>
+          <div class="hero-result"><span>설비 전체 · 분당 소비량</span><div><strong id="perMinuteTotal">—</strong><b>L/min (ANR)</b></div><small id="totalHint">—</small></div>
+          <div class="result-pair"><div><span>실린더 1개 · 1왕복</span><strong id="perCycle">—</strong><small>L (ANR)</small></div><div><span>실린더 1개 · 분당</span><strong id="perMinuteEach">—</strong><small>L/min (ANR)</small></div></div>
+          <div class="breakdown"><h3>행정별 내역 <small>실린더 1개 · 1회</small></h3><div id="strokeBreakdown"></div></div>
+        </section>
+        <section class="panel proof-panel" aria-labelledby="proofTitle"><div class="panel-title"><span class="step">03</span><div><h2 id="proofTitle">계산 근거 · 검증</h2><p>적용한 SMC 식과 숫자 대입 과정을 확인하세요.</p></div></div>
+          <div class="proof-body"><div class="source-banner"><strong>SMC 공식 자료</strong><a href="https://www.smckorea.co.kr/homepage/ver3.5/download/%EA%B3%B5%EA%B8%B0%EC%95%95%EA%B8%B0%EA%B8%B0%EC%84%A0%EC%A0%95%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8Ver4%EC%B7%A8%EA%B8%89%EC%84%A4%EB%AA%85%EC%84%9C.pdf" target="_blank" rel="noopener">한국 SMC 설명서 · 1.7.5절 표 1 ↗</a><a href="https://www.smcworld.com/catalog/BEST-technical-data-en/pdf/AirCylinder-Select-Tech_en.pdf" target="_blank" rel="noopener">SMC 기술 자료 · Data 2, p.1574 ↗</a></div>
+            <p class="source-note">공식 문서의 식을 이 화면에서 독립적으로 계산합니다. SMC의 온라인 계산 프로그램과 직접 연동하거나 인증받은 결과는 아닙니다.</p>
+            <div class="formula-card"><h3>적용 계산식</h3><p><b>실린더</b> = A × L × (P + 0.1) / 0.1 × 10<sup>−6</sup> × 293/T</p><p><b>배관</b> = a × ℓ × P / 0.1 × 10<sup>−6</sup> × 293/T</p><p><b>1왕복</b> = 전진 소비량 + 후진 소비량 <small>(단동은 공급되는 한쪽만)</small></p><p><b>분당 합계</b> = 1왕복 × 왕복/분 × 실린더 수량</p><small>A: 피스톤 면적(mm²), a: 배관 내단면적(mm²), L·ℓ: 길이(mm), P: 게이지압(MPa), T: 절대온도(K).</small></div>
+            <div class="substitution"><h3>현재 입력값 대입</h3><div id="substitutionRows"></div></div>
+            <div class="example-check"><h3>SMC 설명서 예제와 대조 <span id="exampleStatus">확인 중</span></h3><p>내경 20 mm · 로드 8 mm · 스트로크 50 mm · 0.4 MPa · 튜브 내경 4 mm × 1.5 m · 분당 30왕복</p><div id="exampleValues"></div><small>위의 검증은 현재 입력값과 관계없이 공식 예제 조건을 재계산한 결과입니다.</small></div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <footer>설계 참고용 계산기 · 누설, 압력 강하, 완충 구조, 기타 공압 기기의 소비량은 별도 검토가 필요합니다.</footer>
+  </main>
+  <script type="module" src="./page.js"></script>
+</body>
+</html>
